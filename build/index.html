@@ -2,7 +2,7 @@
 <html manifest="roadkill.appcache">
 	<head>
 		<title>Utah Wildlife-Vehicle Collision Reporter - Mobile</title>
-		
+
         <!-- META TAGS -->
         <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
@@ -15,24 +15,23 @@
 
 		<!-- CSS -->
 		<link href="css/core.css" rel="stylesheet" />
-		
+
         <!-- JAVASCRIPT -->
 		<script type="text/javascript" src="dojo.js"></script>
 		<script type="text/javascript" src="roadkill_en-us.js"></script>
 		<script type="text/javascript" src="roadkill.js"></script>
 
         <!-- GOOGLE ANALYTICS -->
-        <script type="text/javascript">
-          var _gaq = _gaq || [];
-          _gaq.push(['_setAccount', 'UA-11849964-40']);
-          _gaq.push(['_trackPageview']);
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-          })();
-        </script>
+		  ga('create', 'UA-11849964-52', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
 	</head>
 	<body>
         <!-- HOME -->
@@ -44,7 +43,7 @@
             <div data-role="content">
                 <p>Welcome to the State of Utah Wildlife-Vehicle Collision (WVC) Reporter mobile web application.</p>
                 <p id="creds-note" class="hidden">Please note that in order to submit reports, you must have a valid user name and password.
-                    You will be prompted for them when you submit your first report. 
+                    You will be prompted for them when you submit your first report.
                     Click on "Request an Account" to obtain access to the system.</p>
                 <br>
                 <ul data-role="listview">
@@ -144,7 +143,7 @@
                         </li>
                     </ul>
                 </form>
-                
+
             </div>
         </div>
         <!-- SUBMIT-CONFIRMATION -->
@@ -215,7 +214,7 @@
                     <li>Added nightly script to update nearest road, regions and milepost data. This allowed for the removal of code in the mobile app that previously calculated these values. This significantly simplifies the code for submitting a new report which should hopefully result in better performance and fewer errors.</li>
                     <li>Removed prompt to log in when a report is submitted.</li>
                     <li>Other miscellaneous bug fixes and improvements.</li>
-                </ul>   
+                </ul>
                 1.0.2<br>
                 <ul>
                     <li>Refined log in process.</li>
@@ -302,7 +301,7 @@
             </div>
             <div data-role="content">
                 <h4>Reports</h4>
-                <p>If you have a mobile device with an integrated GPS receiver, your location will be automatically recorded when you click on the "Submit" button. 
+                <p>If you have a mobile device with an integrated GPS receiver, your location will be automatically recorded when you click on the "Submit" button.
                     If you have a laptop you can click on the "Define Location Manually" button to record your location.</p>
                 <p>Please complete one report per animal instead of including another animal in the comments section.</p>
                 <h4>When operating the application offline</h4>
@@ -327,32 +326,32 @@
                     <input type="text" id="dummy" style="display: none;"/>
                         <label for="lat">Latitude:</label>
                         <input id="lat"
-                            type="number" 
-                            placeholder="e.g. 40.234556" 
+                            type="number"
+                            placeholder="e.g. 40.234556"
                             min="36" max="43" />
                         <label for="lng">Longitude:</label>
                         <input id="lng"
-                            type="number" 
+                            type="number"
                             placeholder="e.g. -111.234532"
                             min="-114" max="-109" />
                     <p><span class="centered">or</span></p>
                         <label for="route">Route:</label>
-                        <input id="route" 
-                            type="text" 
+                        <input id="route"
+                            type="text"
                             placeholder="e.g. 106" />
                         <label for="milepost">Milepost:</label>
                         <input id="milepost"
-                            type="number" 
+                            type="number"
                             placeholder="e.g. 5.5"
                             min="0" />
                     <p><span class="centered">or</span></p>
                         <label for="street">Street Address:</label>
-                        <input id="street" 
-                            type="text" 
+                        <input id="street"
+                            type="text"
                             placeholder="e.g. 150 S. Main Street" />
                         <label for="zone">Zip Code or City:</label>
                         <input id="zone"
-                            type="text" 
+                            type="text"
                             placeholder="e.g. 84121 or Sandy" />
                 </form>
                 <fieldset class="ui-grid-a">
@@ -480,7 +479,7 @@
         <div data-role="page" data-url="register-confirm" class='drop-down'>
             <div data-role="content">
                 <p><span id="register-confirm-msg"></span></p>
-                
+
                 <a id="register-confirm-ok" href="" data-role="button">OK</a>
             </div>
         </div>
