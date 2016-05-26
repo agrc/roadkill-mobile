@@ -61,9 +61,6 @@ dojo.declare("roadkillapp", null, {
         LABEL: "LABEL"
     },
 
-    // locatorServiceUrl: String
-    locatorServiceUrl: "http://mapserv.utah.gov/wsut/Geocode.svc/roadkill/street(",
-
     // defaultXHRTimeout: Number
     defaultXHRTimeout: 120000,
 
