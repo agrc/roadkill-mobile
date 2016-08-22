@@ -9,7 +9,6 @@ dojo.require("data.species");
 dojo.require("dijit.form.Form");
 dojo.require("js.libs.jquery");
 dojo.require("js.libs.jquerymobile");
-dojo.require("ijit.modules.ErrorLogger");
 
 var app;
 
@@ -86,9 +85,6 @@ dojo.declare("roadkillapp", null, {
     //      stored offline due to the user not being logged in.
     loggedOutMsg: "Your report has been stored on your device because you are not logged in.",
 
-    // errorLogger: agrc.modules.ErrorLogger
-    errorLogger: null,
-
     // appName: String
     //     Used in UserManagement service
     appName: 'roadkill',
@@ -116,11 +112,6 @@ dojo.declare("roadkillapp", null, {
         //      The first function to run
         console.log(this.declaredClass + "::" + arguments.callee.nom, arguments);
         app = this;
-
-        // init error logger
-        this.errorLogger = new ijit.modules.ErrorLogger({
-            appName: 'WVC Reporter - Mobile'
-        });
 
         this.auth = new roadkill.auth();
 
@@ -569,11 +560,9 @@ dojo.declare("roadkillapp", null, {
                 } else {
                     console.log("Error!", response);
                     onFailure();
-                    that.errorLogger.log(response, 'xhrPost through error when submitting reports');
                 }
             }, function(e) {
                 onFailure();
-                that.errorLogger.log(e, 'Problem with addFeaturesService');
             });
         }
 
@@ -643,12 +632,6 @@ dojo.declare("roadkillapp", null, {
         function onFailure() {
             $.mobile.loading('hide');
             alert("There was a problem sending the data to the server. Please try again when you have a better network connection");
-            // send email if app is online and still not submitting reports
-            if (navigator.onLine) {
-                that.errorLogger.log({
-                    message: 'fake error message'
-                }, 'Error submitting offline reports. Reports: ' + localStorage.reports);
-            }
         }
 
         var submitReports;
@@ -797,7 +780,6 @@ dojo.declare("roadkillapp", null, {
 
                     that.submitForm(null, result.MatchAddress);
                 }, function(er) {
-                    that.errorLogger.log(er, "problem with locator service");
                     $.mobile.loading('hide');
                     alert("No match found for that address. Please check your entries and try again.");
                 });
@@ -842,7 +824,6 @@ dojo.declare("roadkillapp", null, {
         };
 
         function onError(er) {
-            that.errorLogger.log(er, 'Problem sending diagnostics');
             $.mobile.loading('hide');
             msg.innerHTML = 'There was an error submitting diagnostics.';
         }

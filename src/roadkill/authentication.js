@@ -13,7 +13,6 @@ roadkill.auth = function() {
     var onLoginSuccess, onLoginFailure;
     var successMsg = 'Your registration has been successfully submitted to the administrator for approval. You should expect to recieve an email response within the next 2 business days.';
     var failMsg = 'There was a problem with your registration submission: ';
-    var errorLogger;
 
     that.isLoggedIn = function() {
         // summary:
@@ -103,8 +102,6 @@ roadkill.auth = function() {
         localStorage.email = email;
         localStorage.pass = pass;
 
-        app.errorLogger.userName = email;
-
         var data = {
             email: email,
             password: pass,
@@ -119,10 +116,6 @@ roadkill.auth = function() {
         dojo.xhrPost(params).then(function(response) {
             if (response.status && response.status !== 200) {
                 alert(response.message);
-                // don't log error if they typed in the wrong password
-                if (response.message !== "Your password does not match our records") {
-                    app.errorLogger.log(response.error, 'Error logging in');
-                }
                 $.mobile.loading('hide');
             } else if (response.result.token) {
                 that.token = response.result.token.token;
@@ -142,12 +135,10 @@ roadkill.auth = function() {
             } else {
                 alert("There was a problem logging in.");
                 that.logInUnsuccessful();
-                app.errorLogger.log(null, 'Error logging in. response: ' + dojo.toJson(response));
             }
         }, function(e) {
             alert("There was a problem logging in. Please make sure that you have a connection to the internet.");
             that.logInUnsuccessful();
-            app.errorLogger.log(e, 'Error logging in. xhrGet threw error.');
         });
     };
     that.wireEvents = function() {
