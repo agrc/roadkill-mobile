@@ -95,6 +95,14 @@ module.exports = function (grunt) {
             }
         },
         pkg: grunt.file.readJSON('package.json'),
+        processhtml: {
+            options: {},
+            main: {
+                files: {
+                    'dist/index.html': ['src/index.html']
+                }
+            }
+        },
         secrets: secrets,
         sftp: {
             stage: {
@@ -158,12 +166,14 @@ module.exports = function (grunt) {
     grunt.registerTask('build-prod', [
         'clean:build',
         'newer:imagemin:main',
-        'dojo:prod'
+        'dojo:prod',
+        'processhtml:main'
     ]);
     grunt.registerTask('build-stage', [
         'clean:build',
         'newer:imagemin:main',
-        'dojo:stage'
+        'dojo:stage',
+        'processhtml:main'
     ]);
     grunt.registerTask('deploy-prod', [
         'clean:deploy',
