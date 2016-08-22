@@ -1,0 +1,32 @@
+{
+  "name": "roadkill-mobile",
+  "version": "1.3.0",
+  "description": "Wildlife Vehicle Collision App",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "grunt travis -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agrc/roadkill-mobile.git"
+  },
+  "author": "Scott Davis <stdavis@utah.gov>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agrc/roadkill-mobile/issues"
+  },
+  "homepage": "https://github.com/agrc/roadkill-mobile#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-compress": "^1.3.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-dojo": "^1.1.1",
+    "grunt-eslint": "^19.0.0",
+    "grunt-newer": "^1.2.0",
+    "grunt-ssh": "^0.12.9",
+    "load-grunt-tasks": "^3.5.2"
+  }
+}
