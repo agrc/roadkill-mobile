@@ -1,0 +1,3 @@
+(function () {
+    require({baseUrl: './'}, ['jquerymobile']);
+}())

@@ -14,7 +14,7 @@
   "dependencies": {
     "dojo": "~1.11.2",
     "util": "dojo-util#~1.11.2",
-    "jquery-mobile": "~1.4.5",
+    "jquery-mobile-bower": "~1.4.5",
     "proj4": "~2.3.15"
   }
 }

@@ -1,4 +1,4 @@
-@import '../../jquery-mobile/css/themes/default/jquery.mobile.css';
+@import '../../jquery-mobile-bower/css/jquery.mobile-1.4.5.css';
 .float-right {
     float: right;
 }
