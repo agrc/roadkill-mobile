@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     var jsFiles = ['src/app/**/*.js'];
-    var otherWatchFiles = ['src/css/*.css', 'src/index.html'];
+    var otherWatchFiles = ['src/app/**/*.css', 'src/index.html'];
     var eslintFiles = jsFiles.concat([jsFiles, 'package.json', 'Gruntfile.js', 'profiles/*.js']);
     var deployFiles = [
         '**',
