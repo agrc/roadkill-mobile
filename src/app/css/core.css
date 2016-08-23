@@ -30,3 +30,9 @@
 #location-btn {
     width: 100%;
 }
+#accuracy {
+    margin-left: 3px;
+}
+#version {
+    margin-right: 3px;
+}
