@@ -139,7 +139,6 @@ define([
 
             this.gpsController = new GPSController();
 
-            var that = this;
             this.auth.on('log-in-successful', function () {
                 that.getDomains(that.auth.token);
             });

@@ -1,0 +1,24 @@
+CACHE MANIFEST
+
+# Version: 115
+
+CACHE:
+css/core.css
+css/images/ajax-loader.gif
+css/images/ajax-loader.png
+css/images/icons-18-black.png
+css/images/icons-18-white.png
+css/images/icons-36-black.png
+css/images/icons-36-white.png
+
+images/icon.png
+images/splash.png
+
+dojo.js
+roadkill_en-us.js
+roadkill.js
+
+index.html
+
+NETWORK:
+*

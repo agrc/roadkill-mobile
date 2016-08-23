@@ -15,6 +15,7 @@
     "dojo": "~1.11.2",
     "util": "dojo-util#~1.11.2",
     "jquery-mobile-bower": "~1.4.5",
-    "proj4": "~2.3.15"
+    "proj4": "~2.3.15",
+    "dijit": "~1.11.2"
   }
 }

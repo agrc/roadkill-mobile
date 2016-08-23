@@ -1,5 +1,5 @@
 (function () {
-    require({baseUrl: './'}, ['app/App', 'dojo/domReady!', 'jquerymobile'], function (App) {
+    require({baseUrl: './'}, ['app/App', 'dojo/domReady!', 'jquery-mobile-bower'], function (App) {
         new App();
 
         window.applicationCache.addEventListener('updateready', function () {
