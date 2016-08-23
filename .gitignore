@@ -1,4 +1,5 @@
 .DS_Store
+.grunt/
 maps/
 node_modules/
 scripts/agrc*
