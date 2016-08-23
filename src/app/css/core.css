@@ -1,0 +1,38 @@
+@import '../../jquery-mobile-bower/css/jquery.mobile-1.4.5.css';
+.float-right {
+    float: right;
+}
+.centered-p {
+    margin-top: 7px !important;
+}
+.centered {
+    left: 50%;
+    position: relative;
+    margin-left: -7px;
+    font-size: 16px;
+}
+#browsers-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#browsers-table td, #browsers-table th{
+    border: 1px solid gray;
+}
+.hidden {
+    display: none !important;
+}
+.wrap-whitespace {
+    white-space: normal !important;
+}
+.drop-down .ui-dialog-contain {
+    margin-top: 0;
+}
+#location-btn {
+    width: 100%;
+}
+#accuracy {
+    margin-left: 3px;
+}
+#version {
+    margin-right: 3px;
+}
