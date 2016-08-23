@@ -9,8 +9,11 @@ Wildlife Vehicle Collision Mobile App
 1. Publish `maps/FeatureService.mxd` as `Roadkill/FeatureService` (secure).
     - Enable feature access with "Create", "Query", "Update", & "Delete" allowed operations.
 1. Publish `scripts\PublicToolbox\SendDiagnostics` as `Roadkill/PublicToolbox/SendDiagnostics` (open).
-1. Publish `scripts\Print\ExportWebMap` as `Roadkill/Print/ExportWebMap` (open).
-    - `ExportWebMap`: synchronous, templateFolder: `scripts/PrintTemplates/`
-1. Publish `scripts\Toolbox\*` as `Roadkill/Toolbox/*` (secure).
+    - You may need to manually copy the `agrc` package to the `...\arcgisserver\directories\arcgissystem\arcgisinput\Roadkill\PublicToolbox.GPServer\extracted\v101\scripts` folder.
+1. Publish `roadkill-desktop\scripts\Toolbox\*` as `Roadkill/Toolbox/*` (secure).
     - `RouteMilepostsSegment`: Params: "0015", "100", "110"
     - `DownloadData`: Params: "1 = 2", "shp"
+        - You may need to manually copy the `*.sde` file associated with this tool to the `C:\arcgisserver\directories\arcgissystem\arcgisinput\Roadkill\Toolbox.GPServer\extracted\v101\scripts\` directory.
+    - `Print`: Params:
+        - `baseMap`: "Terrain"
+        - `extent`: `{"xmin": 1, "xmax": 2, "ymin": 1, "ymax": 2}`

@@ -1,5 +1,5 @@
 require({
-    packages: ['app', 'dojo', {
+    packages: ['app', 'dojo', 'dojox', {
         name: 'jquery',
         location: './jquery',
         main: 'jquery'
