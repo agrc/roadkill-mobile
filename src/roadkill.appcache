@@ -1,0 +1,22 @@
+CACHE MANIFEST
+
+# Version: 200
+
+CACHE:
+app/css/core.css
+app/css/images/ajax-loader.gif
+app/css/images/ajax-loader.png
+app/css/images/icons-18-black.png
+app/css/images/icons-18-white.png
+app/css/images/icons-36-black.png
+app/css/images/icons-36-white.png
+
+app/images/icon.png
+app/images/splash.png
+
+dojo/dojo.js
+
+index.html
+
+NETWORK:
+*
