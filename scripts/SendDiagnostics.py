@@ -3,7 +3,8 @@ Used to send diagnostic information to tech support. Including
 unsubmitted report data to make sure that it doesn't get lost.
 '''
 
-import arcpy, agrc
+import arcpy
+from agrc import messaging
 
 '''
 GP Parameters:
@@ -12,27 +13,17 @@ GP Parameters:
 2 - platform: String
 '''
 
-logger = agrc.logging.Logger()
-emailer = agrc.email.Emailer('stdavis@utah.gov')
+# logger = logging.Logger() # having troubles with location of logs directory when run via Catalog
+emailer = messaging.Emailer('stdavis@utah.gov')
+msg = ''
 
-try:
-    username = arcpy.GetParameterAsText(0)
-    logger.logMsg('username: ' + username)
-    
-    unsubmittedReports = arcpy.GetParameterAsText(1)
-    logger.logMsg('unsubmittedReports: ' + unsubmittedReports)
-    
-    platform = arcpy.GetParameterAsText(2)
-    logger.logMsg('platform: ' + platform)
-    
-    emailer.sendEmail('Roadkill Diagnostics Report for ' + username, logger.log)
+username = arcpy.GetParameterAsText(0)
+msg += 'username: ' + username + '\n'
 
-except arcpy.ExecuteError:
-    logger.logMsg('arcpy.ExecuteError')
-    logger.logError()
-    logger.logGPMsg()
-    emailer.sendEmail(logger.scriptName + ' - arcpy.ExecuteError', logger.log)
+unsubmittedReports = arcpy.GetParameterAsText(1)
+msg += 'unsubmittedReports: ' + unsubmittedReports + '\n'
 
-except:
-    logger.logError()
-    emailer.sendEmail(logger.scriptName + ' - Python Error', logger.log)
+platform = arcpy.GetParameterAsText(2)
+msg += 'platform: ' + platform + '\n'
+
+emailer.sendEmail('Roadkill Diagnostics Report for ' + username, msg)
