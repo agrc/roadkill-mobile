@@ -19,6 +19,12 @@ module.exports = function (grunt) {
         '!stubmodule/**',
         '!util/**'
     ];
+    var bumpFiles = [
+        'package.json',
+        'bower.json',
+        'src/app/package.json',
+        'src/app/App.js'
+    ];
     var deployDir = 'wwwroot/wvc/mobile';
     var secrets;
     try {
@@ -34,6 +40,13 @@ module.exports = function (grunt) {
     }
 
     grunt.initConfig({
+        bump: {
+            options: {
+                files: bumpFiles,
+                commitFiles: bumpFiles.concat('src/index.html'),
+                push: false
+            }
+        },
         clean: {
             build: ['dist'],
             deploy: ['deploy']
