@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html>
 <!-- build:template
 <html manifest="roadkill.appcache">
 /build -->
 <!-- build:remove -->
-<head>
+<html>
 <!-- /build -->
 
+<head>
     <title>Utah Wildlife-Vehicle Collision Reporter - Mobile</title>
 
     <!-- META TAGS -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no"/>
-
-    <!-- add this back in once this problem is fixed: https://discussions.apple.com/message/19634558#19634558 -->
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!-- icon/splash -->
     <link rel="apple-touch-icon-precomposed" href="https://mapserv.utah.gov/wvc/mobile/images/icon.png">
     <link rel="apple-touch-startup-image" href="images/splash.png">
 
+    <!-- build:remove -->
     <!-- prevent cache / remove for build-->
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
+    <!-- /build -->
 
     <!-- CSS -->
     <link href="app/css/core.css" rel="stylesheet" />

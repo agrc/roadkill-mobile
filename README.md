@@ -2,6 +2,8 @@
 Wildlife Vehicle Collision Mobile App
 
 ## Deployment (these services support both mobile and desktop)
+1. Make sure that PHP is installed on the web server.
+1. Make sure that there is an `appcache` MIME type on the web server. (extension: `appcache`, type: `text/cache-manifest`)
 1. Use `permission_proxy_config.json` to create a new application in permission proxy.
 1. Publish `maps/Overlays.mxd` as `Roadkill/Overlays` (open).
 1. Publish `maps/MapService.mxd` as `Roadkill/MapService` (secure).
