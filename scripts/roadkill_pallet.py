@@ -11,9 +11,6 @@ Updates fields with empty values for:
 -UDOT region
 -UDWR region
 -WMU region
-
-Requires _mssql. You can run pymssql-2.0.0b1.win32-py2.6.exe to install it. Because of Esri's weird
-install of Python you need to install the 32 bit version even if you are on a 64 bit system.
 '''
 
 import arcpy
