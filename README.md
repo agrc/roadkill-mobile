@@ -2,6 +2,7 @@
 Wildlife Vehicle Collision Mobile App
 
 ## Deployment (these services support both mobile and desktop)
+1. Use `permission_proxy_config.json` to create a new application in permission proxy.
 1. Publish `maps/Overlays.mxd` as `Roadkill/Overlays` (open).
 1. Publish `maps/MapService.mxd` as `Roadkill/MapService` (secure).
     - Enable feature access with "Create" and "Query" allowed operations.
@@ -17,3 +18,4 @@ Wildlife Vehicle Collision Mobile App
     - `Print`: Params:
         - `baseMap`: "Terrain"
         - `extent`: `{"xmin": 1, "xmax": 2, "ymin": 1, "ymax": 2}`
+        - `defQueryTxt`: "hello"
