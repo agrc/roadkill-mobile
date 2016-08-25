@@ -1,9 +1,12 @@
 .DS_Store
 .grunt/
+*.pyc
+*.sde
 deploy/
 dist/
 maps/
 node_modules/
+roadkill_secrets.py
 scripts/agrc*
 scripts/Logs/
 scripts/requests*
