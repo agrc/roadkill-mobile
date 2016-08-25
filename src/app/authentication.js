@@ -7,7 +7,7 @@ define([
     'dojo/_base/declare',
     'dojo/_base/lang',
 
-    'dojox/validate'
+    'dojox/validate/web'
 ], function (
     dom,
     domClass,
@@ -249,15 +249,15 @@ define([
                     data: JSON.stringify(content),
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    load: this.onNewUserServiceReturn,
-                    'error': function (status) {
+                    }
+                };
+                xhr.post(this.app.urls.register, params).then(lang.hitch(this, 'onNewUserServiceReturn'),
+                    function (status) {
                         console.error(status);
                         alert('There was an error sending your data to the server!\n' + status.message);
                         $.mobile.loading('hide');
                     }
-                };
-                xhr.post(this.app.urls.register, params);
+                );
             }
         },
         onNewUserServiceReturn: function () {
