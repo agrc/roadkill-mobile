@@ -98,9 +98,20 @@ module.exports = function (grunt) {
         processhtml: {
             options: {},
             main: {
-                files: {
-                    'dist/index.html': ['src/index.html']
-                }
+                files: {'dist/index.html': ['src/index.html']}
+            }
+        },
+        replace: {
+            main: {
+                options: {
+                    patterns: [{
+                        match: 'version',
+                        replacement: function () {
+                            return new Date().getTime();
+                        }
+                    }]
+                },
+                files: {'dist/roadkill.appcache': ['src/roadkill.appcache']}
             }
         },
         secrets: secrets,
@@ -167,13 +178,15 @@ module.exports = function (grunt) {
         'clean:build',
         'newer:imagemin:main',
         'dojo:prod',
-        'processhtml:main'
+        'processhtml:main',
+        'replace:main'
     ]);
     grunt.registerTask('build-stage', [
         'clean:build',
         'newer:imagemin:main',
         'dojo:stage',
-        'processhtml:main'
+        'processhtml:main',
+        'replace:main'
     ]);
     grunt.registerTask('deploy-prod', [
         'clean:deploy',
