@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Version: 200
+# Version: @@version
 
 CACHE:
 app/css/core.css
@@ -13,6 +13,8 @@ app/css/images/icons-36-white.png
 
 app/images/icon.png
 app/images/splash.png
+
+jquery-mobile-bower/css/images/ajax-loader.gif
 
 dojo/dojo.js
 
