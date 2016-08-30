@@ -58,7 +58,7 @@ class RoadkillPallet(Pallet):
     def __init__(self):
         super(RoadkillPallet, self).__init__()
 
-        self.arcgis_services = [('Roadkill/Overlays', 'MapService')]
+        self.arcgis_services = [('Roadkill/Overlays', 'MapServer')]
         self.staging = r'C:\Scheduled\staging'
 
     def build(self, target):
