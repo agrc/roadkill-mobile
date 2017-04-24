@@ -59,7 +59,6 @@ class RoadkillPallet(Pallet):
         super(RoadkillPallet, self).__init__()
 
         self.arcgis_services = [('Roadkill/Overlays', 'MapServer')]
-        self.staging = r'C:\Scheduled\staging'
 
     def build(self, target):
         self.target = target
@@ -68,7 +67,7 @@ class RoadkillPallet(Pallet):
 
         self.sgid = join(self.garage, 'SGID10.sde')
         self.roadkill = join(self.garage, databases[target])
-        self.transportation = join(self.staging, 'transportation.gdb')
+        self.transportation = join(self.staging_rack, 'transportation.gdb')
 
         self.reports = join(self.roadkill, 'Roadkill.RKADMIN.Reports')
 
