@@ -16,7 +16,7 @@ Wildlife Vehicle Collision Mobile App
 1. Publish `roadkill-desktop\scripts\Toolbox\*` as `Roadkill/Toolbox/*` (secure).
     - `RouteMilepostsSegment`: Params: "0015", "100", "110"
     - `DownloadData`: Params: "1 = 2", "shp"
-        - You may need to manually copy the `*.sde` file associated with this tool to the `C:\arcgisserver\directories\arcgissystem\arcgisinput\Roadkill\Toolbox.GPServer\extracted\v101\scripts\` directory.
+        - You may need to manually copy the `*.sde` file associated with this tool to the `C:\arcgisserver\directories\arcgissystem\arcgisinput\Roadkill\Toolbox.GPServer\extracted\v101\` directory.
     - `Print`: Params:
         - `baseMap`: "Terrain"
         - `extent`: `{"xmin": 1, "xmax": 2, "ymin": 1, "ymax": 2}`
