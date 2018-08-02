@@ -13,11 +13,12 @@ Updates fields with empty values for:
 -WMU region
 '''
 
+from os.path import join
+
 import arcpy
 import requests
-from forklift.models import Pallet
-from os.path import join
 import roadkill_secrets
+from forklift.models import Pallet
 
 # Reports fields
 fldRESPONDER_EMAIL = 'RESPONDER_EMAIL'
@@ -79,7 +80,6 @@ class RoadkillPallet(Pallet):
     def requires_processing(self):
         lyr = arcpy.MakeFeatureLayer_management(self.reports, 'requires_processing_layer', '{} IS NULL'.format(fldRESPONDER_EMAIL))
         count = int(arcpy.GetCount_management(lyr).getOutput(0))
-        arcpy.Delete_management(lyr)
 
         return count > 0
 
