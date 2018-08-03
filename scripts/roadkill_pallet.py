@@ -60,6 +60,7 @@ class RoadkillPallet(Pallet):
         super(RoadkillPallet, self).__init__()
 
         self.arcgis_services = [('Roadkill/Overlays', 'MapServer')]
+        self.cached_requires_processing = None
 
     def build(self, target):
         self.target = target
@@ -78,10 +79,13 @@ class RoadkillPallet(Pallet):
         self.copy_data = [self.transportation]
 
     def requires_processing(self):
-        lyr = arcpy.MakeFeatureLayer_management(self.reports, 'requires_processing_layer', '{} IS NULL'.format(fldRESPONDER_EMAIL))
-        count = int(arcpy.GetCount_management(lyr).getOutput(0))
+        if self.cached_requires_processing is not None:
+            lyr = arcpy.MakeFeatureLayer_management(self.reports, 'roadkill_requires_processing_layer', '{} IS NULL'.format(fldRESPONDER_EMAIL))
+            count = int(arcpy.GetCount_management(lyr).getOutput(0))
 
-        return count > 0
+            self.cached_requires_processing = count > 0
+
+        return self.cached_requires_processing
 
     def process(self):
         udot = join(self.roadkill, 'Roadkill.RKADMIN.UDOT_Regions')
