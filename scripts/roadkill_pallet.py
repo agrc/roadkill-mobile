@@ -79,7 +79,7 @@ class RoadkillPallet(Pallet):
         self.copy_data = [self.transportation]
 
     def requires_processing(self):
-        if self.cached_requires_processing is not None:
+        if self.cached_requires_processing is None:
             lyr = arcpy.MakeFeatureLayer_management(self.reports, 'roadkill_requires_processing_layer', '{} IS NULL'.format(fldRESPONDER_EMAIL))
             count = int(arcpy.GetCount_management(lyr).getOutput(0))
 
