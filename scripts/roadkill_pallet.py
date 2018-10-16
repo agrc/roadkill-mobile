@@ -87,7 +87,7 @@ class RoadkillPallet(Pallet):
 
         return self.cached_requires_processing
 
-    def process(self):
+    def ship(self):
         udot = join(self.roadkill, 'Roadkill.RKADMIN.UDOT_Regions')
         udwr = join(self.roadkill, 'Roadkill.RKADMIN.UDWR_Regions')
         wmu = join(self.roadkill, 'Roadkill.RKADMIN.WMU_Regions')
