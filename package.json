@@ -4,7 +4,8 @@
   "description": "Wildlife Vehicle Collision App",
   "main": "src/index.html",
   "scripts": {
-    "test": "grunt travis -v"
+    "test": "grunt travis -v",
+    "workbox": "node updateServiceWorker.js"
   },
   "repository": {
     "type": "git",
