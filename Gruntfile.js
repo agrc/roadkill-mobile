@@ -124,7 +124,7 @@ module.exports = function (grunt) {
                         }
                     }]
                 },
-                files: {'dist/roadkill.appcache': ['src/roadkill.appcache']}
+                files: {'dist/serviceworker.js': ['src/serviceworker.js']}
             }
         },
         secrets: secrets,
