@@ -4,9 +4,8 @@ var profile = {
     action: 'release',
     cssOptimize: 'comments',
     mini: true,
-    optimize: 'uglify',
-    layerOptimize: 'uglify',
-    stripConsole: 'all',
+    optimize: false,
+    layerOptimize: false,
     selectorEngine: 'acme',
     layers: {
         'dojo/dojo': {
@@ -32,7 +31,7 @@ var profile = {
             miniExclude: function (filename, mid) {
                 return mid !== 'proj4/proj4-src';
             }
-        },
+        }
     }, {
         name: 'jquery',
         resourceTags: {
