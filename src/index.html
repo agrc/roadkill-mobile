@@ -27,6 +27,15 @@
     <!-- JAVASCRIPT -->
     <!-- build:template
     <script data-dojo-config="deps:['app/packages', 'app/run']" src='dojo/dojo.js'></script>
+    <script>
+        // Check that service workers are registered
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        };
+    </script>
     /build -->
 
     <!-- build:remove -->
@@ -45,15 +54,7 @@
       ga('create', 'UA-11849964-52', 'auto');
       ga('send', 'pageview');
     </script>
-    <script>
-        // Check that service workers are registered
-        if ('serviceWorker' in navigator) {
-            // Use the window load event to keep the page load performant
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/src/sw.js');
-            });
-        };
-    </script>
+
 </head>
 <body>
     <!-- HOME -->
