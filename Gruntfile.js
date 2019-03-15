@@ -114,20 +114,12 @@ module.exports = function (grunt) {
                 files: {'dist/index.html': ['src/index.html']}
             }
         },
-        replace: {
+        secrets: secrets,
+        shell: {
             main: {
-                options: {
-                    patterns: [{
-                        match: 'version',
-                        replacement: function () {
-                            return new Date().getTime();
-                        }
-                    }]
-                },
-                files: {'dist/serviceworker.js': ['src/serviceworker.js']}
+                command: 'npm run workbox'
             }
         },
-        secrets: secrets,
         sftp: {
             stage: {
                 files: {
@@ -192,14 +184,14 @@ module.exports = function (grunt) {
         'newer:imagemin:main',
         'dojo:prod',
         'processhtml:main',
-        'replace:main'
+        'shell:main'
     ]);
     grunt.registerTask('build-stage', [
         'clean:build',
         'newer:imagemin:main',
         'dojo:stage',
         'processhtml:main',
-        'replace:main'
+        'shell:main'
     ]);
     grunt.registerTask('deploy-prod', [
         'clean:deploy',
