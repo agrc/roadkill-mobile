@@ -20,19 +20,20 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",
-    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.3.0",
-    "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-connect": "^2.0.0",
+    "grunt-contrib-imagemin": "^3.1.0",
+    "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-dojo": "^1.1.1",
-    "grunt-eslint": "^19.0.0",
+    "grunt-eslint": "^21.0.0",
     "grunt-newer": "^1.2.0",
     "grunt-processhtml": "^0.4.0",
     "grunt-shell": "^3.0.1",
     "grunt-ssh": "^0.12.9",
-    "load-grunt-tasks": "^3.5.2",
-    "uglify-js": "^2.7.3",
+    "load-grunt-tasks": "^4.0.0",
+    "uglify-js": "^3.4.9",
     "workbox-build": "^4.1.0"
   }
 }
