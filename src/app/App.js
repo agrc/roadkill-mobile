@@ -1,7 +1,7 @@
 define([
-    'app/Authentication',
+    'app/authentication',
     'app/data/species',
-    'app/GPSController',
+    'app/gpsController',
 
     'dojo/dom',
     'dojo/dom-class',
