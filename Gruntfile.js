@@ -186,7 +186,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: 'dist',
-                    src: ['**/*.js', '!proj4/**/*.js'],
+                    src: ['**/*.js', '!proj4/**/*.js', '!jquery/**/*.js'],
                     dest: 'dist'
                 }]
             }
