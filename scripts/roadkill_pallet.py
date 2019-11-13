@@ -67,7 +67,7 @@ class RoadkillPallet(Pallet):
         databases = {'Production': 'Roadkill_PROD as RKAdmin.sde',
                      'Staging': 'Roadkill_STAGE as RKAdmin.sde'}
 
-        self.sgid = join(self.garage, 'SGID10.sde')
+        self.sgid = join(self.garage, 'SGID.sde')
         self.roadkill = join(self.garage, databases[target])
         self.transportation = join(self.staging_rack, 'transportation.gdb')
 
@@ -91,8 +91,8 @@ class RoadkillPallet(Pallet):
         udot = join(self.roadkill, 'Roadkill.RKADMIN.UDOT_Regions')
         udwr = join(self.roadkill, 'Roadkill.RKADMIN.UDWR_Regions')
         wmu = join(self.roadkill, 'Roadkill.RKADMIN.WMU_Regions')
-        roads = join(self.sgid, 'SGID10.TRANSPORTATION.Roads')
-        mileposts = join(self.sgid, 'SGID10.TRANSPORTATION.UDOTMileposts')
+        roads = join(self.sgid, 'SGID.TRANSPORTATION.Roads')
+        mileposts = join(self.sgid, 'SGID.TRANSPORTATION.UDOTMileposts')
 
         udotjoined = r'{}\udotjoined'.format(arcpy.env.scratchGDB)
         udwrjoined = r'{}\udwrjoined'.format(arcpy.env.scratchGDB)
