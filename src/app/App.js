@@ -36,7 +36,7 @@ define([
         //      The main object that controls the application
 
         // version: String
-        version: '2.0.1',
+        version: '2.0.2',
 
         // gpsController: GPSController
         gpsController: null,
