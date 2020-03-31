@@ -10,6 +10,7 @@ define([
     'dojo/has',
     'dojo/query',
     'dojo/request/xhr',
+    'dojo/sniff',
     'dojo/_base/array',
     'dojo/_base/declare',
     'dojo/_base/lang'
@@ -25,6 +26,7 @@ define([
     has,
     query,
     xhr,
+    has,
     array,
     declare,
     lang
@@ -82,6 +84,9 @@ define([
         //      The message displayed on the confirmation page when a report is
         //      stored offline due to a network connection problem.
         offlineMsg: 'There was no network connection available. Your report has been stored on your device and will be ready to submit when a network connection is present again.',
+
+        // safariAdditionalOfflineMsg: String
+        safariAdditionalOfflineMsg: '<p><strong>Important Note</strong>: Due to a recent update to Safari, reports stored offline for longer than 7 days will automatically be deleted. <strong>Please make sure to submit this report to the server within seven days of recording it to avoid data loss.</strong></p>',
 
         // loggedOutMsg: String
         //      The message displayed on teh confirmation page when a report is
@@ -581,14 +586,12 @@ define([
         },
         storeDataOffline: function (feature, msg) {
             // summary:
-            //      Stores the report data in localStorage for later submittion
+            //      Stores the report data in localStorage for later submission
             // feature: Object
             //      The data object used to send features to the server.
             // msg: String
             //      The message displayed on the confirmation page.
             console.log('app/App:storeDataOffline', arguments);
-
-            // $.mobile.loadingMessage = 'No network available. Storing report locally.';
 
             var reports = (localStorage.reports) ? JSON.parse(localStorage.reports) : [];
 
@@ -598,6 +601,9 @@ define([
 
             $.mobile.loading('hide');
 
+            if (has('safari') || has('ios')) {
+                msg += this.safariAdditionalOfflineMsg;
+            }
             dom.byId('confirm-msg').innerHTML = msg;
 
             domStyle.set('confirm-content', 'background', '#fcf2bf');
