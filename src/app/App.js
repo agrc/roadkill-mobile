@@ -745,7 +745,8 @@ define([
                         handleAs: 'json',
                         timeout: this.defaultXHRTimeout,
                         query: {
-                            apiKey: this.apiKey
+                            apiKey: this.apiKey,
+                            spatialReference: 3857
                         },
                         headers: {
                             'X-Requested-With': ''
@@ -779,7 +780,8 @@ define([
                         handleAs: 'json',
                         timeout: this.defaultXHRTimeout,
                         query: {
-                            apiKey: this.apiKey
+                            apiKey: this.apiKey,
+                            spatialReference: 3857
                         },
                         headers: {
                             'X-Requested-With': ''
