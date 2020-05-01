@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.3",
   "name": "roadkill-mobile",
   "description": "Wildlife Vehicle Collision App",
   "main": "src/index.html",

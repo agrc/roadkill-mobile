@@ -1,6 +1,6 @@
 {
   "name": "roadkill-mobile",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Wildlife Vehicle Collision App",
   "main": "src/index.html",
   "scripts": {
@@ -24,7 +24,7 @@
     "grunt-contrib-compress": "^1.3.0",
     "grunt-contrib-connect": "^2.0.0",
     "grunt-contrib-imagemin": "^3.1.0",
-    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-uglify-es": "3.3.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-dojo": "^1.1.1",
     "grunt-eslint": "^21.0.0",
