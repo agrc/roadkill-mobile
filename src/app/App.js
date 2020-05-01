@@ -36,7 +36,7 @@ define([
         //      The main object that controls the application
 
         // version: String
-        version: '2.0.2',
+        version: '2.0.3',
 
         // gpsController: GPSController
         gpsController: null,
@@ -67,6 +67,12 @@ define([
 
         // defaultXHRTimeout: Number
         defaultXHRTimeout: 120000,
+
+        // addressMilepostAccuracyCode: Number
+        addressMilepostAccuracyCode: -2,
+
+        // manualCoordsAccuracyCode: Number
+        manualCoordsAccuracyCode: -1,
 
         // tapToSelect: String
         //      The prompt text for drop downs
@@ -386,11 +392,11 @@ define([
             });
             $('#submit-btn').disabled = true;
 
-            var def = this.gpsController.hasValidLocation();
+            var def = this.gpsController.getGeometry();
 
             var that = this;
-            def.then(function (isValid) {
-                if (!isValid) {
+            def.then((location) => {
+                if (!location) {
                     $.mobile.loading('hide');
                     $.mobile.changePage('#location', {
                         transition: 'slidedown',
@@ -398,27 +404,25 @@ define([
                     });
                     return;
                 } else {
-                    that.submitForm();
+                    that.submitForm(location);
                 }
             });
         },
-        submitForm: function (routeMilepost, address) {
+        submitForm: function (location, address) {
             // summary:
             //      Submits the data to the server or stores it
             //      locally for later retrieval.
-            // routeMilepost: [optional]String
+            // location: {x, y, accuracy}
             // address: [optional]String
             console.log('app/App:submitForm', arguments);
 
             var that = this;
 
             var features;
-            if (routeMilepost) {
-                features = this.buildFeatureObject(routeMilepost);
-            } else if (address) {
-                features = this.buildFeatureObject(null, address);
+            if (address) {
+                features = this.buildFeatureObject(location, address);
             } else {
-                features = this.buildFeatureObject();
+                features = this.buildFeatureObject(location);
             }
 
             var data = {
@@ -458,11 +462,12 @@ define([
                 onFailure();
             }
         },
-        buildFeatureObject: function (routeMilepost, address) {
+        buildFeatureObject: function (location, address) {
             // summary:
             //      Creates the feature object
-            // routeMilepost: [optional]String
+            // location: {x, y, accuracy} // coordinates should be in web mercator
             // address: [optional]String
+
             // returns: {}
             console.log('app/App:buildFeatureObject', arguments);
 
@@ -474,7 +479,7 @@ define([
                 attributes: {
                     REPORT_DATE: Date.now(),
                     SPECIES: (form.species.value === this.tapToSelect) ? form.speciesTxt.value : form.species.value,
-                    GPS_ACCURACY: this.gpsController.accuracy + '',
+                    GPS_ACCURACY: location.accuracy,
                     AGE_CLASS: this.getSelectedRadioValue(form.radioAge),
                     GENDER: this.getSelectedRadioValue(form.radioGender),
                     XYPHOID: form.xyphoidCheckbox.checked ? -999 : form.xyphoidSlider.value,
@@ -482,7 +487,10 @@ define([
                     RESPONDER_ID: userid,
                     TAG_COLLAR_NUM: form.collar.value
                 },
-                geometry: this.gpsController.getGeometry()
+                geometry: {
+                    x: location.x,
+                    y: location.y
+                }
             };
 
             if (address) {
@@ -724,14 +732,15 @@ define([
                     return;
                 } else {
                     // project and store
-                    this.gpsController.processPosition({
-                        coords: {
-                            latitude: lat,
-                            longitude: lng,
-                            accuracy: -1
-                        }
-                    }, true);
-                    this.submitForm();
+                    const projectedCoords = this.gpsController.projectFromLatLng({
+                        latitude: lat,
+                        longitude: lng
+                    });
+                    this.submitForm({
+                        x: projectedCoords[0],
+                        y: projectedCoords[1],
+                        accuracy: this.manualCoordsAccuracyCode
+                    });
                 }
             } else if (route && mp) {
                 $.mobile.loading('show', {
@@ -755,9 +764,9 @@ define([
                     xhr.get(this.urls.locatorService + 'milepost/' + route + '/' + mp, params).then(function (response) {
                         console.log('match found.', response);
 
-                        that.gpsController.setWebMercatorPoint(response.result.location);
+                        response.result.location.accuracy = that.addressMilepostAccuracyCode;
 
-                        that.submitForm(response.result.MatchAddress);
+                        that.submitForm(response.result.location, response.result.MatchAddress);
                     }, function (er) {
                         console.log('problem with locator service', er);
                         $.mobile.loading('hide');
@@ -790,9 +799,9 @@ define([
                     xhr.get(this.urls.locatorService + add + '/' + zone, params).then(function (response) {
                         console.log('match found.', response);
 
-                        that.gpsController.setWebMercatorPoint(response.result.location);
+                        response.result.location.accuracy = that.addressMilepostAccuracyCode;
 
-                        that.submitForm(null, response.result.MatchAddress);
+                        that.submitForm(response.result.location, response.result.MatchAddress);
                     }, function () {
                         $.mobile.loading('hide');
                         alert('No match found for that address. Please check your entries and try again.');
