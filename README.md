@@ -20,3 +20,4 @@ Wildlife Vehicle Collision Mobile App
         - `baseMap`: "Terrain"
         - `extent`: `{"xmin": 1, "xmax": 2, "ymin": 1, "ymax": 2}`
         - `defQueryTxt`: "hello"
+1. Disable standardized queries in ArcGIS Server (required for the `MapService` service).
