@@ -45,9 +45,6 @@ define([
         //      The maximum age accepted for a location. 1 minute
         maxAge: 60000,
 
-        // pauseUpdate: Boolean
-        pauseUpdate: false,
-
         constructor: function () {
             // summary:
             //      The first function to run
@@ -77,18 +74,14 @@ define([
 
             var that = this;
             var timerid = navigator.geolocation.watchPosition(function (pos) {
-                if (!that.pauseUpdate) {
-                    that.processPosition(pos);
-                }
+                that.processPosition(pos);
             }, function (er) {
                 console.info('problem with watchPosition', er);
                 console.info('trying with lower accuracy');
                 navigator.geolocation.clearWatch(timerid);
                 navigator.geolocation.watchPosition(function (pos) {
                     console.info('low accuracy', pos);
-                    if (!that.pauseUpdate) {
-                        that.processPosition(pos);
-                    }
+                    that.processPosition(pos);
                 }, function (er) {
                     console.info('problem with watchPosition:loweraccuracy', er);
                 },
@@ -97,17 +90,17 @@ define([
                 enableHighAccuracy: true
             });
         },
-        processPosition: function (position, pauseUpdate) {
+        projectFromLatLng: function (coords) {
+            return proj4(this.webMercProj, [coords.longitude, coords.latitude]);
+        },
+        processPosition: function (position) {
             // summary:
             //      Fires each time the position changes. Updates the
             //      gps accuracy label in the footer.
             // position: {coords:{longitude:Number, latitude:Number, accuracy:Number}}
-            // pauseUpdate: [optional] Boolean
             console.log('app/GPSController:processPosition', arguments);
 
-            this.pauseUpdate = pauseUpdate || false;
-
-            var p = proj4(this.webMercProj, [position.coords.longitude, position.coords.latitude]);
+            const p = this.projectFromLatLng(position.coords)
 
             this.x = p[0] || 0;
             this.y = p[1] || 0;
@@ -119,64 +112,45 @@ define([
                 node.innerHTML = that.accuracy;
             });
         },
-        hasValidLocation: function () {
+        getGeometry: function () {
             // summary:
-            //      Returns True if there is a position available that is
-            //      suitable for the database.
-            // returns: dojo.Deferred
-            console.log('app/GPSController:hasValidLocation', arguments);
+            //      Resolves with the geometry in a format that the addFeatures service can use
+            // returns: Deferred that resolves {x: Number, y: Number}
+            console.log('app/GPSController:getGeometry', arguments);
 
-            var that = this;
-            function isValid() {
-                var age = Date.now() - that.time;
-                return that.x !== 0 && that.y !== 0 &&
-                    that.accuracy < that.maxError &&
-                    that.accuracy > 0 &&
-                    age < that.maxAge;
+            const isValid = () => {
+                var age = Date.now() - this.time;
+                return this.x !== 0 && this.y !== 0 &&
+                    this.accuracy < this.maxError &&
+                    this.accuracy > 0 &&
+                    age < this.maxAge;
             }
 
             var def = new Deferred();
             if (isValid()) {
-                def.resolve(true);
+                def.resolve({
+                    x: this.x,
+                    y: this.y,
+                    accuracy: this.accuracy
+                });
             } else {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    that.processPosition(position);
-                    def.resolve(isValid());
+                navigator.geolocation.getCurrentPosition((position) => {
+                    this.processPosition(position);
+                    def.resolve(isValid() && {
+                        x: this.x,
+                        y: this.y,
+                        accuracy: this.accuracy
+                    });
                 }, function (er) {
                     console.info(er);
                     def.resolve(false);
                 }, {
                     enableHighAccuracy: true,
                     timeout: 10000,
-                    maximumAge: that.maxAge
+                    maximumAge: this.maxAge
                 });
             }
             return def;
-        },
-        getGeometry: function () {
-            // summary:
-            //      Returns the geometry in a format that the addFeatures service can use
-            // returns: {x: Number, y: Number}
-            console.log('app/GPSController:getGeometry', arguments);
-
-            this.pauseUpdate = false;
-
-            return {
-                x: this.x,
-                y: this.y
-            };
-        },
-        setWebMercatorPoint: function (point) {
-            // summary:
-            //      Sets the x and y directly with web mercator values
-            // point: {x: Number, y: Number}
-            console.log('app/GPSController:setWebMercatorPoint', arguments);
-
-            this.pauseUpdate = true;
-
-            this.x = point.x;
-            this.y = point.y;
-            this.accuracy = -2;
         }
     });
 });
