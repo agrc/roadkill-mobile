@@ -73,7 +73,7 @@ class RoadkillPallet(Pallet):
 
         self.reports = join(self.roadkill, 'Roadkill.RKADMIN.Reports')
 
-        self.add_crates(['UDOTMileposts', 'UDOTRoutes_LRS'],
+        self.add_crates(['UDOTMileposts'],
                         {'source_workspace': self.sgid, 'destination_workspace': self.transportation})
 
         self.copy_data = [self.transportation]
