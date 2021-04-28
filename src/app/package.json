@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "prettier": "^2.2.1",
     "reactotron-react-native": "^5.0.0"
   },
   "private": true

@@ -1,14 +1,14 @@
-import * as React from "react";
-import { Button } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
+import * as React from 'react';
+import { Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import useAuth from './auth';
 
-if(__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+if (__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
 }
 
 export default function App() {
-  const {userInfo, getAccessToken, logIn, logOut, status} = useAuth();
+  const { userInfo, getAccessToken, logIn, logOut, status } = useAuth();
   const [token, setToken] = React.useState(null);
 
   return (
@@ -17,7 +17,7 @@ export default function App() {
         disabled={status === 'pending'}
         title="Login"
         onPress={() => {
-          logIn()
+          logIn();
         }}
       />
       {<Text>user email: {userInfo?.email}</Text>}
@@ -26,7 +26,9 @@ export default function App() {
       <Button
         title="Get Access Token"
         onPress={() => {
-          getAccessToken().then(accessToken => setToken(accessToken)).catch(error => console.error(error));
+          getAccessToken()
+            .then((accessToken) => setToken(accessToken))
+            .catch((error) => console.error(error));
         }}
       />
       <Button
@@ -41,10 +43,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
     display: 'flex',
-    height: '100%'
+    height: '100%',
   },
 });
