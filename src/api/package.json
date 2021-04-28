@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "env-cmd nodemon index.js"
+    "start": "env-cmd nodemon index.js",
+    "lint": "eslint ."
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",
@@ -15,6 +16,8 @@
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
   },
