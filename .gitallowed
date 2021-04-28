@@ -1,0 +1,9 @@
+{<Text>bearer token: {token?.slice(0, 10)}</Text>}
+getAccessToken().then(accessToken => setToken(accessToken)).catch(error => console.error(error));
+const accessToken = React.useRef(null);
+const refreshToken = React.useRef(null);
+SecureStore.getItemAsync(STORE_KEY).then(cachedToken => {
+const getAccessToken = async () => {
+const exchangeCodeForToken = async () => {
+const refreshAccessToken = async () => {
+refreshToken: refreshToken.current,

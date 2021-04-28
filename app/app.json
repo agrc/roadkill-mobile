@@ -2,6 +2,7 @@
   "expo": {
     "name": "wildlife-vehicle-collision-reporter",
     "slug": "wildlife-vehicle-collision-reporter",
+    "scheme": "wvcr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
