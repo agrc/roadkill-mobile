@@ -1,0 +1,21 @@
+{
+  "name": "wildlife-vehicle-collision-reporter-api",
+  "version": "1.0.0",
+  "description": "API for Utah Wildlife-Vehicle Collision Reporter mobile app.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "env-cmd nodemon index.js"
+  },
+  "author": "Scott Davis <stdavis@utah.gov>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "got": "^9.6.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.7"
+  },
+  "private": true
+}
