@@ -1,22 +1,16 @@
 import * as React from 'react';
-import {
-  makeRedirectUri,
-  useAuthRequest,
-  exchangeCodeAsync,
-  refreshAsync,
-  dismiss
-} from "expo-auth-session";
+import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync, dismiss } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = process.env.API;
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = makeRedirectUri({ scheme: "wvc" });
+const redirectUri = makeRedirectUri({ scheme: 'wvc' });
 const discovery = {
-  authorizationEndpoint: "https://login.dts.utah.gov:443/sso/oauth2/authorize",
+  authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${API}/token`,
-  revocationEndpoint: "https://login.dts.utah.gov:443/sso/oauth2/token/revoke"
+  revocationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/token/revoke',
 };
 console.log('discovery.tokenEndpoint', discovery.tokenEndpoint);
 
@@ -35,19 +29,19 @@ export default function useAuth() {
 
   React.useEffect(() => {
     console.log('getting cached token');
-    SecureStore.getItemAsync(STORE_KEY).then(cachedToken => {
+    SecureStore.getItemAsync(STORE_KEY).then((cachedToken) => {
       console.log('cachedToken', cachedToken);
       if (cachedToken) {
         refreshToken.current = cachedToken;
         refreshAccessToken();
       }
-    })
+    });
   }, []);
 
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: CLIENT_ID,
-      scopes: ["openid", "profile", "email"],
+      scopes: ['openid', 'profile', 'email'],
       redirectUri,
     },
     discovery
@@ -56,7 +50,7 @@ export default function useAuth() {
   const logIn = () => {
     setStatus('pending');
     promptAsync();
-  }
+  };
 
   const logOut = () => {
     setStatus('pending');
@@ -82,7 +76,7 @@ export default function useAuth() {
   };
 
   React.useEffect(() => {
-    if (response?.type === "success") {
+    if (response?.type === 'success') {
       console.log(response);
       exchangeCodeForToken();
     }
@@ -99,8 +93,8 @@ export default function useAuth() {
         redirectUri,
         extraParams: {
           code_verifier: request.codeVerifier,
-          code_challenge: request.codeChallenge
-        }
+          code_challenge: request.codeChallenge,
+        },
       },
       discovery
     );
@@ -130,7 +124,7 @@ export default function useAuth() {
         {
           clientId: CLIENT_ID,
           refreshToken: refreshToken.current,
-          redirectUri
+          redirectUri,
         },
         discovery
       );
@@ -150,6 +144,5 @@ export default function useAuth() {
     }
   };
 
-
-  return {userInfo, getAccessToken, logIn, logOut, status};
+  return { userInfo, getAccessToken, logIn, logOut, status };
 }

@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // enable x-www-form-urlencoded body format
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 app.post('/token', async (request, response) => {
   const body = {
@@ -13,18 +13,18 @@ app.post('/token', async (request, response) => {
     // TODO: don't spread everything, get specific ones that I need
     // if they aren't there, then don't proxy, return bad request
     // validate clientid
-    client_secret: process.env.CLIENT_SECRET
+    client_secret: process.env.CLIENT_SECRET,
   };
 
   try {
     const tokenRequest = await got.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', {
-      body: (new URLSearchParams(body)).toString(),
+      body: new URLSearchParams(body).toString(),
       responseType: 'json',
       headers: {
         authorization: request.headers.authorization,
         'content-type': request.headers['content-type'], // not sure that I need this because of express.urlencoded
-        accept: request.headers.accept
-      }
+        accept: request.headers.accept,
+      },
     });
 
     console.log(tokenRequest.body);
