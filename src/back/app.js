@@ -1,12 +1,13 @@
 import express from 'express';
 import got from 'got';
+import helmet from 'helmet';
 
 const app = express();
 
 // enable x-www-form-urlencoded body format
 app.use(express.urlencoded({ extended: true }));
 
-// TODO: remove x-powered-by header
+app.use(helmet());
 
 app.post('/token', async (request, response) => {
   if (request.body.client_id !== process.env.CLIENT_ID) {
