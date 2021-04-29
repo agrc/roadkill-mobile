@@ -10,12 +10,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
 app.post('/token', async (request, response) => {
+  const accessTokenName = 'authorization_code';
+  const grantTypes = [accessTokenName, 'refresh_token'];
   if (request.body.client_id !== process.env.CLIENT_ID) {
     return response.status(400).send('invalid client_id');
+  } else if (!grantTypes.includes(request.body.grant_type)) {
+    return response.status(400).json({
+      error_description: `invalid grant_type: ${request.body.grant_type}, must be one of ${grantTypes.join(', ')}`,
+      error: 'invalid_request',
+    });
   }
 
-  const passed_through_params = ['client_id', 'grant_type', 'code_verifier', 'code_challenge', 'redirect_uri', 'code'];
-  const body = {};
+  const passed_through_params =
+    request.body.grant_type === accessTokenName
+      ? ['client_id', 'code_verifier', 'code_challenge', 'redirect_uri', 'code']
+      : ['client_id', 'refresh_token'];
+  const body = { grant_type: request.body.grant_type };
   try {
     passed_through_params.forEach((name) => {
       const param = request.body[name];
