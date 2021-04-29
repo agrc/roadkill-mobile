@@ -2,11 +2,12 @@
   "name": "wildlife-vehicle-collision-reporter-api",
   "version": "1.0.0",
   "description": "API for Utah Wildlife-Vehicle Collision Reporter mobile app.",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "env-cmd nodemon index.js",
-    "lint": "eslint ."
+    "start": "env-cmd nodemon server.js",
+    "lint": "eslint .",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",
@@ -18,8 +19,13 @@
     "env-cmd": "^10.1.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "supertest": "^6.1.3"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "transform": {}
+  }
 }
