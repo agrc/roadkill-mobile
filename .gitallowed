@@ -7,3 +7,4 @@ const getAccessToken = async () => {
 const exchangeCodeForToken = async () => {
 const refreshAccessToken = async () => {
 refreshToken: refreshToken.current,
+const token = request.headers.authorization*
