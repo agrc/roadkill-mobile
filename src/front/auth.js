@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync, dismiss } from 'expo-auth-session';
+import { makeRedirectUri, AuthRequest, exchangeCodeAsync, refreshAsync, dismiss } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 
@@ -12,13 +12,17 @@ const discovery = {
   tokenEndpoint: `${API}/token`,
   revocationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/token/revoke',
 };
-console.log('discovery.tokenEndpoint', discovery.tokenEndpoint);
 
 function isTokenExpired(token) {
   const expireTime = jwt_decode(token).exp * 1000;
 
   return expireTime < new Date().getTime();
 }
+const request = new AuthRequest({
+  clientId: CLIENT_ID,
+  scopes: ['openid', 'profile', 'email'],
+  redirectUri,
+});
 
 export default function useAuth() {
   // should these be kept in secure story rather than in-memory?
@@ -29,27 +33,23 @@ export default function useAuth() {
 
   React.useEffect(() => {
     console.log('getting cached token');
-    SecureStore.getItemAsync(STORE_KEY).then((cachedToken) => {
-      console.log('cachedToken', cachedToken);
-      if (cachedToken) {
-        refreshToken.current = cachedToken;
+    SecureStore.getItemAsync(STORE_KEY).then((cachedRefreshToken) => {
+      if (cachedRefreshToken) {
+        refreshToken.current = cachedRefreshToken;
         refreshAccessToken();
       }
     });
   }, []);
 
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      clientId: CLIENT_ID,
-      scopes: ['openid', 'profile', 'email'],
-      redirectUri,
-    },
-    discovery
-  );
-
-  const logIn = () => {
+  const logIn = async () => {
     setStatus('pending');
-    promptAsync();
+    const result = await request.promptAsync(discovery);
+
+    if (result?.type === 'success') {
+      await exchangeCodeForToken(result.params.code);
+    } else {
+      throw new Error(JSON.stringify(result));
+    }
   };
 
   const logOut = () => {
@@ -75,21 +75,14 @@ export default function useAuth() {
     return await refreshAccessToken();
   };
 
-  React.useEffect(() => {
-    if (response?.type === 'success') {
-      console.log(response);
-      exchangeCodeForToken();
-    }
-  }, [response?.type]);
-
-  const exchangeCodeForToken = async () => {
+  const exchangeCodeForToken = async (code) => {
     console.log('exchangeCodeForToken');
     setStatus('pending');
 
     const tokenResponse = await exchangeCodeAsync(
       {
         clientId: CLIENT_ID,
-        code: response.params.code,
+        code,
         redirectUri,
         extraParams: {
           code_verifier: request.codeVerifier,
@@ -105,8 +98,7 @@ export default function useAuth() {
     setUserInfo(jwt_decode(tokenResponse.idToken));
 
     console.log('setting cached token');
-    SecureStore.setItemAsync(STORE_KEY, tokenResponse.refreshToken);
-    // TODO: add possibly cache the access token?
+    SecureStore.setItemAsync(STORE_KEY, refreshToken.current);
 
     return tokenResponse.accessToken;
   };
@@ -115,8 +107,8 @@ export default function useAuth() {
     console.log('refreshAccessToken');
     setStatus('pending');
 
-    if (refreshToken.current && isTokenExpired(refreshToken.current)) {
-      throw new Error('TODO? How to refresh old refresh token. They last for 12 hours');
+    if (!refreshToken.current || isTokenExpired(refreshToken.current)) {
+      await logIn();
     }
 
     try {
@@ -124,7 +116,6 @@ export default function useAuth() {
         {
           clientId: CLIENT_ID,
           refreshToken: refreshToken.current,
-          redirectUri,
         },
         discovery
       );
