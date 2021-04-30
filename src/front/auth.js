@@ -54,13 +54,15 @@ export default function useAuth() {
 
   const logOut = () => {
     setStatus('pending');
-    dismiss();
 
     setStatus('idle');
     setUserInfo(null);
     accessToken.current = null;
     refreshToken.current = null;
     SecureStore.setItemAsync(STORE_KEY, '');
+
+    dismiss();
+    // this throws an error in expo go on android but supposedly not in built app
   };
 
   const getAccessToken = async () => {
