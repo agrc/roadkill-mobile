@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = process.env.API;
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = makeRedirectUri({ scheme: 'wvc' });
+const redirectUri = makeRedirectUri({ scheme: 'wvcr', useProxy: __DEV__ });
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${API}/token`,
@@ -43,7 +43,7 @@ export default function useAuth() {
 
   const logIn = async () => {
     setStatus('pending');
-    const result = await request.promptAsync(discovery);
+    const result = await request.promptAsync(discovery, { useProxy: __DEV__ });
 
     if (result?.type === 'success') {
       await exchangeCodeForToken(result.params.code);
