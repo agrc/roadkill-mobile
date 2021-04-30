@@ -2,6 +2,7 @@ import * as React from 'react';
 import { makeRedirectUri, AuthRequest, exchangeCodeAsync, refreshAsync, dismiss } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
+import * as WebBrowser from 'expo-web-browser';
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = process.env.API;
@@ -30,6 +31,16 @@ export default function useAuth() {
   const refreshToken = React.useRef(null);
   const [userInfo, setUserInfo] = React.useState(null);
   const [status, setStatus] = React.useState('idle');
+
+  // best practice to speed up browser for android
+  // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
+  React.useEffect(() => {
+    WebBrowser.warmUpAsync();
+
+    return () => {
+      WebBrowser.coolDownAsync();
+    };
+  }, []);
 
   React.useEffect(() => {
     console.log('getting cached token');
