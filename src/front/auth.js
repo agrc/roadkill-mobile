@@ -56,7 +56,6 @@ export default function useAuth() {
     setStatus('pending');
     dismiss();
 
-    // TODO: check if successful
     setStatus('idle');
     setUserInfo(null);
     accessToken.current = null;
@@ -65,14 +64,14 @@ export default function useAuth() {
   };
 
   const getAccessToken = async () => {
-    // TODO: do I need to worry about handling the case of this function
-    // being called before the we have valid access or refresh tokens?
     console.log('getAccessToken');
+
+    const prefix = 'Bearer ';
     if (accessToken.current && !isTokenExpired(accessToken.current)) {
-      return accessToken.current;
+      return prefix + accessToken.current;
     }
 
-    return await refreshAccessToken();
+    return prefix + (await refreshAccessToken());
   };
 
   const exchangeCodeForToken = async (code) => {

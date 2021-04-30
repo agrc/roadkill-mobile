@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "got": "^9.6.0",
+    "got": "^11.8.2",
     "helmet": "^4.5.0"
   },
   "devDependencies": {
