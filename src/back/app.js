@@ -1,12 +1,18 @@
+import compression from 'compression';
 import express from 'express';
 import helmet from 'helmet';
 import { handleToken, secure } from './security.js';
 
+// app setup
 const app = express();
+
+// gzip
+app.use(compression());
 
 // enable x-www-form-urlencoded body format
 app.use(express.urlencoded({ extended: true }));
 
+// security best practices
 app.use(helmet());
 
 function handleAsyncErrors(callback) {
