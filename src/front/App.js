@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import useAuth from './auth';
+import { Platform } from 'react-native';
 
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
@@ -14,11 +15,14 @@ export default function App() {
   const trySecure = async () => {
     setSecureResponse(null);
 
-    const response = await fetch('http://localhost:3000/secure', {
-      headers: {
-        Authorization: await getAccessToken(),
-      },
-    });
+    const response = await fetch(
+      Platform.select({ ios: 'http://localhost:3000/secure', android: 'http://10.0.2.2:3000/secure' }),
+      {
+        headers: {
+          Authorization: await getAccessToken(),
+        },
+      }
+    );
 
     setSecureResponse(`${response.status} | ${await response.text()}`);
   };
