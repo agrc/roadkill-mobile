@@ -1,6 +1,6 @@
 import got from 'got';
 
-export async function handleToken(request, response) {
+export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
   const grantTypes = [accessTokenName, 'refresh_token'];
   if (request.body.client_id !== process.env.CLIENT_ID) {
@@ -51,7 +51,7 @@ export async function handleToken(request, response) {
   }
 }
 
-export async function secure(request, response, next) {
+export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
     let userResponse;
     try {
