@@ -1,4 +1,5 @@
 import got from 'got';
+import { getUser, setUser } from './user_cache.js';
 
 export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
@@ -53,6 +54,14 @@ export async function getToken(request, response) {
 
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
+    const token = request.headers.authorization.split(' ').pop();
+    const cachedUser = await getUser(token);
+    if (cachedUser) {
+      response.locals.user = cachedUser;
+
+      return next();
+    }
+
     let userResponse;
     try {
       // TODO: add cache, redis or in_memory
@@ -72,6 +81,8 @@ export async function authenticate(request, response, next) {
 
     if (userResponse.statusCode === 200 && userResponse.body) {
       response.locals.user = userResponse.body;
+
+      setUser(token, userResponse.body);
 
       return next();
     }
