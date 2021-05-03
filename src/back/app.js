@@ -1,7 +1,7 @@
 import compression from 'compression';
 import express from 'express';
 import helmet from 'helmet';
-import { handleToken, secure } from './security.js';
+import { authenticate, getToken } from './security.js';
 
 // app setup
 const app = express();
@@ -23,10 +23,10 @@ function handleAsyncErrors(callback) {
   };
 }
 
-app.post('/token', handleAsyncErrors(handleToken));
+app.post('/token', handleAsyncErrors(getToken));
 // app.post('/invalidate_token', // TODO)
 
-app.get('/secure', handleAsyncErrors(secure), (_, response) => {
+app.get('/secure', handleAsyncErrors(authenticate), (_, response) => {
   response.send(`ok: ${response.locals.user.name}`);
 });
 
