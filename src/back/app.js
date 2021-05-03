@@ -24,9 +24,10 @@ function handleAsyncErrors(callback) {
 }
 
 app.post('/token', handleAsyncErrors(handleToken));
+// app.post('/invalidate_token', // TODO)
 
 app.get('/secure', handleAsyncErrors(secure), (_, response) => {
-  response.send('ok');
+  response.send(`ok: ${response.locals.user.name}`);
 });
 
 export default app;
