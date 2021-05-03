@@ -62,6 +62,10 @@ export async function secure(request, response, next) {
         form: { token },
         username: process.env.CLIENT_ID,
         password: process.env.CLIENT_SECRET,
+        retry: {
+          limit: 5,
+          methods: ['POST'],
+        },
       });
     } catch (error) {
       const errorMessage = error.body || error.message || error;
