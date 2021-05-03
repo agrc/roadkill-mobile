@@ -90,5 +90,5 @@ export async function authenticate(request, response, next) {
     response.status(userResponse.statusCode).json(userResponse.body);
   }
 
-  return response.status(401).send('Access denied');
+  return response.status(400).send('authorization header is required');
 }
