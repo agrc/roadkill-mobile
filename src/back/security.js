@@ -53,20 +53,16 @@ export async function handleToken(request, response) {
 
 export async function secure(request, response, next) {
   if (request.headers.authorization) {
-    const token = request.headers.authorization.slice(7);
-
-    let introspectResponse;
+    let userResponse;
     try {
       // TODO: add cache, redis or in_memory
-      introspectResponse = await got.post('https://login.dts.utah.gov/sso/oauth2/introspect', {
+      userResponse = await got('https://login.dts.utah.gov/sso/oauth2/userinfo', {
         responseType: 'json',
-        form: { token },
-        username: process.env.CLIENT_ID,
-        password: process.env.CLIENT_SECRET,
-        retry: {
-          limit: 5,
-          methods: ['POST'],
+        headers: {
+          Authorization: request.headers.authorization,
         },
+        retry: 5,
+        throwHttpErrors: false,
       });
     } catch (error) {
       const errorMessage = error.body || error.message || error;
@@ -74,9 +70,13 @@ export async function secure(request, response, next) {
       return response.status(500).json({ error_description: errorMessage, error: 'server_error' });
     }
 
-    if (introspectResponse.body.active) {
+    if (userResponse.statusCode === 200 && userResponse.body) {
+      response.locals.user = userResponse.body;
+
       return next();
     }
+
+    response.status(userResponse.statusCode).json(userResponse.body);
   }
 
   return response.status(401).send('Access denied');
