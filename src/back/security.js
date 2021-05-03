@@ -57,6 +57,7 @@ export async function secure(request, response, next) {
 
     let introspectResponse;
     try {
+      // TODO: add cache, redis or in_memory
       introspectResponse = await got.post('https://login.dts.utah.gov/sso/oauth2/introspect', {
         responseType: 'json',
         form: { token },
@@ -74,7 +75,6 @@ export async function secure(request, response, next) {
     }
 
     if (introspectResponse.body.active) {
-      // TODO: add cache, redis or in_memory
       return next();
     }
   }
