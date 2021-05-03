@@ -16,9 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
 function handleAsyncErrors(callback) {
+  // this will be done by default at express 5.0
   return (request, response, next) => {
     callback(request, response, next).catch(next);
-    // pass an error to next returns an HTML error page, maybe not ideal
+    // passing an error to next returns an HTML error page, maybe not ideal
   };
 }
 
