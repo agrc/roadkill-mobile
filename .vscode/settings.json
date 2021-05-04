@@ -4,8 +4,10 @@
     "Reactotron",
     "Recents",
     "formurlencoded",
+    "lsof",
     "openid",
-    "wvcr"
+    "wvcr",
+    "xargs"
   ],
   "editor.formatOnSave": true
 }
