@@ -5,8 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "env-cmd nodemon server.js",
+    "emulate": "lsof -ti :3001 | xargs kill -9 && gcloud beta emulators firestore start --host-port=localhost:3001",
     "lint": "eslint .",
+    "serve": "env-cmd nodemon server.js",
+    "start": "concurrently npm:emulate npm:serve",
     "test": "env-cmd node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "author": "Scott Davis <stdavis@utah.gov>",
@@ -20,6 +22,7 @@
     "jwt-decode": "^3.1.2"
   },
   "devDependencies": {
+    "concurrently": "^6.0.2",
     "env-cmd": "^10.1.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
