@@ -16,4 +16,12 @@ React Native Debugger [currently has an issue](https://github.com/expo/expo/pull
 
 HTTP Toolkit can be used to capture network requests made from the backend. Fiddler caused issues with UtahID.
 
-## Deployment steps
+## Deployment
+
+### One-time Setup
+
+1. Create the following repo secrets in GitHub:
+   - `PROJECT_ID_PROD` / `PROJECT_ID_STAGING`
+   - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
+     - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project)
+     - Must be [encoded as a Base64 string](https://github.com/GoogleCloudPlatform/github-actions/tree/master/setup-gcloud#inputs) (`cat my-key.json | base64`).
