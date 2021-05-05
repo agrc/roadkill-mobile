@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "serve": "env-cmd nodemon server.js",
     "start": "concurrently npm:emulate npm:serve",
-    "test": "env-cmd node --experimental-vm-modules node_modules/.bin/jest --watch"
+    "test": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",
