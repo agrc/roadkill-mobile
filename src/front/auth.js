@@ -4,6 +4,7 @@ import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = __DEV__
@@ -11,7 +12,7 @@ const API = __DEV__
     Platform.select({ ios: 'http://localhost:3000', android: 'http://10.0.2.2:3000' })
   : process.env.API;
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = makeRedirectUri({ scheme: 'wvcr', useProxy: __DEV__ });
+const redirectUri = makeRedirectUri({ scheme: Constants.manifest.scheme, useProxy: __DEV__ });
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${API}/token`,
