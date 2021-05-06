@@ -3,19 +3,13 @@ import { makeRedirectUri, AuthRequest, exchangeCodeAsync, refreshAsync, dismiss 
 import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
-import { Platform } from 'react-native';
-import Constants from 'expo-constants';
+import config from './config';
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const API = __DEV__
-  ? // this only works for emulators running on the same machine, how to handle separate devices? ngrok? localtunnel? deploy to gcp dev?
-    Platform.select({ ios: 'http://localhost:3000', android: 'http://10.0.2.2:3000' })
-  : process.env.API;
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = makeRedirectUri({ scheme: Constants.manifest.scheme, useProxy: __DEV__ });
+const redirectUri = makeRedirectUri({ scheme: config.SCHEME, useProxy: __DEV__ });
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
-  tokenEndpoint: `${API}/token`,
+  tokenEndpoint: `${config.API}/token`,
   revocationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/token/revoke',
 };
 
@@ -25,7 +19,7 @@ function isTokenExpired(token) {
   return expireTime < new Date().getTime();
 }
 const request = new AuthRequest({
-  clientId: CLIENT_ID,
+  clientId: config.CLIENT_ID,
   scopes: ['openid', 'profile', 'email'],
   redirectUri,
 });
@@ -98,7 +92,7 @@ export default function useAuth() {
 
     const tokenResponse = await exchangeCodeAsync(
       {
-        clientId: CLIENT_ID,
+        clientId: config.CLIENT_ID,
         code,
         redirectUri,
         extraParams: {
@@ -131,7 +125,7 @@ export default function useAuth() {
     try {
       const tokenResponse = await refreshAsync(
         {
-          clientId: CLIENT_ID,
+          clientId: config.CLIENT_ID,
           refreshToken: refreshToken.current,
         },
         discovery
