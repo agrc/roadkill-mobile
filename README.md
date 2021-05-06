@@ -24,6 +24,7 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
    - `PROJECT_ID_PROD` / `PROJECT_ID_STAGING`
    - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
+   - `EXPO_USERNAME` / `EXPO_PASSWORD`
 
 ### Release Channels
 
