@@ -26,6 +26,10 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
 
+### Steps for Creating a New Release Channel
+
+1. Update `.github/workflows/front.yml` "Get Variables" step
+
 ### Release Channels
 
 `prod-v3.0`
