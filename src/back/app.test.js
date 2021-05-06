@@ -1,6 +1,18 @@
 import request from 'supertest';
 import app from './app';
 import formurlencoded from 'form-urlencoded';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
+const utahIdServer = setupServer(
+  rest.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', (request, response, context) => {
+    return response(context.json({ token: 'blah' }));
+  })
+);
+
+beforeAll(() => utahIdServer.listen());
+afterEach(() => utahIdServer.resetHandlers());
+afterAll(() => utahIdServer.close());
 
 describe('/token', () => {
   it('requires matching client_id', (done) => {
