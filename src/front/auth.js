@@ -53,12 +53,19 @@ export default function useAuth() {
 
   const logIn = async () => {
     setStatus('pending');
-    const result = await request.promptAsync(discovery, { useProxy: __DEV__ });
+    try {
+      // TODO: prevent this method from being called multiple times in a row
+      const result = await request.promptAsync(discovery, { useProxy: __DEV__ });
 
-    if (result?.type === 'success') {
-      await exchangeCodeForToken(result.params.code);
-    } else {
-      throw new Error(JSON.stringify(result));
+      if (result?.type === 'success') {
+        await exchangeCodeForToken(result.params.code);
+      } else {
+        setStatus('rejected');
+        throw new Error(JSON.stringify(result));
+      }
+    } catch (error) {
+      setStatus('rejected');
+      throw error;
     }
   };
 
