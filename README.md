@@ -23,5 +23,4 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 1. Create the following repo secrets in GitHub:
    - `PROJECT_ID_PROD` / `PROJECT_ID_STAGING`
    - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
-     - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project)
-     - Must be [encoded as a Base64 string](https://github.com/GoogleCloudPlatform/github-actions/tree/master/setup-gcloud#inputs) (`cat my-key.json | base64`).
+     - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
