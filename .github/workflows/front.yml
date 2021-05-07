@@ -43,7 +43,7 @@ jobs:
     environment:
       name: Staging
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
-    if: github.ref == 'refs/head/staging'
+    if: github.ref == 'refs/heads/staging'
     env:
       EXPO_RELEASE_CHANNEL: staging-v3.0
 
@@ -66,7 +66,9 @@ jobs:
         run: npm ci
 
       - name: Publish
-        run: npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
+        run: |
+          npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
+          npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
 
   deploy-production:
     name: Build and Deploy Tag to Production
@@ -75,7 +77,7 @@ jobs:
     environment:
       name: Production
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
-    if: github.ref == 'refs/head/rewrite'
+    if: github.ref == 'refs/heads/rewrite'
     env:
       EXPO_RELEASE_CHANNEL: production-v3.0
 
@@ -98,4 +100,6 @@ jobs:
         run: npm ci
 
       - name: Publish
-        run: npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
+        run: |
+          npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
+          npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
