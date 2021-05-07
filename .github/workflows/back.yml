@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - staging
-      #: TODO: switch to main after release
-      - rewrite
+      - production
     paths:
       - 'src/back/**'
       - '.github/workflows/back.yml'
@@ -45,8 +44,7 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     needs: test
-    #: TODO: switch to main after release
-    if: contains('refs/head/rewrite refs/heads/staging', github.ref)
+    if: contains('refs/head/production refs/heads/staging', github.ref)
 
     steps:
       - name: Checkout
@@ -55,12 +53,12 @@ jobs:
       - name: Get Variables
         id: variables
         shell: bash
-        #: TODO: switch to main after release
+        #: TODO: switch this to use github environments
         run: |
           REF=${{ github.ref }}
           BRANCH=${REF##*/}
           echo "current branch: $BRANCH"
-          if [[ "$BRANCH" == "rewrite" ]]; then
+          if [[ "$BRANCH" == "production" ]]; then
             SA_KEY="${{ secrets.SERVICE_ACCOUNT_KEY_PROD }}"
             PROJECT_ID="${{ secrets.PROJECT_ID_PROD }}"
           else

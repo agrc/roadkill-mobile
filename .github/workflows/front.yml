@@ -77,7 +77,7 @@ jobs:
     environment:
       name: Production
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
-    if: github.ref == 'refs/heads/rewrite'
+    if: github.ref == 'refs/heads/production'
     env:
       EXPO_RELEASE_CHANNEL: production-v3.0
 
