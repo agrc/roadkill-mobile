@@ -28,10 +28,12 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 ### Steps for Creating a New Release Channel
 
-1. Update `.github/workflows/front.yml` "Get Variables" step
+1. Update both "Production" and "Staging" env contexts in `.github/workflows/front.yml`.
 
-### Release Channels
+### Steps for Deploying a New Native App Build
 
-`prod-v3.0`
+1. TODO
 
-`staging-v3.0`
+### Over-the-air Updates
+
+These are done automatically for the production and staging release channels via [GitHub actions](.github/workflows/front.yml).
