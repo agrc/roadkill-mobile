@@ -26,14 +26,14 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
 
-### Steps for Creating a New Release Channel
+### Steps for Creating a Expo New Release Channel
 
 1. Update both "Production" and "Staging" env contexts in `.github/workflows/front.yml`.
 
-### Steps for Deploying a New Native App Build
+### Steps for Deploying a New Native Mobile App Build
 
 1. TODO
 
-### Over-the-air Updates
+### Over-the-air Mobile App Updates
 
-These are done automatically for the production and staging release channels via [GitHub actions](.github/workflows/front.yml).
+These are done automatically for the production and staging release channels via [GitHub actions](.github/workflows/front.yml) when tags are cut for the `main` and `staging` channels respectively.
