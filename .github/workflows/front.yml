@@ -43,7 +43,7 @@ jobs:
     environment:
       name: Staging
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && github.ref == 'refs/head/staging'
     env:
       EXPO_RELEASE_CHANNEL: staging-v3.0
 
@@ -75,7 +75,7 @@ jobs:
     environment:
       name: Production
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') && github.ref == 'refs/head/rewrite'
     env:
       EXPO_RELEASE_CHANNEL: production-v3.0
 
