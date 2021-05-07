@@ -1,3 +1,5 @@
+import git from 'git-rev-sync';
+
 export default {
   name: 'Utah Wildlife-Vehicle Collision Reporter',
   slug: 'wildlife-vehicle-collision-reporter',
@@ -18,12 +20,12 @@ export default {
   assetBundlePatterns: ['**/*'],
   ios: {
     bundleIdentifier: 'gov.dts.ugrc.utahwvcr',
-    buildNumber: '0',
+    buildNumber: git.count().toString(),
     supportsTablet: true,
   },
   android: {
     package: 'gov.dts.ugrc.utahwvcr',
-    versionCode: 0,
+    versionCode: git.count(),
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
