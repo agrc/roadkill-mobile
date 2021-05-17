@@ -18,6 +18,14 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 ## Deployment
 
+### Release Pipeline
+
+| branch     | version | deployed                | release-channel | expo version |
+| ---------- | ------- | ----------------------- | --------------- | ------------ |
+| production | 3.0.0   | App Stores              | production-v3.0 | 41.0.1       |
+| staging    | 3.0.0   | TestFlight/Google Alpha | staging         | 41.0.1       |
+| dev        | 3.0.0   | n/a                     | n/a             | 41.0.1       |
+
 ### One-time Setup
 
 1. Create the following repo secrets in GitHub:
@@ -25,15 +33,31 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
    - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
+   - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets.
+
+### Pushing a New App Build to Staging
+
+1. `git checkout staging`
+1. `./deployNewAppBuild.sh`
+1. Add testers to TestFlight and wait for app review.
+1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) to DTS to deploy to Google Play Alpha.
+
+### Pushing a New App Build to Production
+
+1. `git rebase staging master`
+1. `npm ci`
+1. `./deployNewAppBuild.sh production-<version number>` (e.g. `production-v3.1`)
+1. Build version that can be tested in ios Simulator: `expo build:ios --release-channel $RELEASE_CHANNEL --no-publish -t simulator`
+1. Test in iOS and Android simulators.
+1. Generate new screenshots if applicable. Note: Google Play has a limit of 8.
+1. Create new version in iTunes connect and update all relevant information.
+1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app for review. (Add note about IDFA from [expo's docs](https://docs.expo.io/versions/latest/distribution/app-stores/#ios-specific-guidelines): For IDFA questions see: "https://segment.com/docs/sources/mobile/ios/quickstart/#step-5-submitting-to-the-app-store")
+1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app to the Google Play. Add "What's New" text and link to new screenshots to the notes field.
+
+### Over-the-air Updates
+
+These are done automatically for the production and staging release channels via [GitHub Actions](.github/workflows/front.yml) when pushing to the `main` and `staging` channels respectively.
 
 ### Steps for Creating a Expo New Release Channel
 
-1. Update both "Production" and "Staging" env contexts in `.github/workflows/front.yml`.
-
-### Steps for Deploying a New Native Mobile App Build
-
-1. TODO
-
-### Over-the-air Mobile App Updates
-
-These are done automatically for the production and staging release channels via [GitHub actions](.github/workflows/front.yml) when tags are cut for the `main` and `staging` channels respectively.
+1. Update "Production" env context in `.github/workflows/front.yml`.

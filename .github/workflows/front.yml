@@ -45,7 +45,7 @@ jobs:
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
     if: github.ref == 'refs/heads/staging'
     env:
-      EXPO_RELEASE_CHANNEL: staging-v3.0
+      EXPO_RELEASE_CHANNEL: staging
 
     steps:
       - name: Checkout

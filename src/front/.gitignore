@@ -13,3 +13,6 @@ web-build/
 .DS_Store
 .env*
 !.env.sample
+
+*.aab
+*.ipa
