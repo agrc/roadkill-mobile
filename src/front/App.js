@@ -3,6 +3,7 @@ import { Button } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import useAuth from './auth';
 import config from './config';
+import Constants from 'expo-constants';
 
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
@@ -42,6 +43,7 @@ export default function App() {
       <Button title="Query Secured Endpoint" onPress={trySecure} />
       <Text>secure response: {secureResponse}</Text>
       <Text>{redirectUri}</Text>
+      <Text>Revision: {Constants.manifest.revisionId}</Text>
     </View>
   );
 }
