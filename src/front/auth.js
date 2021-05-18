@@ -6,7 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import config from './config';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = makeRedirectUri({ scheme: config.SCHEME, useProxy: __DEV__ });
+const redirectUri = makeRedirectUri({ scheme: config.SCHEME });
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
@@ -55,7 +55,7 @@ export default function useAuth() {
     setStatus('pending');
     try {
       // TODO: prevent this method from being called multiple times in a row
-      const result = await request.promptAsync(discovery, { useProxy: __DEV__ });
+      const result = await request.promptAsync(discovery);
 
       if (result?.type === 'success') {
         await exchangeCodeForToken(result.params.code);
