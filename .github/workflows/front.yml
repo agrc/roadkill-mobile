@@ -46,6 +46,8 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     env:
       EXPO_RELEASE_CHANNEL: staging
+      CLIENT_ID: secrets.CLIENT_ID
+      API: secrets.API
 
     steps:
       - name: Checkout
@@ -80,6 +82,8 @@ jobs:
     if: github.ref == 'refs/heads/production'
     env:
       EXPO_RELEASE_CHANNEL: production-v3.0
+      CLIENT_ID: secrets.CLIENT_ID
+      API: secrets.API
 
     steps:
       - name: Checkout
