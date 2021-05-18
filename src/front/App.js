@@ -9,7 +9,7 @@ if (__DEV__) {
 }
 
 export default function App() {
-  const { userInfo, getAccessToken, logIn, logOut, status } = useAuth();
+  const { userInfo, getAccessToken, logIn, logOut, status, redirectUri } = useAuth();
   const [token, setToken] = React.useState(null);
   const [secureResponse, setSecureResponse] = React.useState(null);
   const trySecure = async () => {
@@ -41,6 +41,7 @@ export default function App() {
       <Button title="Log Out" onPress={logOut} />
       <Button title="Query Secured Endpoint" onPress={trySecure} />
       <Text>secure response: {secureResponse}</Text>
+      <Text>{redirectUri}</Text>
     </View>
   );
 }

@@ -153,5 +153,5 @@ export default function useAuth() {
     }
   };
 
-  return { userInfo, getAccessToken, logIn, logOut, status };
+  return { userInfo, getAccessToken, logIn, logOut, status, redirectUri };
 }
