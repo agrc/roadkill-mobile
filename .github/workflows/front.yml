@@ -46,8 +46,6 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     env:
       EXPO_RELEASE_CHANNEL: staging
-      CLIENT_ID: secrets.CLIENT_ID
-      API: secrets.API
 
     steps:
       - name: Checkout
@@ -69,6 +67,8 @@ jobs:
 
       - name: Publish
         run: |
+          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
+          export API="${{ secrets.API }}"
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
 
@@ -82,8 +82,6 @@ jobs:
     if: github.ref == 'refs/heads/production'
     env:
       EXPO_RELEASE_CHANNEL: production-v3.0
-      CLIENT_ID: secrets.CLIENT_ID
-      API: secrets.API
 
     steps:
       - name: Checkout
@@ -105,5 +103,7 @@ jobs:
 
       - name: Publish
         run: |
+          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
+          export API="${{ secrets.API }}"
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
