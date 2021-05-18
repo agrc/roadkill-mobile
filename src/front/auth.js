@@ -6,7 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import config from './config';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}/home`;
+const redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}home`;
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
