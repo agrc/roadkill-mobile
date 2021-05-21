@@ -34,6 +34,10 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
    - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets.
+     - base64 encode the google service file contents
+1. The firebase project is created via terraform, but the apps need to be created manually via the firebase console. Follow [these steps](https://docs.expo.io/guides/setup-native-firebase/#android) from the expo docs.
+   1. Enable analytics in Firebase
+   1. Create a web app just to get the `measurementId` config for the `FIREBASE_MEASUREMENT_ID` env variable.
 
 ### Pushing a New App Build to Staging
 
