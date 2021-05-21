@@ -35,7 +35,7 @@
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.23.2",
-    "expo-cli": "^4.4.7",
+    "expo-cli": "^4.4.8",
     "git-rev-sync": "^3.0.1",
     "jest-expo": "^41.0.0",
     "prettier": "^2.2.1",
