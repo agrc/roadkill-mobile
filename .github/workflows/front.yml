@@ -69,6 +69,10 @@ jobs:
         run: |
           export CLIENT_ID="${{ secrets.CLIENT_ID }}"
           export API="${{ secrets.API }}"
+          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 -d > ./google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_IOS }} | base64 -d > ./GoogleService-Info.json
+          export GOOGLE_SERVICES_ANDROID=google-services.json
+          export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
 
@@ -105,5 +109,9 @@ jobs:
         run: |
           export CLIENT_ID="${{ secrets.CLIENT_ID }}"
           export API="${{ secrets.API }}"
+          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 -d > ./google-services.json
+          echo "${{ secrets.GOOGLE_SERVICES_IOS }} | base64 -d > ./GoogleService-Info.json
+          export GOOGLE_SERVICES_ANDROID=google-services.json
+          export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
