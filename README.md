@@ -65,3 +65,7 @@ These are done automatically for the production and staging release channels via
 ### Steps for Creating a Expo New Release Channel
 
 1. Update "Production" env context in `.github/workflows/front.yml`.
+
+### Secrets
+
+Because app builds initiate from both the developer's machine (new native builds) and GitHub Actions (over-the-air updates), secrets need to be managed in both places. `.env.sample` should be duplicated and populated to `.env`, `.env.staging`, `.env.production`. Corresponding secrets are also stored in environments in the GitHub repository.
