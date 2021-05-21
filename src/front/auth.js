@@ -6,7 +6,7 @@ import * as WebBrowser from 'expo-web-browser';
 import config from './config';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}home`;
+const redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}${__DEV__ && '/'}home`;
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
@@ -114,6 +114,7 @@ export default function useAuth() {
     accessToken.current = tokenResponse.accessToken;
     refreshToken.current = tokenResponse.refreshToken;
     setUserInfo(jwt_decode(tokenResponse.idToken));
+    console.log('userInfo', jwt_decode(tokenResponse.idToken));
 
     console.log('setting cached token');
     SecureStore.setItemAsync(STORE_KEY, refreshToken.current);
@@ -142,6 +143,7 @@ export default function useAuth() {
       accessToken.current = tokenResponse.accessToken;
       if (!userInfo) {
         setUserInfo(jwt_decode(tokenResponse.idToken));
+        console.log('userInfo', jwt_decode(tokenResponse.idToken));
       }
 
       return tokenResponse.accessToken;
