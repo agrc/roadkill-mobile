@@ -1,4 +1,11 @@
 import git from 'git-rev-sync';
+import fs from 'fs';
+import 'dotenv/config';
+
+const bundleId = 'gov.dts.ugrc.utahwvcr';
+
+const googleServicesContent = fs.readFileSync(`./${process.env.GOOGLE_SERVICES_ANDROID}`);
+const googleServicesJson = JSON.parse(googleServicesContent);
 
 export default {
   name: 'Utah Wildlife-Vehicle Collision Reporter',
@@ -19,16 +26,28 @@ export default {
   },
   assetBundlePatterns: ['**/*'],
   ios: {
-    bundleIdentifier: 'gov.dts.ugrc.utahwvcr',
+    bundleIdentifier: bundleId,
+    googleServicesFile: `./${process.env.GOOGLE_SERVICES_IOS}`,
     buildNumber: git.count().toString(),
     supportsTablet: true,
   },
   android: {
-    package: 'gov.dts.ugrc.utahwvcr',
+    package: bundleId,
+    googleServicesFile: `./${process.env.GOOGLE_SERVICES_ANDROID}`,
     versionCode: git.count(),
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
+    },
+  },
+  // this is only to enable logEvent calls during development in Expo Go
+  // ref: https://docs.expo.io/versions/latest/sdk/firebase-analytics/#expo-go-limitations--configuration
+  web: {
+    config: {
+      firebase: {
+        apiKey: googleServicesJson.client[0].api_key[0].current_key,
+        measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'G-XXXXXXXXXX',
+      },
     },
   },
 };

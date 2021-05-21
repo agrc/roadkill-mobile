@@ -16,3 +16,6 @@ web-build/
 
 *.aab
 *.ipa
+
+google-services-*.json
+GoogleService-Info-*.plist
