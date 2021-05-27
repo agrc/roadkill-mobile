@@ -56,10 +56,7 @@ jobs:
         id: variables
         shell: bash
         run: |
-          SA_KEY="${{ secrets.SERVICE_ACCOUNT_KEY}}"
           PROJECT_ID="${{ secrets.PROJECT_ID }}"
-          echo "::set-output name=sa_key::$SA_KEY"
-          echo "::set-output name=project_id::$PROJECT_ID"
           echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
 
       # this could be removed once setup-node adds support for .nvmrc files
@@ -76,8 +73,8 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@master
         with:
-          service_account_key: ${{ steps.variables.outputs.sa_key }}
-          project_id: ${{ steps.variables.outputs.project_id }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - run: |-
           gcloud --quiet auth configure-docker
@@ -117,10 +114,7 @@ jobs:
         id: variables
         shell: bash
         run: |
-          SA_KEY="${{ secrets.SERVICE_ACCOUNT_KEY}}"
           PROJECT_ID="${{ secrets.PROJECT_ID }}"
-          echo "::set-output name=sa_key::$SA_KEY"
-          echo "::set-output name=project_id::$PROJECT_ID"
           echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
 
       # this could be removed once setup-node adds support for .nvmrc files
@@ -137,8 +131,8 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@master
         with:
-          service_account_key: ${{ steps.variables.outputs.sa_key }}
-          project_id: ${{ steps.variables.outputs.project_id }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
       - run: |-
           gcloud --quiet auth configure-docker
