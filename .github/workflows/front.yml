@@ -1,4 +1,4 @@
-name: Front - Test, Build, and Deploy
+name: Front - Test, Build, and Over-the-air Deploy
 
 on:
   push:
