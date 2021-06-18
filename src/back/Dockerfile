@@ -1,4 +1,3 @@
-# TODO: add client id and secret as environment variables
 FROM node:14
 
 ENV NODE_ENV=production
