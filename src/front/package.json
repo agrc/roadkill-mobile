@@ -16,7 +16,13 @@
     ]
   },
   "dependencies": {
+    "@eva-design/eva": "^2.1.0",
     "@react-native-async-storage/async-storage": "^1.13.0",
+    "@react-native-community/masked-view": "0.1.10",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.5",
+    "@ui-kitten/components": "^5.1.0",
+    "@ui-kitten/eva-icons": "^5.1.0",
     "babel-plugin-inline-dotenv": "^1.6.0",
     "expo": "~41.0.1",
     "expo-auth-session": "~3.2.3",
@@ -30,9 +36,15 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native-gesture-handler": "~1.10.2",
     "react-native-get-random-values": "^1.7.0",
+    "react-native-reanimated": "~2.1.0",
+    "react-native-safe-area-context": "3.2.0",
+    "react-native-screens": "~3.0.0",
+    "react-native-svg": "9.13.6",
     "react-native-web": "~0.13.12",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "expo-linking": "~2.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -40,7 +52,7 @@
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.23.2",
-    "expo-cli": "^4.4.8",
+    "expo-cli": "^4.5.2",
     "git-rev-sync": "^3.0.1",
     "jest-expo": "^41.0.0",
     "prettier": "^2.2.1",
