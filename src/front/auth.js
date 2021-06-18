@@ -25,7 +25,7 @@ const request = new AuthRequest({
 });
 
 export default function useAuth() {
-  // should these be kept in secure story rather than in-memory?
+  // should these be kept in secure store rather than in-memory?
   const accessToken = React.useRef(null);
   const refreshToken = React.useRef(null);
   const [userInfo, setUserInfo] = React.useState(null);
@@ -97,18 +97,24 @@ export default function useAuth() {
     console.log('exchangeCodeForToken');
     setStatus('pending');
 
-    const tokenResponse = await exchangeCodeAsync(
-      {
-        clientId: config.CLIENT_ID,
-        code,
-        redirectUri,
-        extraParams: {
-          code_verifier: request.codeVerifier,
-          code_challenge: request.codeChallenge,
+    let tokenResponse;
+    try {
+      tokenResponse = await exchangeCodeAsync(
+        {
+          clientId: config.CLIENT_ID,
+          code,
+          redirectUri,
+          extraParams: {
+            code_verifier: request.codeVerifier,
+            code_challenge: request.codeChallenge,
+          },
         },
-      },
-      discovery
-    );
+        discovery
+      );
+    } catch (error) {
+      setStatus('rejected');
+      throw error;
+    }
 
     setStatus('resolved');
     accessToken.current = tokenResponse.accessToken;
