@@ -4,9 +4,15 @@ import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import config from './config';
+import { Platform } from 'react-native';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
-const redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}${__DEV__ ? '/' : ''}home`;
+let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
+if (__DEV__) {
+  redirectUri += Platform.OS === 'android' ? '/--/' : '/';
+}
+redirectUri += 'main';
+
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
@@ -79,6 +85,7 @@ export default function useAuth() {
     SecureStore.setItemAsync(STORE_KEY, '');
 
     dismiss();
+    // TODO: I don't think that this is logging out of the browser
     // this throws an error in expo go on android but supposedly not in built app
   };
 
