@@ -8,4 +8,13 @@ if (__DEV__ && Platform.OS === 'android') {
   API = API.replace('localhost', '10.0.2.2');
 }
 
-export default { CLIENT_ID: process.env.CLIENT_ID, API, SCHEME: Constants.manifest.scheme };
+export default {
+  CLIENT_ID: process.env.CLIENT_ID,
+  API,
+  SCHEME: Constants.manifest.scheme,
+  ROLES: {
+    public: 'public',
+    contractor: 'contractor',
+    agencyEmployee: 'agency_employee',
+  },
+};
