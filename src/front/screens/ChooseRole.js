@@ -3,7 +3,7 @@ import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native';
 import propTypes from 'prop-types';
 
-export default function ChoseRoleScreen({ navigation }) {
+export default function ChooseRoleScreen({ navigation }) {
   const test = () => {
     navigation.navigate('login');
   };
@@ -19,6 +19,6 @@ export default function ChoseRoleScreen({ navigation }) {
   );
 }
 
-ChoseRoleScreen.propTypes = {
+ChooseRoleScreen.propTypes = {
   navigation: propTypes.object,
 };
