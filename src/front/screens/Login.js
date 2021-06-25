@@ -1,55 +1,70 @@
 import React from 'react';
-import { Button, Text, Divider, Layout, Icon, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
-import { SafeAreaView } from 'react-native';
+import { Button, Text, Layout, Icon, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../auth';
 import config from '../config';
 import Constants from 'expo-constants';
 import propTypes from 'prop-types';
+import { Image, StyleSheet, View } from 'react-native';
+import utahIdLogo from '../assets/logo-utahid.png';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({
+  route: {
+    params: { role },
+  },
+  navigation,
+}) {
   const { userInfo, getAccessToken, logIn, logOut, status, redirectUri } = useAuth();
+  // TODO: put this in a context along with other user stuff
   const [token, setToken] = React.useState(null);
-  const [secureResponse, setSecureResponse] = React.useState(null);
-  const trySecure = async () => {
-    setSecureResponse(null);
-
-    const response = await fetch(`${config.API}/secure`, {
-      headers: {
-        Authorization: await getAccessToken(),
-      },
-    });
-
-    setSecureResponse(`${response.status} | ${await response.text()}`);
-  };
+  const theme = useTheme();
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
   const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()} />;
-  const TestIcon = (props) => <Icon name="link" {...props} />;
+  const OauthButton = ({ children, onPress, disabled, logo }) => {
+    const OauthLogo = () => <Image source={logo} />;
+
+    return (
+      <Button
+        disabled={disabled}
+        onPress={onPress}
+        accessoryLeft={logo && OauthLogo}
+        status="info"
+        appearance="outline"
+        style={styles.oauthButton}
+      >
+        {children}
+      </Button>
+    );
+  };
+  OauthButton.propTypes = {
+    children: propTypes.string,
+    onPress: propTypes.func,
+    disabled: propTypes.bool,
+    logo: propTypes.image,
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title="WVC" alignment="center" accessoryLeft={BackAction} />
-      <Divider />
-      <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Button disabled={status === 'pending'} onPress={logIn} accessoryRight={TestIcon}>
-          Login
-        </Button>
-        <Text>user email: {userInfo?.email}</Text>
-        <Text>bearer token: {token?.slice(0, 10)}</Text>
-        <Text>status: {status}</Text>
-        <Button
-          onPress={() => {
-            getAccessToken()
-              .then((accessToken) => setToken(accessToken))
-              .catch((error) => console.error(error));
-          }}
-        >
-          Get Access Token
-        </Button>
-        <Button onPress={logOut}>Log Out</Button>
-        <Button onPress={trySecure}>Query Secured Endpoint</Button>
-        <Text>secure response: {secureResponse}</Text>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme['background-basic-color-1'] }]}>
+      {Constants.platform.ios ? <TopNavigation title="" alignment="center" accessoryLeft={BackAction} /> : null}
+      <Layout style={styles.layout}>
+        <Text category="h1">Welcome</Text>
+        <Image
+          source={{ uri: 'https://via.placeholder.com/300x220', width: 300, height: 220 }}
+          style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
+        />
+        <View>
+          <OauthButton disabled={status === 'pending'} onPress={logIn} logo={utahIdLogo}>
+            Continue with UtahID
+          </OauthButton>
+          <OauthButton disabled={false} onPress={() => {}} logo={null}>
+            Continue with Facebook
+          </OauthButton>
+          <OauthButton disabled={false} onPress={() => {}} logo={null}>
+            Continue with Google
+          </OauthButton>
+        </View>
         <Text>{redirectUri}</Text>
-        <Text>Revision: {Constants.manifest.revisionId}</Text>
       </Layout>
     </SafeAreaView>
   );
@@ -57,4 +72,19 @@ export default function LoginScreen({ navigation }) {
 
 LoginScreen.propTypes = {
   navigation: propTypes.object,
+  route: propTypes.object,
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  layout: { flex: 1, justifyContent: 'space-between', alignItems: 'center' },
+  image: {
+    borderRadius: 3,
+    borderWidth: 1,
+  },
+  oauthButton: {
+    marginBottom: 10,
+  },
+});
