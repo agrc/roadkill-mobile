@@ -16,6 +16,12 @@ React Native Debugger [currently has an issue](https://github.com/expo/expo/pull
 
 HTTP Toolkit can be used to capture network requests made from the backend. Fiddler caused issues with UtahID.
 
+### Testing Deep Links
+
+`npx uri-scheme open exp://127.0.0.1:19000/--/main --ios`
+
+`npx uri-scheme open exp://127.0.0.1:19000/--/main --android`
+
 ## Deployment
 
 ### Release Pipeline
