@@ -5,7 +5,7 @@ import useAuth, { STATUS } from '../auth';
 import config from '../config';
 import Constants from 'expo-constants';
 import propTypes from 'prop-types';
-import { Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import utahIdLogo from '../assets/logo-utahid.png';
 
 export default function LoginScreen({
@@ -15,6 +15,7 @@ export default function LoginScreen({
   navigation,
 }) {
   const { logIn, status } = useAuth();
+  const showSpinner = status === STATUS.loading;
   const theme = useTheme();
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
@@ -67,6 +68,11 @@ export default function LoginScreen({
           ) : null}
         </View>
       </Layout>
+      {showSpinner ? (
+        <View style={[styles.spinner, { backgroundColor: theme['color-basic-transparent-600'] }]}>
+          <ActivityIndicator color={theme['color-basic-1100']} size="large" />
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -87,5 +93,14 @@ const styles = StyleSheet.create({
   },
   oauthButton: {
     marginBottom: 10,
+  },
+  spinner: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
