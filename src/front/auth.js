@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import config from './config';
 import propTypes from 'prop-types';
+import { useMounted } from './utilities';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
 let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
@@ -211,14 +212,4 @@ AuthContextProvider.propTypes = {
 
 export default function useAuth() {
   return React.useContext(AuthContext);
-}
-
-function useMounted() {
-  const isMounted = React.useRef(true);
-  React.useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-  return isMounted;
 }
