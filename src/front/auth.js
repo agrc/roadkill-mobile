@@ -1,41 +1,58 @@
 import * as React from 'react';
-import { makeRedirectUri, AuthRequest, exchangeCodeAsync, refreshAsync, dismiss } from 'expo-auth-session';
+import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import config from './config';
-import { Platform } from 'react-native';
+import propTypes from 'prop-types';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';
 let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
 if (__DEV__) {
-  redirectUri += Platform.OS === 'android' ? '/--/' : '/';
+  // expo adds this because it is a web server and needs to know that this is a deep link
+  redirectUri += '/--/';
 }
-redirectUri += 'main';
+redirectUri += 'login';
 
 const discovery = {
-  authorizationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/authorize',
+  authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
-  revocationEndpoint: 'https://login.dts.utah.gov:443/sso/oauth2/token/revoke',
+  endSessionEndpoint: 'https://login.dts.utah.gov/sso/oauth2/connect/endSession',
 };
+
+export const STATUS = {
+  loading: 'loading',
+  success: 'success',
+  failure: 'failure',
+  idle: 'idle',
+};
+
+WebBrowser.maybeCompleteAuthSession();
 
 function isTokenExpired(token) {
   const expireTime = jwt_decode(token).exp * 1000;
 
   return expireTime < new Date().getTime();
 }
-const request = new AuthRequest({
-  clientId: config.CLIENT_ID,
-  scopes: ['openid', 'profile', 'email'],
-  redirectUri,
-});
 
-export default function useAuth() {
+const AuthContext = React.createContext();
+
+export function AuthContextProvider({ children, setReady }) {
   // should these be kept in secure store rather than in-memory?
   const accessToken = React.useRef(null);
   const refreshToken = React.useRef(null);
   const [userInfo, setUserInfo] = React.useState(null);
-  const [status, setStatus] = React.useState('idle');
+  const [status, setStatus] = React.useState(STATUS.idle);
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: config.CLIENT_ID,
+      scopes: ['openid', 'profile', 'email'],
+      redirectUri,
+    },
+    discovery
+  );
+  const isMounted = useMounted();
+  console.log('status', status);
 
   // best practice to speed up browser for android
   // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
@@ -48,45 +65,58 @@ export default function useAuth() {
   }, []);
 
   React.useEffect(() => {
-    console.log('getting cached token');
-    SecureStore.getItemAsync(STORE_KEY).then((cachedRefreshToken) => {
-      if (cachedRefreshToken) {
-        refreshToken.current = cachedRefreshToken;
-        refreshAccessToken();
+    const prepare = async () => {
+      try {
+        const cachedRefreshToken = await SecureStore.getItemAsync(STORE_KEY);
+
+        if (cachedRefreshToken && !isTokenExpired(cachedRefreshToken)) {
+          refreshToken.current = cachedRefreshToken;
+
+          await refreshAccessToken();
+        }
+      } catch (error) {
+        console.warn('error with auth prepare function', error);
+      } finally {
+        setReady(true);
       }
-    });
+    };
+
+    prepare();
   }, []);
 
   const logIn = async () => {
-    setStatus('pending');
+    console.log('logIn');
+    setStatus(STATUS.loading);
     try {
-      // TODO: prevent this method from being called multiple times in a row
-      const result = await request.promptAsync(discovery);
-
-      if (result?.type === 'success') {
-        await exchangeCodeForToken(result.params.code);
-      } else {
-        setStatus('rejected');
-        throw new Error(JSON.stringify(result));
-      }
+      await promptAsync();
     } catch (error) {
-      setStatus('rejected');
+      setStatus(STATUS.failure);
       throw error;
     }
   };
 
-  const logOut = () => {
-    setStatus('pending');
+  React.useEffect(() => {
+    if (!response) return;
 
-    setStatus('idle');
+    if (response?.type === 'success' && !accessToken.current) {
+      exchangeCodeForToken(response.params.code);
+    } else {
+      setStatus(STATUS.failure);
+      throw new Error(JSON.stringify(response));
+    }
+  }, [response]);
+
+  const logOut = () => {
+    setStatus(STATUS.loading);
+
+    // end session endpoint
     setUserInfo(null);
     accessToken.current = null;
     refreshToken.current = null;
     SecureStore.setItemAsync(STORE_KEY, '');
 
-    dismiss();
+    setStatus(STATUS.idle);
     // TODO: I don't think that this is logging out of the browser
-    // this throws an error in expo go on android but supposedly not in built app
   };
 
   const getAccessToken = async () => {
@@ -102,7 +132,6 @@ export default function useAuth() {
 
   const exchangeCodeForToken = async (code) => {
     console.log('exchangeCodeForToken');
-    setStatus('pending');
 
     let tokenResponse;
     try {
@@ -119,28 +148,30 @@ export default function useAuth() {
         discovery
       );
     } catch (error) {
-      setStatus('rejected');
-      throw error;
+      if (isMounted) {
+        setStatus(STATUS.failure);
+        throw error;
+      }
     }
 
-    setStatus('resolved');
-    accessToken.current = tokenResponse.accessToken;
-    refreshToken.current = tokenResponse.refreshToken;
-    setUserInfo(jwt_decode(tokenResponse.idToken));
-    console.log('userInfo', jwt_decode(tokenResponse.idToken));
+    if (isMounted) {
+      setStatus(STATUS.success);
+      accessToken.current = tokenResponse.accessToken;
+      refreshToken.current = tokenResponse.refreshToken;
+      setUserInfo(jwt_decode(tokenResponse.idToken));
+      // console.log('userInfo', jwt_decode(tokenResponse.idToken));
 
-    console.log('setting cached token');
-    SecureStore.setItemAsync(STORE_KEY, refreshToken.current);
-
-    return tokenResponse.accessToken;
+      console.log('setting cached token');
+      SecureStore.setItemAsync(STORE_KEY, refreshToken.current);
+    }
   };
 
   const refreshAccessToken = async () => {
     console.log('refreshAccessToken');
-    setStatus('pending');
+    setStatus(STATUS.loading);
 
     if (!refreshToken.current || isTokenExpired(refreshToken.current)) {
-      await logIn();
+      return null;
     }
 
     try {
@@ -152,21 +183,43 @@ export default function useAuth() {
         discovery
       );
 
-      setStatus('resolved');
       accessToken.current = tokenResponse.accessToken;
       if (!userInfo) {
         setUserInfo(jwt_decode(tokenResponse.idToken));
-        console.log('userInfo', jwt_decode(tokenResponse.idToken));
+        // console.log('userInfo', jwt_decode(tokenResponse.idToken));
       }
+      setStatus(STATUS.success);
 
       return tokenResponse.accessToken;
     } catch (error) {
       console.error(error);
-      setStatus('rejected');
+      setStatus(STATUS.failure);
 
       return null;
     }
   };
 
-  return { userInfo, getAccessToken, logIn, logOut, status, redirectUri };
+  return (
+    <AuthContext.Provider value={{ userInfo, getAccessToken, logIn, logOut, status, redirectUri }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+AuthContextProvider.propTypes = {
+  children: propTypes.object,
+  setReady: propTypes.func,
+};
+
+export default function useAuth() {
+  return React.useContext(AuthContext);
+}
+
+function useMounted() {
+  const isMounted = React.useRef(true);
+  React.useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  return isMounted;
 }

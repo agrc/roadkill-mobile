@@ -9,17 +9,28 @@ import * as Analytics from 'expo-firebase-analytics';
 import * as SecureStorage from 'expo-secure-store';
 import { v4 as uuid } from 'uuid';
 import Constants from 'expo-constants';
+import useAuth from './auth';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
 
-const HomeNavigator = () => (
-  <Navigator headerMode="none">
-    <Screen name="choose-role" component={ChooseRoleScreen} />
-    <Screen name="login" component={LoginScreen} />
-    <Screen name="main" component={MainScreen} />
-  </Navigator>
-);
+const MainNavigator = () => {
+  const { userInfo } = useAuth();
+  console.log('userInfo', userInfo);
+
+  return (
+    <Navigator headerMode="none">
+      {userInfo ? (
+        <Screen name="main" component={MainScreen} />
+      ) : (
+        <>
+          <Screen name="choose-role" component={ChooseRoleScreen} />
+          <Screen name="login" component={LoginScreen} />
+        </>
+      )}
+    </Navigator>
+  );
+};
 
 const AppNavigator = () => {
   const navigationRef = React.useRef(null);
@@ -69,7 +80,7 @@ const AppNavigator = () => {
       onStateChange={updateRouteName}
       linking={linking}
     >
-      <HomeNavigator />
+      <MainNavigator />
     </NavigationContainer>
   );
 };

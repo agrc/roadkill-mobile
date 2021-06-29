@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, Layout, Icon, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useAuth from '../auth';
+import useAuth, { STATUS } from '../auth';
 import config from '../config';
 import Constants from 'expo-constants';
 import propTypes from 'prop-types';
@@ -14,9 +14,7 @@ export default function LoginScreen({
   },
   navigation,
 }) {
-  const { userInfo, getAccessToken, logIn, logOut, status, redirectUri } = useAuth();
-  // TODO: put this in a context along with other user stuff
-  const [token, setToken] = React.useState(null);
+  const { userInfo, logIn, status, redirectUri } = useAuth();
   const theme = useTheme();
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
