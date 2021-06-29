@@ -39,7 +39,7 @@ export default function LoginScreen({
     children: propTypes.string,
     onPress: propTypes.func,
     disabled: propTypes.bool,
-    logo: propTypes.image,
+    logo: propTypes.any,
   };
 
   return (
@@ -52,15 +52,19 @@ export default function LoginScreen({
           style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
         />
         <View>
-          <OauthButton disabled={status === 'pending'} onPress={logIn} logo={utahIdLogo}>
+          <OauthButton disabled={status === STATUS.loading} onPress={logIn} logo={utahIdLogo}>
             Continue with UtahID
           </OauthButton>
-          <OauthButton disabled={false} onPress={() => {}} logo={null}>
-            Continue with Facebook
-          </OauthButton>
-          <OauthButton disabled={false} onPress={() => {}} logo={null}>
-            Continue with Google
-          </OauthButton>
+          {role === config.ROLES.public ? (
+            <>
+              <OauthButton disabled={false} onPress={() => {}} logo={null}>
+                Continue with Facebook
+              </OauthButton>
+              <OauthButton disabled={false} onPress={() => {}} logo={null}>
+                Continue with Google
+              </OauthButton>
+            </>
+          ) : null}
         </View>
         <Text>{redirectUri}</Text>
       </Layout>
