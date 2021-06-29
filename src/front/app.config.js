@@ -11,7 +11,7 @@ export default {
   name: 'Utah Wildlife-Vehicle Collision Reporter',
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
-  scheme: 'wvcr',
+  scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.0',
   orientation: 'portrait',
