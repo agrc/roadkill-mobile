@@ -17,6 +17,8 @@ redirectUri += 'login';
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/token`,
+
+  // this is not used at the moment but could be used to log the user out of the browser session
   endSessionEndpoint: 'https://login.dts.utah.gov/sso/oauth2/connect/endSession',
 };
 
@@ -109,14 +111,13 @@ export function AuthContextProvider({ children, setReady }) {
   const logOut = () => {
     setStatus(STATUS.loading);
 
-    // end session endpoint
     setUserInfo(null);
     accessToken.current = null;
     refreshToken.current = null;
     SecureStore.setItemAsync(STORE_KEY, '');
 
     setStatus(STATUS.idle);
-    // TODO: I don't think that this is logging out of the browser
+    // TODO: I don't think that this is logging out of the browser, do we care?
   };
 
   const getAccessToken = async () => {
