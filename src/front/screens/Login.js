@@ -14,7 +14,7 @@ export default function LoginScreen({
   },
   navigation,
 }) {
-  const { userInfo, logIn, status, redirectUri } = useAuth();
+  const { logIn, status } = useAuth();
   const theme = useTheme();
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
@@ -66,7 +66,6 @@ export default function LoginScreen({
             </>
           ) : null}
         </View>
-        <Text>{redirectUri}</Text>
       </Layout>
     </SafeAreaView>
   );
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
-  layout: { flex: 1, justifyContent: 'space-between', alignItems: 'center' },
+  layout: { flex: 1, justifyContent: 'space-around', alignItems: 'center' },
   image: {
     borderRadius: 3,
     borderWidth: 1,

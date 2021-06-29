@@ -201,9 +201,7 @@ export function AuthContextProvider({ children, setReady }) {
   };
 
   return (
-    <AuthContext.Provider value={{ userInfo, getAccessToken, logIn, logOut, status, redirectUri }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ userInfo, getAccessToken, logIn, logOut, status }}>{children}</AuthContext.Provider>
   );
 }
 AuthContextProvider.propTypes = {
