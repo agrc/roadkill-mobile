@@ -1,8 +1,8 @@
 import compression from 'compression';
+import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import { authenticate, getToken } from './security.js';
-import cors from 'cors';
 
 // app setup
 const app = express();

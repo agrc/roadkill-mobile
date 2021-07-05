@@ -1,15 +1,15 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Constants from 'expo-constants';
+import * as Analytics from 'expo-firebase-analytics';
+import * as Linking from 'expo-linking';
+import * as SecureStorage from 'expo-secure-store';
+import React from 'react';
+import { v4 as uuid } from 'uuid';
+import useAuth from './auth';
 import ChooseRoleScreen from './screens/ChooseRole';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
-import * as Linking from 'expo-linking';
-import * as Analytics from 'expo-firebase-analytics';
-import * as SecureStorage from 'expo-secure-store';
-import { v4 as uuid } from 'uuid';
-import Constants from 'expo-constants';
-import useAuth from './auth';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');

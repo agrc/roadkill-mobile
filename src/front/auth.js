@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { makeRedirectUri, useAuthRequest, exchangeCodeAsync, refreshAsync } from 'expo-auth-session';
-import jwt_decode from 'jwt-decode';
+import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from 'expo-auth-session';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
-import config from './config';
+import jwt_decode from 'jwt-decode';
 import propTypes from 'prop-types';
+import * as React from 'react';
+import config from './config';
 import { useMounted } from './utilities';
 
 const STORE_KEY = 'WVC_Auth_Refresh_Token';

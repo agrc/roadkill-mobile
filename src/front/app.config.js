@@ -1,6 +1,6 @@
-import git from 'git-rev-sync';
-import fs from 'fs';
 import 'dotenv/config';
+import fs from 'fs';
+import git from 'git-rev-sync';
 
 const bundleId = 'gov.dts.ugrc.utahwvcr';
 
