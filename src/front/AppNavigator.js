@@ -6,7 +6,7 @@ import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import useAuth from './auth';
+import useAuth from './auth-providers/google';
 import ChooseRoleScreen from './screens/ChooseRole';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
