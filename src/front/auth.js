@@ -161,7 +161,6 @@ export function AuthContextProvider({ children, setReady }) {
       accessToken.current = tokenResponse.accessToken;
       refreshToken.current = tokenResponse.refreshToken;
       setUserInfo(jwt_decode(tokenResponse.idToken));
-      // console.log('userInfo', jwt_decode(tokenResponse.idToken));
 
       console.log('setting cached token');
       SecureStore.setItemAsync(STORE_KEY, refreshToken.current);
@@ -188,7 +187,6 @@ export function AuthContextProvider({ children, setReady }) {
       accessToken.current = tokenResponse.accessToken;
       if (!userInfo) {
         setUserInfo(jwt_decode(tokenResponse.idToken));
-        // console.log('userInfo', jwt_decode(tokenResponse.idToken));
       }
       setStatus(STATUS.success);
 

@@ -6,7 +6,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import 'react-native-get-random-values';
 import AppNavigator from './AppNavigator';
-import { AuthContextProvider } from './auth';
+import { AuthContextProvider } from './auth-providers/google';
 import { default as theme } from './custom-theme.json';
 
 if (__DEV__) {

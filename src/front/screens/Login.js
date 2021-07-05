@@ -5,7 +5,7 @@ import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import utahIdLogo from '../assets/logo-utahid.png';
-import useAuth, { STATUS } from '../auth';
+import useAuth, { STATUS } from '../auth-providers/google';
 import config from '../config';
 
 export default function LoginScreen({
