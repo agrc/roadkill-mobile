@@ -1,8 +1,8 @@
-import request from 'supertest';
-import app from './app';
 import formurlencoded from 'form-urlencoded';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import request from 'supertest';
+import app from './app';
 
 const utahIdServer = setupServer(
   rest.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', (request, response, context) => {

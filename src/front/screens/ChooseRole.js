@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button, Layout, Text } from '@ui-kitten/components';
 import propTypes from 'prop-types';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../config';
 
