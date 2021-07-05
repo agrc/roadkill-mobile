@@ -2,7 +2,7 @@ import { Button, Divider, Layout, Text, TopNavigation } from '@ui-kitten/compone
 import propTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useAuth from '../auth';
+import useAuth from '../auth-providers/google';
 
 export default function MainScreen({ navigation }) {
   const { logOut } = useAuth(navigation);
