@@ -1,32 +1,26 @@
 import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
-import Constants from 'expo-constants';
 import propTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import utahIdLogo from '../assets/logo-utahid.png';
-import useAuth, { STATUS } from '../auth-providers/google';
+import useAuth, { PROVIDER_NAMES, STATUS } from '../auth/context';
 import config from '../config';
 
-export default function LoginScreen({
-  route: {
-    params: { role },
-  },
-  navigation,
-}) {
-  const { logIn, status } = useAuth();
+export default function LoginScreen({ navigation }) {
+  const { logIn, status, userType } = useAuth();
   const showSpinner = status === STATUS.loading;
   const theme = useTheme();
 
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
-  const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.goBack()} />;
-  const OauthButton = ({ children, onPress, disabled, logo }) => {
+  const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
+  const OauthButton = ({ children, providerName, logo }) => {
     const OauthLogo = () => <Image source={logo} />;
 
     return (
       <Button
-        disabled={disabled}
-        onPress={onPress}
+        disabled={status === STATUS.loading}
+        onPress={() => logIn(providerName)}
         accessoryLeft={logo && OauthLogo}
         status="info"
         appearance="outline"
@@ -38,14 +32,14 @@ export default function LoginScreen({
   };
   OauthButton.propTypes = {
     children: propTypes.string,
-    onPress: propTypes.func,
     disabled: propTypes.bool,
     logo: propTypes.any,
+    providerName: propTypes.string,
   };
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme['background-basic-color-1'] }]}>
-      {Constants.platform.ios ? <TopNavigation title="" alignment="center" accessoryLeft={BackAction} /> : null}
+      <TopNavigation title="" alignment="center" accessoryLeft={BackAction} />
       <Layout style={styles.layout}>
         <Text category="h1">Welcome</Text>
         <Image
@@ -53,15 +47,15 @@ export default function LoginScreen({
           style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
         />
         <View>
-          <OauthButton disabled={status === STATUS.loading} onPress={logIn} logo={utahIdLogo}>
+          <OauthButton providerName={PROVIDER_NAMES.utahid} logo={utahIdLogo}>
             Continue with UtahID
           </OauthButton>
-          {role === config.ROLES.public ? (
+          {userType === config.USER_TYPES.public ? (
             <>
-              <OauthButton disabled={false} onPress={() => {}} logo={null}>
+              <OauthButton providerName={PROVIDER_NAMES.facebook} logo={null}>
                 Continue with Facebook
               </OauthButton>
-              <OauthButton disabled={false} onPress={() => {}} logo={null}>
+              <OauthButton providerName={PROVIDER_NAMES.google} logo={null}>
                 Continue with Google
               </OauthButton>
             </>

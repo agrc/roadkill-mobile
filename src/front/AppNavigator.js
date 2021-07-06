@@ -6,8 +6,8 @@ import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import useAuth from './auth-providers/google';
-import ChooseRoleScreen from './screens/ChooseRole';
+import useAuth from './auth/context';
+import ChooseTypeScreen from './screens/ChooseType';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
 
@@ -15,16 +15,15 @@ const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
 
 const MainNavigator = () => {
-  const { userInfo } = useAuth();
-  console.log('userInfo', userInfo);
+  const { userInfo, userType } = useAuth();
 
   return (
-    <Navigator headerMode="none">
+    <Navigator headerMode="none" initialRouteName={!userInfo && userType ? 'login' : null}>
       {userInfo ? (
         <Screen name="main" component={MainScreen} />
       ) : (
         <>
-          <Screen name="choose-role" component={ChooseRoleScreen} />
+          <Screen name="choose-type" component={ChooseTypeScreen} />
           <Screen name="login" component={LoginScreen} />
         </>
       )}

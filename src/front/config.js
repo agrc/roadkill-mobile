@@ -16,7 +16,7 @@ export default {
   CLIENT_ID: process.env.CLIENT_ID,
   API,
   SCHEME: Constants.manifest.scheme,
-  ROLES: {
+  USER_TYPES: {
     public: 'public',
     contractor: 'contractor',
     agencyEmployee: 'agency_employee',
