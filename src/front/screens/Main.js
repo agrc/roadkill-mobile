@@ -2,10 +2,11 @@ import { Button, Divider, Layout, Text, TopNavigation } from '@ui-kitten/compone
 import propTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useAuth from '../auth-providers/google';
+import useAuth from '../auth/context';
 
-export default function MainScreen({ navigation }) {
-  const { logOut } = useAuth(navigation);
+export default function MainScreen() {
+  const { logOut } = useAuth();
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation title="WVC" alignment="center" />

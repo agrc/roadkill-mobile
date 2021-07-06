@@ -6,7 +6,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import 'react-native-get-random-values';
 import AppNavigator from './AppNavigator';
-import { AuthContextProvider } from './auth-providers/google';
+import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
 
 if (__DEV__) {
@@ -35,7 +35,7 @@ export default function App() {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-        <AuthContextProvider setReady={setAuthIsReady}>
+        <AuthContextProvider onReady={() => setAuthIsReady(true)}>
           {authIsReady ? (
             <View onLayout={onReady} style={{ flex: 1 }}>
               <AppNavigator />
