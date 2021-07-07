@@ -19,11 +19,11 @@ export default class GlobalErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     // send to back end error log
-    fetch('TODO??', {
-      method: 'POST',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error, info }),
-    });
+    // fetch('TODO??', {
+    //   method: 'POST',
+    //   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ error, info }),
+    // });
   }
 
   async restartApp() {
