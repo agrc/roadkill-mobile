@@ -28,9 +28,9 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 | branch     | version | deployed                | release-channel | expo version |
 | ---------- | ------- | ----------------------- | --------------- | ------------ |
-| production | 3.0.0   | App Stores              | production-v3.0 | 41.0.1       |
-| staging    | 3.0.0   | TestFlight/Google Alpha | staging         | 41.0.1       |
-| dev        | 3.0.0   | n/a                     | n/a             | 41.0.1       |
+| production | 3.0.0   | App Stores              | production-v3.0 | 42.0.0       |
+| staging    | 3.0.0   | TestFlight/Google Alpha | staging         | 42.0.0       |
+| dev        | 3.0.0   | n/a                     | n/a             | 42.0.0       |
 
 ### One-time Setup
 
