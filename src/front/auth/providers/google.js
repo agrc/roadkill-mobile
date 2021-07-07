@@ -1,5 +1,6 @@
 import { useIdTokenAuthRequest } from 'expo-auth-session/providers/google';
 import jwt_decode from 'jwt-decode';
+import { useAsyncError } from '../../utilities';
 
 export default function useGoogleProvider() {
   const [_, __, promptAsync] = useIdTokenAuthRequest(
@@ -13,6 +14,7 @@ export default function useGoogleProvider() {
       path: 'login',
     }
   );
+  const throwAsyncError = useAsyncError();
 
   const logIn = async () => {
     try {
@@ -21,10 +23,10 @@ export default function useGoogleProvider() {
       if (response?.type === 'success') {
         return jwt_decode(response.params.id_token);
       } else {
-        throw new Error(`${response.type} ${response.message}`);
+        throwAsyncError(new Error(`${response.type} ${response.message}`));
       }
     } catch (error) {
-      throw error;
+      throwAsyncError(error);
     }
   };
 
