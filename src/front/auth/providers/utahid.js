@@ -2,6 +2,7 @@ import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from
 import jwt_decode from 'jwt-decode';
 import * as React from 'react';
 import config from '../../config';
+import { useAsyncError } from '../../utilities';
 
 let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
 if (__DEV__) {
@@ -35,6 +36,7 @@ export default function useUtahIDProvider() {
     },
     discovery
   );
+  const throwAsyncError = useAsyncError();
 
   const logIn = async () => {
     try {
@@ -47,10 +49,10 @@ export default function useUtahIDProvider() {
 
         return jwt_decode(tokenResponse.idToken);
       } else {
-        throw new Error(`${response.type} ${response.message}`);
+        throwAsyncError(new Error(`${response.type} ${response.message}`));
       }
     } catch (error) {
-      throw error;
+      throwAsyncError(error);
     }
   };
 
@@ -67,26 +69,34 @@ export default function useUtahIDProvider() {
       return prefix + accessToken.current;
     }
 
-    return prefix + (await refreshAccessToken());
+    try {
+      return prefix + (await refreshAccessToken());
+    } catch (error) {
+      throwAsyncError(error);
+    }
   };
 
   const exchangeCodeForToken = async (code) => {
     console.log('exchangeCodeForToken');
 
-    const tokenResponse = await exchangeCodeAsync(
-      {
-        clientId: config.CLIENT_ID,
-        code,
-        redirectUri,
-        extraParams: {
-          code_verifier: request.codeVerifier,
-          code_challenge: request.codeChallenge,
+    try {
+      const tokenResponse = await exchangeCodeAsync(
+        {
+          clientId: config.CLIENT_ID,
+          code,
+          redirectUri,
+          extraParams: {
+            code_verifier: request.codeVerifier,
+            code_challenge: request.codeChallenge,
+          },
         },
-      },
-      discovery
-    );
+        discovery
+      );
 
-    return tokenResponse;
+      return tokenResponse;
+    } catch (error) {
+      throwAsyncError(error);
+    }
   };
 
   const refreshAccessToken = async () => {
@@ -96,17 +106,21 @@ export default function useUtahIDProvider() {
       return null;
     }
 
-    const tokenResponse = await refreshAsync(
-      {
-        clientId: config.CLIENT_ID,
-        refreshToken: refreshToken.current,
-      },
-      discovery
-    );
+    try {
+      const tokenResponse = await refreshAsync(
+        {
+          clientId: config.CLIENT_ID,
+          refreshToken: refreshToken.current,
+        },
+        discovery
+      );
 
-    accessToken.current = tokenResponse.accessToken;
+      accessToken.current = tokenResponse.accessToken;
 
-    return tokenResponse.accessToken;
+      return tokenResponse.accessToken;
+    } catch (error) {
+      throwAsyncError(error);
+    }
   };
 
   return { logIn, logOut, getBearerToken };
