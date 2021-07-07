@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
-import { useSecureState } from '../utilities';
+import { useAsyncError, useSecureState } from '../utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
 import useUtahIDProvider from './providers/utahid';
@@ -50,6 +50,7 @@ export function AuthContextProvider({ children, onReady }) {
     utahid: utahidProvider,
   };
   const currentProvider = React.useRef(null);
+  const throwAsyncError = useAsyncError();
 
   // best practice to speed up browser for android
   // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
@@ -84,6 +85,7 @@ export function AuthContextProvider({ children, onReady }) {
     } catch (error) {
       console.log(`error logging in: ${error.message}`);
       setStatus(STATUS.failure);
+      throwAsyncError(error);
     }
   };
 
@@ -106,7 +108,11 @@ export function AuthContextProvider({ children, onReady }) {
     }
 
     // only applicable for utahid
-    return await currentProvider.current.getBearerToken();
+    try {
+      return await currentProvider.current.getBearerToken();
+    } catch (error) {
+      throwAsyncError(error);
+    }
   };
 
   return (

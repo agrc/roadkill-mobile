@@ -38,3 +38,18 @@ export function useSecureState(key) {
 
   return [state, setState];
 }
+
+// https://github.com/facebook/react/issues/14981#issuecomment-468460187
+export function useAsyncError() {
+  const [_, setError] = React.useState(null);
+  const throwAsyncError = React.useCallback(
+    (error) => {
+      setError(() => {
+        throw error;
+      });
+    },
+    [setError]
+  );
+
+  return throwAsyncError;
+}

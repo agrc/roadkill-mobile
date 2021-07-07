@@ -4,11 +4,11 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import { View } from 'react-native';
+import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
-import GlobalErrorBoundary from './GlobalErrorBoundary';
 
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <>
-      <GlobalErrorBoundary>
+      <ErrorBoundary>
         <IconRegistry icons={EvaIconsPack} />
         <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
           <AuthContextProvider onReady={() => setAuthIsReady(true)}>
@@ -45,7 +45,7 @@ export default function App() {
             ) : null}
           </AuthContextProvider>
         </ApplicationProvider>
-      </GlobalErrorBoundary>
+      </ErrorBoundary>
     </>
   );
 }
