@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# build apps for simulators for testing before submitting to app stores
 set -e
 
 if [ $1 ]; then
@@ -27,7 +28,9 @@ curl -O "$(expo url:ipa)"
 curl -O "$(expo url:apk)"
 
 echo "opening on ios simulator"
-xcrun simctl install booted "$(basename $(expo url:ipa))"
+tar -xf "$(basename $(expo url:ipa))"
+xcrun simctl install booted ./wildlife-vehicle-collision-reporter.app
 
 echo "opening on android simulator"
 adb install "$(basename $(expo url:apk))"
+adb shell monkey -p gov.dts.ugrc.utahwvcr 1
