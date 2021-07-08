@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import useAuth from '../auth/context';
 import config from '../config';
+import RootView from '../RootView';
 
 export default function ChooseTypeScreen({ navigation }) {
   const { setUserType } = useAuth();
@@ -25,17 +26,19 @@ export default function ChooseTypeScreen({ navigation }) {
   };
 
   return (
-    <Layout style={styles.layout}>
-      <Text category="h1">I am a...</Text>
+    <RootView>
+      <Layout style={styles.layout}>
+        <Text category="h1">I am a...</Text>
 
-      <View style={styles.optionsContainer}>
-        <Option type={config.USER_TYPES.public}>
-          Member of the public that would like to report an animal carcass
-        </Option>
-        <Option type={config.USER_TYPES.contractor}>State contractor</Option>
-        <Option type={config.USER_TYPES.agencyEmployee}>State agency employee</Option>
-      </View>
-    </Layout>
+        <View style={styles.optionsContainer}>
+          <Option type={config.USER_TYPES.public}>
+            Member of the public that would like to report an animal carcass
+          </Option>
+          <Option type={config.USER_TYPES.contractor}>State contractor</Option>
+          <Option type={config.USER_TYPES.agencyEmployee}>State agency employee</Option>
+        </View>
+      </Layout>
+    </RootView>
   );
 }
 ChooseTypeScreen.propTypes = {
