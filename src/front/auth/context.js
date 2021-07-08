@@ -13,11 +13,6 @@ export const STATUS = {
   failure: 'failure',
   idle: 'idle',
 };
-export const PROVIDER_NAMES = {
-  facebook: 'facebook',
-  google: 'google',
-  utahid: 'utahid',
-};
 const USER_STORE_KEY = 'USER_INFO';
 const USER_TYPE_KEY = 'USER_TYPE';
 
@@ -30,6 +25,7 @@ export function AuthContextProvider({ children, onReady }) {
   // {
   //    providerName: string,
   //    user: object as returned from the oauth request,
+  //    registered: boolean
   // }
 
   const [userType, setUserType] = useSecureState(USER_TYPE_KEY);
@@ -39,8 +35,7 @@ export function AuthContextProvider({ children, onReady }) {
   const utahidProvider = useUtahIDProvider();
   // provider should have the following shape:
   // {
-  //   logIn: resolves with userInfo object,
-  //      userInfo needs to have a providerName property
+  //   logIn: resolves with authInfo object,
   //   logOut: resolves with null,
   //   getBearerToken: resolves with token, (utahid only)
   // }
@@ -76,12 +71,11 @@ export function AuthContextProvider({ children, onReady }) {
     setStatus(STATUS.loading);
 
     try {
-      const userInfo = await PROVIDER_LOOKUP[providerName].logIn();
-      setAuthInfo({
-        user: userInfo,
-        providerName,
-      });
+      const newAuthInfo = await PROVIDER_LOOKUP[providerName].logIn();
+      setAuthInfo(newAuthInfo);
       setStatus(STATUS.success);
+
+      return newAuthInfo.registered;
     } catch (error) {
       console.log(`error logging in: ${error.message}`);
       setStatus(STATUS.failure);
@@ -116,7 +110,7 @@ export function AuthContextProvider({ children, onReady }) {
   };
 
   return (
-    <AuthContext.Provider value={{ userInfo: authInfo, logIn, logOut, status, getBearerToken, setUserType, userType }}>
+    <AuthContext.Provider value={{ authInfo, logIn, logOut, status, getBearerToken, setUserType, userType }}>
       {children}
     </AuthContext.Provider>
   );

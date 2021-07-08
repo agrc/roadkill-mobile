@@ -47,15 +47,15 @@ export default function LoginScreen({ navigation }) {
           style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
         />
         <View>
-          <OauthButton providerName={PROVIDER_NAMES.utahid} logo={utahIdLogo}>
+          <OauthButton providerName={config.PROVIDER_NAMES.utahid} logo={utahIdLogo}>
             Continue with UtahID
           </OauthButton>
           {userType === config.USER_TYPES.public ? (
             <>
-              <OauthButton providerName={PROVIDER_NAMES.facebook} logo={null}>
+              <OauthButton providerName={config.PROVIDER_NAMES.facebook} logo={null}>
                 Continue with Facebook
               </OauthButton>
-              <OauthButton providerName={PROVIDER_NAMES.google} logo={null}>
+              <OauthButton providerName={config.PROVIDER_NAMES.google} logo={null}>
                 Continue with Google
               </OauthButton>
             </>

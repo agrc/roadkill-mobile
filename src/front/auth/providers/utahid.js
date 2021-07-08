@@ -47,7 +47,13 @@ export default function useUtahIDProvider() {
         accessToken.current = tokenResponse.accessToken;
         refreshToken.current = tokenResponse.refreshToken;
 
-        return jwt_decode(tokenResponse.idToken);
+        const user = jwt_decode(tokenResponse.idToken);
+
+        return {
+          user,
+          providerName: config.PROVIDER_NAMES.utahid,
+          registered: false, // TODO - get from backend
+        };
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }

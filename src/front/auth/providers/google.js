@@ -1,5 +1,6 @@
 import { useIdTokenAuthRequest } from 'expo-auth-session/providers/google';
 import jwt_decode from 'jwt-decode';
+import config from '../../config';
 import { useAsyncError } from '../../utilities';
 
 export default function useGoogleProvider() {
@@ -21,7 +22,13 @@ export default function useGoogleProvider() {
       const response = await promptAsync();
 
       if (response?.type === 'success') {
-        return jwt_decode(response.params.id_token);
+        const user = jwt_decode(response.params.id_token);
+
+        return {
+          user,
+          providerName: config.PROVIDER_NAMES.google,
+          registered: false, // TODO - get from backend
+        };
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }
