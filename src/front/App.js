@@ -33,19 +33,17 @@ export default function App() {
   };
 
   return (
-    <>
-      <ErrorBoundary>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-          <AuthContextProvider onReady={() => setAuthIsReady(true)}>
-            {authIsReady ? (
-              <View onLayout={onReady} style={{ flex: 1 }}>
-                <AppNavigator />
-              </View>
-            ) : null}
-          </AuthContextProvider>
-        </ApplicationProvider>
-      </ErrorBoundary>
-    </>
+    <ErrorBoundary>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
+        <AuthContextProvider onReady={() => setAuthIsReady(true)}>
+          {authIsReady ? (
+            <View onLayout={onReady} style={{ flex: 1 }}>
+              <AppNavigator />
+            </View>
+          ) : null}
+        </AuthContextProvider>
+      </ApplicationProvider>
+    </ErrorBoundary>
   );
 }

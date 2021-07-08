@@ -19,7 +19,7 @@ const MainNavigator = () => {
 
   return (
     <Navigator headerMode="none" initialRouteName={!authInfo && userType ? 'login' : null}>
-      {authInfo && authInfo.registered ? (
+      {authInfo?.registered ? (
         <Screen name="main" component={MainScreen} />
       ) : (
         <>
