@@ -1,11 +1,11 @@
 import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
-import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image, StyleSheet, View } from 'react-native';
 import utahIdLogo from '../assets/logo-utahid.png';
 import useAuth, { PROVIDER_NAMES, STATUS } from '../auth/context';
 import config from '../config';
+import RootView from '../RootView';
 
 export default function LoginScreen({ navigation }) {
   const { logIn, status, userType } = useAuth();
@@ -38,7 +38,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme['background-basic-color-1'] }]}>
+    <RootView showSpinner={showSpinner}>
       <TopNavigation title="" alignment="center" accessoryLeft={BackAction} />
       <Layout style={styles.layout}>
         <Text category="h1">Welcome</Text>
@@ -62,12 +62,7 @@ export default function LoginScreen({ navigation }) {
           ) : null}
         </View>
       </Layout>
-      {showSpinner ? (
-        <View style={[styles.spinner, { backgroundColor: theme['color-basic-transparent-600'] }]}>
-          <ActivityIndicator color={theme['color-basic-1100']} size="large" />
-        </View>
-      ) : null}
-    </SafeAreaView>
+    </RootView>
   );
 }
 
@@ -77,9 +72,6 @@ LoginScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
   layout: { flex: 1, justifyContent: 'space-around', alignItems: 'center' },
   image: {
     borderRadius: 3,
@@ -87,14 +79,5 @@ const styles = StyleSheet.create({
   },
   oauthButton: {
     marginBottom: 10,
-  },
-  spinner: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
