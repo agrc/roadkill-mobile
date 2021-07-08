@@ -21,4 +21,9 @@ export default {
     contractor: 'contractor',
     agencyEmployee: 'agency_employee',
   },
+  PROVIDER_NAMES: {
+    google: 'google',
+    facebook: 'facebook',
+    utahid: 'utahid',
+  },
 };

@@ -15,11 +15,11 @@ const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
 
 const MainNavigator = () => {
-  const { userInfo, userType } = useAuth();
+  const { authInfo, userType } = useAuth();
 
   return (
-    <Navigator headerMode="none" initialRouteName={!userInfo && userType ? 'login' : null}>
-      {userInfo ? (
+    <Navigator headerMode="none" initialRouteName={!authInfo && userType ? 'login' : null}>
+      {authInfo && authInfo.registered ? (
         <Screen name="main" component={MainScreen} />
       ) : (
         <>
