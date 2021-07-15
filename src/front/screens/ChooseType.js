@@ -28,7 +28,8 @@ export default function ChooseTypeScreen({ navigation }) {
   return (
     <RootView>
       <Layout style={styles.layout}>
-        <Text category="h1">I am a...</Text>
+        <Text category="h3">Welcome to the Utah Wildlife-Vehicle Collision Reporter</Text>
+        <Text category="h3">I am a...</Text>
 
         <View style={styles.optionsContainer}>
           <Option type={config.USER_TYPES.public}>
