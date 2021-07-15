@@ -9,7 +9,7 @@ if (__DEV__) {
   // expo adds this because it is a web server and needs to know that this is a deep link
   redirectUri += '/--/';
 }
-redirectUri += 'login';
+redirectUri += config.OAUTH_REDIRECT_SCREEN;
 
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
@@ -32,7 +32,7 @@ export default function useUtahIDProvider() {
   );
   const throwAsyncError = useAsyncError();
 
-  const logIn = async () => {
+  const logIn = async (userType) => {
     try {
       const response = await promptAsync();
 
@@ -43,10 +43,13 @@ export default function useUtahIDProvider() {
 
         const user = jwt_decode(tokenResponse.idToken);
 
+        // TODO: upsert user and get registered value
+        const registered = false;
+
         return {
           user,
           providerName: config.PROVIDER_NAMES.utahid,
-          registered: false, // TODO - get from backend
+          registered,
         };
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));

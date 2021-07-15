@@ -12,7 +12,7 @@ export default function useGoogleProvider() {
       selectAccount: true,
     },
     {
-      path: 'login',
+      path: config.OAUTH_REDIRECT_SCREEN,
     }
   );
   const throwAsyncError = useAsyncError();
@@ -24,10 +24,13 @@ export default function useGoogleProvider() {
       if (response?.type === 'success') {
         const user = jwt_decode(response.params.id_token);
 
+        // TODO: upsert user and get registered value
+        const registered = false;
+
         return {
           user,
           providerName: config.PROVIDER_NAMES.google,
-          registered: false, // TODO - get from backend
+          registered,
         };
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
