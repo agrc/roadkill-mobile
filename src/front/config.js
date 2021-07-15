@@ -26,4 +26,5 @@ export default {
     facebook: 'facebook',
     utahid: 'utahid',
   },
+  OAUTH_REDIRECT_SCREEN: 'login', // if user is already registered, then they will be sent to the main navigator
 };

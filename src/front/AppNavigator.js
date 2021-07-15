@@ -10,23 +10,27 @@ import useAuth from './auth/context';
 import ChooseTypeScreen from './screens/ChooseType';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
+import NewUserScreen from './screens/NewUser';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
 
-const MainNavigator = () => {
-  const { authInfo, userType } = useAuth();
+const AuthNavigator = () => {
+  const { userType } = useAuth();
 
   return (
-    <Navigator headerMode="none" initialRouteName={!authInfo && userType ? 'login' : null}>
-      {authInfo?.registered ? (
-        <Screen name="main" component={MainScreen} />
-      ) : (
-        <>
-          <Screen name="choose-type" component={ChooseTypeScreen} />
-          <Screen name="login" component={LoginScreen} />
-        </>
-      )}
+    <Navigator headerMode="none" initialRouteName={userType ? 'login' : null}>
+      <Screen name="choose-type" component={ChooseTypeScreen} />
+      <Screen name="login" component={LoginScreen} />
+      <Screen name="new-user" component={NewUserScreen} />
+    </Navigator>
+  );
+};
+
+const MainNavigator = () => {
+  return (
+    <Navigator headerMode="none">
+      <Screen name="main" component={MainScreen} />
     </Navigator>
   );
 };
@@ -34,6 +38,7 @@ const MainNavigator = () => {
 const AppNavigator = () => {
   const navigationRef = React.useRef(null);
   const routeNameRef = React.useRef(null);
+  const { authInfo } = useAuth();
 
   React.useEffect(() => {
     const initAnalytics = async () => {
@@ -79,7 +84,7 @@ const AppNavigator = () => {
       onStateChange={updateRouteName}
       linking={linking}
     >
-      <MainNavigator />
+      {authInfo?.user && authInfo.registered ? <MainNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

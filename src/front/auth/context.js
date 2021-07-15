@@ -39,6 +39,7 @@ export function AuthContextProvider({ children, onReady }) {
   //   logOut: resolves with null,
   //   getBearerToken: resolves with token, (utahid only)
   // }
+
   const PROVIDER_LOOKUP = {
     facebook: facebookProvider,
     google: googleProvider,
@@ -72,11 +73,11 @@ export function AuthContextProvider({ children, onReady }) {
     }
   }, [authInfo]);
 
-  const logIn = async (providerName) => {
+  const logIn = async (providerName, userType) => {
     setStatus(STATUS.loading);
 
     try {
-      const newAuthInfo = await PROVIDER_LOOKUP[providerName].logIn();
+      const newAuthInfo = await PROVIDER_LOOKUP[providerName].logIn(userType);
       setAuthInfo(newAuthInfo);
       setStatus(STATUS.success);
 
