@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
-import { useAsyncError, useSecureState } from '../utilities';
+import { isTokenExpired, useAsyncError, useSecureState } from '../utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
 import useUtahIDProvider from './providers/utahid';
@@ -60,8 +60,13 @@ export function AuthContextProvider({ children, onReady }) {
   React.useEffect(() => {
     if (authInfo === null || authInfo) {
       if (authInfo) {
-        console.log(authInfo);
-        currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
+        if (isTokenExpired(authInfo.user)) {
+          console.log('cached token is expired');
+          logIn(authInfo.providerName, userType);
+        } else {
+          console.log(authInfo);
+          currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
+        }
       }
       onReady();
     }
