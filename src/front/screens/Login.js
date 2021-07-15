@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import utahIdLogo from '../assets/logo-utahid.png';
-import useAuth, { PROVIDER_NAMES, STATUS } from '../auth/context';
+import useAuth, { STATUS } from '../auth/context';
 import config from '../config';
 import RootView from '../RootView';
 
@@ -16,11 +16,17 @@ export default function LoginScreen({ navigation }) {
   const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
   const OauthButton = ({ children, providerName, logo }) => {
     const OauthLogo = () => <Image source={logo} />;
+    const initLogIn = async () => {
+      const { registered } = await logIn(providerName, userType);
+      if (!registered) {
+        navigation.navigate('new-user');
+      }
+    };
 
     return (
       <Button
         disabled={status === STATUS.loading}
-        onPress={() => logIn(providerName)}
+        onPress={initLogIn}
         accessoryLeft={logo && OauthLogo}
         status="info"
         appearance="outline"
