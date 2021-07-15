@@ -2,7 +2,7 @@ import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from
 import jwt_decode from 'jwt-decode';
 import * as React from 'react';
 import config from '../../config';
-import { useAsyncError } from '../../utilities';
+import { isTokenExpired, useAsyncError } from '../../utilities';
 
 let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
 if (__DEV__) {
@@ -18,12 +18,6 @@ const discovery = {
   // this is not used at the moment but could be used to log the user out of the browser session
   endSessionEndpoint: 'https://login.dts.utah.gov/sso/oauth2/connect/endSession',
 };
-
-function isTokenExpired(token) {
-  const expireTime = token.exp * 1000;
-
-  return expireTime < new Date().getTime();
-}
 
 export default function useUtahIDProvider() {
   const accessToken = React.useRef(null);
