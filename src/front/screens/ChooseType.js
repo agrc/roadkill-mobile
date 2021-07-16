@@ -35,8 +35,12 @@ export default function ChooseTypeScreen({ navigation }) {
   return (
     <RootView>
       <Layout style={styles.layout}>
-        <Text category="h3">Welcome to the Utah Wildlife-Vehicle Collision Reporter</Text>
-        <Text category="h3">I am a...</Text>
+        <Text category="h3" style={styles.center}>
+          Welcome to the Utah Wildlife-Vehicle Collision Reporter
+        </Text>
+        <Text category="h3" style={styles.center}>
+          I am a...
+        </Text>
 
         <View style={styles.optionsContainer}>
           <Option type={config.USER_TYPES.public}>
@@ -67,5 +71,8 @@ const styles = StyleSheet.create({
   option: {
     marginBottom: 10,
     width: '100%',
+  },
+  center: {
+    textAlign: 'center',
   },
 });
