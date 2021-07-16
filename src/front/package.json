@@ -8,7 +8,10 @@
     "lint": "eslint .",
     "postinstall": "patch-package",
     "start": "expo start",
-    "test": "jest --watch",
+    "test": "jest --watch --coverage=false --changedSince=origin/main",
+    "test:debug": "jest -o --watch --coverage=false",
+    "test:final": "jest",
+    "update-snapshots": "jest -u --coverage=false",
     "web": "expo start --web"
   },
   "jest": {
