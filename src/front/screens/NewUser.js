@@ -45,6 +45,7 @@ export default function NewUserScreen() {
                 <Input style={styles.input} label="Email" value={authInfo?.user.email} disabled />
                 {organizationIsRequired ? (
                   <Input
+                    accessibilityRole="text"
                     style={styles.input}
                     label="Organization"
                     caption={errors.organization && touched.email ? errors.organization : null}
@@ -56,8 +57,10 @@ export default function NewUserScreen() {
                   />
                 ) : null}
                 <Input
+                  accessibilityRole="text"
                   style={styles.input}
                   label="Phone"
+                  accessibilityLabel="phone"
                   caption={errors.phone && touched.phone ? errors.phone : null}
                   keyboardType="phone-pad"
                   textContentType="telephoneNumber"

@@ -15,7 +15,14 @@ export default function ChooseTypeScreen({ navigation }) {
     };
 
     return (
-      <Button appearance="outline" style={styles.option} onPress={onPress} status="info" size="giant">
+      <Button
+        appearance="outline"
+        style={styles.option}
+        onPress={onPress}
+        status="info"
+        size="giant"
+        accessibilityRole="button"
+      >
         {children}
       </Button>
     );
