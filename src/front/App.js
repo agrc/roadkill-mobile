@@ -10,10 +10,6 @@ import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
 
-if (__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
-}
-
 export default function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
   const splashIsHidden = React.useRef(false);

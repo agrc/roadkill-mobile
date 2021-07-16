@@ -12,7 +12,7 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 
 ### Debugging
 
-React Native Debugger [currently has an issue](https://github.com/expo/expo/pull/10298) with the `expo-auth-session` package. Reactotron is an alternative for inspecting network traffic.
+I've [patched](src/front/patches/expo-random+11.2.0.patch) `expo-random` to work around [an issue](https://github.com/expo/expo/pull/10298) React Native Debugger with the `expo-auth-session` package. Reactotron is an alternative for inspecting network traffic that I've since removed.
 
 HTTP Toolkit can be used to capture network requests made from the backend. Fiddler caused issues with UtahID.
 
