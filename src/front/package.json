@@ -1,5 +1,5 @@
 {
-  "name": "roadkill-front",
+  "name": "wildlife-vehicle-collision-reporter",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "android": "expo start --android",
