@@ -4,8 +4,23 @@ import git from 'git-rev-sync';
 
 const bundleId = 'gov.dts.ugrc.utahwvcr';
 
-const googleServicesContent = fs.readFileSync(`./${process.env.GOOGLE_SERVICES_ANDROID}`);
-const googleServicesJson = JSON.parse(googleServicesContent);
+let googleServicesJson;
+if (process.env.JEST_WORKER_ID) {
+  googleServicesJson = {
+    client: [
+      {
+        api_key: [
+          {
+            current_key: '',
+          },
+        ],
+      },
+    ],
+  };
+} else {
+  const googleServicesContent = fs.readFileSync(`./${process.env.GOOGLE_SERVICES_ANDROID}`);
+  googleServicesJson = JSON.parse(googleServicesContent);
+}
 
 export default {
   name: 'Utah Wildlife-Vehicle Collision Reporter',
