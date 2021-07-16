@@ -50,7 +50,7 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 1. `git checkout staging`
 1. `./deployNewAppBuild.sh`
 1. Add testers to TestFlight and wait for app review.
-1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) to DTS to deploy to Google Play Alpha.
+1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/app-dashboard)
 
 ### Pushing a New App Build to Production
 
