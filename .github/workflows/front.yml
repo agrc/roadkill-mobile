@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npm test -- --watch=false
+        run: npm run test:final
 
   deploy-staging:
     name: Build and Deploy Tag to Staging
