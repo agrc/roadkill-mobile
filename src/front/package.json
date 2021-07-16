@@ -1,4 +1,5 @@
 {
+  "name": "roadkill-front",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "android": "expo start --android",
