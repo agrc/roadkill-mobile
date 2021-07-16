@@ -35,6 +35,7 @@
     "expo-splash-screen": "~0.11.2",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
+    "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -47,7 +48,9 @@
     "react-native-screens": "~3.4.0",
     "react-native-svg": "12.1.1",
     "react-native-web": "~0.13.12",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yup": "^0.32.9",
+    "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
