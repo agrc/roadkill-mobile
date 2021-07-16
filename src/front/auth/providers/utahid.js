@@ -4,7 +4,7 @@ import * as React from 'react';
 import config from '../../config';
 import { isTokenExpired, useAsyncError } from '../../utilities';
 
-let redirectUri = `${makeRedirectUri({ scheme: config.SCHEME })}`;
+let redirectUri = makeRedirectUri({ scheme: config.SCHEME });
 if (__DEV__) {
   // expo adds this because it is a web server and needs to know that this is a deep link
   redirectUri += '/--/';
