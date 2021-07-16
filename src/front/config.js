@@ -3,7 +3,7 @@ import Constants from 'expo-constants';
 let API = process.env.API;
 // localhost/10.0.2.2 only work for emulators running on the same machine as the dev server
 // how to handle separate devices? ngrok? localtunnel? deploy to gcp dev?
-if (__DEV__) {
+if (__DEV__ && !process.env.JEST_WORKER_ID) {
   if (!Constants.isDevice && Constants.platform.android) {
     API = API.replace('localhost', '10.0.2.2');
   } else if (Constants.isDevice) {
