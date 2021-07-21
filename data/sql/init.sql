@@ -90,7 +90,6 @@ CREATE TABLE pickup_reports
 (
   report_id integer NOT NULL REFERENCES report_infos (report_id),
   pickup_date timestamp NOT NULL CHECK (pickup_date <= CURRENT_TIMESTAMP),
-  est_time_of_death timestamp CHECK (est_time_of_death <= CURRENT_TIMESTAMP),
   route_id integer NOT NULL
 );
 
