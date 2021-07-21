@@ -11,7 +11,7 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
-      - POSTGRES_DB=roadkill
+      - POSTGRES_DB=app
 
 volumes:
   pgdata:
