@@ -1,0 +1,11 @@
+DROP USER IF EXISTS editor;
+CREATE USER editor WITH PASSWORD <changeme>;
+
+DROP USER IF EXISTS api;
+CREATE USER api WITH PASSWORD <changeme>;
+
+DROP USER IF EXISTS admin;
+CREATE USER admin WITH PASSWORD <changeme>;
+
+DROP USER IF EXISTS viewer;
+CREATE USER viewer WITH PASSWORD <changeme>;
