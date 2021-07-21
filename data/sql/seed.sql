@@ -24,8 +24,8 @@ INSERT INTO public.report_infos (user_id,animal_location,photo_location,photo,ph
   (1,'SRID=4326;POINT (-112.79974093314752 40.11589497651387)'::geography,'SRID=4326;POINT (-112.78974093314751 40.12589497651387)'::geography,'https://somebucket/image.jpg','2021-07-20 00:00:00','SRID=4326;POINT (-112.79874093314751 40.11489497651387)'::geography,'2021-07-20 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments'),
   (2,'SRID=4326;POINT (-111.79974093314752 39.11589497651387)'::geography,'SRID=4326;POINT (-111.78974093314751 39.12589497651387)'::geography,'https://somebucket/image2.jpg','2021-07-18 00:00:00','SRID=4326;POINT (-111.79874093314751 39.11489497651387)'::geography,'2021-07-18 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments');
 
-INSERT INTO public.pickup_reports (report_id,pickup_date,est_time_of_death,route_id) VALUES
-  (1,'2021-07-20 00:00:00','2021-07-19 00:00:00',1);
+INSERT INTO public.pickup_reports (report_id,pickup_date,route_id) VALUES
+  (1,'2021-07-20 00:00:00',1);
 
 INSERT INTO public.public_reports (report_id, repeat_submission, discovery_date) VALUES
   (2, true, '2021-07-18 00:00:00');
