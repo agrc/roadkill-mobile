@@ -6,9 +6,13 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
+import { clearStorage } from './utilities';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
@@ -29,16 +33,18 @@ export default function App() {
   };
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary onError={clearStorage}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
-        <AuthContextProvider onReady={() => setAuthIsReady(true)}>
-          {authIsReady ? (
-            <View onLayout={onReady} style={{ flex: 1 }}>
-              <AppNavigator />
-            </View>
-          ) : null}
-        </AuthContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthContextProvider onReady={() => setAuthIsReady(true)}>
+            {authIsReady ? (
+              <View onLayout={onReady} style={{ flex: 1 }}>
+                <AppNavigator />
+              </View>
+            ) : null}
+          </AuthContextProvider>
+        </QueryClientProvider>
       </ApplicationProvider>
     </ErrorBoundary>
   );

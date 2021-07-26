@@ -2,6 +2,7 @@ import * as eva from '@eva-design/eva';
 import { fireEvent, render } from '@testing-library/react-native';
 import { ApplicationProvider } from '@ui-kitten/components';
 import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { AuthContextProvider } from '../auth/context';
 import NewUser from './NewUser';
 
@@ -11,12 +12,15 @@ jest.mock('@react-navigation/native', () => ({ useNavigation: () => ({ navigate:
 
 describe('NewUser', () => {
   it('renders correctly', async () => {
+    const queryClient = new QueryClient();
     const { findAllByRole } = render(
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <AuthContextProvider>
-          <NewUser />
-        </AuthContextProvider>
-      </ApplicationProvider>
+      <QueryClientProvider client={queryClient}>
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <AuthContextProvider>
+            <NewUser />
+          </AuthContextProvider>
+        </ApplicationProvider>
+      </QueryClientProvider>
     );
 
     const inputs = await findAllByRole('text');

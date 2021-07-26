@@ -3,6 +3,7 @@ import { Button, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import 'yup-phone';
 import useAuth from '../auth/context';
@@ -10,39 +11,55 @@ import config from '../config';
 import RootView from '../RootView';
 
 export default function NewUserScreen() {
-  const { logOut, userType } = useAuth();
+  const { logOut, userType, authInfo, registerUser } = useAuth();
   const navigation = useNavigation();
   const organizationIsRequired = userType !== config.USER_TYPES.public;
+  const registerMutation = useMutation('register', registerUser);
 
   const shape = {
-    phone: yup.string().phone('US').required('phone is required'),
+    phone: yup.string().phone('US').required(),
   };
   if (organizationIsRequired) {
-    shape.organization = yup.string().required('organization is required');
+    shape.organization = yup.string().required();
   }
   const schema = yup.object().shape(shape);
 
-  const register = (values, { setSubmitting }) => {
-    console.log('values', values);
-    setSubmitting(false);
+  const register = async ({ phone, organization }) => {
+    await registerMutation.mutate({
+      user: {
+        phone,
+        first_name: authInfo.oauthUser.given_name,
+        last_name: authInfo.oauthUser.family_name,
+        email: authInfo.oauthUser.email,
+        auth_id: authInfo.oauthUser.sub,
+        auth_provider: authInfo.providerName,
+        role: userType,
+      },
+      organization,
+    });
   };
+
   const cancel = () => {
     navigation.navigate('login');
     logOut();
   };
 
-  const { authInfo } = useAuth();
   return (
-    <RootView>
+    <RootView showSpinner={registerMutation.isLoading}>
       <ScrollView style={styles.layout}>
         <Text category="h1">Please complete your profile</Text>
 
-        <Formik initialValues={{ phone: null, organization: null }} validationSchema={schema} onSubmit={register}>
+        <Formik
+          initialValues={{ phone: null, organization: null }}
+          validationSchema={schema}
+          onSubmit={register}
+          isSubmitting={registerMutation.isLoading}
+        >
           {({ values, handleChange, handleBlur, handleSubmit, errors, isValid, touched }) => (
             <>
               <View style={styles.inputsContainer}>
-                <Input style={styles.input} label="Name" value={authInfo?.user.name} disabled />
-                <Input style={styles.input} label="Email" value={authInfo?.user.email} disabled />
+                <Input style={styles.input} label="Name" value={authInfo?.oauthUser.name} disabled />
+                <Input style={styles.input} label="Email" value={authInfo?.oauthUser.email} disabled />
                 {organizationIsRequired ? (
                   <Input
                     accessibilityRole="text"
@@ -70,7 +87,7 @@ export default function NewUserScreen() {
                   status={errors.phone ? 'danger' : null}
                 />
               </View>
-              <Button onPress={handleSubmit} style={styles.input} disabled={!isValid}>
+              <Button onPress={handleSubmit} style={styles.input} disabled={!isValid || registerMutation.isLoading}>
                 Register
               </Button>
             </>

@@ -32,7 +32,7 @@ export default function useUtahIDProvider() {
   );
   const throwAsyncError = useAsyncError();
 
-  const logIn = async (userType) => {
+  const logIn = async () => {
     try {
       const response = await promptAsync();
 
@@ -43,14 +43,7 @@ export default function useUtahIDProvider() {
 
         const user = jwt_decode(tokenResponse.idToken);
 
-        // TODO: upsert user and get registered value
-        const registered = false;
-
-        return {
-          user,
-          providerName: config.PROVIDER_NAMES.utahid,
-          registered,
-        };
+        return user;
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }

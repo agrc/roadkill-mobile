@@ -1,5 +1,5 @@
 import got from 'got';
-import { getUser, setUser } from './user_cache.js';
+import { getUser, setUser } from '../services/user_cache.js';
 
 export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
@@ -64,7 +64,6 @@ export async function authenticate(request, response, next) {
 
     let userResponse;
     try {
-      // TODO: add cache, redis or in_memory
       userResponse = await got('https://login.dts.utah.gov/sso/oauth2/userinfo', {
         responseType: 'json',
         headers: {
