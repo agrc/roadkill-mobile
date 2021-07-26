@@ -1,4 +1,4 @@
-CREATE EXTENSION postgis;
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 DROP SCHEMA IF EXISTS tiger CASCADE;
 DROP SCHEMA IF EXISTS tiger_data CASCADE;
@@ -39,8 +39,8 @@ CREATE TABLE users
   email varchar(256) NOT NULL,
   first_name varchar(25) NOT NULL,
   last_name varchar(25) NOT NULL,
-  registered_date timestamp NOT NULL CHECK (registered_date <= CURRENT_TIMESTAMP),
-  last_logged_in timestamp NOT NULL CHECK (last_logged_in <= CURRENT_TIMESTAMP),
+  registered_date timestamp NOT NULL,
+  last_logged_in timestamp NOT NULL,
   phone varchar(25) NOT NULL
 );
 
