@@ -1,5 +1,6 @@
 import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
+import config from './config';
 
 export function useMounted() {
   const isMounted = React.useRef(true);
@@ -58,4 +59,9 @@ export function isTokenExpired(token) {
   const expireTime = token.exp * 1000;
 
   return expireTime < new Date().getTime();
+}
+
+export async function clearStorage() {
+  await SecureStorage.deleteItemAsync(config.USER_STORE_KEY);
+  await SecureStorage.deleteItemAsync(config.USER_TYPE_KEY);
 }

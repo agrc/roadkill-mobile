@@ -17,7 +17,7 @@ export default function LoginScreen({ navigation }) {
   const OauthButton = ({ children, providerName, logo }) => {
     const OauthLogo = () => <Image source={logo} />;
     const initLogIn = async () => {
-      const { registered } = await logIn(providerName, userType);
+      const registered = await logIn(providerName);
       if (!registered) {
         navigation.navigate('new-user');
       }
