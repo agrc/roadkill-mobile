@@ -17,9 +17,9 @@ export default {
   API,
   SCHEME: Constants.manifest.scheme,
   USER_TYPES: {
-    public: 'public',
+    public: 'reporter',
     contractor: 'contractor',
-    agencyEmployee: 'agency_employee',
+    agencyEmployee: 'agency',
   },
   PROVIDER_NAMES: {
     google: 'google',
@@ -27,4 +27,6 @@ export default {
     utahid: 'utahid',
   },
   OAUTH_REDIRECT_SCREEN: 'login', // if user is already registered, then they will be sent to the main navigator
+  USER_STORE_KEY: 'USER_INFO',
+  USER_TYPE_KEY: 'USER_TYPE',
 };

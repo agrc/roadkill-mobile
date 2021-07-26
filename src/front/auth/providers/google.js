@@ -24,14 +24,7 @@ export default function useGoogleProvider() {
       if (response?.type === 'success') {
         const user = jwt_decode(response.params.id_token);
 
-        // TODO: upsert user and get registered value
-        const registered = false;
-
-        return {
-          user,
-          providerName: config.PROVIDER_NAMES.google,
-          registered,
-        };
+        return user;
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }
