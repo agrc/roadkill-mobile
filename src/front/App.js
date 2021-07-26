@@ -7,12 +7,19 @@ import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import * as Sentry from 'sentry-expo';
 import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
 import { clearStorage } from './utilities';
 
 const queryClient = new QueryClient();
+
+Sentry.init({
+  dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
+  enableInExpoDevelopment: true,
+  debug: true,
+});
 
 export default function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
