@@ -65,4 +65,16 @@ export default {
       },
     },
   },
+  hooks: {
+    postPublish: [
+      {
+        file: 'sentry-expo/upload-sourcemaps',
+        config: {
+          organization: 'utah-agrc',
+          project: 'roadkill',
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+      },
+    ],
+  },
 };
