@@ -10,10 +10,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DEV_POSTGRES_PASSWORD}
       - POSTGRES_DB=app
-  api:
-    build: ./src/back
-    ports:
-      - '3000:3000'
 
 volumes:
   pgdata:
