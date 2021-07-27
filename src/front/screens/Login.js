@@ -1,7 +1,10 @@
 import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import googleBtnDisabled from '../assets/google/btn_google_signin_light_disabled_web.png';
+import googleBtn from '../assets/google/btn_google_signin_light_normal_web.png';
+import googleBtnPressed from '../assets/google/btn_google_signin_light_pressed_web.png';
 import utahIdLogo from '../assets/logo-utahid.png';
 import useAuth, { STATUS } from '../auth/context';
 import config from '../config';
@@ -11,6 +14,7 @@ export default function LoginScreen({ navigation }) {
   const { logIn, status, userType } = useAuth();
   const showSpinner = status === STATUS.loading;
   const theme = useTheme();
+  const [pressed, setPressed] = React.useState(false);
 
   const initLogIn = async (providerName) => {
     const { success, registered } = await logIn(providerName);
@@ -21,13 +25,17 @@ export default function LoginScreen({ navigation }) {
       navigation.navigate('new-user');
     }
   };
+  const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
+  const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
+  const OauthButton = ({ children, providerName, logo }) => {
+    const OauthLogo = () => <Image source={logo} resizeMode="contain" />;
 
     return (
       <Button
         disabled={status === STATUS.loading}
-        onPress={initLogIn}
+        onPress={() => initLogIn(providerName)}
         accessoryLeft={logo && OauthLogo}
-        status="info"
+        status="basic"
         appearance="outline"
         style={styles.oauthButton}
       >
@@ -51,18 +59,26 @@ export default function LoginScreen({ navigation }) {
           source={{ uri: 'https://via.placeholder.com/300x220', width: 300, height: 220 }}
           style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
         />
-        <View>
+        <View style={styles.buttonContainer}>
           <OauthButton providerName={config.PROVIDER_NAMES.utahid} logo={utahIdLogo}>
-            Continue with UtahID
+            Sign in with UtahID
           </OauthButton>
           {userType === config.USER_TYPES.public ? (
             <>
-              <OauthButton providerName={config.PROVIDER_NAMES.facebook} logo={null}>
+              {/* <OauthButton providerName={config.PROVIDER_NAMES.facebook} logo={null}>
                 Continue with Facebook
-              </OauthButton>
-              <OauthButton providerName={config.PROVIDER_NAMES.google} logo={null}>
-                Continue with Google
-              </OauthButton>
+              </OauthButton> */}
+              <Pressable
+                onPress={() => initLogIn(config.PROVIDER_NAMES.google)}
+                disabled={showSpinner}
+                onPressIn={() => setPressed(true)}
+                onPressOut={() => setPressed(false)}
+              >
+                <Image
+                  source={showSpinner ? googleBtnDisabled : pressed ? googleBtnPressed : googleBtn}
+                  style={styles.googleBtn}
+                />
+              </Pressable>
             </>
           ) : null}
         </View>
@@ -82,7 +98,14 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
   },
+  buttonContainer: {
+    alignItems: 'center',
+  },
   oauthButton: {
     marginBottom: 10,
+  },
+  googleBtn: {
+    resizeMode: 'contain',
+    height: 60,
   },
 });
