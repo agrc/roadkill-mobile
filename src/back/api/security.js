@@ -54,20 +54,31 @@ export async function getToken(request, response) {
 
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
-    const token = request.headers.authorization.split(' ').pop();
-    const cachedUser = await getUser(token);
-    if (cachedUser) {
-      response.locals.user = cachedUser;
+    const [authProvider, authToken] = request.headers.authorization.split(':');
+    const token = authToken.split(' ').pop();
+    const isJWTToken = authProvider === 'utahid';
 
-      return next();
+    if (isJWTToken) {
+      const cachedUser = await getUser(token);
+      if (cachedUser) {
+        response.locals.user = cachedUser;
+
+        return next();
+      }
     }
 
     let userResponse;
+    const userInfos = {
+      utahid: 'https://login.dts.utah.gov/sso/oauth2/userinfo',
+      google: 'https://openidconnect.googleapis.com/v1/userinfo',
+      facebook: '??',
+    };
+
     try {
-      userResponse = await got('https://login.dts.utah.gov/sso/oauth2/userinfo', {
+      userResponse = await got(userInfos[authProvider], {
         responseType: 'json',
         headers: {
-          Authorization: request.headers.authorization,
+          Authorization: authToken,
         },
         retry: 5,
         throwHttpErrors: false,
@@ -81,7 +92,9 @@ export async function authenticate(request, response, next) {
     if (userResponse.statusCode === 200 && userResponse.body) {
       response.locals.user = userResponse.body;
 
-      setUser(token, userResponse.body);
+      if (isJWTToken) {
+        setUser(token, userResponse.body);
+      }
 
       return next();
     }

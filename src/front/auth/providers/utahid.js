@@ -60,9 +60,7 @@ export default function useUtahIDProvider() {
   };
 
   const getBearerToken = async () => {
-    console.log('getBearerToken');
-
-    const prefix = 'Bearer ';
+    const prefix = `${config.PROVIDER_NAMES.utahid}:Bearer `;
     if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
       return prefix + accessToken.current;
     }
