@@ -56,6 +56,10 @@ export function useAsyncError() {
 }
 
 export function isTokenExpired(token) {
+  if (typeof token === 'string') {
+    throw new Error('token must be an object, did you forget to decode it?');
+  }
+
   const expireTime = token.exp * 1000;
 
   return expireTime < new Date().getTime();
