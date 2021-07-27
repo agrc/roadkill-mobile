@@ -40,14 +40,14 @@ describe('AppNavigator', () => {
         </ApplicationProvider>
       </View>
     );
-    const { findByText, findAllByText } = render(component);
+    const { findByText, findAllByAccessibilityLabel } = render(component);
 
     const publicButton = await findByText(/public/);
     fireEvent.press(publicButton);
 
-    const authButtons = await findAllByText(/continue/i);
+    const authButtons = await findAllByAccessibilityLabel(/sign in/i);
 
-    expect(authButtons.length).toBe(3);
+    expect(authButtons.length).toBe(2);
   });
   it('filters the auth options appropriately for public', async () => {
     const component = (
@@ -61,12 +61,12 @@ describe('AppNavigator', () => {
         </ApplicationProvider>
       </View>
     );
-    const { findByText, findAllByText } = render(component);
+    const { findByText, findAllByAccessibilityLabel } = render(component);
 
     const button = await findByText(/contractor/);
     fireEvent.press(button);
 
-    const authButtons = await findAllByText(/continue/i);
+    const authButtons = await findAllByAccessibilityLabel(/sign in/i);
 
     expect(authButtons.length).toBe(1);
   });
@@ -82,12 +82,12 @@ describe('AppNavigator', () => {
         </ApplicationProvider>
       </View>
     );
-    const { findByText, findAllByText } = render(component);
+    const { findByText, findAllByAccessibilityLabel } = render(component);
 
     const button = await findByText(/agency/);
     fireEvent.press(button);
 
-    const authButtons = await findAllByText(/continue/i);
+    const authButtons = await findAllByAccessibilityLabel(/sign in/i);
 
     expect(authButtons.length).toBe(1);
   });
