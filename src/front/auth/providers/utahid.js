@@ -44,6 +44,8 @@ export default function useUtahIDProvider() {
         const user = jwt_decode(tokenResponse.idToken);
 
         return user;
+      } else if (response?.type === 'cancel') {
+        return null;
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }

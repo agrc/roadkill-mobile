@@ -78,7 +78,16 @@ export function AuthContextProvider({ children, onReady }) {
 
     try {
       const oauthUser = await PROVIDER_LOOKUP[providerName].logIn();
-      const token = await PROVIDER_LOOKUP[providerName].getBearerToken();
+
+      let token;
+      if (oauthUser) {
+        token = await PROVIDER_LOOKUP[providerName].getBearerToken();
+      } else {
+        // user cancelled login
+        setStatus(STATUS.idle);
+
+        return { success: false, registered: false };
+      }
 
       const response = await fetch(`${config.API}/login`, {
         method: 'POST',
@@ -105,7 +114,7 @@ export function AuthContextProvider({ children, onReady }) {
 
       setStatus(STATUS.success);
 
-      return registered;
+      return { success: user !== null, registered };
     } catch (error) {
       console.log(`error logging in: ${error.message}`);
       setStatus(STATUS.failure);

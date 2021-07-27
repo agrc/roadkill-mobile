@@ -25,6 +25,8 @@ export default function useGoogleProvider() {
         const user = jwt_decode(response.params.id_token);
 
         return user;
+      } else if (response?.type === 'cancel') {
+        return null;
       } else {
         throwAsyncError(new Error(`${response.type} ${response.message}`));
       }
