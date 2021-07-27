@@ -38,6 +38,8 @@ export default function LoginScreen({ navigation }) {
         status="basic"
         appearance="outline"
         style={styles.oauthButton}
+        accessible={true}
+        accessibilityLabel={`sign in with ${providerName}`}
       >
         {children}
       </Button>
@@ -73,6 +75,8 @@ export default function LoginScreen({ navigation }) {
                 disabled={showSpinner}
                 onPressIn={() => setPressed(true)}
                 onPressOut={() => setPressed(false)}
+                accessible={true}
+                accessibilityLabel="sign in with google"
               >
                 <Image
                   source={showSpinner ? googleBtnDisabled : pressed ? googleBtnPressed : googleBtn}
