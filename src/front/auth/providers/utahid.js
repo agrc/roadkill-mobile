@@ -63,7 +63,7 @@ export default function useUtahIDProvider() {
     console.log('getBearerToken');
 
     const prefix = 'Bearer ';
-    if (accessToken.current && !isTokenExpired(accessToken.current)) {
+    if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
       return prefix + accessToken.current;
     }
 
@@ -100,7 +100,7 @@ export default function useUtahIDProvider() {
   const refreshAccessToken = async () => {
     console.log('refreshAccessToken');
 
-    if (!refreshToken.current || isTokenExpired(refreshToken.current)) {
+    if (!refreshToken.current || isTokenExpired(jwd_decode(refreshToken.current))) {
       return null;
     }
 
