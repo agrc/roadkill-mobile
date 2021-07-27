@@ -60,7 +60,9 @@ export default function useGoogleProvider() {
     return user;
   };
 
-  const logOut = () => {};
+  const logOut = () => {
+    authentication.current = null;
+  };
 
   const getBearerToken = async () => {
     const prefix = `${config.PROVIDER_NAMES.google}:Bearer `;
