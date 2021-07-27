@@ -12,16 +12,15 @@ export default function LoginScreen({ navigation }) {
   const showSpinner = status === STATUS.loading;
   const theme = useTheme();
 
-  const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
-  const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
-  const OauthButton = ({ children, providerName, logo }) => {
-    const OauthLogo = () => <Image source={logo} />;
-    const initLogIn = async () => {
-      const registered = await logIn(providerName);
-      if (!registered) {
-        navigation.navigate('new-user');
-      }
-    };
+  const initLogIn = async (providerName) => {
+    const { success, registered } = await logIn(providerName);
+    if (!success) {
+      return;
+    }
+    if (!registered) {
+      navigation.navigate('new-user');
+    }
+  };
 
     return (
       <Button
