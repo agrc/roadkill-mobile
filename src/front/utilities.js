@@ -62,7 +62,7 @@ export function isTokenExpired(token) {
 
   const expireTime = token.exp * 1000;
 
-  return expireTime < new Date().getTime();
+  return expireTime < Date.now();
 }
 
 export async function clearStorage() {

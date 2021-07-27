@@ -73,7 +73,7 @@ export function AuthContextProvider({ children, onReady }) {
     }
   }, [authInfo]);
 
-  const logIn = async (providerName, userType) => {
+  const logIn = async (providerName) => {
     setStatus(STATUS.loading);
 
     try {
@@ -114,11 +114,12 @@ export function AuthContextProvider({ children, onReady }) {
 
       setStatus(STATUS.success);
 
-      return { success: user !== null, registered };
+      return { success: true, registered };
     } catch (error) {
-      console.log(`error logging in: ${error.message}`);
+      console.log(`error logging in: ${error?.message}`);
       setStatus(STATUS.failure);
-      throwAsyncError(error);
+
+      return { success: false, registered: false };
     }
   };
 
