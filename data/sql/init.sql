@@ -24,7 +24,7 @@ CREATE TABLE organizations
 (
   id serial PRIMARY KEY,
   name varchar(128) NOT NULL,
-  org_type org_types NOT NULL
+  org_type org_types
 );
 
 DROP TABLE IF EXISTS users CASCADE;
