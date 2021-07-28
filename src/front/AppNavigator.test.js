@@ -47,9 +47,9 @@ describe('AppNavigator', () => {
 
     const authButtons = await findAllByAccessibilityLabel(/sign in/i);
 
-    expect(authButtons.length).toBe(2);
+    expect(authButtons.length).toBe(3);
   });
-  it('filters the auth options appropriately for public', async () => {
+  it('filters the auth options appropriately for contractor', async () => {
     const component = (
       // if I use a fragment rather than a view below, the press event chokes
       <View>
@@ -70,7 +70,7 @@ describe('AppNavigator', () => {
 
     expect(authButtons.length).toBe(1);
   });
-  it('filters the auth options appropriately for public', async () => {
+  it('filters the auth options appropriately for agency', async () => {
     const component = (
       // if I use a fragment rather than a view below, the press event chokes
       <View>
