@@ -48,6 +48,9 @@ export default {
     googleServicesFile: `./${process.env.GOOGLE_SERVICES_IOS}`,
     buildNumber: git.count().toString(),
     supportsTablet: true,
+    config: {
+      usesNonExemptEncryption: false,
+    },
   },
   android: {
     package: bundleId,
