@@ -2,6 +2,9 @@ import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useThem
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import facebookBtnDisabled from '../assets/facebook/btn_light_disabled.png';
+import facebookBtn from '../assets/facebook/btn_light_normal.png';
+import facebookBtnPressed from '../assets/facebook/btn_light_pressed.png';
 import googleBtnDisabled from '../assets/google/btn_google_signin_light_disabled_web.png';
 import googleBtn from '../assets/google/btn_google_signin_light_normal_web.png';
 import googleBtnPressed from '../assets/google/btn_google_signin_light_pressed_web.png';
@@ -14,7 +17,6 @@ export default function LoginScreen({ navigation }) {
   const { logIn, status, userType } = useAuth();
   const showSpinner = status === STATUS.loading;
   const theme = useTheme();
-  const [pressed, setPressed] = React.useState(false);
 
   const initLogIn = async (providerName) => {
     const { success, registered } = await logIn(providerName);
@@ -27,29 +29,29 @@ export default function LoginScreen({ navigation }) {
   };
   const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
   const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
-  const OauthButton = ({ children, providerName, logo }) => {
-    const OauthLogo = () => <Image source={logo} resizeMode="contain" />;
 
+  const UtahIdLogoImage = () => <Image source={utahIdLogo} resizeMode="contain" />;
+  const SocialButton = ({ providerName, normalImage, disabledImage, pressedImage }) => {
+    const [pressed, setPressed] = React.useState(false);
     return (
-      <Button
-        disabled={status === STATUS.loading}
+      <Pressable
         onPress={() => initLogIn(providerName)}
-        accessoryLeft={logo && OauthLogo}
-        status="basic"
-        appearance="outline"
-        style={styles.oauthButton}
+        disabled={showSpinner}
+        onPressIn={() => setPressed(true)}
+        onPressOut={() => setPressed(false)}
         accessible={true}
         accessibilityLabel={`sign in with ${providerName}`}
+        style={styles.oauthButton}
       >
-        {children}
-      </Button>
+        <Image source={showSpinner ? disabledImage : pressed ? pressedImage : normalImage} style={styles.socialImage} />
+      </Pressable>
     );
   };
-  OauthButton.propTypes = {
-    children: propTypes.string,
-    disabled: propTypes.bool,
-    logo: propTypes.any,
-    providerName: propTypes.string,
+  SocialButton.propTypes = {
+    providerName: propTypes.string.isRequired,
+    normalImage: propTypes.node.isRequired,
+    disabledImage: propTypes.node.isRequired,
+    pressedImage: propTypes.node.isRequired,
   };
 
   return (
@@ -62,27 +64,32 @@ export default function LoginScreen({ navigation }) {
           style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
         />
         <View style={styles.buttonContainer}>
-          <OauthButton providerName={config.PROVIDER_NAMES.utahid} logo={utahIdLogo}>
+          <Button
+            disabled={status === STATUS.loading}
+            onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}
+            accessoryLeft={UtahIdLogoImage}
+            status="basic"
+            appearance="outline"
+            style={styles.oauthButton}
+            accessible={true}
+            accessibilityLabel="sign in with utahid"
+          >
             Sign in with UtahID
-          </OauthButton>
+          </Button>
           {userType === config.USER_TYPES.public ? (
             <>
-              {/* <OauthButton providerName={config.PROVIDER_NAMES.facebook} logo={null}>
-                Continue with Facebook
-              </OauthButton> */}
-              <Pressable
-                onPress={() => initLogIn(config.PROVIDER_NAMES.google)}
-                disabled={showSpinner}
-                onPressIn={() => setPressed(true)}
-                onPressOut={() => setPressed(false)}
-                accessible={true}
-                accessibilityLabel="sign in with google"
-              >
-                <Image
-                  source={showSpinner ? googleBtnDisabled : pressed ? googleBtnPressed : googleBtn}
-                  style={styles.googleBtn}
-                />
-              </Pressable>
+              <SocialButton
+                providerName={config.PROVIDER_NAMES.google}
+                normalImage={googleBtn}
+                disabledImage={googleBtnDisabled}
+                pressedImage={googleBtnPressed}
+              />
+              <SocialButton
+                providerName={config.PROVIDER_NAMES.facebook}
+                normalImage={facebookBtn}
+                disabledImage={facebookBtnDisabled}
+                pressedImage={facebookBtnPressed}
+              />
             </>
           ) : null}
         </View>
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
   oauthButton: {
     marginBottom: 10,
   },
-  googleBtn: {
+  socialImage: {
     resizeMode: 'contain',
     height: 60,
   },

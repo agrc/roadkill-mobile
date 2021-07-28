@@ -71,7 +71,7 @@ export async function authenticate(request, response, next) {
     const userInfos = {
       utahid: 'https://login.dts.utah.gov/sso/oauth2/userinfo',
       google: 'https://openidconnect.googleapis.com/v1/userinfo',
-      facebook: '??',
+      facebook: `https://graph.facebook.com/me?access_token=${token}`,
     };
 
     try {
