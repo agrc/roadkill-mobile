@@ -1,7 +1,6 @@
 import { getUser, isExistingUser, registerUser, updateUser } from '../services/user_management.js';
 
 export async function register(request, response) {
-  // check if user has already been registered
   const { user, organization } = request.body;
 
   if (await isExistingUser(user)) {
