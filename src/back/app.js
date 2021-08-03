@@ -1,7 +1,9 @@
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
+import expressWinston from 'express-winston';
 import helmet from 'helmet';
+import winston from 'winston';
 import { authenticate, getToken } from './api/security.js';
 import { login, register } from './api/user.js';
 import validate from './api/validation.js';
@@ -24,6 +26,49 @@ app.use(helmet());
 
 app.use(cors());
 
+app.use(
+  expressWinston.logger({
+    transports: [new winston.transports.Console()],
+    metaField: null, //this causes the metadata to be stored at the root of the log entry
+    responseField: null, // this prevents the response from being included in the metadata (including body and status code)
+    requestWhitelist: ['url', 'method', 'httpVersion', 'originalUrl', 'query', 'body'],
+    responseWhitelist: ['body'], // this populates the `res.body` so we can get the response size (not required)
+    format: winston.format.json(),
+    ignoreRoute: (request) => request?.route?.path === '/login',
+    dynamicMeta: (req, res) => {
+      const httpRequest = {};
+      const meta = {};
+      if (req) {
+        meta.httpRequest = httpRequest;
+        httpRequest.requestMethod = req.method;
+        httpRequest.requestUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+        httpRequest.remoteIp = req.ip.indexOf(':') >= 0 ? req.ip.substring(req.ip.lastIndexOf(':') + 1) : req.ip; // just ipv4
+        httpRequest.requestSize = req.socket.bytesRead;
+        httpRequest.userAgent = req.get('User-Agent');
+        httpRequest.referrer = req.get('Referrer');
+      }
+
+      if (res) {
+        meta.httpRequest = httpRequest;
+        httpRequest.status = res.statusCode;
+        httpRequest.latency = {
+          seconds: Math.floor(res.responseTime / 1000),
+          nanos: (res.responseTime % 1000) * 1000000,
+        };
+        if (res.body) {
+          if (typeof res.body === 'object') {
+            httpRequest.responseSize = JSON.stringify(res.body).length;
+          } else if (typeof res.body === 'string') {
+            httpRequest.responseSize = res.body.length;
+          }
+        }
+      }
+      return meta;
+    },
+    meta: true,
+  })
+);
+
 function handleAsyncErrors(callback) {
   // could be replaced with https://www.npmjs.com/package/express-async-errors
   // this will be done by default at express 5.0
@@ -38,5 +83,12 @@ app.post('/token', handleAsyncErrors(getToken));
 
 app.post('/register', handleAsyncErrors(authenticate), validate(registerSchema), handleAsyncErrors(register));
 app.post('/login', handleAsyncErrors(authenticate), validate(loginSchema), handleAsyncErrors(login));
+
+app.use(
+  expressWinston.errorLogger({
+    transports: [new winston.transports.Console()],
+    format: winston.format.combine(winston.format.colorize(), winston.format.json()),
+  })
+);
 
 export default app;
