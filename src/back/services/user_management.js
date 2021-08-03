@@ -56,13 +56,12 @@ export async function registerUser(organization, user) {
     let orgInsertResult;
     if (organization) {
       orgInsertResult = await transaction('organizations').insert(organization, 'id');
-      console.log('orgInsertResult', orgInsertResult);
     }
     await transaction('users').insert({
       ...user,
       registered_date: now,
       last_logged_in: now,
-      organization_id: orgInsertResult[0] ? orgInsertResult[0] : null,
+      organization_id: organization ? orgInsertResult[0] : null,
     });
   });
 }

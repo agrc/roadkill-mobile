@@ -35,10 +35,12 @@ export default function NewUserScreen() {
         auth_provider: authInfo.providerName,
         role: userType,
       },
-      organization: {
-        name: organization,
-        org_type: userType,
-      },
+      organization: organizationIsRequired
+        ? {
+            name: organization,
+            org_type: userType,
+          }
+        : null,
     });
   };
 
