@@ -30,6 +30,7 @@ curl -O "$(expo url:apk)"
 echo "opening on ios simulator"
 tar -xf "$(basename $(expo url:ipa))"
 xcrun simctl install booted ./wildlife-vehicle-collision-reporter.app
+xcrun simctl launch booted gov.dts.ugrc.utahwvcr
 
 echo "opening on android simulator"
 adb install "$(basename $(expo url:apk))"
