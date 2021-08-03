@@ -117,6 +117,7 @@ export function AuthContextProvider({ children, onReady }) {
       return { success: true, registered };
     } catch (error) {
       console.log(`error logging in: ${error?.message}`);
+      Sentry.Native.captureException(error);
       setStatus(STATUS.failure);
 
       return { success: false, registered: false };
