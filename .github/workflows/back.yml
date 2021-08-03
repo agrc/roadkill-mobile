@@ -80,13 +80,8 @@ jobs:
           gcloud --quiet auth configure-docker
 
       - name: Build Image
-        env:
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: |-
           docker build \
-            --build-arg "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
-            --build-arg "DATABASE_HOST=$DATABASE_HOST" \
             -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
             -t "${{ steps.variables.outputs.image }}:latest" \
             .
@@ -101,7 +96,8 @@ jobs:
             --quiet \
             --platform "managed" \
             --region "us-central1" \
-            --image "${{ steps.variables.outputs.image }}:latest"
+            --image "${{ steps.variables.outputs.image }}:latest" \
+            --update-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }},DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
 
   deploy-prod:
     name: Build and Deploy to Production
@@ -143,13 +139,8 @@ jobs:
           gcloud --quiet auth configure-docker
 
       - name: Build Image
-        env:
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: |-
           docker build \
-            --build-arg "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
-            --build-arg "DATABASE_HOST=$DATABASE_HOST" \
             -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
             -t "${{ steps.variables.outputs.image }}:latest" \
             .
@@ -164,4 +155,5 @@ jobs:
             --quiet \
             --platform "managed" \
             --region "us-central1" \
-            --image "${{ steps.variables.outputs.image }}:latest"
+            --image "${{ steps.variables.outputs.image }}:latest" \
+            --update-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }},DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
