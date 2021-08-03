@@ -1,3 +1,4 @@
+import { LoggingWinston } from '@google-cloud/logging-winston';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
@@ -28,7 +29,7 @@ app.use(cors());
 
 app.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console()],
+    transports: [new LoggingWinston()],
     metaField: null, //this causes the metadata to be stored at the root of the log entry
     responseField: null, // this prevents the response from being included in the metadata (including body and status code)
     requestWhitelist: ['url', 'method', 'httpVersion', 'originalUrl', 'query', 'body'],
