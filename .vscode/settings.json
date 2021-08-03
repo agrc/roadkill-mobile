@@ -5,6 +5,7 @@
     "POSTGRES",
     "Reactotron",
     "Recents",
+    "cloudsql",
     "formik",
     "formurlencoded",
     "inblow",
