@@ -39,8 +39,14 @@ export default function App() {
     }
   };
 
+  const onError = (error) => {
+    Sentry.Native.captureException(error);
+    clearStorage();
+    SplashScreen.hideAsync();
+  };
+
   return (
-    <ErrorBoundary onError={clearStorage}>
+    <ErrorBoundary onError={onError}>
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <QueryClientProvider client={queryClient}>
