@@ -79,6 +79,7 @@ export default {
           organization: 'utah-agrc',
           project: 'roadkill',
           authToken: process.env.SENTRY_AUTH_TOKEN,
+          environment: git.branch(),
         },
       },
     ],
