@@ -82,6 +82,7 @@ jobs:
       - name: Build Image
         run: |-
           docker build \
+            --build-arg "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
             -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
             -t "${{ steps.variables.outputs.image }}:latest" \
             .
@@ -140,6 +141,7 @@ jobs:
       - name: Build Image
         run: |-
           docker build \
+            --build-arg "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
             -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
             -t "${{ steps.variables.outputs.image }}:latest" \
             .

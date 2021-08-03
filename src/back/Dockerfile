@@ -1,5 +1,7 @@
 FROM node:14
 
+ARG DATABASE_PASSWORD
+
 ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
