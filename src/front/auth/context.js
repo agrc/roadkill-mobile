@@ -63,7 +63,7 @@ export function AuthContextProvider({ children, onReady }) {
       if (authInfo) {
         if (isTokenExpired(authInfo.oauthUser)) {
           console.log('cached token is expired');
-          logIn(authInfo.providerName);
+          return logIn(authInfo.providerName).then(onReady).catch(throwAsyncError);
         } else {
           console.log(authInfo);
           currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
