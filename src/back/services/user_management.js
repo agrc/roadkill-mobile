@@ -1,6 +1,7 @@
 import knex from 'knex';
 import yup from 'yup';
 
+console.log('process.env.DATABASE_HOST', process.env.DATABASE_HOST);
 const db = knex({
   client: 'pg',
   connection: {
