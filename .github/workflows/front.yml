@@ -67,13 +67,17 @@ jobs:
 
       - name: Publish
         run: |
-          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
-          export API="${{ secrets.API }}"
-          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
           echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 -d > ./google-services.json
           echo "${{ secrets.GOOGLE_SERVICES_IOS }}" | base64 -d > ./GoogleService-Info.plist
+          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
+          export API="${{ secrets.API }}"
           export GOOGLE_SERVICES_ANDROID=google-services.json
           export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
+          export FIREBASE_MEASUREMENT_ID="${{ secrets.FIREBASE_MEASUREMENT_ID }}"
+          export GOOGLE_OAUTH_CLIENT_ID_IOS="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}"
+          export GOOGLE_OAUTH_CLIENT_ID_ANDROID="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}"
+          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
+          export SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}"
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
 
@@ -108,12 +112,16 @@ jobs:
 
       - name: Publish
         run: |
-          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
-          export API="${{ secrets.API }}"
-          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
           echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 -d > ./google-services.json
           echo "${{ secrets.GOOGLE_SERVICES_IOS }}" | base64 -d > ./GoogleService-Info.plist
+          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
+          export API="${{ secrets.API }}"
           export GOOGLE_SERVICES_ANDROID=google-services.json
           export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
+          export FIREBASE_MEASUREMENT_ID="${{ secrets.FIREBASE_MEASUREMENT_ID }}"
+          export GOOGLE_OAUTH_CLIENT_ID_IOS="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}"
+          export GOOGLE_OAUTH_CLIENT_ID_ANDROID="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}"
+          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
+          export SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}"
           npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
           npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
