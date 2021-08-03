@@ -40,6 +40,7 @@
     "expo-auth-session": "~3.3.1",
     "expo-constants": "~11.0.1",
     "expo-device": "~3.3.0",
+    "expo-facebook": "~11.3.1",
     "expo-firebase-analytics": "~4.1.0",
     "expo-linking": "~2.3.1",
     "expo-random": "~11.2.0",
@@ -65,8 +66,7 @@
     "sentry-expo": "^4.0.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9",
-    "yup-phone": "^1.2.19",
-    "expo-facebook": "~11.3.1"
+    "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
