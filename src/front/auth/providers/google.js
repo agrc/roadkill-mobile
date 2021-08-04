@@ -44,7 +44,9 @@ export default function useGoogleProvider() {
         console.log('authentication successful');
         console.log(promptResponse);
         if (!promptResponse.authentication) {
-          exchangePromise.current = new Promise();
+          exchangePromise.current = new Promise((resolve, reject) => {
+            exchangePromise.current = { resolve, reject };
+          });
 
           return exchangePromise.current;
         }
