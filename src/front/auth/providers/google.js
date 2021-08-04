@@ -44,11 +44,11 @@ export default function useGoogleProvider() {
         console.log('authentication successful');
         console.log(promptResponse);
         if (!promptResponse.authentication) {
-          exchangePromise.current = new Promise((resolve, reject) => {
+          const promise = new Promise((resolve, reject) => {
             exchangePromise.current = { resolve, reject };
           });
 
-          return exchangePromise.current;
+          return promise;
         }
 
         return promptResponse.authentication;
