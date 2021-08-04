@@ -30,7 +30,8 @@ export default function useGoogleProvider() {
 
       if (promptResponse?.type === 'success') {
         authentication.current = promptResponse.authentication;
-        console.log('authentication', JSON.stringify(promptResponse.authentication));
+        console.log('authentication');
+        console.log(JSON.stringify(promptResponse));
 
         return promptResponse.authentication;
       } else if (promptResponse?.type === 'cancel') {
