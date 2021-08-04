@@ -29,4 +29,4 @@ curl -O "$(expo url:apk)"
 echo "uploading to testflight"
 fastlane pilot upload -u stdavis@utah.gov
 
-echo "*** don't forget to submit a ticket to DTS to upload the android package"
+echo "*** don't forget to upload the android package to the Google Play Console"
