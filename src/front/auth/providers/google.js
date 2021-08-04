@@ -55,7 +55,7 @@ export default function useGoogleProvider() {
       } else if (promptResponse?.type === 'cancel') {
         return null;
       } else {
-        new Error(`${promptResponse.type} ${promptResponse.message ? promptResponse.message : null}`);
+        throwAsyncError(new Error(`response.type: ${response.type}; response: ${JSON.stringify(response)}`));
       }
     } catch (error) {
       throwAsyncError(error);
