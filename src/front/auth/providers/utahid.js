@@ -10,6 +10,7 @@ if (__DEV__) {
   redirectUri += '/--/';
 }
 redirectUri += config.OAUTH_REDIRECT_SCREEN;
+console.log('redirectUri', redirectUri);
 
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
@@ -47,7 +48,7 @@ export default function useUtahIDProvider() {
       } else if (response?.type === 'cancel') {
         return null;
       } else {
-        throwAsyncError(new Error(`${response.type} ${response.message}`));
+        throwAsyncError(new Error(`response.type: ${response.type}; response: ${JSON.stringify(response)}`));
       }
     } catch (error) {
       throwAsyncError(error);
