@@ -1,3 +1,4 @@
+import { ResponseType } from 'expo-auth-session';
 import { useAuthRequest } from 'expo-auth-session/providers/google';
 import React from 'react';
 import config from '../../config';
@@ -11,18 +12,18 @@ export const isAuthenticationExpired = (auth) => {
 
 export default function useGoogleProvider() {
   const authentication = React.useRef(null);
-  const promptAsync = useAuthRequest(
+  const [_, result, promptAsync] = useAuthRequest(
     {
       expoClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_EXPO_GO,
       androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
       iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
-      shouldAutoExchangeCode: true,
+      responseType: ResponseType.TOKEN,
     },
     {
       path: config.OAUTH_REDIRECT_SCREEN,
     }
-  )[2];
+  );
   const throwAsyncError = useAsyncError();
 
   const getAuthentication = async () => {
