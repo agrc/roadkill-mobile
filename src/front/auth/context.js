@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
+import * as Sentry from 'sentry-expo';
 import config from '../config';
 import { isTokenExpired, useAsyncError, useSecureState } from '../utilities';
 import useFacebookProvider from './providers/facebook';
