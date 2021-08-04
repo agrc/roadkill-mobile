@@ -1,4 +1,3 @@
-import { ResponseType } from 'expo-auth-session';
 import { useAuthRequest } from 'expo-auth-session/providers/google';
 import React from 'react';
 import config from '../../config';
@@ -19,8 +18,6 @@ export default function useGoogleProvider() {
       androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
       iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
-      responseType: ResponseType.TOKEN,
-      shouldAutoExchangeCode: true,
     },
     {
       path: config.OAUTH_REDIRECT_SCREEN,
@@ -29,6 +26,7 @@ export default function useGoogleProvider() {
   const throwAsyncError = useAsyncError();
 
   React.useEffect(() => {
+    if (!exchangePromise.current) return;
     if (result?.type === 'success' && result.authentication) {
       authentication.current = result.authentication;
       exchangePromise.current.resolve(result.authentication);
