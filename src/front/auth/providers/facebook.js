@@ -44,10 +44,15 @@ export default function useFacebookProvider() {
       return null;
     }
 
-    const response = await fetch(
-      `https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,name,email`
-    );
-    const user = await response.json();
+    let user;
+    try {
+      const response = await fetch(
+        `https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,name,email`
+      );
+      user = await response.json();
+    } catch (error) {
+      throwAsyncError(error);
+    }
 
     return {
       name: user.name,
