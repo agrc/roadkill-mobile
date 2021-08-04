@@ -123,7 +123,7 @@ export function AuthContextProvider({ children, onReady }) {
       Sentry.Native.captureException(error);
       setStatus(STATUS.failure);
 
-      return { success: false, registered: false };
+      throw error;
     }
   };
 
