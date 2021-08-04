@@ -80,6 +80,12 @@ Because app builds initiate from both the developer's machine (new native builds
 
 Note that google oauth is done exclusively through the prod GCP project for all app environments since there's no real need to differentiate between environments.
 
+#### Adding new test users
+
+Android Devices: Add users to the [internal testing users](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/internal-testing?tab=testers) and then send them [this invitation link](https://play.google.com/store/apps/details?id=gov.dts.ugrc.utahwvcr&authuser=1&ah=ChL7Bt5Ub_xXqbwwZJMnwxqtJDs).
+
+iOS Devices: Add users to the [App Store Connect "Tester" user group](https://appstoreconnect.apple.com/apps/1566659475/testflight/groups/66422629-7842-48db-9e9e-405f4fac4364).
+
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql] as the single source of truth for the design.
