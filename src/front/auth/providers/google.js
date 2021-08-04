@@ -20,6 +20,7 @@ export default function useGoogleProvider() {
       iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
       responseType: ResponseType.TOKEN,
+      shouldAutoExchangeCode: true,
     },
     {
       path: config.OAUTH_REDIRECT_SCREEN,
