@@ -17,6 +17,7 @@ export default function useGoogleProvider() {
       androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
       iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
+      shouldAutoExchangeCode: true,
     },
     {
       path: config.OAUTH_REDIRECT_SCREEN,
