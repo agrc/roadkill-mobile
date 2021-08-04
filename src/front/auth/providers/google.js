@@ -12,6 +12,7 @@ export const isAuthenticationExpired = (auth) => {
 
 export default function useGoogleProvider() {
   const authentication = React.useRef(null);
+  const exchangePromise = React.useRef(null);
   const [_, result, promptAsync] = useAuthRequest(
     {
       expoClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_EXPO_GO,
@@ -26,6 +27,15 @@ export default function useGoogleProvider() {
   );
   const throwAsyncError = useAsyncError();
 
+  React.useEffect(() => {
+    if (result?.type === 'success' && result.authentication) {
+      authentication.current = result.authentication;
+      exchangePromise.current.resolve(result.authentication);
+    } else if (result?.type === 'error' || result?.type === 'cancel') {
+      authentication.current = null;
+      exchangePromise.current.reject(result?.error);
+    }
+  }, [result]);
   const getAuthentication = async () => {
     try {
       const promptResponse = await promptAsync();
@@ -35,7 +45,9 @@ export default function useGoogleProvider() {
         console.log('authentication successful');
         console.log(promptResponse);
         if (!promptResponse.authentication) {
-          throw new Error(`authentication is null! promptResponse: ${JSON.stringify(promptResponse)}`);
+          exchangePromise.current = new Promise();
+
+          return exchangePromise.current;
         }
 
         return promptResponse.authentication;
