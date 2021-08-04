@@ -50,12 +50,17 @@ export default function useGoogleProvider() {
       return null;
     }
 
-    const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    const user = await response.json();
+    let user;
+    try {
+      const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      user = await response.json();
+    } catch (error) {
+      throwAsyncError(error);
+    }
 
     return user;
   };
