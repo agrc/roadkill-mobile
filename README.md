@@ -76,6 +76,10 @@ These are done automatically for the production and staging release channels via
 
 Because app builds initiate from both the developer's machine (new native builds) and GitHub Actions (over-the-air updates), secrets need to be managed in both places. `.env.sample` should be duplicated and populated to `.env`, `.env.staging`, `.env.production`. Corresponding secrets are also stored in environments in the GitHub repository.
 
+### Social OAuth Providers
+
+Note that google oauth is done exclusively through the prod GCP project for all app environments since there's no real need to differentiate between environments.
+
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql] as the single source of truth for the design.
