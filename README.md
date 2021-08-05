@@ -50,7 +50,7 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 1. `git checkout staging`
 1. `./deployNewAppBuild.sh`
 1. Add testers to TestFlight and wait for app review.
-1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/app-dashboard)
+1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer)
 
 ### Pushing a New App Build to Production
 
