@@ -1,4 +1,5 @@
 import * as Facebook from 'expo-facebook';
+import ky from 'ky';
 import React from 'react';
 import config from '../../config';
 import { useAsyncError } from '../../utilities';
@@ -46,10 +47,12 @@ export default function useFacebookProvider() {
 
     let user;
     try {
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,name,email`
-      );
-      user = await response.json();
+      user = await ky('https://graph.facebook.com/me', {
+        searchParams: {
+          access_token: token,
+          fields: 'id,first_name,last_name,name,email',
+        },
+      }).json();
     } catch (error) {
       throwAsyncError(error);
     }

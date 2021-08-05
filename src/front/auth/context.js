@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
+import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import * as Sentry from 'sentry-expo';
@@ -92,21 +93,20 @@ export function AuthContextProvider({ children, onReady }) {
         return { success: false, registered: false };
       }
 
-      const response = await fetch(`${config.API}/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          auth_id: oauthUser.sub,
-          auth_provider: providerName,
-          email: oauthUser.email,
-          first_name: oauthUser.given_name,
-          last_name: oauthUser.family_name,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: token,
-        },
-      });
-      const { user, registered } = await response.json();
+      const { user, registered } = await ky
+        .post(`${config.API}/login`, {
+          json: {
+            auth_id: oauthUser.sub,
+            auth_provider: providerName,
+            email: oauthUser.email,
+            first_name: oauthUser.given_name,
+            last_name: oauthUser.family_name,
+          },
+          headers: {
+            Authorization: token,
+          },
+        })
+        .json();
 
       setAuthInfo({
         oauthUser,
@@ -129,16 +129,14 @@ export function AuthContextProvider({ children, onReady }) {
 
   const registerUser = async (userData) => {
     const token = await getBearerToken();
-    const response = await fetch(`${config.API}/register`, {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      headers: {
-        Authorization: token,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const responseJson = await response.json();
+    const responseJson = await ky
+      .post(`${config.API}/register`, {
+        json: userData,
+        headers: {
+          Authorization: token,
+        },
+      })
+      .json();
 
     setAuthInfo({
       ...authInfo,
