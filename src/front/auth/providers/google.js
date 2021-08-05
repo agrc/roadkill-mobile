@@ -1,4 +1,5 @@
 import { useAuthRequest } from 'expo-auth-session/providers/google';
+import ky from 'ky';
 import React from 'react';
 import config from '../../config';
 import { useAsyncError } from '../../utilities';
@@ -71,12 +72,11 @@ export default function useGoogleProvider() {
 
     let user;
     try {
-      const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
+      user = await ky('https://openidconnect.googleapis.com/v1/userinfo', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      });
-      user = await response.json();
+      }).json();
     } catch (error) {
       throwAsyncError(error);
     }
