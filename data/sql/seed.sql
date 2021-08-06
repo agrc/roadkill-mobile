@@ -9,9 +9,9 @@ INSERT INTO public.organizations ("name",org_type) VALUES
 
 INSERT INTO public.users (organization_id,"role",approved,auth_provider,auth_id,email,first_name,last_name,registered_date,last_logged_in,phone) VALUES
   (1,'admin'::roles::roles,true,'utahid'::auth_providers::auth_providers,'123456789','scott@utah.gov','Scott','Davis','2021-07-20 00:00:00','2021-07-20 00:00:00','801-699-7187'),
-  (NULL,'reporter'::roles::roles,true,'google'::auth_providers::auth_providers,'234567891','dscottus@gmail.com','Dave','Scottus','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
-  (3,'contractor'::roles::roles,true,'utahid'::auth_providers::auth_providers,'345678912','ablackham@ecolife.com','Abcde','Blackham','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
-  (2,'agency'::roles::roles,true,'utahid'::auth_providers::auth_providers,'345678912','cthompson@utah.gov','Caleb','Thompson','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567');
+  (NULL,'reporter'::roles::roles,NULL,'google'::auth_providers::auth_providers,'234567891','dscottus@gmail.com','Dave','Scottus','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
+  (3,'contractor'::roles::roles,false,'utahid'::auth_providers::auth_providers,'345678912','ablackham@ecolife.com','Abcde','Blackham','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
+  (2,'agency'::roles::roles,false,'utahid'::auth_providers::auth_providers,'345678912','cthompson@utah.gov','Caleb','Thompson','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567');
 
 INSERT INTO public.routes (user_id,geog,start_time,end_time,submit_date) VALUES
   (3,'SRID=4326;LINESTRING (-112.5700181959032 41.13485236096348, -113.15718738177165 40.08763309132181, -112.68503071684651 38.58641702848289, -111.8436233267876 39.2462257012629)'::geography,'2021-07-08 02:00:00','2021-07-08 02:20:52.449','2021-07-08 12:29:08.02');
