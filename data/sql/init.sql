@@ -33,7 +33,7 @@ CREATE TABLE users
   id serial PRIMARY KEY,
   organization_id integer REFERENCES organizations (id),
   role roles NOT NULL,
-  approved boolean NOT NULL DEFAULT false,
+  approved boolean,
   auth_provider auth_providers NOT NULL,
   auth_id varchar(64) NOT NULL,
   email varchar(256) NOT NULL,
