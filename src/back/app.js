@@ -6,7 +6,7 @@ import expressWinston from 'express-winston';
 import helmet from 'helmet';
 import winston from 'winston';
 import { authenticate, getToken } from './api/security.js';
-import { login, register } from './api/user.js';
+import { approve, login, register, reject } from './api/user.js';
 import validate from './api/validation.js';
 import { loginSchema, registerSchema } from './services/user_management.js';
 
@@ -79,11 +79,13 @@ function handleAsyncErrors(callback) {
   };
 }
 
+// user management
 app.post('/token', handleAsyncErrors(getToken));
-// app.post('/invalidate_token', // TODO)
-
 app.post('/register', handleAsyncErrors(authenticate), validate(registerSchema), handleAsyncErrors(register));
 app.post('/login', handleAsyncErrors(authenticate), validate(loginSchema), handleAsyncErrors(login));
+// app.post('/logout', // TODO)
+app.get('/approval/:guid/:role', handleAsyncErrors(approve));
+app.get('/reject/:guid', handleAsyncErrors(reject));
 
 app.use(
   expressWinston.errorLogger({

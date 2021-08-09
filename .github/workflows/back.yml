@@ -97,7 +97,12 @@ jobs:
             --platform "managed" \
             --region "us-central1" \
             --image "${{ steps.variables.outputs.image }}:latest" \
-            --update-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }},DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            --update-env-vars \
+              DATABASE_HOST=${{ secrets.DATABASE_HOST }},\
+              DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},\
+              SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }},\
+              API=${{ secrets.API }}
+              ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
 
   deploy-prod:
     name: Build and Deploy to Production
@@ -156,4 +161,9 @@ jobs:
             --platform "managed" \
             --region "us-central1" \
             --image "${{ steps.variables.outputs.image }}:latest" \
-            --update-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }},DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            --update-env-vars \
+              DATABASE_HOST=${{ secrets.DATABASE_HOST }},\
+              DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},\
+              SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }},\
+              API=${{ secrets.API }}
+              ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
