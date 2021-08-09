@@ -1,4 +1,11 @@
-import { getUser, isExistingUser, registerUser, updateUser } from '../services/user_management.js';
+import {
+  approveUser,
+  getUser,
+  isExistingUser,
+  registerUser,
+  rejectUser,
+  updateUser,
+} from '../services/user_management.js';
 
 export async function register(request, response) {
   const { user, organization } = request.body;
@@ -13,7 +20,6 @@ export async function register(request, response) {
 
   const newUser = await getUser(user.auth_id, user.auth_provider);
 
-  // TODO: kick off email to admins for approval for contract/agency roles
   return response.status(201).json({ newUser });
 }
 
@@ -28,4 +34,38 @@ export async function login(request, response) {
     user: user?.id ? user : null,
     registered: user?.id ? true : false,
   });
+}
+
+export async function approve(request, response) {
+  const { guid, role } = request.params;
+
+  let result;
+  try {
+    result = await approveUser(guid, role);
+  } catch (error) {
+    if (error.code === 'INVALID_GUID') {
+      return response.status(401).send(error.message);
+    } else {
+      return response.status(500).send(error.message);
+    }
+  }
+
+  return response.status(200).send(result);
+}
+
+export async function reject(request, response) {
+  const { guid } = request.params;
+
+  let result;
+  try {
+    result = await rejectUser(guid);
+  } catch (error) {
+    if (error.code === 'INVALID_GUID') {
+      return response.status(401).send(error.message);
+    } else {
+      return response.status(500).send(error.message);
+    }
+  }
+
+  return response.status(200).send(result);
 }

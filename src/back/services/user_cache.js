@@ -12,10 +12,11 @@ value: {
   exp: <token.exp>
 }
 */
+const DOC_TYPE = 'users';
 export async function getUser(token) {
   const decodedInputToken = jwt_decode(token);
 
-  const cachedUserRef = await firestore.doc(`users/${decodedInputToken.sub}`).get();
+  const cachedUserRef = await firestore.doc(`${DOC_TYPE}/${decodedInputToken.sub}`).get();
   const cachedUser = cachedUserRef.data();
 
   // return null if expired
@@ -26,7 +27,7 @@ export async function getUser(token) {
 
 export async function setUser(token, user) {
   const decodedToken = jwt_decode(token);
-  const document = firestore.doc(`users/${decodedToken.sub}`);
+  const document = firestore.doc(`${DOC_TYPE}/${decodedToken.sub}`);
 
   await document.set({
     exp: decodedToken.exp,
