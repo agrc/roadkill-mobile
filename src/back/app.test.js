@@ -14,10 +14,10 @@ beforeAll(() => utahIdServer.listen());
 afterEach(() => utahIdServer.resetHandlers());
 afterAll(() => utahIdServer.close());
 
-describe('/token', () => {
+describe('/user/token', () => {
   it('requires matching client_id', (done) => {
     request(app)
-      .post('/token')
+      .post('/user/token')
       .send('client_id=blah')
       .expect(400)
       .expect(/invalid client_id/, done);
@@ -32,7 +32,7 @@ describe('/token', () => {
       refresh_token: 'blah',
     };
     request(app)
-      .post('/token')
+      .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
       .expect(/invalid grant_type/, done);
@@ -47,7 +47,7 @@ describe('/token', () => {
       code: 'code',
     };
     request(app)
-      .post('/token')
+      .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
       .expect(/redirect_uri is required/, done);
@@ -58,7 +58,7 @@ describe('/token', () => {
       client_id: process.env.CLIENT_ID,
     };
     request(app)
-      .post('/token')
+      .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
       .expect(/refresh_token is required/, done);
