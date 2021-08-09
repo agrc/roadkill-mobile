@@ -41,7 +41,8 @@ CREATE TABLE users
   last_name varchar(25) NOT NULL,
   registered_date timestamp NOT NULL,
   last_logged_in timestamp NOT NULL,
-  phone varchar(25) NOT NULL
+  phone varchar(25) NOT NULL,
+  approved_date timestamp
 );
 
 DROP TABLE IF EXISTS users_have_notification_areas CASCADE;
