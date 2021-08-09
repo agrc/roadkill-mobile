@@ -7,9 +7,10 @@
   "scripts": {
     "emulate": "lsof -ti :3001 | xargs kill -9 && gcloud beta emulators firestore start --host-port=localhost:3001",
     "lint": "eslint .",
+    "run-tests": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
     "serve": "env-cmd nodemon server.js",
     "start": "concurrently npm:emulate npm:serve",
-    "test": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch"
+    "test": "concurrently npm:emulate npm:run-tests"
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",
