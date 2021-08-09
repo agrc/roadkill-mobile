@@ -13,7 +13,7 @@ redirectUri += config.OAUTH_REDIRECT_SCREEN;
 
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
-  tokenEndpoint: `${config.API}/token`,
+  tokenEndpoint: `${config.API}/user/token`,
 
   // this is not used at the moment but could be used to log the user out of the browser session
   endSessionEndpoint: 'https://login.dts.utah.gov/sso/oauth2/connect/endSession',

@@ -94,7 +94,7 @@ export function AuthContextProvider({ children, onReady }) {
       }
 
       const { user, registered } = await ky
-        .post(`${config.API}/login`, {
+        .post(`${config.API}/user/login`, {
           json: {
             auth_id: oauthUser.sub,
             auth_provider: providerName,
@@ -130,7 +130,7 @@ export function AuthContextProvider({ children, onReady }) {
   const registerUser = async (userData) => {
     const token = await getBearerToken();
     const responseJson = await ky
-      .post(`${config.API}/register`, {
+      .post(`${config.API}/user/register`, {
         json: userData,
         headers: {
           Authorization: token,

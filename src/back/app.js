@@ -35,7 +35,7 @@ app.use(
     requestWhitelist: ['url', 'method', 'httpVersion', 'originalUrl', 'query', 'body'],
     responseWhitelist: ['body'], // this populates the `res.body` so we can get the response size (not required)
     format: winston.format.json(),
-    ignoreRoute: (request) => request?.route?.path === '/login',
+    ignoreRoute: (request) => request?.route?.path === '/user/login',
     dynamicMeta: (req, res) => {
       const httpRequest = {};
       const meta = {};
@@ -80,12 +80,12 @@ function handleAsyncErrors(callback) {
 }
 
 // user management
-app.post('/token', handleAsyncErrors(getToken));
-app.post('/register', handleAsyncErrors(authenticate), validate(registerSchema), handleAsyncErrors(register));
-app.post('/login', handleAsyncErrors(authenticate), validate(loginSchema), handleAsyncErrors(login));
-// app.post('/logout', // TODO)
-app.get('/approval/:guid/:role', handleAsyncErrors(approve));
-app.get('/reject/:guid', handleAsyncErrors(reject));
+app.post('/user/token', handleAsyncErrors(getToken));
+app.post('/user/register', handleAsyncErrors(authenticate), validate(registerSchema), handleAsyncErrors(register));
+app.post('/user/login', handleAsyncErrors(authenticate), validate(loginSchema), handleAsyncErrors(login));
+// app.post('/user/logout', // TODO)
+app.get('/user/approval/:guid/:role', handleAsyncErrors(approve));
+app.get('/user/reject/:guid', handleAsyncErrors(reject));
 
 app.use(
   expressWinston.errorLogger({
