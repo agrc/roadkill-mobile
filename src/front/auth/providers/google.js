@@ -66,11 +66,13 @@ export default function useGoogleProvider() {
   };
 
   const logIn = async () => {
-    const { accessToken } = await getAuthentication();
+    const auth = await getAuthentication();
 
-    if (!accessToken) {
+    if (!auth) {
       return null;
     }
+
+    const { accessToken } = auth;
 
     let user;
     try {
