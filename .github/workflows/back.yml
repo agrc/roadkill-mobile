@@ -2,9 +2,6 @@ name: Back - Test, Build, and Deploy to GCP
 
 on:
   push:
-    branches:
-      - staging
-      - production
     paths:
       - 'src/back/**'
       - '.github/workflows/back.yml'
