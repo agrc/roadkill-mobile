@@ -98,17 +98,17 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: >
-          gcloud run deploy "$SERVICE_NAME"
-            --quiet
-            --platform "managed"
-            --region "us-central1"
-            --image "${{ steps.variables.outputs.image }}:latest"
-            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}"
-            --update-env-vars "API=${{ secrets.API }}"
-            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}"
-            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
-            --update-env-vars "ENVIRONMENT=Staging"
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --platform "managed" \
+            --region "us-central1" \
+            --image "${{ steps.variables.outputs.image }}:latest" \
+            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" \
+            --update-env-vars "API=${{ secrets.API }}" \
+            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" \
+            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
+            --update-env-vars "ENVIRONMENT=Staging" \
             --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
 
   deploy-prod:
@@ -162,15 +162,15 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: >
-          gcloud run deploy "$SERVICE_NAME"
-            --quiet
-            --platform "managed"
-            --region "us-central1"
-            --image "${{ steps.variables.outputs.image }}:latest"
-            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}"
-            --update-env-vars "API=${{ secrets.API }}"
-            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}"
-            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
-            --update-env-vars "ENVIRONMENT=Staging"
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --platform "managed" \
+            --region "us-central1" \
+            --image "${{ steps.variables.outputs.image }}:latest" \
+            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" \
+            --update-env-vars "API=${{ secrets.API }}" \
+            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" \
+            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
+            --update-env-vars "ENVIRONMENT=Production" \
             --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
