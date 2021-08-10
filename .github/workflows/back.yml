@@ -39,6 +39,8 @@ jobs:
 
       - name: setup gcloud
         uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ut-dts-agrc-roadkill-dev
 
       - name: install gcloud beta components
         run: |
