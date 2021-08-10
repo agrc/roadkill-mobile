@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "emulate": "lsof -ti :3001 | xargs kill -9 && gcloud beta emulators firestore start --host-port=localhost:3001",
+    "emulate:ci": "gcloud beta emulators firestore start --host-port=localhost:3001",
     "lint": "eslint .",
-    "run-ci-tests": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest",
+    "run-tests:ci": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest",
     "run-tests": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
     "serve": "env-cmd nodemon server.js",
     "start": "concurrently npm:emulate npm:serve",
     "test": "concurrently npm:emulate npm:run-tests",
-    "test:ci": "concurrently --kill-others npm:emulate npm:run-ci-tests"
+    "test:ci": "concurrently --kill-others npm:emulate:ci npm:run-tests:ci"
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",

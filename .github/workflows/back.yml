@@ -37,6 +37,9 @@ jobs:
           node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
       - run: npm ci
 
+      - name: setup gcloud
+        uses: google-github-actions/setup-gcloud@master
+
       - name: Test
         run: npm run test:ci
 
