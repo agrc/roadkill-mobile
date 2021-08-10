@@ -5,15 +5,12 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "emulate": "lsof -ti :3001 | xargs kill -9 && gcloud beta emulators firestore start --host-port=localhost:3001",
-    "emulate:ci": "gcloud beta emulators firestore start --host-port=localhost:3001",
     "lint": "eslint .",
     "run-tests:ci": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest",
-    "run-tests": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
     "serve": "env-cmd nodemon server.js",
-    "start": "concurrently npm:emulate npm:serve",
-    "test": "concurrently npm:emulate npm:run-tests",
-    "test:ci": "concurrently --kill-others npm:emulate:ci npm:run-tests:ci"
+    "start": "firebase emulators:exec --only firestore \"npm run serve\"",
+    "test": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
+    "test:ci": "firebase emulators:exec --only firestore \"npm run run-tests:ci\""
   },
   "author": "Scott Davis <stdavis@utah.gov>",
   "license": "MIT",
@@ -34,10 +31,10 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "concurrently": "^6.0.2",
     "env-cmd": "^10.1.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
+    "firebase-tools": "^9.16.0",
     "form-urlencoded": "^6.0.3",
     "jest": "^26.6.3",
     "msw": "^0.28.2",
