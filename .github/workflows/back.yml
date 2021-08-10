@@ -98,7 +98,7 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: |-
+        run: >
           gcloud run deploy "$SERVICE_NAME"
             --quiet
             --platform "managed"
@@ -162,7 +162,7 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: |-
+        run: >
           gcloud run deploy "$SERVICE_NAME"
             --quiet
             --platform "managed"
