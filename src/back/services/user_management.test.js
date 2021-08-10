@@ -1,4 +1,4 @@
-import { approveUser, sendApprovalEmail } from './user_management.js';
+import { approveUser } from './user_management.js';
 
 describe('approveUser', () => {
   it('throws an error if there is no matching quid in firestore', async () => {
