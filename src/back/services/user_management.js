@@ -102,6 +102,7 @@ export async function sendApprovalEmail(user, organization) {
     organization,
     guid,
     api: process.env.API,
+    environment: process.env.ENVIRONMENT,
   };
 
   const email = {
