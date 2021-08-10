@@ -98,20 +98,18 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: >
+        run: |-
           gcloud run deploy "$SERVICE_NAME"
             --quiet
             --platform "managed"
             --region "us-central1"
             --image "${{ steps.variables.outputs.image }}:latest"
-            --update-env-vars "
-              ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }},
-              API=${{ secrets.API }},
-              DATABASE_HOST=${{ secrets.DATABASE_HOST }},
-              DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},
-              ENVIRONMENT=Staging,
-              SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
-              "
+            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}"
+            --update-env-vars "API=${{ secrets.API }}"
+            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}"
+            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
+            --update-env-vars "ENVIRONMENT=Staging"
+            --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
 
   deploy-prod:
     name: Build and Deploy to Production
@@ -164,17 +162,15 @@ jobs:
           docker push "${{ steps.variables.outputs.image }}" -a
 
       - name: Deploy
-        run: >
+        run: |-
           gcloud run deploy "$SERVICE_NAME"
             --quiet
             --platform "managed"
             --region "us-central1"
             --image "${{ steps.variables.outputs.image }}:latest"
-            --update-env-vars "
-              ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }},
-              API=${{ secrets.API }},
-              DATABASE_HOST=${{ secrets.DATABASE_HOST }},
-              DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},
-              ENVIRONMENT=Production,
-              SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
-              "
+            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}"
+            --update-env-vars "API=${{ secrets.API }}"
+            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}"
+            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
+            --update-env-vars "ENVIRONMENT=Staging"
+            --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
