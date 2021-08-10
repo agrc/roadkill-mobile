@@ -3,3 +3,4 @@ npm-debug.*
 .env*
 !.env*.sample
 !.env.test
+firestore-debug.log
