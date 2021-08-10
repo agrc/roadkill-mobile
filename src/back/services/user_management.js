@@ -155,7 +155,10 @@ export async function approveUser(guid, role) {
 export async function rejectUser(guid) {
   const user = await getUserFromGUID(guid);
 
-  await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).del();
+  await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
+    approved_date: new Date(),
+    approved: false,
+  });
 
   await deleteUserByGUID(guid);
 
