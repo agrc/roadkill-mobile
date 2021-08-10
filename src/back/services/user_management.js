@@ -61,7 +61,7 @@ export async function isExistingUser({ auth_provider, auth_id }) {
 }
 
 export async function registerUser(organization, user) {
-  let approved = false;
+  let approved = null;
   await db.transaction(async (transaction) => {
     const now = new Date();
 
