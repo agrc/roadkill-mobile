@@ -43,7 +43,7 @@ jobs:
       - name: install gcloud beta components
         run: |
           gcloud components install beta
-          gcloud components install cloud-datastore-emulator
+          gcloud components install cloud-firestore-emulator
 
       - name: Test
         run: npm run test:ci
