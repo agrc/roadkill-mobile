@@ -39,7 +39,8 @@ jobs:
 
       - name: setup gcloud
         uses: google-github-actions/setup-gcloud@master
-        run: gcloud components install beta
+
+      - run: gcloud components install beta
 
       - name: Test
         run: npm run test:ci
