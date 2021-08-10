@@ -108,7 +108,7 @@ jobs:
               DATABASE_HOST=${{ secrets.DATABASE_HOST }},\
               DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},\
               SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }},\
-              API=${{ secrets.API }}
+              API=${{ secrets.API }},\
               ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
 
   deploy-prod:
@@ -172,5 +172,5 @@ jobs:
               DATABASE_HOST=${{ secrets.DATABASE_HOST }},\
               DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }},\
               SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }},\
-              API=${{ secrets.API }}
+              API=${{ secrets.API }},\
               ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
