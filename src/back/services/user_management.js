@@ -1,8 +1,7 @@
-import { Firestore } from '@google-cloud/firestore';
 import sgMail from '@sendgrid/mail';
 import { randomUUID } from 'crypto';
-import knex from 'knex';
 import yup from 'yup';
+import { db, firestore } from './clients.js';
 
 const ROLES = {
   agency: 'agency',
@@ -10,18 +9,6 @@ const ROLES = {
   public: 'reporter',
   admin: 'admin',
 };
-
-const db = knex({
-  client: 'pg',
-  connection: {
-    host: process.env.DATABASE_HOST,
-    user: 'api',
-    password: process.env.DATABASE_PASSWORD,
-    database: 'app',
-  },
-});
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const firestore = new Firestore();
 
 export const registerSchema = yup.object().shape({
   organization: yup
