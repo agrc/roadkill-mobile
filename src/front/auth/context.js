@@ -88,7 +88,12 @@ export function AuthContextProvider({ children, onReady }) {
         token = await PROVIDER_LOOKUP[providerName].getBearerToken();
       } else {
         // user cancelled login
-        setStatus(STATUS.idle);
+        setStatus(STATUS.failure);
+
+        setAuthInfo({
+          user: null,
+          registered: false,
+        });
 
         return { success: false, registered: false };
       }
