@@ -6,9 +6,18 @@ import expressWinston from 'express-winston';
 import helmet from 'helmet';
 import winston from 'winston';
 import { authenticate, getToken } from './api/security.js';
-import { approve, login, register, reject } from './api/user.js';
+import { getApprove, getLogin, getRegister, getReject } from './api/user.js';
 import validate from './api/validation.js';
-import { loginSchema, registerSchema } from './services/user_management.js';
+import {
+  approveUser,
+  getUser,
+  isExistingUser,
+  loginSchema,
+  registerSchema,
+  registerUser,
+  rejectUser,
+  updateUser,
+} from './services/user_management.js';
 
 // app setup
 const app = express();
@@ -81,11 +90,22 @@ function handleAsyncErrors(callback) {
 
 // user management
 app.post('/user/token', handleAsyncErrors(getToken));
-app.post('/user/register', handleAsyncErrors(authenticate), validate(registerSchema), handleAsyncErrors(register));
-app.post('/user/login', handleAsyncErrors(authenticate), validate(loginSchema), handleAsyncErrors(login));
+app.post(
+  '/user/register',
+  handleAsyncErrors(authenticate),
+  validate(registerSchema),
+  handleAsyncErrors(getRegister(isExistingUser, registerUser, getUser))
+);
+app.post(
+  '/user/login',
+  handleAsyncErrors(authenticate),
+  validate(loginSchema),
+  handleAsyncErrors(getLogin(getUser, updateUser))
+);
 // app.post('/user/logout', // TODO)
-app.get('/user/approval/:guid/:role', handleAsyncErrors(approve));
-app.get('/user/reject/:guid', handleAsyncErrors(reject));
+app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
+app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
+// app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
 
 app.use(
   expressWinston.errorLogger({

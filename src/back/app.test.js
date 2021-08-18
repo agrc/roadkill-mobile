@@ -15,14 +15,14 @@ afterEach(() => utahIdServer.resetHandlers());
 afterAll(() => utahIdServer.close());
 
 describe('/user/token', () => {
-  it('requires matching client_id', (done) => {
-    request(app)
+  it('requires matching client_id', async () => {
+    return request(app)
       .post('/user/token')
       .send('client_id=blah')
       .expect(400)
-      .expect(/invalid client_id/, done);
+      .expect(/invalid client_id/);
   });
-  it('requires grant_type always', (done) => {
+  it('requires grant_type always', async () => {
     const params = {
       client_id: process.env.CLIENT_ID,
       code_verifier: 'blah',
@@ -31,13 +31,14 @@ describe('/user/token', () => {
       code: 'code',
       refresh_token: 'blah',
     };
-    request(app)
+
+    return request(app)
       .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
-      .expect(/invalid grant_type/, done);
+      .expect(/invalid grant_type/);
   });
-  it('requires appropriate params when exchanging code for token', (done) => {
+  it('requires appropriate params when exchanging code for token', async () => {
     // missing grant_type
     const params = {
       grant_type: 'authorization_code',
@@ -46,21 +47,23 @@ describe('/user/token', () => {
       code_challenge: 'blah',
       code: 'code',
     };
-    request(app)
+
+    return request(app)
       .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
-      .expect(/redirect_uri is required/, done);
+      .expect(/redirect_uri is required/);
   });
-  it('requires appropriate params for refresh token', (done) => {
+  it('requires appropriate params for refresh token', async () => {
     const params = {
       grant_type: 'refresh_token',
       client_id: process.env.CLIENT_ID,
     };
-    request(app)
+
+    return request(app)
       .post('/user/token')
       .send(formurlencoded(params))
       .expect(400)
-      .expect(/refresh_token is required/, done);
+      .expect(/refresh_token is required/);
   });
 });
