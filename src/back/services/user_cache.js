@@ -1,8 +1,5 @@
-import { Firestore } from '@google-cloud/firestore';
 import jwt_decode from 'jwt-decode';
-
-// no auth needed if running via cloud run or if you have a local emulator running
-const firestore = new Firestore();
+import { firestore } from './clients.js';
 
 // datastore doc shape:
 /*
