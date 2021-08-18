@@ -46,7 +46,6 @@
   },
   "private": true,
   "jest": {
-    "testEnvironment": "jest-environment-node",
     "transform": {}
   }
 }
