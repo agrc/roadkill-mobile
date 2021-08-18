@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
-import app from '../app.js';
-import { getLogin } from './user.js';
+import app from '../app';
+import { getLogin } from './user';
 
 describe('user/approve', () => {
   it('returns appropriate error message on invalid guid', async () => {
