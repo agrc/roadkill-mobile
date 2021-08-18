@@ -1,71 +1,70 @@
-import {
-  approveUser,
-  getUser,
-  isExistingUser,
-  registerUser,
-  rejectUser,
-  updateUser,
-} from '../services/user_management.js';
+export function getRegister(isExistingUser, registerUser, getUser) {
+  return async function register(request, response) {
+    const { user, organization } = request.body;
 
-export async function register(request, response) {
-  const { user, organization } = request.body;
+    if (await isExistingUser(user)) {
+      return response.status(409).json({
+        errors: 'user is already registered',
+      });
+    }
 
-  if (await isExistingUser(user)) {
-    return response.status(409).json({
-      errors: 'user is already registered',
+    await registerUser(organization, user);
+
+    const newUser = await getUser(user.auth_id, user.auth_provider);
+
+    return response.status(201).json({ newUser });
+  };
+}
+
+export function getLogin(getUser, updateUser) {
+  return async function login(request, response) {
+    const user = await getUser(request.body.auth_id, request.body.auth_provider);
+
+    if (user?.id) {
+      await updateUser(request.body);
+    }
+
+    return response.status(200).json({
+      user: user?.id ? user : null,
+      registered: user?.id ? true : false,
     });
-  }
-
-  await registerUser(organization, user);
-
-  const newUser = await getUser(user.auth_id, user.auth_provider);
-
-  return response.status(201).json({ newUser });
+  };
 }
 
-export async function login(request, response) {
-  const user = await getUser(request.body.auth_id, request.body.auth_provider);
+export function getApprove(approveUser) {
+  return async function approve(request, response) {
+    const { guid, role } = request.params;
 
-  if (user?.id) {
-    await updateUser(request.body);
-  }
-
-  return response.status(200).json({
-    user: user?.id ? user : null,
-    registered: user?.id ? true : false,
-  });
-}
-
-export async function approve(request, response) {
-  const { guid, role } = request.params;
-
-  let result;
-  try {
-    result = await approveUser(guid, role);
-  } catch (error) {
-    if (error.code === 'INVALID_GUID') {
-      return response.status(401).send(error.message);
-    } else {
-      return response.status(500).send(error.message);
+    let result;
+    try {
+      result = await approveUser(guid, role);
+    } catch (error) {
+      if (error.code === 'INVALID_GUID') {
+        return response.status(401).send(error.message);
+      } else {
+        return response.status(500).send(error.message);
+      }
     }
-  }
 
-  return response.status(200).send(result);
+    return response.status(200).send(result);
+  };
 }
 
-export async function reject(request, response) {
-  const { guid } = request.params;
+export function getReject(rejectUser) {
+  return async function reject(request, response) {
+    const { guid } = request.params;
 
-  let result;
-  try {
-    result = await rejectUser(guid);
-  } catch (error) {
-    if (error.code === 'INVALID_GUID') {
-      return response.status(401).send(error.message);
-    } else {
-      return response.status(500).send(error.message);
+    let result;
+    try {
+      result = await rejectUser(guid);
+    } catch (error) {
+      if (error.code === 'INVALID_GUID') {
+        return response.status(401).send(error.message);
+      } else {
+        return response.status(500).send(error.message);
+      }
     }
-  }
 
-  return response.status(200).send(result);
+    return response.status(200).send(result);
+  };
 }
