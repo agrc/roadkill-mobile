@@ -1,0 +1,37 @@
+name: Build and Deploy Front
+description: Build and deploy expo app with over-the-air updates.
+inputs:
+  working-directory:
+    description: working directory that all commands are run from
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # this could be removed once setup-node adds support for .nvmrc files
+    # ref: https://github.com/actions/setup-node/issues/32
+    - name: Get node version
+      id: nvm
+      run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+
+    - name: Install npm dependencies
+      run: npm ci
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+
+    - name: Publish
+      run: |
+        echo $GOOGLE_SERVICES_ANDROID | base64 -d > ./google-services.json
+        echo $GOOGLE_SERVICES_IOS | base64 -d > ./GoogleService-Info.plist
+        export GOOGLE_SERVICES_ANDROID=google-services.json
+        export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
+        npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+        npx expo publish --release-channel $EXPO_RELEASE_CHANNEL
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
