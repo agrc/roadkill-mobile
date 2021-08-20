@@ -8,7 +8,6 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
     API = API.replace('localhost', '10.0.2.2');
   } else if (Constants.isDevice) {
     API = API.replace('localhost', Constants.manifest.debuggerHost.split(':').shift());
-    console.log('API', API);
   }
 }
 
@@ -29,4 +28,7 @@ export default {
   OAUTH_REDIRECT_SCREEN: 'login', // if user is already registered, then they will be sent to the main navigator
   USER_STORE_KEY: 'USER_INFO',
   USER_TYPE_KEY: 'USER_TYPE',
+  URLS: {
+    LITE: 'https://discover.agrc.utah.gov/login/path/alabama-anvil-picnic-sunset/tiles/lite_basemap/{z}/{x}/{y}.jpg',
+  },
 };

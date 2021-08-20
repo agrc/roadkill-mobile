@@ -34,6 +34,8 @@ export default function App() {
   const onReady = () => {
     if (authIsReady && !splashIsHidden.current) {
       console.log('hide splash');
+      // If this fires after the location alert, the splash screen will never be hidden.
+      // expo bug: https://github.com/expo/expo/issues/14099
       SplashScreen.hideAsync();
       splashIsHidden.current = true;
     }
