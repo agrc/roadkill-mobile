@@ -50,6 +50,13 @@ export default {
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
+      googleMapsApiKey: '#TODO',
+    },
+    infoPlist: {
+      NSLocationAlwaysUsageDescription:
+        'The app uses your location in the background for tracking routes. *Note* this is only applicable for agency employees or contractors. Background location is not used for public users.',
+      NSLocationWhenInUseUsageDescription:
+        'The app uses your location to help record the location of the animal that you are reporting.',
     },
   },
   android: {
@@ -60,6 +67,7 @@ export default {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
     },
+    permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_BACKGROUND_LOCATION', 'CAMERA'],
   },
   // this is only to enable logEvent calls during development in Expo Go
   // ref: https://docs.expo.io/versions/latest/sdk/firebase-analytics/#expo-go-limitations--configuration

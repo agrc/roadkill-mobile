@@ -62,12 +62,15 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-svg": "12.1.1",
-    "react-native-web": "~0.13.12",
+    "react-native-web": "~0.11",
     "react-query": "^3.19.0",
     "sentry-expo": "^4.0.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9",
-    "yup-phone": "^1.2.19"
+    "yup-phone": "^1.2.19",
+    "react-native-maps": "0.28.0",
+    "expo-location": "~12.1.2",
+    "expo-intent-launcher": "~9.1.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
