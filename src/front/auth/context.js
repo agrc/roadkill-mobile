@@ -69,7 +69,7 @@ export function AuthContextProvider({ children, onReady }) {
 
           return;
         } else {
-          console.log(authInfo);
+          console.log('authInfo', authInfo);
           currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
         }
       }
