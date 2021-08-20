@@ -3,7 +3,7 @@ import { isTokenExpired } from './utilities';
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {
     const decodedToken = {
-      exp: Date.now() / 1000,
+      exp: Date.now() / 1000 + 60 * 60,
     };
 
     expect(isTokenExpired(decodedToken)).toBe(false);

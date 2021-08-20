@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/front/**'
       - '.github/workflows/front.yml'
+      - '.github/actions/front/**'
 
 defaults:
   run:
@@ -46,40 +47,26 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     env:
       EXPO_RELEASE_CHANNEL: staging
+      GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+      GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      API: ${{ secrets.API }}
+      FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+      GOOGLE_OAUTH_CLIENT_ID_IOS: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}
+      GOOGLE_OAUTH_CLIENT_ID_ANDROID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}
+      FACEBOOK_OAUTH_CLIENT_ID: ${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+      EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # this could be removed once setup-node adds support for .nvmrc files
-      # ref: https://github.com/actions/setup-node/issues/32
-      - name: Get node version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Deploy
+        uses: ./.github/actions/front/deploy
         with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Publish
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 -d > ./google-services.json
-          echo "${{ secrets.GOOGLE_SERVICES_IOS }}" | base64 -d > ./GoogleService-Info.plist
-          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
-          export API="${{ secrets.API }}"
-          export GOOGLE_SERVICES_ANDROID=google-services.json
-          export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
-          export FIREBASE_MEASUREMENT_ID="${{ secrets.FIREBASE_MEASUREMENT_ID }}"
-          export GOOGLE_OAUTH_CLIENT_ID_IOS="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}"
-          export GOOGLE_OAUTH_CLIENT_ID_ANDROID="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}"
-          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
-          export SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}"
-          npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
-          npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
+          working-directory: src/front
 
   deploy-production:
     name: Build and Deploy Tag to Production
@@ -90,38 +77,24 @@ jobs:
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
     if: github.ref == 'refs/heads/production'
     env:
-      EXPO_RELEASE_CHANNEL: production-v3.0
+      EXPO_RELEASE_CHANNEL: staging
+      GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+      GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      API: ${{ secrets.API }}
+      FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+      GOOGLE_OAUTH_CLIENT_ID_IOS: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}
+      GOOGLE_OAUTH_CLIENT_ID_ANDROID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}
+      FACEBOOK_OAUTH_CLIENT_ID: ${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+      EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # this could be removed once setup-node adds support for .nvmrc files
-      # ref: https://github.com/actions/setup-node/issues/32
-      - name: Get node version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Deploy
+        uses: ./.github/actions/front/deploy
         with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Publish
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 -d > ./google-services.json
-          echo "${{ secrets.GOOGLE_SERVICES_IOS }}" | base64 -d > ./GoogleService-Info.plist
-          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
-          export API="${{ secrets.API }}"
-          export GOOGLE_SERVICES_ANDROID=google-services.json
-          export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
-          export FIREBASE_MEASUREMENT_ID="${{ secrets.FIREBASE_MEASUREMENT_ID }}"
-          export GOOGLE_OAUTH_CLIENT_ID_IOS="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_IOS }}"
-          export GOOGLE_OAUTH_CLIENT_ID_ANDROID="${{ secrets.GOOGLE_OAUTH_CLIENT_ID_ANDROID }}"
-          export FACEBOOK_OAUTH_CLIENT_ID="${{ secrets.FACEBOOK_OAUTH_CLIENT_ID }}"
-          export SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}"
-          npx expo login -u "${{ secrets.EXPO_USERNAME }}" -p "${{ secrets.EXPO_PASSWORD }}"
-          npx expo publish --release-channel "${{ env.EXPO_RELEASE_CHANNEL }}"
+          working-directory: src/front
