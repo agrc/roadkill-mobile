@@ -53,7 +53,7 @@ export default function useGoogleProvider() {
         }
 
         return promptResponse.authentication;
-      } else if (promptResponse?.type === 'cancel') {
+      } else if (['cancel', 'dismiss'].indexOf(promptResponse?.type) > -1) {
         return null;
       } else {
         throwAsyncError(
