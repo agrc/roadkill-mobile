@@ -63,6 +63,10 @@ export function isTokenExpired(token) {
     throw new Error('token must be an object, did you forget to decode it?');
   }
 
+  if (!token?.exp) {
+    return true;
+  }
+
   const expireTime = token.exp * 1000;
 
   return expireTime < Date.now();
