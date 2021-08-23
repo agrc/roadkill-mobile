@@ -28,10 +28,10 @@ export default function useFacebookProvider() {
         };
 
         return authentication.current;
-      } else if (type === 'cancel') {
+      } else if (['cancel', 'dismiss'].indexOf(type) > -1) {
         return null;
       } else {
-        new Error('Facebook Login Error');
+        throwAsyncError(new Error(`type: ${type};`));
       }
     } catch (error) {
       throwAsyncError(error);
@@ -39,9 +39,9 @@ export default function useFacebookProvider() {
   };
 
   const logIn = async () => {
-    const { token } = await getAuthentication();
+    const auth = await getAuthentication();
 
-    if (!token) {
+    if (!auth?.token) {
       return null;
     }
 
@@ -49,7 +49,7 @@ export default function useFacebookProvider() {
     try {
       user = await ky('https://graph.facebook.com/me', {
         searchParams: {
-          access_token: token,
+          access_token: auth.token,
           fields: 'id,first_name,last_name,name,email',
         },
       }).json();
@@ -83,9 +83,9 @@ export default function useFacebookProvider() {
       return prefix + authentication.current.token;
     }
 
-    const { token } = await getAuthentication();
+    const auth = await getAuthentication();
 
-    if (token) {
+    if (auth.token) {
       return prefix + token;
     } else {
       throwAsyncError(new Error('No access token'));
