@@ -10,6 +10,8 @@ const ROLES = {
   admin: 'admin',
 };
 
+export const ARCHIVED_USER = 'ARCHIVED_USER';
+
 export const registerSchema = yup.object().shape({
   organization: yup
     .object()
@@ -120,13 +122,30 @@ async function getUserFromGUID(guid) {
   return snapshot.data();
 }
 
-async function deleteUserByGUID(guid) {
+async function archiveUserByGUID(guid) {
   const document = firestore.doc(`${APPROVAL_DOC_TYPE}/${guid}`);
-  await document.delete();
+
+  await document.update({
+    archived: true,
+  });
+}
+
+export function checkArchived(user) {
+  if (user?.archived) {
+    const error = new Error(
+      `${user.first_name} ${user.last_name} (${user.email}) has already been approved or rejected by an admin!`
+    );
+    error.code = ARCHIVED_USER;
+
+    throw error;
+  }
 }
 
 export async function approveUser(guid, role) {
   const user = await getUserFromGUID(guid);
+  const userInfo = `${user.first_name} ${user.last_name} (${user.email})`;
+
+  checkArchived(user);
 
   await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
     role,
@@ -134,20 +153,22 @@ export async function approveUser(guid, role) {
     approved: true,
   });
 
-  await deleteUserByGUID(guid);
+  await archiveUserByGUID(guid);
 
-  return `${user.first_name} ${user.last_name} (${user.email}) has been approved as: ${role}`;
+  return `${userInfo} has been approved as: ${role}`;
 }
 
 export async function rejectUser(guid) {
   const user = await getUserFromGUID(guid);
+
+  checkArchived(user);
 
   await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
     approved_date: new Date(),
     approved: false,
   });
 
-  await deleteUserByGUID(guid);
+  await archiveUserByGUID(guid);
 
   return `${user.first_name} ${user.last_name} (${user.email}) has been rejected`;
 }
