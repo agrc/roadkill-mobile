@@ -16,3 +16,5 @@ export const db = knex({
 
 // no auth needed if running via cloud run or if you have a local emulator running
 export const firestore = new Firestore();
+
+export const mail = sgMail;

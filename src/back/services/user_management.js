@@ -1,7 +1,6 @@
-import sgMail from '@sendgrid/mail';
 import { randomUUID } from 'crypto';
 import yup from 'yup';
-import { db, firestore } from './clients.js';
+import { db, firestore, mail } from './clients.js';
 
 const ROLES = {
   agency: 'agency',
@@ -102,7 +101,7 @@ export async function sendApprovalEmail(user, organization) {
   };
 
   try {
-    await sgMail.send(email);
+    await mail.send(email);
   } catch (error) {
     console.error(error);
   }
