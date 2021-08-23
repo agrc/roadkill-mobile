@@ -20,4 +20,7 @@ describe('isTokenExpired', () => {
 
     expect(() => isTokenExpired(encodedToken)).toThrow();
   });
+  it('can handle a null token', () => {
+    expect(isTokenExpired(undefined)).toBe(true);
+  });
 });
