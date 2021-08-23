@@ -1,28 +1,27 @@
-import Constants from 'expo-constants';
-import * as IntentLauncher from 'expo-intent-launcher';
+import { useNavigation } from '@react-navigation/native';
+import { Button, Icon } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, AppState, Dimensions, Platform, StyleSheet } from 'react-native';
+import { Alert, AppState, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
-import useAuth from '../auth/context';
 import config from '../config';
 import RootView from '../RootView';
 
-const goToSettings = () => {
-  if (Constants.platform.ios) {
-    Linking.openURL('app-settings:');
-  } else {
-    const packageName = __DEV__ ? 'host.exp.exponent' : Constants.manifest.android.package;
-    IntentLauncher.startActivityAsync(IntentLauncher.ACTION_APPLICATION_DETAILS_SETTINGS, {
-      data: 'package:' + packageName,
-    });
-  }
+const MapButton = ({ iconName, onPress }) => {
+  const iconSize = 30;
+  const ButtonIcon = (props) => <Icon {...props} name={iconName} height={iconSize} width={iconSize} />;
+
+  return <Button accessoryLeft={ButtonIcon} style={styles.menuButton} size="tiny" onPress={onPress} />;
+};
+MapButton.propTypes = {
+  iconName: propTypes.string.isRequired,
+  onPress: propTypes.func.isRequired,
 };
 
 export default function MainScreen() {
-  const { logOut } = useAuth();
+  const navigation = useNavigation();
   const [userLocation, setUserLocation] = React.useState(null);
   const appState = React.useRef(AppState.currentState);
 
@@ -87,6 +86,11 @@ export default function MainScreen() {
           <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
         </MapView>
       ) : null}
+      <View style={styles.topContainer}>
+        <View style={styles.leftContainer}>
+          <MapButton iconName="menu" onPress={navigation.openDrawer} />
+        </View>
+      </View>
     </RootView>
   );
 }
@@ -98,6 +102,7 @@ MainScreen.propTypes = {
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const ZOOM_FACTOR = 1.3;
+const MAP_PADDING = 20;
 
 const styles = StyleSheet.create({
   map: {
@@ -117,5 +122,13 @@ const styles = StyleSheet.create({
         transform: [{ scale: 1 / ZOOM_FACTOR }],
       },
     }),
+  },
+  topContainer: {
+    paddingHorizontal: MAP_PADDING,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  menuButton: {
+    padding: 2,
   },
 });
