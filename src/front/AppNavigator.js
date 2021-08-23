@@ -1,16 +1,24 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { HeaderBackButton } from '@react-navigation/drawer/node_modules/@react-navigation/elements';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Drawer, DrawerItem, Icon, IndexPath, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
+import propTypes from 'prop-types';
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
 import useAuth from './auth/context';
 import ChooseTypeScreen from './screens/ChooseType';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
+import MyReportsScreen from './screens/MyReports';
 import NewUserScreen from './screens/NewUser';
+import ProfileScreen from './screens/Profile';
+import { sendEmailToSupport } from './utilities';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
@@ -19,7 +27,7 @@ const AuthNavigator = () => {
   const { userType } = useAuth();
 
   return (
-    <Navigator headerMode="none" initialRouteName={userType ? 'login' : null}>
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName={userType ? 'login' : null}>
       <Screen name="choose-type" component={ChooseTypeScreen} />
       <Screen name="login" component={LoginScreen} />
       <Screen name="new-user" component={NewUserScreen} />
@@ -27,10 +35,57 @@ const AuthNavigator = () => {
   );
 };
 
-const MainNavigator = () => {
+const DrawIcon = (props) => {
+  const theme = useTheme();
+  const iconSize = 30;
+
+  return <Icon name={props.name} width={iconSize} height={iconSize} {...props} fill={theme['color-basic-700']} />;
+};
+DrawIcon.propTypes = {
+  name: propTypes.string.isRequired,
+};
+
+const getDrawContent = ({ navigation, state, logOut }) => {
+  const actions = {
+    4: sendEmailToSupport,
+    5: logOut,
+  };
+  const onSelect = (index) => {
+    if (actions[index]) {
+      return actions[index]();
+    }
+
+    navigation.navigate(state.routeNames[index.row]);
+  };
+
   return (
-    <Navigator headerMode="none">
-      <Screen name="main" component={MainScreen} />
+    <SafeAreaView>
+      <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
+        <DrawerItem title="Main" style={{ display: 'none' }} />
+        <DrawerItem title="My Reports" accessoryLeft={() => <DrawIcon name="list" />} />
+        <DrawerItem title="Profile" accessoryLeft={() => <DrawIcon name="person" />} />
+        <DrawerItem title="Contact" accessoryLeft={() => <DrawIcon name="email" />} />
+        <DrawerItem title="Logout" accessoryLeft={() => <DrawIcon name="log-out" />} />
+      </Drawer>
+    </SafeAreaView>
+  );
+};
+
+const MainNavigator = () => {
+  const { Navigator, Screen } = createDrawerNavigator();
+  const navigation = useNavigation();
+  const GoBack = () => <HeaderBackButton onPress={() => navigation.goBack()} />;
+  const getHeaderIcon = (name) => <DrawIcon name={name} style={{ marginRight: 10 }} />;
+  const { logOut } = useAuth();
+
+  return (
+    <Navigator
+      drawerContent={(args) => getDrawContent({ ...args, logOut })}
+      screenOptions={{ swipeEnabled: false, headerLeft: GoBack }}
+    >
+      <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
+      <Screen name="My Reports" component={MyReportsScreen} options={{ headerRight: () => getHeaderIcon('list') }} />
+      <Screen name="Profile" component={ProfileScreen} options={{ headerRight: () => getHeaderIcon('person') }} />
     </Navigator>
   );
 };
