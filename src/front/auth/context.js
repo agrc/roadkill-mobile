@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import * as Sentry from 'sentry-expo';
 import config from '../config';
-import { isTokenExpired, useAsyncError, useSecureState } from '../utilities';
+import { useAsyncError, useSecureState } from '../utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
 import useUtahIDProvider from './providers/utahid';
@@ -63,15 +63,8 @@ export function AuthContextProvider({ children, onReady }) {
   React.useEffect(() => {
     if (authInfo === null || authInfo) {
       if (authInfo) {
-        if (isTokenExpired(authInfo.oauthUser)) {
-          console.log('cached token is expired');
-          logIn(authInfo.providerName).then(onReady).catch(throwAsyncError);
-
-          return;
-        } else {
-          console.log('authInfo', authInfo);
-          currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
-        }
+        console.log('authInfo', authInfo);
+        currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
       }
       onReady();
     }
