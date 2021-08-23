@@ -36,4 +36,5 @@ export default {
     production: 'production',
     staging: 'staging',
   },
+  SPINNER_DELAY: 250,
 };
