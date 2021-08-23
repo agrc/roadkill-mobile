@@ -80,11 +80,11 @@ Because app builds initiate from both the developer's machine (new native builds
 
 Note that google oauth is done exclusively through the prod GCP project for all app environments since there's no real need to differentiate between environments.
 
-#### Adding new test users
+#### New Test User Links
 
-Android Devices: Add users to the [internal testing users](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/internal-testing?tab=testers) and then send them [this invitation link](https://play.google.com/store/apps/details?id=gov.dts.ugrc.utahwvcr&authuser=1&ah=ChL7Bt5Ub_xXqbwwZJMnwxqtJDs).
+Android Devices (Internal Testing): https://play.google.com/apps/internaltest/4699387731848346247
 
-iOS Devices: https://testflight.apple.com/join/66Vul6Jz
+iOS Devices (TestFlight): https://testflight.apple.com/join/66Vul6Jz
 
 ## Database
 
