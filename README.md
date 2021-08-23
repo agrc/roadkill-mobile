@@ -84,7 +84,7 @@ Note that google oauth is done exclusively through the prod GCP project for all 
 
 Android Devices: Add users to the [internal testing users](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/internal-testing?tab=testers) and then send them [this invitation link](https://play.google.com/store/apps/details?id=gov.dts.ugrc.utahwvcr&authuser=1&ah=ChL7Bt5Ub_xXqbwwZJMnwxqtJDs).
 
-iOS Devices: Add users to the [App Store Connect "Tester" user group](https://appstoreconnect.apple.com/apps/1566659475/testflight/groups/66422629-7842-48db-9e9e-405f4fac4364).
+iOS Devices: https://testflight.apple.com/join/66Vul6Jz
 
 ## Database
 
