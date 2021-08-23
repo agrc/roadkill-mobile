@@ -1,3 +1,6 @@
+import Constants from 'expo-constants';
+import * as Linking from 'expo-linking';
+import * as MailComposer from 'expo-mail-composer';
 import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
 import config from './config';
@@ -68,4 +71,17 @@ export function isTokenExpired(token) {
 export async function clearStorage() {
   await SecureStorage.deleteItemAsync(config.USER_STORE_KEY);
   await SecureStorage.deleteItemAsync(config.USER_TYPE_KEY);
+}
+
+export async function sendEmailToSupport() {
+  const subject = `${Constants.manifest.name} - Support`;
+
+  if (await MailComposer.isAvailableAsync()) {
+    return await MailComposer.composeAsync({
+      subject,
+      recipients: [config.SUPPORT_EMAIL],
+    });
+  }
+
+  Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
 }
