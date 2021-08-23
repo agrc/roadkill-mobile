@@ -1,3 +1,5 @@
+import { ARCHIVED_USER } from '../services/user_management.js';
+
 export function getRegister(isExistingUser, registerUser, getUser) {
   return async function register(request, response) {
     const { user, organization } = request.body;
@@ -41,6 +43,8 @@ export function getApprove(approveUser) {
     } catch (error) {
       if (error.code === 'INVALID_GUID') {
         return response.status(401).send(error.message);
+      } else if (error.code === ARCHIVED_USER) {
+        return response.status(403).send(error.message);
       } else {
         return response.status(500).send(error.message);
       }
