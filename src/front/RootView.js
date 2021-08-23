@@ -1,10 +1,10 @@
-import { useTheme } from '@ui-kitten/components';
+import { Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function RootView({ children, showSpinner = false }) {
+export default function RootView({ children, showSpinner = false, spinnerMessage = false }) {
   const theme = useTheme();
 
   return (
@@ -13,6 +13,11 @@ export default function RootView({ children, showSpinner = false }) {
       {showSpinner ? (
         <View style={[styles.spinner, { backgroundColor: theme['color-basic-transparent-600'] }]}>
           <ActivityIndicator color={theme['color-basic-1100']} size="large" />
+          {spinnerMessage ? (
+            <Text category="h6" style={{ color: theme['color-basic-700'] }}>
+              {spinnerMessage}
+            </Text>
+          ) : null}
         </View>
       ) : null}
     </SafeAreaView>
@@ -21,6 +26,7 @@ export default function RootView({ children, showSpinner = false }) {
 RootView.propTypes = {
   children: propTypes.node,
   showSpinner: propTypes.bool,
+  spinnerMessage: propTypes.string,
 };
 
 const styles = StyleSheet.create({

@@ -89,3 +89,17 @@ export async function sendEmailToSupport() {
 
   Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
 }
+
+export function wrapAsyncWithDelay(action, preAction, postAction, delay) {
+  const timeoutHandler = setTimeout(() => {
+    console.log('preAction');
+    preAction();
+  }, delay);
+  const applyPostAction = () => {
+    console.log('postAction');
+    clearTimeout(timeoutHandler);
+    postAction();
+  };
+
+  return action().catch(applyPostAction).finally(applyPostAction);
+}

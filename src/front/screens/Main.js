@@ -8,6 +8,7 @@ import { Alert, AppState, Dimensions, Platform, StyleSheet, View } from 'react-n
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
 import config from '../config';
 import RootView from '../RootView';
+import { wrapAsyncWithDelay } from '../utilities';
 
 const MapButton = ({ iconName, onPress }) => {
   const iconSize = 30;
@@ -24,6 +25,7 @@ export default function MainScreen() {
   const navigation = useNavigation();
   const [userLocation, setUserLocation] = React.useState(null);
   const appState = React.useRef(AppState.currentState);
+  const [showSpinner, setShowSpinner] = React.useState(false);
 
   React.useEffect(() => {
     const getLocation = async () => {
@@ -39,12 +41,18 @@ export default function MainScreen() {
       let location = await Location.getCurrentPositionAsync({
         enableHighAccuracy: false,
       });
+
       setUserLocation(location);
     };
 
     const handleAppStateChange = async (nextAppState) => {
       if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !userLocation) {
-        await getLocation();
+        await wrapAsyncWithDelay(
+          getLocation,
+          () => setShowSpinner(true),
+          () => setShowSpinner(false),
+          config.SPINNER_DELAY
+        );
       }
 
       appState.current = nextAppState;
@@ -52,13 +60,18 @@ export default function MainScreen() {
 
     AppState.addEventListener('change', handleAppStateChange);
 
-    getLocation();
+    wrapAsyncWithDelay(
+      getLocation,
+      () => setShowSpinner(true),
+      () => setShowSpinner(false),
+      config.SPINNER_DELAY
+    );
 
     return () => AppState.removeEventListener('change', handleAppStateChange);
   }, []);
 
   return (
-    <RootView>
+    <RootView showSpinner={showSpinner} spinnerMessage="getting current location">
       {userLocation ? (
         <MapView
           style={[styles.map]}

@@ -1,4 +1,4 @@
-import { isTokenExpired } from './utilities';
+import { isTokenExpired, wrapAsyncWithDelay } from './utilities';
 
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {
@@ -22,5 +22,49 @@ describe('isTokenExpired', () => {
   });
   it('can handle a null token', () => {
     expect(isTokenExpired(undefined)).toBe(true);
+  });
+});
+
+describe('wrapAsyncWithDelay', () => {
+  it('calls the pre and post in normal execution', async () => {
+    const action = () =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(true), 110);
+      });
+    const pre = jest.fn();
+    const post = jest.fn();
+
+    await wrapAsyncWithDelay(action, pre, post, 100);
+
+    expect(pre).toHaveBeenCalled();
+    expect(post).toHaveBeenCalled();
+  });
+  it('does not call pre if the execution time is less than the delay', async () => {
+    const action = () =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(true), 50);
+      });
+    const pre = jest.fn();
+    const post = jest.fn();
+
+    await wrapAsyncWithDelay(action, pre, post, 100);
+
+    expect(pre).not.toHaveBeenCalled();
+    expect(post).toHaveBeenCalled();
+  });
+  it('calls pre and post even if it throws', async () => {
+    const action = () =>
+      new Promise((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('test'));
+        }, 110);
+      });
+    const pre = jest.fn();
+    const post = jest.fn();
+
+    await wrapAsyncWithDelay(action, pre, post, 100);
+
+    expect(pre).toHaveBeenCalled();
+    expect(post).toHaveBeenCalled();
   });
 });
