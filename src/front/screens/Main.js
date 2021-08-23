@@ -30,7 +30,7 @@ export default function MainScreen() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Error', 'Location permission are required to submit reports.', [
-          { text: 'OK', onPress: goToSettings },
+          { text: 'OK', onPress: () => Linking.openSettings() },
         ]);
 
         return;
