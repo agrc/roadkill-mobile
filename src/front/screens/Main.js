@@ -21,15 +21,25 @@ MapButton.propTypes = {
   onPress: propTypes.func.isRequired,
 };
 
+const locationToRegion = function (location) {
+  return {
+    latitude: location.coords.latitude,
+    longitude: location.coords.longitude,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.05,
+  };
+};
+
 export default function MainScreen() {
   const navigation = useNavigation();
-  const [userLocation, setUserLocation] = React.useState(null);
+  const [initialLocation, setInitialLocation] = React.useState(null);
   const appState = React.useRef(AppState.currentState);
   const [showSpinner, setShowSpinner] = React.useState(false);
+  const mapView = React.useRef(null);
 
   React.useEffect(() => {
     const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Error', 'Location permission are required to submit reports.', [
           { text: 'OK', onPress: () => Linking.openSettings() },
@@ -38,15 +48,15 @@ export default function MainScreen() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({
+      const location = await Location.getCurrentPositionAsync({
         enableHighAccuracy: false,
       });
 
-      setUserLocation(location);
+      setInitialLocation(location);
     };
 
     const handleAppStateChange = async (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !userLocation) {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !initialLocation) {
         await wrapAsyncWithDelay(
           getLocation,
           () => setShowSpinner(true),
@@ -70,31 +80,33 @@ export default function MainScreen() {
     return () => AppState.removeEventListener('change', handleAppStateChange);
   }, []);
 
+  const zoomToCurrentLocation = async () => {
+    const location = await Location.getCurrentPositionAsync();
+
+    mapView.current.animateToRegion(locationToRegion(location));
+  };
+
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location">
-      {userLocation ? (
+      {initialLocation ? (
         <MapView
-          style={[styles.map]}
-          showsUserLocation={true}
-          showsMyLocationButton={false}
-          rotateEnabled={false}
-          pitchEnabled={false}
-          provider={PROVIDER_GOOGLE}
-          mapType="none"
           edgePadding={{
-            top: 20,
-            right: 0,
             bottom: 20,
             left: 0,
+            right: 0,
+            top: 20,
           }}
-          initialRegion={{
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.05,
-          }}
+          initialRegion={locationToRegion(initialLocation)}
+          mapType="none"
           maxZoomLevel={18}
           minZoomLevel={5}
+          pitchEnabled={false}
+          provider={PROVIDER_GOOGLE}
+          ref={mapView}
+          rotateEnabled={false}
+          showsMyLocationButton={false}
+          showsUserLocation={true}
+          style={[styles.map]}
         >
           <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
         </MapView>
@@ -102,6 +114,9 @@ export default function MainScreen() {
       <View style={styles.topContainer}>
         <View style={styles.leftContainer}>
           <MapButton iconName="menu" onPress={navigation.openDrawer} />
+        </View>
+        <View>
+          <MapButton iconName="radio-button-on" onPress={zoomToCurrentLocation} />
         </View>
       </View>
     </RootView>
