@@ -50,7 +50,7 @@ export default {
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
-      googleMapsApiKey: '#TODO',
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
     },
     infoPlist: {
       NSLocationAlwaysUsageDescription:
@@ -67,8 +67,13 @@ export default {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
     },
-    permissions: ['ACCESS_FINE_LOCATION', 'CAMERA'],
     // permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_BACKGROUND_LOCATION', 'CAMERA'],
+    permissions: ['ACCESS_FINE_LOCATION', 'CAMERA'],
+    config: {
+      googleMaps: {
+        apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
+      },
+    },
   },
   // this is only to enable logEvent calls during development in Expo Go
   // ref: https://docs.expo.io/versions/latest/sdk/firebase-analytics/#expo-go-limitations--configuration
