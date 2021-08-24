@@ -4,11 +4,11 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function RootView({ children, showSpinner = false, spinnerMessage = false }) {
+export default function RootView({ children, showSpinner = false, spinnerMessage = false, style }) {
   const theme = useTheme();
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme['background-basic-color-1'] }]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme['background-basic-color-1'] }, style]}>
       {children}
       {showSpinner ? (
         <View style={[styles.spinner, { backgroundColor: theme['color-basic-transparent-600'] }]}>
@@ -27,6 +27,7 @@ RootView.propTypes = {
   children: propTypes.node,
   showSpinner: propTypes.bool,
   spinnerMessage: propTypes.string,
+  style: propTypes.object,
 };
 
 const styles = StyleSheet.create({

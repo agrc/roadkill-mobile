@@ -6,19 +6,21 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Dimensions, Platform, StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
+import useAuth from '../auth/context';
 import config from '../config';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
 
-const MapButton = ({ iconName, onPress }) => {
+const MapButton = ({ iconName, onPress, style }) => {
   const iconSize = 30;
   const ButtonIcon = (props) => <Icon {...props} name={iconName} height={iconSize} width={iconSize} />;
 
-  return <Button accessoryLeft={ButtonIcon} style={styles.menuButton} size="tiny" onPress={onPress} />;
+  return <Button accessoryLeft={ButtonIcon} style={[styles.mapButton, style]} size="tiny" onPress={onPress} />;
 };
 MapButton.propTypes = {
   iconName: propTypes.string.isRequired,
   onPress: propTypes.func.isRequired,
+  style: propTypes.object,
 };
 
 const locationToRegion = function (location) {
@@ -36,6 +38,7 @@ export default function MainScreen() {
   const appState = React.useRef(AppState.currentState);
   const [showSpinner, setShowSpinner] = React.useState(false);
   const mapView = React.useRef(null);
+  const { authInfo } = useAuth();
 
   React.useEffect(() => {
     const getLocation = async () => {
@@ -85,9 +88,15 @@ export default function MainScreen() {
 
     mapView.current.animateToRegion(locationToRegion(location));
   };
+  const showAddReport = () => {
+    console.log('showAddReport');
+  };
+  const showAddRoute = () => {
+    console.log('showAddRoute');
+  };
 
   return (
-    <RootView showSpinner={showSpinner} spinnerMessage="getting current location">
+    <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
       {initialLocation ? (
         <MapView
           edgePadding={{
@@ -111,12 +120,21 @@ export default function MainScreen() {
           <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
         </MapView>
       ) : null}
-      <View style={styles.topContainer}>
-        <View style={styles.leftContainer}>
+      <View style={styles.controlContainer}>
+        <View>
           <MapButton iconName="menu" onPress={navigation.openDrawer} />
         </View>
         <View>
           <MapButton iconName="radio-button-on" onPress={zoomToCurrentLocation} />
+        </View>
+      </View>
+      <View style={styles.controlContainer}>
+        <View></View>
+        <View>
+          {authInfo.user.role === config.USER_TYPES.public ? null : (
+            <MapButton iconName="car" onPress={showAddRoute} style={styles.topButton} />
+          )}
+          <MapButton iconName="plus-circle" onPress={showAddReport} />
         </View>
       </View>
     </RootView>
@@ -133,6 +151,9 @@ const ZOOM_FACTOR = 1.3;
 const MAP_PADDING = 20;
 
 const styles = StyleSheet.create({
+  root: {
+    justifyContent: 'space-between',
+  },
   map: {
     position: 'absolute',
     top: 0,
@@ -151,12 +172,15 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  topContainer: {
+  controlContainer: {
     paddingHorizontal: MAP_PADDING,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  menuButton: {
+  mapButton: {
     padding: 2,
+  },
+  topButton: {
+    marginBottom: MAP_PADDING / 2,
   },
 });
