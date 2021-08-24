@@ -19,6 +19,7 @@ export default {
     public: 'reporter',
     contractor: 'contractor',
     agencyEmployee: 'agency',
+    admin: 'admin',
   },
   PROVIDER_NAMES: {
     google: 'google',
