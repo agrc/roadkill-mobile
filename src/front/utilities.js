@@ -92,11 +92,9 @@ export async function sendEmailToSupport() {
 
 export function wrapAsyncWithDelay(action, preAction, postAction, delay) {
   const timeoutHandler = setTimeout(() => {
-    console.log('preAction');
     preAction();
   }, delay);
   const applyPostAction = () => {
-    console.log('postAction');
     clearTimeout(timeoutHandler);
     postAction();
   };
