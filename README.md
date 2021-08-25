@@ -86,6 +86,11 @@ Android Devices (Internal Testing): https://play.google.com/apps/internaltest/46
 
 iOS Devices (TestFlight): https://testflight.apple.com/join/66Vul6Jz
 
+Facebook: Until the app is approved in the Google Play or App Store, we can only test with this test account:
+
+email: `imamitdzvw_1629901057@tfbnw.net`  
+password: `tester`
+
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql] as the single source of truth for the design.
