@@ -119,7 +119,7 @@ const AppNavigator = () => {
     initAnalytics();
   }, []);
 
-  const linking = { prefixes: [prefix] };
+  const linking = { prefixes: [prefix], config: { screens: { login: 'oauthredirect' } } };
   const setInitialRouteName = () => (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
   const updateRouteName = async () => {
     const previousRouteName = routeNameRef.current;
