@@ -1,5 +1,5 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { HeaderBackButton } from '@react-navigation/drawer/node_modules/@react-navigation/elements';
+import { HeaderBackButton } from '@react-navigation/elements';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Drawer, DrawerItem, Icon, IndexPath, useTheme } from '@ui-kitten/components';
