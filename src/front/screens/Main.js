@@ -40,10 +40,27 @@ export default function MainScreen() {
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
 
+  const getLocation = async () => {
+    let location;
+    try {
+      location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low,
+      });
+    } catch (error) {
+      console.log(`getCurrentPositionAsync: ${error}`);
+
+      location = await Location.getLastKnownPositionAsync({
+        accuracy: Location.Accuracy.Low,
+      });
+    }
+
+    return location;
+  };
+
   React.useEffect(() => {
-    const getLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+    const initLocation = async () => {
+      const result = await Location.requestForegroundPermissionsAsync();
+      if (result.status !== 'granted') {
         Alert.alert('Error', 'Location permission are required to submit reports.', [
           { text: 'OK', onPress: () => Linking.openSettings() },
         ]);
@@ -51,9 +68,7 @@ export default function MainScreen() {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({
-        enableHighAccuracy: false,
-      });
+      const location = await getLocation();
 
       setInitialLocation(location);
     };
@@ -61,7 +76,7 @@ export default function MainScreen() {
     const handleAppStateChange = async (nextAppState) => {
       if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !initialLocation) {
         await wrapAsyncWithDelay(
-          getLocation,
+          initLocation,
           () => setShowSpinner(true),
           () => setShowSpinner(false),
           config.SPINNER_DELAY
@@ -74,7 +89,7 @@ export default function MainScreen() {
     AppState.addEventListener('change', handleAppStateChange);
 
     wrapAsyncWithDelay(
-      getLocation,
+      initLocation,
       () => setShowSpinner(true),
       () => setShowSpinner(false),
       config.SPINNER_DELAY
@@ -84,7 +99,7 @@ export default function MainScreen() {
   }, []);
 
   const zoomToCurrentLocation = async () => {
-    const location = await Location.getCurrentPositionAsync();
+    const location = await getLocation();
 
     mapView.current.animateToRegion(locationToRegion(location));
   };
