@@ -101,7 +101,12 @@ export default function MainScreen() {
   const zoomToCurrentLocation = async () => {
     const location = await getLocation();
 
-    mapView.current.animateToRegion(locationToRegion(location));
+    mapView.current.animateCamera({
+      center: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+    });
   };
   const showAddReport = () => {
     console.log('showAddReport');
