@@ -4,7 +4,7 @@ import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, AppState, Dimensions, Platform, StyleSheet, View } from 'react-native';
+import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
 import useAuth from '../auth/context';
 import config from '../config';
@@ -110,6 +110,25 @@ export default function MainScreen() {
     console.log('showAddRoute');
   };
 
+  const { height, width } = useWindowDimensions();
+  const ZOOM_FACTOR = 1.3;
+  const mapSizeStyle = {
+    ...Platform.select({
+      ios: {
+        height,
+        width,
+      },
+      android: {
+        // the cache tiles look super-pixelated on android, this is a hack to help them look better
+        height: height * ZOOM_FACTOR,
+        width: width * ZOOM_FACTOR,
+        marginTop: -(height * ZOOM_FACTOR - height) / 2,
+        marginLeft: -(width * ZOOM_FACTOR - width) / 2,
+        transform: [{ scale: 1 / ZOOM_FACTOR }],
+      },
+    }),
+  };
+
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
       {initialLocation ? (
@@ -130,7 +149,7 @@ export default function MainScreen() {
           rotateEnabled={false}
           showsMyLocationButton={false}
           showsUserLocation={true}
-          style={[styles.map]}
+          style={[styles.map, mapSizeStyle]}
         >
           <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
         </MapView>
@@ -145,7 +164,7 @@ export default function MainScreen() {
       </View>
       <View style={styles.controlContainer}>
         <View></View>
-        <View>
+        <View style={styles.bottomContainer}>
           {authInfo.user.role === config.USER_TYPES.public ? null : (
             <MapButton iconName="car" onPress={showAddRoute} style={styles.topButton} />
           )}
@@ -160,11 +179,7 @@ MainScreen.propTypes = {
   navigation: propTypes.object,
 };
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const ZOOM_FACTOR = 1.3;
 const MAP_PADDING = 20;
-
 const styles = StyleSheet.create({
   root: {
     justifyContent: 'space-between',
@@ -172,25 +187,14 @@ const styles = StyleSheet.create({
   map: {
     position: 'absolute',
     top: 0,
-    ...Platform.select({
-      ios: {
-        height: SCREEN_HEIGHT,
-        width: SCREEN_WIDTH,
-      },
-      android: {
-        // the cache tiles look super-pixelated on android, this is a hack to help them look better
-        height: SCREEN_HEIGHT * ZOOM_FACTOR,
-        width: SCREEN_WIDTH * ZOOM_FACTOR,
-        marginTop: -(SCREEN_HEIGHT * ZOOM_FACTOR - SCREEN_HEIGHT) / 2,
-        marginLeft: -(SCREEN_WIDTH * ZOOM_FACTOR - SCREEN_WIDTH) / 2,
-        transform: [{ scale: 1 / ZOOM_FACTOR }],
-      },
-    }),
   },
   controlContainer: {
     paddingHorizontal: MAP_PADDING,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  bottomContainer: {
+    paddingBottom: Platform.select({ android: MAP_PADDING }),
   },
   mapButton: {
     padding: 2,
