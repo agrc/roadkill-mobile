@@ -68,7 +68,7 @@ export default {
       backgroundColor: '#FFFFFF',
     },
     // permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_BACKGROUND_LOCATION', 'CAMERA'],
-    permissions: ['ACCESS_FINE_LOCATION', 'CAMERA'],
+    permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_COURSE_LOCATION', 'FOREGROUND_SERVICE', 'CAMERA'],
     config: {
       googleMaps: {
         apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
