@@ -3,11 +3,13 @@ import * as WebBrowser from 'expo-web-browser';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
+import { Platform } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import config from '../config';
 import { useAsyncError, useSecureState } from '../utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
+import useGoogleProviderForStandalone from './providers/google-standalone';
 import useUtahIDProvider from './providers/utahid';
 
 export const STATUS = {
@@ -33,7 +35,7 @@ export function AuthContextProvider({ children, onReady }) {
   const [userType, setUserType] = useSecureState(config.USER_TYPE_KEY);
   const [status, setStatus] = React.useState(STATUS.idle);
   const facebookProvider = useFacebookProvider();
-  const googleProvider = useGoogleProvider();
+  const googleProvider = __DEV__ || Platform.OS === 'ios' ? useGoogleProvider() : useGoogleProviderForStandalone();
   const utahidProvider = useUtahIDProvider();
   // provider should have the following shape:
   // {
@@ -91,7 +93,7 @@ export function AuthContextProvider({ children, onReady }) {
         return { success: false, registered: false };
       }
 
-      const { user, registered } = await ky
+      const loginResponse = await ky
         .post(`${config.API}/user/login`, {
           json: {
             auth_id: oauthUser.sub,
@@ -105,6 +107,7 @@ export function AuthContextProvider({ children, onReady }) {
           },
         })
         .json();
+      const { user, registered } = loginResponse;
 
       setAuthInfo({
         oauthUser,

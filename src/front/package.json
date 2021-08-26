@@ -44,9 +44,11 @@
     "expo-device": "~3.3.0",
     "expo-facebook": "~11.3.1",
     "expo-firebase-analytics": "~4.1.0",
+    "expo-google-sign-in": "~9.2.1",
     "expo-intent-launcher": "~9.1.0",
     "expo-linking": "~2.3.1",
     "expo-location": "~12.1.2",
+    "expo-mail-composer": "~10.2.2",
     "expo-random": "~11.2.0",
     "expo-secure-store": "~10.2.0",
     "expo-splash-screen": "~0.11.2",
@@ -72,8 +74,7 @@
     "sentry-expo": "^4.0.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9",
-    "yup-phone": "^1.2.19",
-    "expo-mail-composer": "~10.2.2"
+    "yup-phone": "^1.2.19"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
