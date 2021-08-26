@@ -88,7 +88,7 @@ iOS Devices (TestFlight): https://testflight.apple.com/join/66Vul6Jz
 
 Facebook: Until the app is approved in the Google Play or App Store, we can only test with this test account:
 
-email: `imamitdzvw_1629901057@tfbnw.net`  
+email: `open_vboxopy_user@tfbnw.net`  
 password: `tester`
 
 ## Database
