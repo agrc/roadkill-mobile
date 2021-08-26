@@ -54,6 +54,7 @@ export default function useGoogleProvider() {
 
         return promptResponse.authentication;
       } else if (['cancel', 'dismiss'].indexOf(promptResponse?.type) > -1) {
+        console.log('authentication cancelled or dismissed', promptResponse);
         return null;
       } else {
         throwAsyncError(
