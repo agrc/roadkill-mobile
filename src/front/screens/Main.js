@@ -1,5 +1,6 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Icon } from '@ui-kitten/components';
+import { Button, Icon, useTheme } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import propTypes from 'prop-types';
@@ -11,9 +12,18 @@ import config from '../config';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
 
-const MapButton = ({ iconName, onPress, style }) => {
+const MapButton = ({ iconName, onPress, style, showAlert }) => {
+  const theme = useTheme();
   const iconSize = 30;
-  const ButtonIcon = (props) => <Icon {...props} name={iconName} height={iconSize} width={iconSize} />;
+  const alertSize = 15;
+  const ButtonIcon = (props) => (
+    <View>
+      <Icon {...props} name={iconName} height={iconSize} width={iconSize} />
+      {showAlert ? (
+        <FontAwesome name="circle" size={alertSize} style={styles.alertIcon} color={theme['color-warning-500']} />
+      ) : null}
+    </View>
+  );
 
   return <Button accessoryLeft={ButtonIcon} style={[styles.mapButton, style]} size="tiny" onPress={onPress} />;
 };
@@ -21,6 +31,7 @@ MapButton.propTypes = {
   iconName: propTypes.string.isRequired,
   onPress: propTypes.func.isRequired,
   style: propTypes.object,
+  showAlert: propTypes.bool,
 };
 
 const locationToRegion = function (location) {
@@ -39,6 +50,7 @@ export default function MainScreen() {
   const [showSpinner, setShowSpinner] = React.useState(false);
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
+  const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
 
   const getLocation = async () => {
     let location;
@@ -161,7 +173,7 @@ export default function MainScreen() {
       ) : null}
       <View style={styles.controlContainer}>
         <View>
-          <MapButton iconName="menu" onPress={navigation.openDrawer} />
+          <MapButton iconName="menu" onPress={navigation.openDrawer} showAlert={hasUnsubmittedReports} />
         </View>
         <View>
           <MapButton iconName="radio-button-on" onPress={zoomToCurrentLocation} />
@@ -206,5 +218,10 @@ const styles = StyleSheet.create({
   },
   topButton: {
     marginBottom: MAP_PADDING / 2,
+  },
+  alertIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
 });
