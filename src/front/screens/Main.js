@@ -1,6 +1,6 @@
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Icon, useTheme } from '@ui-kitten/components';
+import { Button, useTheme } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import propTypes from 'prop-types';
@@ -12,22 +12,23 @@ import config from '../config';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
 
-const MapButton = ({ iconName, onPress, style, showAlert }) => {
+const MapButton = ({ IconComponent, iconName, onPress, style, showAlert }) => {
   const theme = useTheme();
   const iconSize = 30;
-  const alertSize = 15;
-  const ButtonIcon = (props) => (
-    <View>
-      <Icon {...props} name={iconName} height={iconSize} width={iconSize} />
+  const alertSize = 12;
+  const ButtonIcon = () => (
+    <View style={{ height: iconSize, width: iconSize, justifyContent: 'center', alignItems: 'center' }}>
+      <IconComponent name={iconName} color="white" size={iconSize} />
       {showAlert ? (
         <FontAwesome name="circle" size={alertSize} style={styles.alertIcon} color={theme['color-warning-500']} />
       ) : null}
     </View>
   );
 
-  return <Button accessoryLeft={ButtonIcon} style={[styles.mapButton, style]} size="tiny" onPress={onPress} />;
+  return <Button accessoryLeft={ButtonIcon} style={style} size="tiny" onPress={onPress} />;
 };
 MapButton.propTypes = {
+  IconComponent: propTypes.func.isRequired,
   iconName: propTypes.string.isRequired,
   onPress: propTypes.func.isRequired,
   style: propTypes.object,
@@ -122,6 +123,7 @@ export default function MainScreen() {
   };
   const showAddReport = () => {
     console.log('showAddReport');
+    setHasUnsubmittedReports(!hasUnsubmittedReports);
   };
   const showAddRoute = () => {
     console.log('showAddRoute');
@@ -173,19 +175,29 @@ export default function MainScreen() {
       ) : null}
       <View style={styles.controlContainer}>
         <View>
-          <MapButton iconName="menu" onPress={navigation.openDrawer} showAlert={hasUnsubmittedReports} />
+          <MapButton
+            IconComponent={MaterialCommunityIcons}
+            iconName="menu"
+            onPress={navigation.openDrawer}
+            showAlert={hasUnsubmittedReports}
+          />
         </View>
         <View>
-          <MapButton iconName="radio-button-on" onPress={zoomToCurrentLocation} />
+          <MapButton IconComponent={MaterialIcons} iconName="my-location" onPress={zoomToCurrentLocation} />
         </View>
       </View>
       <View style={styles.controlContainer}>
         <View></View>
         <View style={styles.bottomContainer}>
           {authInfo.user.role === config.USER_TYPES.public ? null : (
-            <MapButton iconName="car" onPress={showAddRoute} style={styles.topButton} />
+            <MapButton
+              IconComponent={MaterialIcons}
+              iconName="drive-eta"
+              onPress={showAddRoute}
+              style={styles.topButton}
+            />
           )}
-          <MapButton iconName="plus-circle" onPress={showAddReport} />
+          <MapButton IconComponent={MaterialIcons} iconName="add-circle" onPress={showAddReport} />
         </View>
       </View>
     </RootView>
@@ -212,9 +224,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     paddingBottom: Platform.select({ android: MAP_PADDING }),
-  },
-  mapButton: {
-    padding: 2,
   },
   topButton: {
     marginBottom: MAP_PADDING / 2,
