@@ -80,7 +80,7 @@ Because app builds initiate from both the developer's machine (new native builds
 
 Note that google oauth is done exclusively through the prod GCP project for all app environments since there's no real need to differentiate between environments.
 
-#### New Test User Links
+### Test User Links
 
 Android Devices (Internal Testing): https://play.google.com/apps/internaltest/4699387731848346247
 
