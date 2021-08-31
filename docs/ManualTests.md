@@ -6,12 +6,12 @@
 
 ## Auth
 
-| set up              | action                                              | assertion                                         |
-| ------------------- | --------------------------------------------------- | ------------------------------------------------- |
-|                     | log in with each provider: utahid, google, facebook | navigates to new user or main screen              |
-|                     | cancel oauth process                                | navigates back to login screen                    |
-| log in successfully | kill app and then restart                           | automatically logs in and goes to the Main screen |
-|                     | Main -> Menu -> Logout                              | navigates to login screen                         |
+| set up              | action                                              | assertion                                                       |
+| ------------------- | --------------------------------------------------- | --------------------------------------------------------------- |
+|                     | log in with each provider: utahid, google, facebook | navigates to new user or main screen                            |
+|                     | cancel oauth process                                | navigates back to login screen                                  |
+| log in successfully | kill app and then restart                           | automatically logs in and goes to the Main screen               |
+|                     | Main -> Menu -> Logout                              | presents confirmation dialog and then navigates to login screen |
 
 ## Main
 

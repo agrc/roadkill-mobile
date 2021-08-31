@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import config from '../config';
 import { useAsyncError, useSecureState } from '../utilities';
@@ -146,17 +146,43 @@ export function AuthContextProvider({ children, onReady }) {
     });
   };
 
-  const logOut = async () => {
-    setStatus(STATUS.loading);
+  const logOut = () => {
+    return new Promise((resolve) => {
+      const doLogOut = async () => {
+        setStatus(STATUS.loading);
 
-    currentProvider.current.logOut();
+        currentProvider.current.logOut();
 
-    setAuthInfo(null);
+        setAuthInfo(null);
 
-    await SecureStore.deleteItemAsync(config.USER_STORE_KEY);
-    await SecureStore.deleteItemAsync(config.USER_TYPE_KEY);
+        await SecureStore.deleteItemAsync(config.USER_STORE_KEY);
+        await SecureStore.deleteItemAsync(config.USER_TYPE_KEY);
 
-    setStatus(STATUS.idle);
+        setStatus(STATUS.idle);
+
+        resolve(true);
+      };
+
+      Alert.alert(
+        'Are you sure?',
+        null,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+            onPress: () => resolve(false),
+          },
+          {
+            text: 'Logout',
+            onPress: doLogOut,
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () => resolve(false),
+        }
+      );
+    });
   };
 
   const getBearerToken = async () => {
