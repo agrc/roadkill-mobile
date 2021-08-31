@@ -7,18 +7,20 @@ import Constants from 'expo-constants';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
+import * as Updates from 'expo-updates';
 import propTypes from 'prop-types';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
 import useAuth from './auth/context';
+import config from './config';
 import ChooseTypeScreen from './screens/ChooseType';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
 import MyReportsScreen from './screens/MyReports';
 import NewUserScreen from './screens/NewUser';
 import ProfileScreen from './screens/Profile';
-import { sendEmailToSupport } from './utilities';
+import { forceUpdate, sendEmailToSupport } from './utilities';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
@@ -49,6 +51,7 @@ const getDrawContent = ({ navigation, state, logOut }) => {
   const actions = {
     4: sendEmailToSupport,
     5: logOut,
+    6: forceUpdate,
   };
   const onSelect = (index) => {
     if (actions[index]) {
@@ -58,6 +61,11 @@ const getDrawContent = ({ navigation, state, logOut }) => {
     navigation.navigate(state.routeNames[index.row]);
   };
 
+  let versionTitle = `App version: ${Constants.manifest.version} (${Constants.manifest?.ios?.buildNumber})`;
+  if (Updates.releaseChannel !== config.RELEASE_CHANNELS.production) {
+    versionTitle += ` - ${__DEV__ ? 'dev' : Updates.releaseChannel}`;
+  }
+
   return (
     <SafeAreaView>
       <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
@@ -66,6 +74,7 @@ const getDrawContent = ({ navigation, state, logOut }) => {
         <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
         <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
         <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
+        <DrawerItem title={versionTitle} accessoryLeft={() => <DrawerIcon name="info" />} />
       </Drawer>
     </SafeAreaView>
   );
