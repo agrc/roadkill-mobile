@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 import * as MailComposer from 'expo-mail-composer';
 import * as SecureStorage from 'expo-secure-store';
+import * as Updates from 'expo-updates';
 import React from 'react';
 import config from './config';
 
@@ -100,4 +101,9 @@ export function wrapAsyncWithDelay(action, preAction, postAction, delay) {
   };
 
   return action().catch(applyPostAction).finally(applyPostAction);
+}
+
+export async function forceUpdate() {
+  await Updates.fetchUpdateAsync();
+  await Updates.reloadAsync();
 }
