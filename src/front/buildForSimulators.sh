@@ -7,9 +7,15 @@ if [ $1 ]; then
 elif [ -z "$GIT_BRANCH" ]; then
   GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit;
   RELEASE_CHANNEL=${GIT_BRANCH#"origin/"}
+  RELEASE_CHANNEL="${RELEASE_CHANNEL//\//_}"
 fi
 
 ENV_FILE="./.env.$RELEASE_CHANNEL"
+STAGING_ENV_FILE="./.env.staging"
+if [ ! -f "$ENV_FILE" ]; then
+  echo "No environment file found for $RELEASE_CHANNEL; using $STAGING_ENV_FILE instead"
+  ENV_FILE=$STAGING_ENV_FILE
+fi
 echo "getting environment variables from $ENV_FILE"
 set -o allexport
 source $ENV_FILE
