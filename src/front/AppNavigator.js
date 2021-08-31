@@ -35,13 +35,13 @@ const AuthNavigator = () => {
   );
 };
 
-const DrawIcon = (props) => {
+const DrawerIcon = (props) => {
   const theme = useTheme();
   const iconSize = 30;
 
   return <Icon name={props.name} width={iconSize} height={iconSize} {...props} fill={theme['color-basic-700']} />;
 };
-DrawIcon.propTypes = {
+DrawerIcon.propTypes = {
   name: propTypes.string.isRequired,
 };
 
@@ -62,10 +62,10 @@ const getDrawContent = ({ navigation, state, logOut }) => {
     <SafeAreaView>
       <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
         <DrawerItem title="Main" style={{ display: 'none' }} />
-        <DrawerItem title="My Reports" accessoryLeft={() => <DrawIcon name="list" />} />
-        <DrawerItem title="Profile" accessoryLeft={() => <DrawIcon name="person" />} />
-        <DrawerItem title="Contact" accessoryLeft={() => <DrawIcon name="email" />} />
-        <DrawerItem title="Logout" accessoryLeft={() => <DrawIcon name="log-out" />} />
+        <DrawerItem title="My Reports" accessoryLeft={() => <DrawerIcon name="list" />} />
+        <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
+        <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
+        <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
       </Drawer>
     </SafeAreaView>
   );
@@ -75,7 +75,7 @@ const MainNavigator = () => {
   const { Navigator, Screen } = createDrawerNavigator();
   const navigation = useNavigation();
   const GoBack = () => <HeaderBackButton onPress={() => navigation.goBack()} />;
-  const getHeaderIcon = (name) => <DrawIcon name={name} style={{ marginRight: 10 }} />;
+  const getHeaderIcon = (name) => <DrawerIcon name={name} style={{ marginRight: 10 }} />;
   const { logOut } = useAuth();
 
   return (
