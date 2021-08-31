@@ -65,7 +65,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # so that git.count() in app.config.js works correctly
 
       - name: Deploy
         uses: ./.github/actions/front/deploy
@@ -100,7 +100,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # so that git.count() in app.config.js works correctly
 
       - name: Deploy
         uses: ./.github/actions/front/deploy
