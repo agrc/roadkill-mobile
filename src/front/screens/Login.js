@@ -1,6 +1,5 @@
 import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
-import * as Updates from 'expo-updates';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
@@ -57,11 +56,6 @@ export default function LoginScreen({ navigation }) {
   };
   console.log('Constants.manifest.releaseChannel', Constants.manifest.releaseChannel);
 
-  const forceUpdate = async () => {
-    await Updates.fetchUpdateAsync();
-    await Updates.reloadAsync();
-  };
-
   return (
     <RootView showSpinner={showSpinner}>
       <TopNavigation title="" alignment="center" accessoryLeft={BackAction} />
@@ -102,14 +96,6 @@ export default function LoginScreen({ navigation }) {
           ) : null}
         </View>
       </Layout>
-      {Updates.releaseChannel !== config.RELEASE_CHANNELS.production ? (
-        <Button appearance="ghost" onPress={forceUpdate}>
-          App version:{' '}
-          {`${Constants.manifest.version} (${Constants.manifest?.ios?.buildNumber}) - ${
-            __DEV__ ? 'dev' : Updates.releaseChannel
-          }`}
-        </Button>
-      ) : null}
     </RootView>
   );
 }
