@@ -45,6 +45,14 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
    1. Enable analytics in Firebase
    1. Create a web app just to get the `measurementId` config for the `FIREBASE_MEASUREMENT_ID` env variable.
 
+### Cutting a New Release
+
+1. From root: `npm run changelog`
+1. Update version/build number in [CHANGELOG.md](CHANGELOG.md).
+   - build number should be `git rev-list --all --count` + `1` to account for the release commit (this isn't quite right yet; different number shows up on my local machine compared with GHA).
+1. Commit
+1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)).
+
 ### Pushing a New App Build to Staging
 
 1. `git checkout staging`
@@ -71,6 +79,7 @@ These are done automatically for the production and staging release channels via
 ### Steps for Creating a Expo New Release Channel
 
 1. Update "Production" env context in `.github/workflows/front.yml`.
+1. Update [src/front/config.js](src/front/config.js).
 
 ### Secrets
 
