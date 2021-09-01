@@ -146,7 +146,7 @@ export function AuthContextProvider({ children, onReady }) {
     });
   };
 
-  const logOut = () => {
+  const logOut = (skipConfirm = false) => {
     return new Promise((resolve) => {
       const doLogOut = async () => {
         setStatus(STATUS.loading);
@@ -162,6 +162,10 @@ export function AuthContextProvider({ children, onReady }) {
 
         resolve(true);
       };
+
+      if (skipConfirm) {
+        return doLogOut();
+      }
 
       Alert.alert(
         'Are you sure?',
