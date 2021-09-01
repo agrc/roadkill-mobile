@@ -46,7 +46,7 @@ export default function NewUserScreen() {
 
   const cancel = () => {
     navigation.navigate('login');
-    logOut();
+    logOut(true);
   };
 
   return (
