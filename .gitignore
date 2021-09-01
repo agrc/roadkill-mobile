@@ -1,3 +1,4 @@
 .DS_Store
 .env
 data/sql/create_users.sql
+node_modules/
