@@ -1,5 +1,5 @@
+import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { Text } from 'react-native';
 import RootView from '../RootView';
 
 export default function MyReportsScreen() {
