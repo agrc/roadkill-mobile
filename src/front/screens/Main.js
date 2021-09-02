@@ -8,6 +8,7 @@ import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
 import useAuth from '../auth/context';
+import Report from '../components/Report';
 import config from '../config';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
@@ -52,6 +53,7 @@ export default function MainScreen() {
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
+  const [reportVisible, setReportVisible] = React.useState(false);
 
   const getLocation = async () => {
     let location;
@@ -122,8 +124,7 @@ export default function MainScreen() {
     });
   };
   const showAddReport = () => {
-    console.log('showAddReport');
-    setHasUnsubmittedReports(!hasUnsubmittedReports);
+    setReportVisible(true);
   };
   const showAddRoute = () => {
     console.log('showAddRoute');
@@ -200,6 +201,7 @@ export default function MainScreen() {
           <MapButton IconComponent={MaterialIcons} iconName="add-circle" onPress={showAddReport} />
         </View>
       </View>
+      <Report visible={reportVisible} setVisible={setReportVisible} />
     </RootView>
   );
 }
