@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   bottomContainer: {
-    paddingBottom: Platform.select({ android: MAP_PADDING }),
+    paddingBottom: MAP_PADDING,
   },
   topButton: {
     marginBottom: MAP_PADDING / 2,
