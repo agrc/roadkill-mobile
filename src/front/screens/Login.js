@@ -1,4 +1,4 @@
-import { Button, Icon, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
+import { Button, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -12,6 +12,7 @@ import googleBtnPressed from '../assets/google/btn_google_signin_light_pressed_w
 import utahIdLogo from '../assets/logo-utahid.png';
 import useAuth, { STATUS } from '../auth/context';
 import config from '../config';
+import { getIcon } from '../icons';
 import RootView from '../RootView';
 
 export default function LoginScreen({ navigation }) {
@@ -28,8 +29,12 @@ export default function LoginScreen({ navigation }) {
       navigation.navigate('new-user');
     }
   };
-  const BackIcon = (props) => <Icon {...props} name="arrow-back" />;
-  const BackAction = () => <TopNavigationAction icon={BackIcon} onPress={() => navigation.navigate('choose-type')} />;
+  const BackAction = () => (
+    <TopNavigationAction
+      icon={getIcon({ pack: 'eva', name: 'arrow-back', color: theme['color-basic-800'] })}
+      onPress={() => navigation.navigate('choose-type')}
+    />
+  );
 
   const UtahIdLogoImage = () => <Image source={utahIdLogo} resizeMode="contain" />;
   const SocialButton = ({ providerName, normalImage, disabledImage, pressedImage }) => {

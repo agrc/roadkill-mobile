@@ -12,6 +12,7 @@ import * as Sentry from 'sentry-expo';
 import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
+import packs from './icons';
 import { clearStorage } from './utilities';
 
 const queryClient = new QueryClient();
@@ -46,7 +47,7 @@ export default function App() {
 
   return (
     <ErrorBoundary onError={onError}>
-      <IconRegistry icons={EvaIconsPack} />
+      <IconRegistry icons={[EvaIconsPack, ...packs]} />
       <ApplicationProvider {...eva} theme={{ ...eva.light, ...theme }}>
         <QueryClientProvider client={queryClient}>
           <AuthContextProvider onReady={() => setAuthIsReady(true)}>
