@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Drawer, DrawerItem, Icon, IndexPath, useTheme } from '@ui-kitten/components';
+import { Drawer, DrawerItem, IndexPath, useTheme } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Linking from 'expo-linking';
@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
 import useAuth from './auth/context';
 import config from './config';
+import { getIcon } from './icons';
 import ChooseTypeScreen from './screens/ChooseType';
 import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
@@ -41,7 +42,14 @@ const DrawerIcon = (props) => {
   const theme = useTheme();
   const iconSize = 30;
 
-  return <Icon name={props.name} width={iconSize} height={iconSize} {...props} fill={theme['color-basic-700']} />;
+  const Icon = getIcon({
+    pack: 'eva',
+    name: props.name,
+    size: iconSize,
+    color: theme['color-basic-700'],
+  });
+
+  return <Icon />;
 };
 DrawerIcon.propTypes = {
   name: propTypes.string.isRequired,
