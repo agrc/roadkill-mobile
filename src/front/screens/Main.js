@@ -11,7 +11,7 @@ import MapButton from '../components/MapButton';
 import Report from '../components/Report';
 import config from '../config';
 import { getIcon } from '../icons';
-import { getLocation, locationToRegion, zoomToCurrentLocation } from '../location';
+import { followUser, getLocation, locationToRegion } from '../location';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
 
@@ -29,6 +29,7 @@ export default function MainScreen() {
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
+  const [followSubscription, setFollowSubscription] = React.useState(null);
 
   React.useEffect(() => {
     const initLocation = async () => {
@@ -84,19 +85,37 @@ export default function MainScreen() {
     setCarcassCoordinates(coordinates);
   };
 
+  const followIfNotFollowing = async (zoom) => {
+    if (!followSubscription) {
+      setFollowSubscription(await followUser(mapView.current, zoom));
+    } else if (zoom) {
+      mapView.current.animateCamera({
+        zoom: zoom,
+      });
+    }
+  };
+
   const showAddReport = () => {
     setReportVisible(true);
 
     const zoom = async () => {
-      await zoomToCurrentLocation(mapView.current, 18);
+      await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
       setShowCrosshair(true);
     };
 
     if (Platform.OS === 'android') {
       // give map padding time to catch up
-      setTimeout(zoom, 250);
+      setTimeout(zoom, 300);
     } else {
       zoom();
+    }
+  };
+
+  const onRegionChangeComplete = (_, event) => {
+    if (followSubscription && event.isGesture) {
+      followSubscription.remove();
+
+      setFollowSubscription(null);
     }
   };
 
@@ -154,6 +173,9 @@ export default function MainScreen() {
       {initialLocation ? (
         <>
           <MapView
+            initialRegion={locationToRegion(initialLocation)}
+            loadingEnabled={true}
+            onRegionChangeComplete={onRegionChangeComplete}
             mapPadding={
               reportVisible
                 ? Platform.select({
@@ -166,8 +188,6 @@ export default function MainScreen() {
                   })
                 : null
             }
-            initialRegion={locationToRegion(initialLocation)}
-            loadingEnabled={true}
             mapType="none"
             maxZoomLevel={18}
             minZoomLevel={5}
@@ -207,10 +227,9 @@ export default function MainScreen() {
         </View>
         <View>
           <MapButton
-            iconPack="font-awesome-5"
-            iconName="location-arrow"
-            iconSize={20}
-            onPress={() => zoomToCurrentLocation(mapView.current, null)}
+            iconPack="material"
+            iconName={followSubscription ? 'my-location' : 'location-searching'}
+            onPress={() => followIfNotFollowing()}
           />
         </View>
       </View>
