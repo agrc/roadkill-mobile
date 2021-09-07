@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Autolink from 'react-native-autolink';
 import config from '../config';
 import { getIcon } from '../icons';
@@ -24,7 +24,7 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
         })}
         size="tiny"
         appearance="ghost"
-        onPress={() => setVisible(false)}
+        onPress={onClose}
         style={styles.closeButton}
       />
     </View>
@@ -56,6 +56,27 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
 
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
   const iconSize = 20;
+
+  const isDirty = () => {
+    return carcassCoordinates !== null;
+  };
+
+  const onClose = async () => {
+    if (isDirty()) {
+      Alert.alert('Are you sure?', 'All in-progress report data will be lost', [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Close',
+          onPress: () => setVisible(false),
+        },
+      ]);
+    } else {
+      setVisible(false);
+    }
+  };
 
   return (
     <Animated.View
