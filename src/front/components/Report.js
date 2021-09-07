@@ -6,14 +6,23 @@ import Autolink from 'react-native-autolink';
 import config from '../config';
 import { getIcon } from '../icons';
 
+const SET_LOCATION_VIEW = 'set_location_view';
+const MAIN_VIEW = 'main_view';
+const COMMON_ANIMATION_PROPS = {
+  useNativeDriver: false,
+  duration: 250,
+};
+
 const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates }) => {
-  const animatedHeight = React.useRef(new Animated.Value(0));
+  const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
-  const height = React.useRef(null);
+  const locationViewHeight = React.useRef(null);
+  const [view, setView] = React.useState(SET_LOCATION_VIEW);
+  const [showMain, setShowMain] = React.useState(false);
 
   const Header = (props) => (
-    <View {...props} style={[props.style, styles.header]}>
+    <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
       <Text category="h5">Report a Carcass</Text>
       <Button
         accessoryLeft={getIcon({
@@ -34,25 +43,41 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
   };
 
   React.useEffect(() => {
-    const commonProps = {
-      useNativeDriver: false,
-      duration: 250,
-    };
-
     if (visible) {
-      Animated.timing(animatedHeight.current, {
+      Animated.timing(animatedMaxHeight.current, {
         // is there a better way to get the height of the animated view?
         // I'm hoping that 50% of window height is good for the smaller devices...
-        toValue: windowDimensions.height / 2,
-        ...commonProps,
-      }).start(() => setHeight(height.current));
+        toValue: windowDimensions.height * 0.5,
+        ...COMMON_ANIMATION_PROPS,
+      }).start(() => {
+        setHeight(locationViewHeight.current);
+      });
     } else {
-      Animated.timing(animatedHeight.current, {
+      Animated.timing(animatedMaxHeight.current, {
         toValue: 0,
-        ...commonProps,
+        ...COMMON_ANIMATION_PROPS,
       }).start();
     }
   }, [visible]);
+
+  React.useEffect(() => {
+    const newMaxHeight = view === MAIN_VIEW ? windowDimensions.height : windowDimensions.height * 0.5;
+
+    if (visible) {
+      if (view === MAIN_VIEW) {
+        setShowMain(true);
+      }
+
+      Animated.timing(animatedMaxHeight.current, {
+        toValue: newMaxHeight,
+        ...COMMON_ANIMATION_PROPS,
+      }).start(() => {
+        if (view === SET_LOCATION_VIEW) {
+          setShowMain(false);
+        }
+      });
+    }
+  }, [view]);
 
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
   const iconSize = 20;
@@ -62,45 +87,80 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
   };
 
   const onClose = async () => {
+    const close = () => {
+      setVisible(false);
+      setView(SET_LOCATION_VIEW);
+    };
+
     if (isDirty()) {
-      Alert.alert('Are you sure?', 'All in-progress report data will be lost', [
+      Alert.alert('Are you sure?', 'All in-progress report data will be lost.', [
         {
           text: 'Cancel',
           style: 'cancel',
         },
         {
           text: 'Close',
-          onPress: () => setVisible(false),
+          onPress: () => close(),
         },
       ]);
     } else {
-      setVisible(false);
+      close();
     }
+  };
+
+  const onSetLocation = () => {
+    setMarker();
+
+    setTimeout(() => setView(MAIN_VIEW), 600);
   };
 
   return (
     <Animated.View
-      style={[styles.container, { maxHeight: animatedHeight.current }]}
-      onLayout={(event) => (height.current = event.nativeEvent.layout.height)}
+      // The reason why I'm doing maxHeight rather than height is because we can't find the
+      // height of the animated view until it's displayed. A fixed height would not be flexible
+      // enough for different screen sizes.
+      style={[styles.container, { maxHeight: animatedMaxHeight.current }]}
+      onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
       <Card style={styles.card} header={Header} disabled>
-        <View>
-          <Text appearance="hint" style={styles.note}>
-            <Autolink phone text={callText} />
-          </Text>
-          <Divider />
-          <Text category="h6" style={styles.margin}>
-            Location
-          </Text>
-          <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
+        {!showMain ? (
+          <View>
+            <Text appearance="hint" style={styles.note}>
+              <Autolink phone text={callText} />
+            </Text>
+            <Divider />
+            <Text category="h6" style={styles.margin}>
+              Location
+            </Text>
+            <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
+            <Button
+              accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs', size: iconSize })}
+              style={styles.margin}
+              onPress={onSetLocation}
+            >
+              Set Location
+            </Button>
+          </View>
+        ) : (
           <Button
-            accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs', size: iconSize })}
+            accessoryLeft={getIcon({
+              pack: 'font-awesome-5',
+              name: 'crosshairs',
+              size: 20,
+            })}
             style={styles.margin}
-            onPress={setMarker}
+            onPress={() => setView(SET_LOCATION_VIEW)}
+            appearance="outline"
           >
-            Set Location
+            Edit Location
           </Button>
-        </View>
+        )}
+        {showMain ? (
+          <View style={{ height: 900 }}>
+            <Text>main report form</Text>
+            <Button status="info">Submit Report</Button>
+          </View>
+        ) : null}
       </Card>
     </Animated.View>
   );
