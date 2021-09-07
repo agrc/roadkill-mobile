@@ -1,66 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import { Button, useTheme } from '@ui-kitten/components';
+import { useTheme } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
 import useAuth from '../auth/context';
+import MapButton from '../components/MapButton';
 import Report from '../components/Report';
 import config from '../config';
 import { getIcon } from '../icons';
+import { getLocation, locationToRegion, zoomToCurrentLocation } from '../location';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
-
-const MapButton = ({ iconPack, iconName, onPress, style, showAlert }) => {
-  const theme = useTheme();
-  const iconSize = 30;
-  const alertSize = 12;
-  const ButtonIcon = () => {
-    const Icon = getIcon({
-      pack: iconPack,
-      name: iconName,
-      color: 'white',
-      size: iconSize,
-    });
-    const AlertIcon = getIcon({
-      pack: 'font-awesome',
-      name: 'circle',
-      size: alertSize,
-      color: theme['color-warning-500'],
-    });
-
-    return (
-      <View style={{ height: iconSize, width: iconSize, justifyContent: 'center', alignItems: 'center' }}>
-        <Icon />
-        {showAlert ? (
-          <View style={styles.alertIcon}>
-            <AlertIcon />
-          </View>
-        ) : null}
-      </View>
-    );
-  };
-
-  return <Button accessoryLeft={ButtonIcon} style={style} size="tiny" onPress={onPress} />;
-};
-MapButton.propTypes = {
-  iconPack: propTypes.string.isRequired,
-  iconName: propTypes.string.isRequired,
-  onPress: propTypes.func.isRequired,
-  style: propTypes.object,
-  showAlert: propTypes.bool,
-};
-
-const locationToRegion = function (location) {
-  return {
-    latitude: location.coords.latitude,
-    longitude: location.coords.longitude,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.05,
-  };
-};
 
 export default function MainScreen() {
   const navigation = useNavigation();
@@ -71,23 +24,11 @@ export default function MainScreen() {
   const { authInfo } = useAuth();
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
   const [reportVisible, setReportVisible] = React.useState(false);
-
-  const getLocation = async () => {
-    let location;
-    try {
-      location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low,
-      });
-    } catch (error) {
-      console.log(`getCurrentPositionAsync: ${error}`);
-
-      location = await Location.getLastKnownPositionAsync({
-        accuracy: Location.Accuracy.Low,
-      });
-    }
-
-    return location;
-  };
+  const [showCrosshair, setShowCrosshair] = React.useState(false);
+  const theme = useTheme();
+  const mapDimensions = React.useRef(null);
+  const [reportHeight, setReportHeight] = React.useState(0);
+  const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
 
   React.useEffect(() => {
     const initLocation = async () => {
@@ -130,19 +71,41 @@ export default function MainScreen() {
     return () => AppState.removeEventListener('change', handleAppStateChange);
   }, []);
 
-  const zoomToCurrentLocation = async () => {
-    const location = await getLocation();
+  const setMarker = async () => {
+    const points = { ...crosshairCoordinates };
 
-    mapView.current.animateCamera({
-      center: {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      },
-    });
+    if (Platform.OS === 'android') {
+      points.y = points.y * ZOOM_FACTOR;
+      points.x = points.x * ZOOM_FACTOR;
+    }
+
+    const coordinates = await mapView.current.coordinateForPoint(points);
+
+    setCarcassCoordinates(coordinates);
   };
+
   const showAddReport = () => {
     setReportVisible(true);
+
+    const zoom = async () => {
+      await zoomToCurrentLocation(mapView.current, 18);
+      setShowCrosshair(true);
+    };
+
+    if (Platform.OS === 'android') {
+      // give map padding time to catch up
+      setTimeout(zoom, 250);
+    } else {
+      zoom();
+    }
   };
+
+  const hideAddReport = () => {
+    setReportVisible(false);
+    setShowCrosshair(false);
+    setCarcassCoordinates(null);
+  };
+
   const showAddRoute = () => {
     console.log('showAddRoute');
   };
@@ -166,30 +129,72 @@ export default function MainScreen() {
     }),
   };
 
+  const CrosshairIcon = getIcon({
+    pack: 'font-awesome-5',
+    name: 'crosshairs',
+    size: CROSSHAIR_SIZE,
+    color: theme['color-basic-900'],
+  });
+
+  const crosshairCoordinates = mapDimensions.current
+    ? Platform.select({
+        ios: {
+          y: (mapDimensions.current.height - reportHeight) / 2,
+          x: mapDimensions.current.width / 2,
+        },
+        android: {
+          y: (mapDimensions.current.height - reportHeight) / 2 / ZOOM_FACTOR,
+          x: mapDimensions.current.width / 2 / ZOOM_FACTOR,
+        },
+      })
+    : null;
+
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
       {initialLocation ? (
-        <MapView
-          edgePadding={{
-            bottom: 20,
-            left: 0,
-            right: 0,
-            top: 20,
-          }}
-          initialRegion={locationToRegion(initialLocation)}
-          mapType="none"
-          maxZoomLevel={18}
-          minZoomLevel={5}
-          pitchEnabled={false}
-          provider={PROVIDER_GOOGLE}
-          ref={mapView}
-          rotateEnabled={false}
-          showsMyLocationButton={false}
-          showsUserLocation={true}
-          style={[styles.map, mapSizeStyle]}
-        >
-          <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
-        </MapView>
+        <>
+          <MapView
+            mapPadding={
+              reportVisible
+                ? Platform.select({
+                    ios: {
+                      bottom: reportHeight + 15,
+                    },
+                    android: {
+                      bottom: reportHeight,
+                    },
+                  })
+                : null
+            }
+            initialRegion={locationToRegion(initialLocation)}
+            loadingEnabled={true}
+            mapType="none"
+            maxZoomLevel={18}
+            minZoomLevel={5}
+            onLayout={(event) => {
+              const { width, height } = event.nativeEvent.layout;
+              mapDimensions.current = { width, height };
+            }}
+            pitchEnabled={false}
+            provider={PROVIDER_GOOGLE}
+            ref={mapView}
+            rotateEnabled={false}
+            showsMyLocationButton={false}
+            showsUserLocation={true}
+            style={[styles.map, mapSizeStyle]}
+          >
+            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} /> : null}
+            <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
+          </MapView>
+          {showCrosshair && reportHeight > 0 ? (
+            <View
+              pointerEvents="none"
+              style={[styles.crosshairContainer, { top: crosshairCoordinates.y, left: crosshairCoordinates.x }]}
+            >
+              <CrosshairIcon />
+            </View>
+          ) : null}
+        </>
       ) : null}
       <View style={styles.controlContainer}>
         <View>
@@ -201,7 +206,11 @@ export default function MainScreen() {
           />
         </View>
         <View>
-          <MapButton iconPack="material" iconName="my-location" onPress={zoomToCurrentLocation} />
+          <MapButton
+            iconPack="material"
+            iconName="my-location"
+            onPress={() => zoomToCurrentLocation(mapView.current, null)}
+          />
         </View>
       </View>
       <View style={styles.controlContainer}>
@@ -213,7 +222,13 @@ export default function MainScreen() {
           <MapButton iconPack="material" iconName="add-circle" onPress={showAddReport} />
         </View>
       </View>
-      <Report visible={reportVisible} setVisible={setReportVisible} />
+      <Report
+        visible={reportVisible}
+        setVisible={hideAddReport}
+        setHeight={setReportHeight}
+        setMarker={setMarker}
+        carcassCoordinates={carcassCoordinates}
+      />
     </RootView>
   );
 }
@@ -223,6 +238,7 @@ MainScreen.propTypes = {
 };
 
 const MAP_PADDING = 20;
+const CROSSHAIR_SIZE = 40;
 const styles = StyleSheet.create({
   root: {
     justifyContent: 'space-between',
@@ -246,5 +262,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
+  },
+  crosshairContainer: {
+    position: 'absolute',
+    marginLeft: -CROSSHAIR_SIZE / 2,
+    marginTop: -CROSSHAIR_SIZE / 2,
   },
 });
