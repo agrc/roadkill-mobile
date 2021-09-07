@@ -27,19 +27,28 @@ export function locationToRegion(location) {
   };
 }
 
-export async function zoomToCurrentLocation(mapView, zoom) {
-  const location = await getLocation();
+export async function followUser(mapView, zoom) {
+  const onLocationUpdate = (location) => {
+    const camera = {
+      center: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+    };
 
-  const camera = {
-    center: {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    },
+    if (zoom) {
+      camera.zoom = zoom;
+    }
+
+    mapView.animateCamera(camera);
   };
 
-  if (zoom) {
-    camera.zoom = zoom;
-  }
+  const subscription = await Location.watchPositionAsync(
+    {
+      accuracy: Location.Accuracy.Highest,
+    },
+    onLocationUpdate
+  );
 
-  mapView.animateCamera(camera);
+  return subscription;
 }

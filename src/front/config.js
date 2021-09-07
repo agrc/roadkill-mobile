@@ -41,4 +41,5 @@ export default {
   },
   SPINNER_DELAY: 250,
   LIVE_ANIMAL_PHONE: '(111) 111-1111',
+  MAX_ZOOM_LEVEL: 18,
 };

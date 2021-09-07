@@ -29,6 +29,7 @@ password: `tester`
 | set up                          | action                               | assertion                                     |
 | ------------------------------- | ------------------------------------ | --------------------------------------------- |
 | pan map                         | click on the zoom to location button | map is panned back to current location        |
+| tap on zoom to location         | pan the map                          | follow user location is disabled              |
 |                                 |                                      | verify that drawer navigation works           |
 | (doesn't work on iOS simulator) | contact                              | opens mail app with to and subject filled out |
 | log in as agency or contractor  |                                      | verify that route button is visible           |
@@ -36,13 +37,14 @@ password: `tester`
 
 ## Add Report
 
-| set up                                          | action                                | assertion                                                                                |
-| ----------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------- |
-|                                                 | tap plus button                       | report drawer slides open so that you can see everything down to the set location button |
-|                                                 | tap plus button                       | crosshair icon is displayed in the center of the remaining map                           |
-|                                                 | tap plus button                       | the map zooms into the highest zoom level and centers on user's current location         |
-| open the report drawer                          | tap on map button to zoom to location | map is centered on user's location                                                       |
-| open the report drawer                          | tap "Set Location"                    | marker is placed on the map at the crosshair location                                    |
-| open the report drawer and set a location       | tab close button                      | "are you sure" dialog is presented and acts appropriately                                |
-| open the report drawer and don't set a location | tab close button                      | dialog is closed without confirmation                                                    |
-| open the report drawer                          | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator                            |
+| set up                                          | action                                | assertion                                                                                                                                          |
+| ----------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                                                 | tap plus button                       | report drawer slides open so that you can see everything down to the set location button                                                           |
+|                                                 | tap plus button                       | crosshair icon is displayed in the center of the remaining map                                                                                     |
+|                                                 | tap plus button                       | the map zooms into the highest zoom level and follow user location is enabled                                                                      |
+| open the report drawer                          | tap on map button to zoom to location | map is centered on user's location                                                                                                                 |
+| open the report drawer and set a location       | tap close button                      | "are you sure" dialog is presented and acts appropriately                                                                                          |
+| open the report drawer and don't set a location | tap close button                      | dialog is closed without confirmation                                                                                                              |
+| open the report drawer                          | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator)                                                                                     |
+| open the report drawer                          | tap "Set Location"                    | marker is placed on the map at the crosshair location, drawer animates up to full height, set location controls are hidden, and main form is shown |
+| open report drawer, set location                | tap "Edit Location"                   | drawer is pulled back down and set location controls are shown                                                                                     |
