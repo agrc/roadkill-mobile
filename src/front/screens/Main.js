@@ -111,7 +111,7 @@ export default function MainScreen() {
     }
   };
 
-  const onRegionChangeComplete = (_, event) => {
+  const onRegionChange = (_, event) => {
     if (followSubscription && event.isGesture) {
       followSubscription.remove();
 
@@ -175,7 +175,7 @@ export default function MainScreen() {
           <MapView
             initialRegion={locationToRegion(initialLocation)}
             loadingEnabled={true}
-            onRegionChangeComplete={onRegionChangeComplete}
+            onRegionChange={onRegionChange}
             mapPadding={
               reportVisible
                 ? Platform.select({
