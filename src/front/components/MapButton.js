@@ -4,16 +4,16 @@ import React from 'react';
 import { View } from 'react-native';
 import { getIcon } from '../icons';
 
-const MapButton = ({ iconPack, iconName, onPress, style, showAlert }) => {
+const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize }) => {
   const theme = useTheme();
-  const iconSize = 30;
+  const buttonSize = 30;
   const alertSize = 12;
   const ButtonIcon = () => {
     const Icon = getIcon({
       pack: iconPack,
       name: iconName,
       color: 'white',
-      size: iconSize,
+      size: iconSize || buttonSize,
     });
     const AlertIcon = getIcon({
       pack: 'font-awesome',
@@ -23,7 +23,7 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert }) => {
     });
 
     return (
-      <View style={{ height: iconSize, width: iconSize, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ height: buttonSize, width: buttonSize, justifyContent: 'center', alignItems: 'center' }}>
         <Icon />
         {showAlert ? (
           <View style={styles.alertIcon}>
@@ -43,6 +43,7 @@ MapButton.propTypes = {
   onPress: propTypes.func.isRequired,
   style: propTypes.object,
   showAlert: propTypes.bool,
+  iconSize: propTypes.number,
 };
 
 export default MapButton;

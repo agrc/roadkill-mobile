@@ -207,8 +207,9 @@ export default function MainScreen() {
         </View>
         <View>
           <MapButton
-            iconPack="material"
-            iconName="my-location"
+            iconPack="font-awesome-5"
+            iconName="location-arrow"
+            iconSize={20}
             onPress={() => zoomToCurrentLocation(mapView.current, null)}
           />
         </View>
