@@ -46,6 +46,7 @@ export async function followUser(mapView, zoom) {
   const subscription = await Location.watchPositionAsync(
     {
       accuracy: Location.Accuracy.Highest,
+      distanceInterval: 1, // in meters
     },
     onLocationUpdate
   );
