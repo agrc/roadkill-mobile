@@ -33,3 +33,15 @@ password: `tester`
 | (doesn't work on iOS simulator) | contact                              | opens mail app with to and subject filled out |
 | log in as agency or contractor  |                                      | verify that route button is visible           |
 | log in as public                |                                      | verify that route button is not visible       |
+
+## Add Report
+
+| set up                                    | action                                | assertion                                                                                |
+| ----------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------- |
+|                                           | tap plus button                       | report drawer slides open so that you can see everything down to the set location button |
+|                                           | tap plus button                       | crosshair icon is displayed in the center of the remaining map                           |
+|                                           | tap plus button                       | the map zooms into the highest zoom level and centers on user's current location         |
+| open the report drawer                    | tap on map button to zoom to location | map is centered on user's location                                                       |
+| open the report drawer                    | tap "Set Location"                    | marker is placed on the map at the crosshair location                                    |
+| open the report drawer and set a location | tab close button                      | drawer is closed and crosshair/marker are removed                                        |
+| open the report drawer                    | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator                            |
