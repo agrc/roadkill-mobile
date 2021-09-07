@@ -40,4 +40,5 @@ export default {
     staging: 'staging',
   },
   SPINNER_DELAY: 250,
+  LIVE_ANIMAL_PHONE: '(111) 111-1111',
 };
