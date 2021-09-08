@@ -90,6 +90,7 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
     const close = () => {
       setVisible(false);
       setView(SET_LOCATION_VIEW);
+      setShowMain(false);
     };
 
     if (isDirty()) {
