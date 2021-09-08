@@ -21,6 +21,7 @@ if (process.env.JEST_WORKER_ID) {
   const googleServicesContent = fs.readFileSync(`./${process.env.GOOGLE_SERVICES_ANDROID}`);
   googleServicesJson = JSON.parse(googleServicesContent);
 }
+const commitCount = git.count('HEAD');
 
 export default {
   name: 'Utah Wildlife-Vehicle Collision Reporter',
@@ -48,7 +49,7 @@ export default {
   ios: {
     bundleIdentifier: bundleId,
     googleServicesFile: `./${process.env.GOOGLE_SERVICES_IOS}`,
-    buildNumber: git.count().toString(),
+    buildNumber: commitCount.toString(),
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
@@ -64,7 +65,7 @@ export default {
   android: {
     package: bundleId,
     googleServicesFile: `./${process.env.GOOGLE_SERVICES_ANDROID}`,
-    versionCode: git.count(),
+    versionCode: commitCount,
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
