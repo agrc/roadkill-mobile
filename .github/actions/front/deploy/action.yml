@@ -7,6 +7,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Use HTTPS instead of SSH to install dependencies from GitHub repos
+    # See: https://github.com/actions/setup-node/issues/214#issuecomment-810829250
+    # this could be removed once git-rev-sync is pointed back at the upstream repo
+    - name: Reconfigure git to use HTTP authentication
+      shell: bash
+      run: >
+        git config --global url."https://github.com/".insteadOf
+        ssh://git@github.com/
+
     # this could be removed once setup-node adds support for .nvmrc files
     # ref: https://github.com/actions/setup-node/issues/32
     - name: Get node version
