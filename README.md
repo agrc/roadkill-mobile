@@ -49,7 +49,7 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 1. From root: `npm run changelog`
 1. Update version/build number in [CHANGELOG.md](CHANGELOG.md).
-   - build number should be `git rev-list --all --count` + `1` to account for the release commit (this isn't quite right yet; different number shows up on my local machine compared with GHA).
+   - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.
 1. Commit
 1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)).
 
