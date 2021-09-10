@@ -65,6 +65,7 @@ These values are managed in two places: `.env.*` files in your local project and
 1. `git checkout staging`
 1. `./deployNewAppBuild.sh`
 1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer)
+1. Click the "notify testers" link next to the newly uploaded build in TestFlight.
 
 ### Pushing a New App Build to Production
 
