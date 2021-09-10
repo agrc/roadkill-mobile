@@ -35,9 +35,10 @@ export default {
     LITE: 'https://discover.agrc.utah.gov/login/path/alabama-anvil-picnic-sunset/tiles/lite_basemap/{z}/{x}/{y}.jpg',
   },
   SUPPORT_EMAIL: 'wvc-dnr-dwr-notify@utah.gov',
-  RELEASE_CHANNELS: {
+  RELEASE_BRANCHES: {
     production: 'production',
     staging: 'staging',
+    dev: 'dev',
   },
   SPINNER_DELAY: 250,
   LIVE_ANIMAL_PHONE: '(111) 111-1111',

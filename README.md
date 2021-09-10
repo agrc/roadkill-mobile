@@ -28,9 +28,15 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 | branch     | version | deployed                | release-channel | expo version |
 | ---------- | ------- | ----------------------- | --------------- | ------------ |
-| production | 3.0.0   | App Stores              | production-v3.0 | 42.0.0       |
-| staging    | 3.0.0   | TestFlight/Google Alpha | staging         | 42.0.0       |
-| dev        | 3.0.0   | n/a                     | n/a             | 42.0.0       |
+| production | 3.0.0   | App Stores              | production-v3   | 42.0.0       |
+| staging    | 3.0.0   | TestFlight/Google Alpha | staging-v3      | 42.0.0       |
+| dev        | 3.0.0   | n/a                     | dev-v3          | 42.0.0       |
+
+Release channels are based on the major number (e.g. `production-v3`). If you need to change something that requires a new app build (e.g. changes to `app.config.js` or SDK upgrade), bump the major version of the app to keep it on a new release channel thus preventing conflicts with older app builds. [src/front/getReleaseChannel.sh](src/front/getReleaseChannel.sh) returns the appropriate version number.
+
+### Environment Variables
+
+These values are managed in two places: `.env.*` files in your local project and [GitHub Actions Secrets](https://github.com/agrc/roadkill-mobile/settings/secrets/actions). These values are injected into the deploy action in [.github/workflows/front.yml](.github/workflows/front.yml). Any new variable needs to be added in these three places. Any change to a variable value needs to be updated in the local files and GHA Secrets.
 
 ### One-time Setup
 
@@ -52,13 +58,12 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
    - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `v3.0.0 (123)`)
-1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)).
+1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
 
 ### Pushing a New App Build to Staging
 
 1. `git checkout staging`
 1. `./deployNewAppBuild.sh`
-1. Add testers to TestFlight and wait for app review.
 1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer)
 
 ### Pushing a New App Build to Production

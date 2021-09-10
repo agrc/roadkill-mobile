@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-if [ $1 ]; then
-  RELEASE_CHANNEL=$1
-elif [ -z "$GIT_BRANCH" ]; then
-  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit;
-  RELEASE_CHANNEL=${GIT_BRANCH#"origin/"}
-fi
+RELEASE_CHANNEL=$(./getReleaseChannel.sh)
+echo "Building and deploying new app builds for release channel: $RELEASE_CHANNEL"
 
-ENV_FILE="./.env.$RELEASE_CHANNEL"
+RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+ENV_FILE="./.env.$RELEASE_BRANCH"
 echo "getting environment variables from $ENV_FILE"
 set -o allexport
 source $ENV_FILE
