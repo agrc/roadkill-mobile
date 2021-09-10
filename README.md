@@ -53,27 +53,25 @@ These values are managed in two places: `.env.*` files in your local project and
 
 ### Cutting a New Release
 
-1. From root: `npm run changelog`
-1. Update version/build number in [CHANGELOG.md](CHANGELOG.md).
+1. Optionally bump version number in [src/front/app.config.js](src/front/app.config.js) and [package.json](package.json).
+1. Update `version` in [changelog_context.json](changelog_context.json).
    - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.
+1. From root: `npm run changelog`
 1. Clean up change log entries, if needed.
-1. Create release commit (e.g. `v3.0.0 (123)`)
+1. Create release commit (e.g. `release: v3.0.0 (123)`)
+1. Tag `git tag v3.0.0-123`
+1. Optionally run `./deployNewAppBuild.sh` if a new app build is needed.
+   1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer)
+   1. Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
 1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
-
-### Pushing a New App Build to Staging
-
-1. `git checkout staging`
-1. `./deployNewAppBuild.sh`
-1. Manually upload \*.aab file to [Google Play Console](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer)
-1. Click the "notify testers" link next to the newly uploaded build in TestFlight.
 
 ### Pushing a New App Build to Production
 
+After testing in Expo Go and simulator builds...
+
 1. `git rebase staging master`
 1. `npm ci`
-1. `./deployNewAppBuild.sh production-<version number>` (e.g. `production-v3.1`)
-1. Build version that can be tested in ios Simulator: `expo build:ios --release-channel $RELEASE_CHANNEL --no-publish -t simulator`
-1. Test in iOS and Android simulators.
+1. `./deployNewAppBuild.sh`
 1. Generate new screenshots if applicable. Note: Google Play has a limit of 8.
 1. Create new version in iTunes connect and update all relevant information.
 1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app for review. (Add note about IDFA from [expo's docs](https://docs.expo.io/versions/latest/distribution/app-stores/#ios-specific-guidelines): For IDFA questions see: "https://segment.com/docs/sources/mobile/ios/quickstart/#step-5-submitting-to-the-app-store")
