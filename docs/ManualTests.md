@@ -24,6 +24,14 @@ password: `tester`
 | log in successfully | kill app and then restart                           | automatically logs in and goes to the Main screen               |
 |                     | Main -> Menu -> Logout                              | presents confirmation dialog and then navigates to login screen |
 
+## New User
+
+| set up                        | action                                  | assertion                                                  |
+| ----------------------------- | --------------------------------------- | ---------------------------------------------------------- |
+|                               | log in with unregistered user           | navigates to new user screen, name and email are populated |
+| log in with unregistered user | press "Cancel"                          | navigates back to log in screen                            |
+| log in with unregistered user | input phone number and press "Register" | navigates to main screen and an email is sent to admins    |
+
 ## Main
 
 | set up                          | action                               | assertion                                     |

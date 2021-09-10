@@ -5,10 +5,12 @@ import { useAsyncError } from '../../utilities';
 
 const remapUser = (user) => {
   return {
+    ...user,
+    email: user.email,
     sub: user.uid,
     given_name: user.firstName,
     family_name: user.lastName,
-    ...user,
+    name: `${user.firstName} ${user.lastName}`,
   };
 };
 
