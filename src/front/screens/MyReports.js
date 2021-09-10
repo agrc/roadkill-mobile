@@ -5,7 +5,7 @@ import RootView from '../RootView';
 export default function MyReportsScreen() {
   return (
     <RootView>
-      <Text>My Reports</Text>
+      <Text>Not yet implemented</Text>
     </RootView>
   );
 }

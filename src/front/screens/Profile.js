@@ -5,7 +5,7 @@ import RootView from '../RootView';
 export default function ProfileScreen() {
   return (
     <RootView>
-      <Text>Profile</Text>
+      <Text>Not yet implemented</Text>
     </RootView>
   );
 }
