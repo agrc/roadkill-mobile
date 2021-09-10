@@ -21,7 +21,7 @@ import MainScreen from './screens/Main';
 import MyReportsScreen from './screens/MyReports';
 import NewUserScreen from './screens/NewUser';
 import ProfileScreen from './screens/Profile';
-import { forceUpdate, sendEmailToSupport } from './utilities';
+import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from './utilities';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
@@ -70,7 +70,7 @@ const getDrawContent = ({ navigation, state, logOut }) => {
   };
 
   let versionTitle = `App version: ${Constants.manifest.version} (${Constants.manifest?.ios?.buildNumber})`;
-  if (Updates.releaseChannel !== config.RELEASE_CHANNELS.production) {
+  if (getReleaseChannelBranch(Updates.releaseChannel) !== config.RELEASE_BRANCHES.production) {
     versionTitle += ` - ${__DEV__ ? 'dev' : Updates.releaseChannel}`;
   }
 

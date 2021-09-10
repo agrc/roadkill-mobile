@@ -54,7 +54,6 @@ jobs:
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
     if: github.ref == 'refs/heads/staging'
     env:
-      EXPO_RELEASE_CHANNEL: staging
       GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
       GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
@@ -89,7 +88,6 @@ jobs:
       url: https://expo.io/@agrc/wildlife-vehicle-collision-reporter?release-channel=${{ env.EXPO_RELEASE_CHANNEL }}
     if: github.ref == 'refs/heads/production'
     env:
-      EXPO_RELEASE_CHANNEL: staging
       GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
       GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
       CLIENT_ID: ${{ secrets.CLIENT_ID }}

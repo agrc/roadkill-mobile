@@ -41,6 +41,6 @@ runs:
         export GOOGLE_SERVICES_ANDROID=google-services.json
         export GOOGLE_SERVICES_IOS=GoogleService-Info.plist
         npx expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
-        npx expo publish --release-channel $EXPO_RELEASE_CHANNEL
+        npx expo publish --release-channel $(./getReleaseChannel.sh)
       shell: bash
       working-directory: ${{ inputs.working-directory }}
