@@ -9,7 +9,7 @@ RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 ENV_FILE="./.env.$RELEASE_BRANCH"
 STAGING_ENV_FILE="./.env.staging"
 if [ ! -f "$ENV_FILE" ]; then
-  echo "No environment file found for $RELEASE_CHANNEL; using $STAGING_ENV_FILE instead"
+  echo "No environment file found for $RELEASE_BRANCH; using $STAGING_ENV_FILE instead"
   ENV_FILE=$STAGING_ENV_FILE
 fi
 echo "getting environment variables from $ENV_FILE"
