@@ -158,7 +158,7 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
         )}
         {showMain ? (
           <View style={{ height: 900 }}>
-            <Text>main report form placeholder</Text>
+            <Text>Not yet implemented. Submit does not do anything.</Text>
             <Button status="info" style={styles.margin}>
               Submit Report
             </Button>
