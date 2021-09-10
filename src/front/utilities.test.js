@@ -1,4 +1,4 @@
-import { isTokenExpired, wrapAsyncWithDelay } from './utilities';
+import { getReleaseChannelBranch, isTokenExpired, wrapAsyncWithDelay } from './utilities';
 
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {
@@ -66,5 +66,11 @@ describe('wrapAsyncWithDelay', () => {
 
     expect(pre).toHaveBeenCalled();
     expect(post).toHaveBeenCalled();
+  });
+});
+
+describe('getReleaseChannelBranch', () => {
+  it('returns the correct branch name', () => {
+    expect(getReleaseChannelBranch('production-v3.0.0')).toBe('production');
   });
 });

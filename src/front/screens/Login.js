@@ -1,5 +1,4 @@
 import { Button, Layout, Text, TopNavigation, TopNavigationAction, useTheme } from '@ui-kitten/components';
-import Constants from 'expo-constants';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
@@ -59,7 +58,6 @@ export default function LoginScreen({ navigation }) {
     disabledImage: propTypes.node.isRequired,
     pressedImage: propTypes.node.isRequired,
   };
-  console.log('Constants.manifest.releaseChannel', Constants.manifest.releaseChannel);
 
   return (
     <RootView showSpinner={showSpinner}>

@@ -2,15 +2,11 @@
 # build apps for simulators for testing before submitting to app stores
 set -e
 
-if [ $1 ]; then
-  RELEASE_CHANNEL=$1
-elif [ -z "$GIT_BRANCH" ]; then
-  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) || exit;
-  RELEASE_CHANNEL=${GIT_BRANCH#"origin/"}
-  RELEASE_CHANNEL="${RELEASE_CHANNEL//\//_}"
-fi
+RELEASE_CHANNEL=$(./getReleaseChannel.sh)
+echo "Building simulator builds for release channel: $RELEASE_CHANNEL"
 
-ENV_FILE="./.env.$RELEASE_CHANNEL"
+RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+ENV_FILE="./.env.$RELEASE_BRANCH"
 STAGING_ENV_FILE="./.env.staging"
 if [ ! -f "$ENV_FILE" ]; then
   echo "No environment file found for $RELEASE_CHANNEL; using $STAGING_ENV_FILE instead"

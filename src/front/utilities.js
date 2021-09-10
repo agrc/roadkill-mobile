@@ -107,3 +107,7 @@ export async function forceUpdate() {
   await Updates.fetchUpdateAsync();
   await Updates.reloadAsync();
 }
+
+export function getReleaseChannelBranch(releaseChannel) {
+  return releaseChannel.split('-')[0];
+}
