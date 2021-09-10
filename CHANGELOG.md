@@ -1,3 +1,11 @@
+# [v3.0.0-372](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-362...v3.0.0-372) (2021-09-10)
+
+### Bug Fixes
+
+- **front:** better release channel management ([5431b75](https://github.com/agrc/roadkill-mobile/commit/5431b750758361b1851d4384231dbc17ce1fd6ad))
+- **front:** pass name from standalone google provider ([c2cd6cf](https://github.com/agrc/roadkill-mobile/commit/c2cd6cf0f56e9b3063d46caea4e1c317fb9ed13e)), closes [#105](https://github.com/agrc/roadkill-mobile/issues/105)
+- **front:** typo ([44dfdcf](https://github.com/agrc/roadkill-mobile/commit/44dfdcff159d51e6509fa4f698d984c6add7d289))
+
 # [v3.0.0 (362)](https://github.com/agrc/roadkill-mobile/compare/v2.0.4...v) (2021-09-08)
 
 ### Bug Fixes
