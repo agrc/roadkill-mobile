@@ -18,7 +18,6 @@ web-build/
 *.aab
 *.ipa
 *.apk
-*.app
 
 google-services-*.json
 GoogleService-Info-*.plist
