@@ -91,7 +91,7 @@ export async function sendEmailToSupport() {
   Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
 }
 
-export function wrapAsyncWithDelay(action, preAction, postAction, delay) {
+export async function wrapAsyncWithDelay(action, preAction, postAction, delay) {
   const timeoutHandler = setTimeout(() => {
     preAction();
   }, delay);
@@ -100,7 +100,18 @@ export function wrapAsyncWithDelay(action, preAction, postAction, delay) {
     postAction();
   };
 
-  return action().catch(applyPostAction).finally(applyPostAction);
+  let result;
+  try {
+    result = await action();
+  } catch (error) {
+    applyPostAction();
+
+    return error;
+  } finally {
+    applyPostAction();
+
+    return result;
+  }
 }
 
 export async function forceUpdate() {
