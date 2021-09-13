@@ -1,7 +1,7 @@
 import { Button, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../icons';
 
 const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize }) => {
@@ -45,5 +45,13 @@ MapButton.propTypes = {
   showAlert: propTypes.bool,
   iconSize: propTypes.number,
 };
+
+const styles = StyleSheet.create({
+  alertIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+});
 
 export default MapButton;
