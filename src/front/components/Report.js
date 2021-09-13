@@ -1,10 +1,10 @@
-import { Button, Card, Divider, Text, useTheme } from '@ui-kitten/components';
+import { Button, Card, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
-import Autolink from 'react-native-autolink';
-import config from '../config';
 import { getIcon } from '../icons';
+import { commonStyles } from '../utilities';
+import Location from './reports/Location';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -79,9 +79,6 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
     }
   }, [view]);
 
-  const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
-  const iconSize = 20;
-
   const isDirty = () => {
     return carcassCoordinates !== null;
   };
@@ -115,6 +112,10 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
     setTimeout(() => setView(MAIN_VIEW), 600);
   };
 
+  const onEditLocation = () => {
+    setView(SET_LOCATION_VIEW);
+  };
+
   return (
     <Animated.View
       // The reason why I'm doing maxHeight rather than height is because we can't find the
@@ -124,42 +125,11 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
       onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
       <Card style={styles.card} header={Header} disabled>
-        {!showMain ? (
-          <View>
-            <Text appearance="hint" style={styles.note}>
-              <Autolink phone text={callText} />
-            </Text>
-            <Divider />
-            <Text category="h6" style={styles.margin}>
-              Location
-            </Text>
-            <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
-            <Button
-              accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs', size: iconSize })}
-              style={styles.margin}
-              onPress={onSetLocation}
-            >
-              Set Location
-            </Button>
-          </View>
-        ) : (
-          <Button
-            accessoryLeft={getIcon({
-              pack: 'font-awesome-5',
-              name: 'crosshairs',
-              size: 20,
-            })}
-            style={styles.margin}
-            onPress={() => setView(SET_LOCATION_VIEW)}
-            appearance="outline"
-          >
-            Edit Location
-          </Button>
-        )}
+        <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
         {showMain ? (
           <View style={{ height: 900 }}>
             <Text>Not yet implemented. Submit does not do anything.</Text>
-            <Button status="info" style={styles.margin}>
+            <Button status="info" style={commonStyles.margin}>
               Submit Report
             </Button>
           </View>
@@ -177,7 +147,6 @@ Report.propTypes = {
   carcassCoordinates: propTypes.object,
 };
 
-const PADDING = 10;
 const RADIUS = 15;
 const styles = StyleSheet.create({
   container: {
@@ -194,15 +163,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  innerCard: {
-    padding: 0,
-  },
-  note: {
-    marginBottom: PADDING,
-  },
-  margin: {
-    marginVertical: PADDING,
   },
   closeButton: { marginRight: -10 },
 });
