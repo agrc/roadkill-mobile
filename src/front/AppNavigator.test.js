@@ -14,6 +14,11 @@ import { AuthContextProvider } from './auth/context';
   I'm not sure that switching to queryBy is the best solution either. For now, I'm going
   to just wait for the issue to be fixed.
 */
+jest.mock('@storybook/react-native', () => ({
+  getStorybookUI: jest.fn(),
+  addDecorator: jest.fn(),
+  configure: jest.fn(),
+}));
 describe('AppNavigator', () => {
   it('renders choose type screen correctly', async () => {
     const component = (
