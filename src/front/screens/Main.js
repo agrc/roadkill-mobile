@@ -278,11 +278,6 @@ const styles = StyleSheet.create({
   topButton: {
     marginBottom: MAP_PADDING / 2,
   },
-  alertIcon: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
   crosshairContainer: {
     position: 'absolute',
     marginLeft: -CROSSHAIR_SIZE / 2,
