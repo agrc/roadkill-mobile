@@ -12,7 +12,9 @@
     "test:debug": "env-cmd -f .env.test jest -o --watch --coverage=false",
     "test:final": "env-cmd -f .env.test jest",
     "update-snapshots": "jest -u --coverage=false",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "storybook": "start-storybook -p 7007",
+    "build-storybook": "build-storybook"
   },
   "jest": {
     "preset": "jest-expo",
@@ -79,8 +81,16 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@storybook/addon-actions": "^5.3.21",
+    "@storybook/addon-knobs": "^5.3.21",
+    "@storybook/addon-links": "^5.3.21",
+    "@storybook/addon-ondevice-actions": "^5.3.23",
+    "@storybook/addon-ondevice-knobs": "^5.3.25",
+    "@storybook/react-native": "^5.3.25",
+    "@storybook/react-native-server": "^5.3.23",
     "@testing-library/jest-native": "^4.0.1",
     "@testing-library/react-native": "^7.2.0",
+    "babel-loader": "^8.2.2",
     "dotenv": "^10.0.0",
     "env-cmd": "^10.1.0",
     "eslint": "^7.25.0",
