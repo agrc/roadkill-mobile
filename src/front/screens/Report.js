@@ -2,9 +2,10 @@ import { Button, Card, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
+import useAuth from '../auth/context';
+import Location from '../components/reports/Location';
 import { getIcon } from '../icons';
 import { commonStyles } from '../utilities';
-import Location from './reports/Location';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -12,14 +13,21 @@ const COMMON_ANIMATION_PROPS = {
   useNativeDriver: false,
   duration: 250,
 };
+export const REPORT_TYPES = {
+  report: 'report',
+  pickup: 'pickup',
+};
 
-const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates }) => {
+const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
   const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
   const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
+  const {
+    authInfo: { user },
+  } = useAuth();
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
@@ -43,7 +51,7 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
   };
 
   React.useEffect(() => {
-    if (visible) {
+    if (reportType) {
       Animated.timing(animatedMaxHeight.current, {
         // is there a better way to get the height of the animated view?
         // I'm hoping that 50% of window height is good for the smaller devices...
@@ -58,12 +66,12 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
         ...COMMON_ANIMATION_PROPS,
       }).start();
     }
-  }, [visible]);
+  }, [reportType]);
 
   React.useEffect(() => {
     const newMaxHeight = view === MAIN_VIEW ? windowDimensions.height : windowDimensions.height * 0.5;
 
-    if (visible) {
+    if (reportType) {
       if (view === MAIN_VIEW) {
         setShowMain(true);
       }
@@ -85,7 +93,7 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
 
   const onClose = async () => {
     const close = () => {
-      setVisible(false);
+      hideReport();
       setView(SET_LOCATION_VIEW);
       setShowMain(false);
     };
@@ -127,8 +135,18 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
       <Card style={styles.card} header={Header} disabled>
         <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
         {showMain ? (
-          <View style={{ height: 900 }}>
-            <Text>Not yet implemented. Submit does not do anything.</Text>
+          <View style={{ height: windowDimensions.height }}>
+            {reportType === REPORT_TYPES.report ? (
+              // report form
+              <>
+                <Text>Public: Not yet implemented. Submit does not do anything.</Text>
+              </>
+            ) : (
+              // pickup form
+              <>
+                <Text>Contractor/Agency: Not yet implemented. Submit does not do anything.</Text>
+              </>
+            )}
             <Button status="info" style={commonStyles.margin}>
               Submit Report
             </Button>
@@ -140,8 +158,8 @@ const Report = ({ visible, setVisible, setHeight, setMarker, carcassCoordinates 
 };
 
 Report.propTypes = {
-  visible: propTypes.bool,
-  setVisible: propTypes.func,
+  reportType: propTypes.oneOf([REPORT_TYPES.report, REPORT_TYPES.pickup, null]),
+  hideReport: propTypes.func,
   setHeight: propTypes.func,
   setMarker: propTypes.func,
   carcassCoordinates: propTypes.object,

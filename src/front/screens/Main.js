@@ -8,12 +8,12 @@ import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from
 import MapView, { Marker, PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
 import useAuth from '../auth/context';
 import MapButton from '../components/MapButton';
-import Report from '../components/Report';
 import config from '../config';
 import { getIcon } from '../icons';
 import { followUser, getLocation, locationToRegion } from '../location';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
+import Report, { REPORT_TYPES } from './Report';
 
 export default function MainScreen() {
   const navigation = useNavigation();
@@ -23,7 +23,7 @@ export default function MainScreen() {
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
-  const [reportVisible, setReportVisible] = React.useState(false);
+  const [reportType, setReportType] = React.useState(null);
   const [showCrosshair, setShowCrosshair] = React.useState(false);
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
@@ -96,18 +96,36 @@ export default function MainScreen() {
   };
 
   const showAddReport = () => {
-    setReportVisible(true);
+    const displayReport = (newReportType) => {
+      setReportType(newReportType);
+      const zoom = async () => {
+        await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
+        setShowCrosshair(true);
+      };
 
-    const zoom = async () => {
-      await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
-      setShowCrosshair(true);
+      if (Platform.OS === 'android') {
+        // give map padding time to catch up
+        setTimeout(zoom, 300);
+      } else {
+        zoom();
+      }
     };
 
-    if (Platform.OS === 'android') {
-      // give map padding time to catch up
-      setTimeout(zoom, 300);
+    if (authInfo.user.role === config.USER_TYPES.public) {
+      displayReport(REPORT_TYPES.report);
+    } else if (authInfo.user.role === config.USER_TYPES.agency || authInfo.user.role === config.USER_TYPES.admin) {
+      Alert.alert(null, 'I would like to...', [
+        {
+          text: 'Pick up a carcass',
+          onPress: () => displayReport(REPORT_TYPES.pickup),
+        },
+        {
+          text: 'Report a carcass',
+          onPress: () => displayReport(REPORT_TYPES.report),
+        },
+      ]);
     } else {
-      zoom();
+      displayReport(REPORT_TYPES.pickup);
     }
   };
 
@@ -120,7 +138,7 @@ export default function MainScreen() {
   };
 
   const hideAddReport = () => {
-    setReportVisible(false);
+    setReportType(null);
     setShowCrosshair(false);
     setCarcassCoordinates(null);
   };
@@ -177,7 +195,7 @@ export default function MainScreen() {
             loadingEnabled={true}
             onRegionChange={onRegionChange}
             mapPadding={
-              reportVisible
+              reportType
                 ? Platform.select({
                     ios: {
                       bottom: reportHeight + 15,
@@ -243,8 +261,8 @@ export default function MainScreen() {
         </View>
       </View>
       <Report
-        visible={reportVisible}
-        setVisible={hideAddReport}
+        reportType={reportType}
+        hideReport={hideAddReport}
         setHeight={setReportHeight}
         setMarker={setMarker}
         carcassCoordinates={carcassCoordinates}
