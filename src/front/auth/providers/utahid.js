@@ -22,6 +22,7 @@ const discovery = {
 export default function useUtahIDProvider() {
   const accessToken = React.useRef(null);
   const refreshToken = React.useRef(null);
+  // eslint-disable-next-line no-unused-vars
   const [request, _, promptAsync] = useAuthRequest(
     {
       clientId: config.CLIENT_ID,
@@ -99,7 +100,7 @@ export default function useUtahIDProvider() {
   const refreshAccessToken = async () => {
     console.log('refreshAccessToken');
 
-    if (!refreshToken.current || isTokenExpired(jwd_decode(refreshToken.current))) {
+    if (!refreshToken.current || isTokenExpired(jwt_decode(refreshToken.current))) {
       return null;
     }
 

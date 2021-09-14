@@ -22,6 +22,7 @@ export default function MainScreen() {
   const [showSpinner, setShowSpinner] = React.useState(false);
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
+  // eslint-disable-next-line no-unused-vars
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
   const [reportType, setReportType] = React.useState(null);
   const [showCrosshair, setShowCrosshair] = React.useState(false);
