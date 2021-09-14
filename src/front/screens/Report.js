@@ -1,9 +1,16 @@
 import { Button, Card, Text, useTheme } from '@ui-kitten/components';
+import { Formik } from 'formik';
+import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useMutation } from 'react-query';
+import * as Sentry from 'sentry-expo';
+import * as yup from 'yup';
 import useAuth from '../auth/context';
 import Location from '../components/reports/Location';
+import RepeatSubmission from '../components/reports/RepeatSubmission';
+import config from '../config';
 import { getIcon } from '../icons';
 import { commonStyles } from '../utilities';
 
@@ -28,6 +35,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   const {
     // eslint-disable-next-line no-unused-vars
     authInfo: { user },
+    getBearerToken,
   } = useAuth();
 
   const Header = (props) => (
@@ -97,6 +105,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
       hideReport();
       setView(SET_LOCATION_VIEW);
       setShowMain(false);
+      formikRef.current?.resetForm();
     };
 
     if (isDirty()) {
@@ -125,6 +134,55 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
     setView(SET_LOCATION_VIEW);
   };
 
+  // set up form
+  const formikRef = React.useRef(null);
+  const initialFormValues = {
+    repeat_submission: false,
+  };
+  const shape = {};
+  if (reportType === REPORT_TYPES.report) {
+    shape.repeat_submission = yup.boolean().required();
+  }
+  const validationSchema = yup.object().shape(shape);
+  const submitReport = async (values) => {
+    const token = await getBearerToken();
+    let responseJson;
+    try {
+      responseJson = await ky
+        .post(`${config.API}/reports/new`, {
+          json: {
+            ...values,
+            animal_location: carcassCoordinates, // TODO: are these in the correct format?
+          },
+          headers: {
+            Authorization: token,
+          },
+        })
+        .json();
+    } catch (error) {
+      Sentry.Native.captureException(error);
+      Alert.alert('Error', error.message);
+      // TODO: allow them to cache the report for submission at a later time.
+
+      return;
+    }
+
+    if (responseJson.success) {
+      Alert.alert('Success', 'Your report has been submitted.', [
+        {
+          text: 'OK',
+          onPress: () => {
+            formikRef.current.resetForm();
+            hideReport();
+          },
+        },
+      ]);
+    } else {
+      Alert.alert('Error', responseJson.error);
+    }
+  };
+  const submitReportMutation = useMutation('submit-report', submitReport);
+
   return (
     <Animated.View
       // The reason why I'm doing maxHeight rather than height is because we can't find the
@@ -133,27 +191,46 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
       style={[styles.container, { maxHeight: animatedMaxHeight.current }]}
       onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
-      <Card style={styles.card} header={Header} disabled>
-        <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
-        {showMain ? (
-          <View style={{ height: windowDimensions.height }}>
-            {reportType === REPORT_TYPES.report ? (
-              // report form
-              <>
-                <Text>Public: Not yet implemented. Submit does not do anything.</Text>
-              </>
-            ) : (
-              // pickup form
-              <>
-                <Text>Contractor/Agency: Not yet implemented. Submit does not do anything.</Text>
-              </>
-            )}
-            <Button status="info" style={commonStyles.margin}>
-              Submit Report
-            </Button>
-          </View>
-        ) : null}
-      </Card>
+      <Formik
+        innerRef={formikRef}
+        initialValues={initialFormValues}
+        validationSchema={validationSchema}
+        onSubmit={submitReportMutation.mutate}
+        isSubmitting={submitReportMutation.isLoading}
+      >
+        {({ values, handleSubmit, isValid, setFieldValue }) => (
+          <Card style={styles.card} header={Header} disabled>
+            <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
+            {showMain ? (
+              <View style={{ height: windowDimensions.height }}>
+                {reportType === REPORT_TYPES.report ? (
+                  // report form
+                  <>
+                    <RepeatSubmission
+                      checked={values.repeat_submission}
+                      onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
+                      cancelReport={onClose}
+                    />
+                  </>
+                ) : (
+                  // pickup form
+                  <>
+                    <Text>Contractor/Agency: Not yet implemented. Submit does not do anything.</Text>
+                  </>
+                )}
+                <Button
+                  status="info"
+                  style={commonStyles.margin}
+                  onPress={handleSubmit}
+                  disabled={!isValid || submitReportMutation.isLoading}
+                >
+                  Submit Report
+                </Button>
+              </View>
+            ) : null}
+          </Card>
+        )}
+      </Formik>
     </Animated.View>
   );
 };

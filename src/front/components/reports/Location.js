@@ -10,6 +10,7 @@ import { commonStyles } from '../../utilities';
 function Location({ onSetLocation, onEditLocation, showEdit }) {
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
   const iconSize = 20;
+
   return (
     <>
       {showEdit ? (
