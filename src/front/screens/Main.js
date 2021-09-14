@@ -115,7 +115,7 @@ export default function MainScreen() {
     if (authInfo.user.role === config.USER_TYPES.public) {
       displayReport(REPORT_TYPES.report);
     } else if (authInfo.user.role === config.USER_TYPES.agency || authInfo.user.role === config.USER_TYPES.admin) {
-      Alert.alert(null, 'I would like to...', [
+      Alert.alert('I would like to...', null, [
         {
           text: 'Pick up a carcass',
           onPress: () => displayReport(REPORT_TYPES.pickup),
