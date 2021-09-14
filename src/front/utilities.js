@@ -47,6 +47,7 @@ export function useSecureState(key) {
 
 // https://github.com/facebook/react/issues/14981#issuecomment-468460187
 export function useAsyncError() {
+  // eslint-disable-next-line no-unused-vars
   const [_, setError] = React.useState(null);
   const throwAsyncError = React.useCallback(
     (error) => {
@@ -110,9 +111,9 @@ export async function wrapAsyncWithDelay(action, preAction, postAction, delay) {
     return error;
   } finally {
     applyPostAction();
-
-    return result;
   }
+
+  return result;
 }
 
 export async function forceUpdate() {
