@@ -26,6 +26,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
   const {
+    // eslint-disable-next-line no-unused-vars
     authInfo: { user },
   } = useAuth();
 

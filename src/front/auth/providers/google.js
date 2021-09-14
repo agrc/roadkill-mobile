@@ -13,6 +13,7 @@ export const isAuthenticationExpired = (auth) => {
 export default function useGoogleProvider() {
   const authentication = React.useRef(null);
   const exchangePromise = React.useRef(null);
+  // eslint-disable-next-line no-unused-vars
   const [_, result, promptAsync] = useAuthRequest(
     {
       expoClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_EXPO_GO,

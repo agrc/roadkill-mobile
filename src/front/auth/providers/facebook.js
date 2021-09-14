@@ -86,7 +86,7 @@ export default function useFacebookProvider() {
     const auth = await getAuthentication();
 
     if (auth.token) {
-      return prefix + token;
+      return prefix + auth.token;
     } else {
       throwAsyncError(new Error('No access token'));
     }
