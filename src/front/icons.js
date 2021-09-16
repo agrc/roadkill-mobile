@@ -14,9 +14,9 @@ function createIconsMap(Icons) {
 }
 
 const ThirdPartyIcon = ({ Icons, name, style, fill }) => {
-  const { height, tintColor, ...iconStyle } = StyleSheet.flatten(style);
+  const { height, tintColor, width, ...iconStyle } = StyleSheet.flatten(style);
 
-  return <Icons name={name} size={height} color={fill || tintColor} style={iconStyle} />;
+  return <Icons name={name} size={height || width} color={fill || tintColor} style={iconStyle} />;
 };
 ThirdPartyIcon.propTypes = {
   Icons: propTypes.func.isRequired,

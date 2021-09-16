@@ -24,7 +24,7 @@ function Location({ onSetLocation, onEditLocation, showEdit }) {
           </Text>
           <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
           <Button
-            accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs', size: iconSize })}
+            accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs' })}
             style={commonStyles.margin}
             onPress={onSetLocation}
           >
@@ -36,13 +36,12 @@ function Location({ onSetLocation, onEditLocation, showEdit }) {
           accessoryLeft={getIcon({
             pack: 'font-awesome-5',
             name: 'crosshairs',
-            size: iconSize,
           })}
           style={commonStyles.margin}
           onPress={onEditLocation}
           appearance="outline"
         >
-          Edit Location
+          Change Location
         </Button>
       )}
     </>
