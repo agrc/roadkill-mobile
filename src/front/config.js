@@ -43,4 +43,5 @@ export default {
   SPINNER_DELAY: 250,
   LIVE_ANIMAL_PHONE: '(111) 111-1111',
   MAX_ZOOM_LEVEL: 18,
+  IMAGE_COMPRESSION_QUALITY: 0.25, // 1 is max quality
 };

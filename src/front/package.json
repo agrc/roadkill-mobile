@@ -75,7 +75,8 @@
     "sentry-expo": "^4.0.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9",
-    "yup-phone": "^1.2.19"
+    "yup-phone": "^1.2.19",
+    "expo-image-picker": "~10.2.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
