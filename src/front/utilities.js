@@ -4,7 +4,6 @@ import * as MailComposer from 'expo-mail-composer';
 import * as SecureStorage from 'expo-secure-store';
 import * as Updates from 'expo-updates';
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import config from './config';
 
 export function useMounted() {
@@ -124,10 +123,3 @@ export async function forceUpdate() {
 export function getReleaseChannelBranch(releaseChannel) {
   return releaseChannel.split('-')[0];
 }
-
-const PADDING = 10;
-export const commonStyles = StyleSheet.create({
-  margin: {
-    marginVertical: PADDING,
-  },
-});

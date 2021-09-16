@@ -12,7 +12,7 @@ import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import config from '../config';
 import { getIcon } from '../icons';
-import { commonStyles } from '../utilities';
+import useStyles from '../styles';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -37,6 +37,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
     authInfo: { user },
     getBearerToken,
   } = useAuth();
+  const commonStyles = useStyles();
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>

@@ -13,11 +13,13 @@ import useAuth, { STATUS } from '../auth/context';
 import config from '../config';
 import { getIcon } from '../icons';
 import RootView from '../RootView';
+import useStyles from '../styles';
 
 export default function LoginScreen({ navigation }) {
   const { logIn, status, userType } = useAuth();
   const showSpinner = status === STATUS.loading;
   const theme = useTheme();
+  const commonStyles = useStyles();
 
   const initLogIn = async (providerName) => {
     const { success, registered } = await logIn(providerName);
@@ -66,7 +68,7 @@ export default function LoginScreen({ navigation }) {
         <Text category="h1">Welcome</Text>
         <Image
           source={{ uri: 'https://via.placeholder.com/300x220', width: 300, height: 220 }}
-          style={[styles.image, { borderColor: theme['border-alternative-color-1'] }]}
+          style={commonStyles.image}
         />
         <View style={styles.buttonContainer}>
           <Button
@@ -110,10 +112,6 @@ LoginScreen.propTypes = {
 
 const styles = StyleSheet.create({
   layout: { flex: 1, justifyContent: 'space-around', alignItems: 'center' },
-  image: {
-    borderRadius: 3,
-    borderWidth: 1,
-  },
   buttonContainer: {
     alignItems: 'center',
   },
