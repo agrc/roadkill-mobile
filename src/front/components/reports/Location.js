@@ -5,11 +5,11 @@ import { StyleSheet, View } from 'react-native';
 import Autolink from 'react-native-autolink';
 import config from '../../config';
 import { getIcon } from '../../icons';
-import { commonStyles } from '../../utilities';
+import useStyles from '../../styles';
 
 function Location({ onSetLocation, onEditLocation, showEdit }) {
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
-  const iconSize = 20;
+  const commonStyles = useStyles();
 
   return (
     <>
