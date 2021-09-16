@@ -1,4 +1,4 @@
-import { Button, Card, Text, useTheme } from '@ui-kitten/components';
+import { Button, Card, Divider, Text, useTheme } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import ky from 'ky';
 import propTypes from 'prop-types';
@@ -9,6 +9,7 @@ import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
 import useAuth from '../auth/context';
 import Location from '../components/reports/Location';
+import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import config from '../config';
 import { getIcon } from '../icons';
@@ -41,7 +42,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
-      <Text category="h5">Report a Carcass</Text>
+      <Text category="h5">{reportType == REPORT_TYPES.report ? 'Report a Carcass' : 'Pickup a Carcass'}</Text>
       <Button
         accessoryLeft={getIcon({
           pack: 'material-community',
@@ -98,7 +99,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   }, [view]);
 
   const isDirty = () => {
-    return carcassCoordinates !== null;
+    return carcassCoordinates !== null && formikRef.current.dirty;
   };
 
   const onClose = async () => {
@@ -139,10 +140,21 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   const formikRef = React.useRef(null);
   const initialFormValues = {
     repeat_submission: false,
+    photo: null,
   };
-  const shape = {};
+  const photoShape = {
+    uri: yup.string().required(),
+    type: yup.string().required(),
+    name: yup.string().required(),
+    coordinates: yup.array().of(yup.number()).nullable(),
+    date: yup.date().required(),
+  };
+  const shape = {
+    photo: yup.object().shape(photoShape).required().typeError('a photo is required'),
+  };
   if (reportType === REPORT_TYPES.report) {
     shape.repeat_submission = yup.boolean().required();
+    shape.photo = yup.object().shape(photoShape).nullable();
   }
   const validationSchema = yup.object().shape(shape);
   const submitReport = async (values) => {
@@ -183,6 +195,9 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
     }
   };
   const submitReportMutation = useMutation('submit-report', submitReport);
+  const onPhotoChange = (newValue) => {
+    formikRef.current.setFieldValue('photo', newValue);
+  };
 
   return (
     <Animated.View
@@ -199,7 +214,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
         onSubmit={submitReportMutation.mutate}
         isSubmitting={submitReportMutation.isLoading}
       >
-        {({ values, handleSubmit, isValid, setFieldValue }) => (
+        {({ values, handleSubmit, isValid, setFieldValue, errors, dirty }) => (
           <Card style={styles.card} header={Header} disabled>
             <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
             {showMain ? (
@@ -212,21 +227,38 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
                       onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
                       cancelReport={onClose}
                     />
+                    <PhotoCapture
+                      isRequired={shape.photo.spec.presence === 'required'}
+                      onChange={onPhotoChange}
+                      value={values.photo}
+                    />
                   </>
                 ) : (
                   // pickup form
                   <>
-                    <Text>Contractor/Agency: Not yet implemented. Submit does not do anything.</Text>
+                    <PhotoCapture
+                      isRequired={shape.photo.spec.presence === 'required'}
+                      onChange={onPhotoChange}
+                      value={values.photo}
+                    />
                   </>
                 )}
+                <Divider style={commonStyles.margin} />
                 <Button
                   status="info"
                   style={commonStyles.margin}
                   onPress={handleSubmit}
-                  disabled={!isValid || submitReportMutation.isLoading}
+                  disabled={!dirty || !isValid || submitReportMutation.isLoading}
                 >
                   Submit Report
                 </Button>
+                <Text>[The submit button is not working yet...]</Text>
+                {__DEV__ ? (
+                  <>
+                    <Text>values: {JSON.stringify(values, null, '  ')}</Text>
+                    <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
+                  </>
+                ) : null}
               </View>
             ) : null}
           </Card>
