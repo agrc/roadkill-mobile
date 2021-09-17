@@ -25,10 +25,9 @@ import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from './util
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
-const DEV_NOT_JEST = __DEV__ && !process.env.JEST_WORKER_ID;
 
 let StorybookUIRoot;
-if (DEV_NOT_JEST) {
+if (config.SHOW_STORYBOOK) {
   // don't ship this code in production
   StorybookUIRoot = require('./storybook').default;
 }
@@ -41,7 +40,7 @@ const AuthNavigator = () => {
       <Screen name="choose-type" component={ChooseTypeScreen} />
       <Screen name="login" component={LoginScreen} />
       <Screen name="new-user" component={NewUserScreen} />
-      {DEV_NOT_JEST ? <Screen name="storybook" component={StorybookUIRoot} /> : null}
+      {config.SHOW_STORYBOOK ? <Screen name="storybook" component={StorybookUIRoot} /> : null}
     </Navigator>
   );
 };
@@ -65,7 +64,7 @@ DrawerIcon.propTypes = {
 
 const getDrawContent = ({ navigation, state, logOut }) => {
   let openStorybook;
-  if (DEV_NOT_JEST) {
+  if (config.SHOW_STORYBOOK) {
     openStorybook = () => navigation.navigate('Storybook');
   }
   const actions = {
@@ -96,7 +95,7 @@ const getDrawContent = ({ navigation, state, logOut }) => {
         <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
         <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
         <DrawerItem title={versionTitle} accessoryLeft={() => <DrawerIcon name="info" />} />
-        {DEV_NOT_JEST ? <DrawerItem title="Storybook" /> : null}
+        {config.SHOW_STORYBOOK ? <DrawerItem title="Storybook" /> : null}
       </Drawer>
     </SafeAreaView>
   );
@@ -117,7 +116,7 @@ const MainNavigator = () => {
       <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
       <Screen name="My Reports" component={MyReportsScreen} options={{ headerRight: () => getHeaderIcon('list') }} />
       <Screen name="Profile" component={ProfileScreen} options={{ headerRight: () => getHeaderIcon('person') }} />
-      {DEV_NOT_JEST ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
+      {config.SHOW_STORYBOOK ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
     </Navigator>
   );
 };
