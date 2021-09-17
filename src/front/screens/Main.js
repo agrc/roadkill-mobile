@@ -24,13 +24,14 @@ export default function MainScreen() {
   const { authInfo } = useAuth();
   // eslint-disable-next-line no-unused-vars
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
-  const [reportType, setReportType] = React.useState(null);
+  const [reportType, setReportType] = React.useState(REPORT_TYPES.report);
   const [showCrosshair, setShowCrosshair] = React.useState(false);
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
   const [followSubscription, setFollowSubscription] = React.useState(null);
+  const [showReport, setShowReport] = React.useState(false);
 
   React.useEffect(() => {
     const initLocation = async () => {
@@ -98,10 +99,11 @@ export default function MainScreen() {
 
   const showAddReport = () => {
     const displayReport = (newReportType) => {
+      setShowReport(true);
       setReportType(newReportType);
       const zoom = async () => {
-        await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
         setShowCrosshair(true);
+        await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
       };
 
       if (Platform.OS === 'android') {
@@ -139,7 +141,7 @@ export default function MainScreen() {
   };
 
   const hideAddReport = () => {
-    setReportType(null);
+    setShowReport(false);
     setShowCrosshair(false);
     setCarcassCoordinates(null);
   };
@@ -196,7 +198,7 @@ export default function MainScreen() {
             loadingEnabled={true}
             onRegionChange={onRegionChange}
             mapPadding={
-              reportType
+              showReport
                 ? Platform.select({
                     ios: {
                       bottom: reportHeight + 15,
@@ -262,6 +264,7 @@ export default function MainScreen() {
         </View>
       </View>
       <Report
+        show={showReport}
         reportType={reportType}
         hideReport={hideAddReport}
         setHeight={setReportHeight}
