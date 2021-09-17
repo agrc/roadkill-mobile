@@ -1,4 +1,5 @@
 import { Button, Card, Divider, Text, useTheme } from '@ui-kitten/components';
+import * as reportSchemas from 'common/validation/reports';
 import { Formik } from 'formik';
 import ky from 'ky';
 import propTypes from 'prop-types';
@@ -13,6 +14,7 @@ import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import config from '../config';
 import { getIcon } from '../icons';
+import { ACCURACY, getLocation } from '../location';
 import useStyles from '../styles';
 
 const SET_LOCATION_VIEW = 'set_location_view';
@@ -26,7 +28,7 @@ export const REPORT_TYPES = {
   pickup: 'pickup',
 };
 
-const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
+const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
   const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
@@ -34,7 +36,6 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
   const {
-    // eslint-disable-next-line no-unused-vars
     authInfo: { user },
     getBearerToken,
   } = useAuth();
@@ -62,7 +63,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   };
 
   React.useEffect(() => {
-    if (reportType) {
+    if (show) {
       Animated.timing(animatedMaxHeight.current, {
         // is there a better way to get the height of the animated view?
         // I'm hoping that 50% of window height is good for the smaller devices...
@@ -77,12 +78,12 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
         ...COMMON_ANIMATION_PROPS,
       }).start();
     }
-  }, [reportType]);
+  }, [show]);
 
   React.useEffect(() => {
     const newMaxHeight = view === MAIN_VIEW ? windowDimensions.height : windowDimensions.height * 0.5;
 
-    if (reportType) {
+    if (show) {
       if (view === MAIN_VIEW) {
         setShowMain(true);
       }
@@ -99,7 +100,7 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   }, [view]);
 
   const isDirty = () => {
-    return carcassCoordinates !== null && formikRef.current.dirty;
+    return carcassCoordinates !== null || formikRef.current?.dirty;
   };
 
   const onClose = async () => {
@@ -137,36 +138,58 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
   };
 
   // set up form
-  const formikRef = React.useRef(null);
-  const initialFormValues = {
-    repeat_submission: false,
+  const reportFormikRef = React.useRef(null);
+  const pickupFormikRef = React.useRef(null);
+  const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
+  const commonInitialValues = {
     photo: null,
+    photo_location: null,
+    photo_date: null,
   };
-  const photoShape = {
-    uri: yup.string().required(),
-    type: yup.string().required(),
-    name: yup.string().required(),
-    coordinates: yup.array().of(yup.number()).nullable(),
-    date: yup.date().required(),
+  const initialFormValues = {
+    // skip values that are gathered outside of the form
+    report: {
+      ...commonInitialValues,
+      repeat_submission: false,
+    },
+    pickup: {
+      ...commonInitialValues,
+    },
   };
-  const shape = {
-    photo: yup.object().shape(photoShape).required().typeError('a photo is required'),
+  const formShapes = {
+    report: {},
+    pickup: {},
   };
-  if (reportType === REPORT_TYPES.report) {
-    shape.repeat_submission = yup.boolean().required();
-    shape.photo = yup.object().shape(photoShape).nullable();
+  // pick only the props that the form manages
+  for (let key in initialFormValues.report) {
+    formShapes.report[key] = yup.reach(reportSchemas.report, key);
   }
-  const validationSchema = yup.object().shape(shape);
+  for (let key in initialFormValues.pickup) {
+    formShapes.pickup[key] = yup.reach(reportSchemas.pickup, key);
+  }
+  const formSchemas = {
+    report: yup.object().shape(formShapes.report),
+    pickup: yup.object().shape(formShapes.pickup),
+  };
+
   const submitReport = async (values) => {
     const token = await getBearerToken();
+    const formData = new FormData();
+    for (let valueName in values) {
+      formData.append(valueName, values[valueName]);
+    }
+
+    // add data gathered from outside of the form
+    formData.append('animal_location', carcassCoordinates);
+    formData.append('user_id', user.id);
+    formData.append('submit_date', new Date().toISOString());
+    formData.append('submit_location', await getLocation(ACCURACY.Highest));
+
     let responseJson;
     try {
       responseJson = await ky
-        .post(`${config.API}/reports/new`, {
-          json: {
-            ...values,
-            animal_location: carcassCoordinates, // TODO: are these in the correct format?
-          },
+        .post(`${config.API}/reports/${reportType}`, {
+          body: formData,
           headers: {
             Authorization: token,
           },
@@ -195,8 +218,61 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
     }
   };
   const submitReportMutation = useMutation('submit-report', submitReport);
-  const onPhotoChange = (newValue) => {
-    formikRef.current.setFieldValue('photo', newValue);
+  const onPhotoChange = (newPhotoProps) => {
+    if (!newPhotoProps) {
+      formikRef.current.setFieldValue('photo', null);
+      formikRef.current.setFieldValue('photo_location', null);
+      formikRef.current.setFieldValue('photo_date', null);
+    } else {
+      const { uri, type, name, coordinates, date } = newPhotoProps;
+      formikRef.current.setFieldValue('photo', {
+        uri, // might need something like this: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+        type,
+        name,
+      });
+      formikRef.current.setFieldValue('photo_location', coordinates);
+      formikRef.current.setFieldValue('photo_date', date);
+    }
+  };
+
+  const Form = ({ formikRef, initialValues, validationSchema, children }) => {
+    return (
+      <Formik
+        innerRef={formikRef}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={submitReportMutation.mutate}
+        isSubmitting={submitReportMutation.isLoading}
+      >
+        {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
+          <>
+            {children({ values, setFieldValue, errors })}
+            <Divider style={commonStyles.margin} />
+            <Button
+              status="info"
+              style={commonStyles.margin}
+              onPress={handleSubmit}
+              disabled={!dirty || !isValid || submitReportMutation.isLoading}
+            >
+              Submit Report
+            </Button>
+            <Text>[The submit button is not working yet...]</Text>
+            {__DEV__ ? (
+              <>
+                <Text>values: {JSON.stringify(values, null, '  ')}</Text>
+                <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
+              </>
+            ) : null}
+          </>
+        )}
+      </Formik>
+    );
+  };
+  Form.propTypes = {
+    formikRef: propTypes.object.isRequired,
+    initialValues: propTypes.object.isRequired,
+    validationSchema: propTypes.object.isRequired,
+    children: propTypes.func.isRequired,
   };
 
   return (
@@ -207,20 +283,18 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
       style={[styles.container, { maxHeight: animatedMaxHeight.current }]}
       onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
-      <Formik
-        innerRef={formikRef}
-        initialValues={initialFormValues}
-        validationSchema={validationSchema}
-        onSubmit={submitReportMutation.mutate}
-        isSubmitting={submitReportMutation.isLoading}
-      >
-        {({ values, handleSubmit, isValid, setFieldValue, errors, dirty }) => (
-          <Card style={styles.card} header={Header} disabled>
-            <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
-            {showMain ? (
-              <View style={{ height: windowDimensions.height }}>
-                {reportType === REPORT_TYPES.report ? (
-                  // report form
+      <Card style={styles.card} header={Header} disabled>
+        <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
+        {showMain ? (
+          <View style={{ height: windowDimensions.height }}>
+            {reportType === REPORT_TYPES.report ? (
+              // report form
+              <Form
+                formikRef={reportFormikRef}
+                initialValues={initialFormValues.report}
+                validationSchema={formSchemas.report}
+              >
+                {({ values, setFieldValue }) => (
                   <>
                     <RepeatSubmission
                       checked={values.repeat_submission}
@@ -228,51 +302,44 @@ const Report = ({ reportType, hideReport, setHeight, setMarker, carcassCoordinat
                       cancelReport={onClose}
                     />
                     <PhotoCapture
-                      isRequired={shape.photo.spec.presence === 'required'}
+                      isRequired={formSchemas.report.fields.photo.spec.presence === 'required'}
                       onChange={onPhotoChange}
-                      value={values.photo}
-                    />
-                  </>
-                ) : (
-                  // pickup form
-                  <>
-                    <PhotoCapture
-                      isRequired={shape.photo.spec.presence === 'required'}
-                      onChange={onPhotoChange}
-                      value={values.photo}
+                      uri={values.photo?.uri}
                     />
                   </>
                 )}
-                <Divider style={commonStyles.margin} />
-                <Button
-                  status="info"
-                  style={commonStyles.margin}
-                  onPress={handleSubmit}
-                  disabled={!dirty || !isValid || submitReportMutation.isLoading}
-                >
-                  Submit Report
-                </Button>
-                <Text>[The submit button is not working yet...]</Text>
-                {__DEV__ ? (
+              </Form>
+            ) : (
+              // pickup form
+              <Form
+                formikRef={pickupFormikRef}
+                initialValues={initialFormValues.pickup}
+                validationSchema={formSchemas.pickup}
+              >
+                {({ values }) => (
                   <>
-                    <Text>values: {JSON.stringify(values, null, '  ')}</Text>
-                    <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
+                    <PhotoCapture
+                      isRequired={formSchemas.pickup.fields.photo.spec.presence === 'required'}
+                      onChange={onPhotoChange}
+                      uri={values.photo?.uri}
+                    />
                   </>
-                ) : null}
-              </View>
-            ) : null}
-          </Card>
-        )}
-      </Formik>
+                )}
+              </Form>
+            )}
+          </View>
+        ) : null}
+      </Card>
     </Animated.View>
   );
 };
 
 Report.propTypes = {
-  reportType: propTypes.oneOf([REPORT_TYPES.report, REPORT_TYPES.pickup, null]),
-  hideReport: propTypes.func,
-  setHeight: propTypes.func,
-  setMarker: propTypes.func,
+  reportType: propTypes.oneOf([REPORT_TYPES.report, REPORT_TYPES.pickup]).isRequired,
+  show: propTypes.bool.isRequired,
+  hideReport: propTypes.func.isRequired,
+  setHeight: propTypes.func.isRequired,
+  setMarker: propTypes.func.isRequired,
   carcassCoordinates: propTypes.object,
 };
 
