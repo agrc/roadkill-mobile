@@ -48,7 +48,7 @@ export default function ChooseTypeScreen({ navigation }) {
           </Option>
           <Option type={config.USER_TYPES.contractor}>State contractor</Option>
           <Option type={config.USER_TYPES.agencyEmployee}>State agency employee</Option>
-          <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button>
+          {config.SHOW_STORYBOOK ? <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button> : null}
         </View>
       </Layout>
     </RootView>
