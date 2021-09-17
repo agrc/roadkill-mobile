@@ -1,0 +1,14 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "shared code between front and back ends",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Scott Davis <stdavis@utah.gov>",
+  "license": "MIT",
+  "dependencies": {
+    "yup": "^0.32.9"
+  }
+}
