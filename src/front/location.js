@@ -1,17 +1,18 @@
 import * as Location from 'expo-location';
 
-export const getLocation = async () => {
+export const ACCURACY = Location.Accuracy;
+export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   let location;
   // work around for: https://github.com/expo/expo/issues/14248
   try {
     location = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest,
+      accuracy,
     });
   } catch (error) {
     console.log(`getCurrentPositionAsync: ${error}`);
 
     location = await Location.getLastKnownPositionAsync({
-      accuracy: Location.Accuracy.Highest,
+      accuracy,
     });
   }
 

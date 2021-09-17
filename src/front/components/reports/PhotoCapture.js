@@ -5,7 +5,7 @@ import React from 'react';
 import { ActivityIndicator, Alert, Image, StyleSheet, View } from 'react-native';
 import config from '../../config';
 import { getIcon } from '../../icons';
-import { getLocation } from '../../location';
+import { ACCURACY, getLocation } from '../../location';
 import useStyles from '../../styles';
 
 const THUMBNAIL_SIZE = 100;
@@ -32,7 +32,7 @@ export function getDateFromExif(exif) {
   return null;
 }
 
-export default function PhotoCapture({ isRequired, onChange, value }) {
+export default function PhotoCapture({ isRequired, onChange, uri }) {
   const [showLoader, setShowLoader] = React.useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
@@ -66,7 +66,7 @@ export default function PhotoCapture({ isRequired, onChange, value }) {
       if (getImageFunctionAsync == ImagePicker.launchCameraAsync) {
         setShowLoader(true);
         try {
-          const { coords } = await getLocation();
+          const { coords } = await getLocation(ACCURACY.Highest);
           coordinates = [coords.latitude, coords.longitude];
         } catch (error) {
           console.error(error);
@@ -125,10 +125,10 @@ export default function PhotoCapture({ isRequired, onChange, value }) {
           </Button>
         </View>
 
-        {value?.uri ? (
+        {uri ? (
           <>
             <Image
-              source={{ uri: value.uri }}
+              source={{ uri }}
               style={[commonStyles.image, styles.image]}
               height={THUMBNAIL_SIZE}
               width={THUMBNAIL_SIZE}
@@ -165,13 +165,7 @@ export default function PhotoCapture({ isRequired, onChange, value }) {
 
 PhotoCapture.propTypes = {
   isRequired: propTypes.bool.isRequired,
-  value: propTypes.shape({
-    uri: propTypes.string.isRequired,
-    type: propTypes.string.isRequired,
-    name: propTypes.string.isRequired,
-    coordinates: propTypes.arrayOf(propTypes.number),
-    date: propTypes.instanceOf(Date).isRequired,
-  }),
+  uri: propTypes.string,
   onChange: propTypes.func.isRequired,
 };
 
