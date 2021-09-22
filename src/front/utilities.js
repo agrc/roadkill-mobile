@@ -74,11 +74,6 @@ export function isTokenExpired(token) {
   return expireTime < Date.now();
 }
 
-export async function clearStorage() {
-  await SecureStorage.deleteItemAsync(config.USER_STORE_KEY);
-  await SecureStorage.deleteItemAsync(config.USER_TYPE_KEY);
-}
-
 export async function sendEmailToSupport() {
   const subject = `${Constants.manifest.name} - Support`;
 
