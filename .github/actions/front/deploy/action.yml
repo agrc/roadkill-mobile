@@ -30,7 +30,9 @@ runs:
         node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
 
     - name: Install npm dependencies
-      run: npm ci
+      run: |
+        npm ci
+        cd ../common && npm ci
       shell: bash
       working-directory: ${{ inputs.working-directory }}
 
