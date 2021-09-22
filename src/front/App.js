@@ -13,7 +13,6 @@ import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 import { default as theme } from './custom-theme.json';
 import packs from './icons';
-import { clearStorage } from './utilities';
 
 const queryClient = new QueryClient();
 
@@ -41,7 +40,6 @@ export default function App() {
 
   const onError = (error) => {
     Sentry.Native.captureException(error);
-    clearStorage();
     SplashScreen.hideAsync();
   };
 
