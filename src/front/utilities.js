@@ -44,6 +44,32 @@ export function useSecureState(key) {
   return [state, setState];
 }
 
+export function useSecureRef(key) {
+  const ref = React.useRef();
+
+  React.useEffect(() => {
+    const init = async () => {
+      const value = await SecureStorage.getItemAsync(key);
+
+      try {
+        ref.current = JSON.parse(value);
+      } catch (e) {
+        ref.current = value;
+      }
+    };
+
+    init();
+  }, []);
+
+  const setRef = (value) => {
+    // value could be string or object
+    ref.current = value;
+    SecureStorage.setItemAsync(key, typeof value === 'object' ? JSON.stringify(value) : value);
+  };
+
+  return [ref, setRef];
+}
+
 // https://github.com/facebook/react/issues/14981#issuecomment-468460187
 export function useAsyncError() {
   // eslint-disable-next-line no-unused-vars
@@ -128,4 +154,8 @@ export async function forceUpdate() {
 
 export function getReleaseChannelBranch(releaseChannel) {
   return releaseChannel.split('-')[0];
+}
+
+export function coordinatesToString(coordinates) {
+  return `${coordinates.longitude} ${coordinates.latitude}`;
 }

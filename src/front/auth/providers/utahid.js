@@ -1,8 +1,8 @@
 import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
-import * as React from 'react';
+import React from 'react';
 import config from '../../config';
-import { isTokenExpired, useAsyncError } from '../../utilities';
+import { isTokenExpired, useAsyncError, useSecureRef } from '../../utilities';
 
 let redirectUri = makeRedirectUri({ scheme: config.SCHEME });
 if (__DEV__) {
@@ -20,8 +20,8 @@ const discovery = {
 };
 
 export default function useUtahIDProvider() {
-  const accessToken = React.useRef(null);
-  const refreshToken = React.useRef(null);
+  const [accessToken, setAccessToken] = useSecureRef('UTAHID_ACCESS_TOKEN');
+  const [refreshToken, setRefreshToken] = useSecureRef('UTAHID_REFRESH_TOKEN');
   // eslint-disable-next-line no-unused-vars
   const [request, _, promptAsync] = useAuthRequest(
     {
@@ -33,22 +33,29 @@ export default function useUtahIDProvider() {
   );
   const throwAsyncError = useAsyncError();
 
-  const logIn = async () => {
+  React.useEffect(() => {
+    if (refreshToken.current && isTokenExpired(jwt_decode(refreshToken.current))) {
+      getTokens();
+    }
+  }, [refreshToken.current]);
+
+  const getTokens = async () => {
     try {
       const response = await promptAsync();
 
       if (response?.type === 'success') {
         const tokenResponse = await exchangeCodeForToken(response.params.code);
-        accessToken.current = tokenResponse.accessToken;
-        refreshToken.current = tokenResponse.refreshToken;
+        setAccessToken(tokenResponse.accessToken);
+        setRefreshToken(tokenResponse.refreshToken);
 
-        const user = jwt_decode(tokenResponse.idToken);
-
-        return user;
+        return {
+          idToken: tokenResponse.idToken,
+          accessToken: tokenResponse.accessToken,
+          refreshToken: tokenResponse.refreshToken,
+        };
       } else if (['cancel', 'dismiss'].indexOf(response?.type) > -1) {
         return null;
       } else {
-        console.log(`redirectUri: ${redirectUri}`);
         throwAsyncError(new Error(`response.type: ${response.type}; response: ${JSON.stringify(response)}`));
       }
     } catch (error) {
@@ -56,22 +63,36 @@ export default function useUtahIDProvider() {
     }
   };
 
+  const logIn = async () => {
+    console.log('utahid: logIn');
+
+    const tokens = await getTokens();
+
+    if (!tokens) return null;
+
+    return jwt_decode(tokens.idToken);
+  };
+
   const logOut = () => {
-    accessToken.current = null;
-    refreshToken.current = null;
+    setAccessToken(null);
+    setRefreshToken(null);
   };
 
   const getBearerToken = async () => {
+    console.log('getBearerToken');
+
     const prefix = `${config.PROVIDER_NAMES.utahid}:Bearer `;
     if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
       return prefix + accessToken.current;
     }
 
-    try {
-      return prefix + (await refreshAccessToken());
-    } catch (error) {
-      throwAsyncError(error);
+    const newToken = await refreshAccessToken();
+
+    if (newToken) {
+      return prefix + newToken;
     }
+
+    return null;
   };
 
   const exchangeCodeForToken = async (code) => {
@@ -101,7 +122,9 @@ export default function useUtahIDProvider() {
     console.log('refreshAccessToken');
 
     if (!refreshToken.current || isTokenExpired(jwt_decode(refreshToken.current))) {
-      return null;
+      const tokens = await getTokens();
+
+      return tokens?.accessToken;
     }
 
     try {
@@ -113,7 +136,7 @@ export default function useUtahIDProvider() {
         discovery
       );
 
-      accessToken.current = tokenResponse.accessToken;
+      setAccessToken(tokenResponse.accessToken);
 
       return tokenResponse.accessToken;
     } catch (error) {
