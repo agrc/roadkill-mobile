@@ -1,13 +1,18 @@
 import { LoggingWinston } from '@google-cloud/logging-winston';
+import { pickup as pickupSchema, report as reportSchema } from 'common/validation/reports.js';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
 import expressWinston from 'express-winston';
 import helmet from 'helmet';
+import Multer from 'multer';
 import winston from 'winston';
+import { getNewPickupHandler, getNewReportHandler } from './api/reports.js';
 import { authenticate, getToken } from './api/security.js';
 import { getApprove, getLogin, getRegister, getReject } from './api/user.js';
 import validate from './api/validation.js';
+import { upload } from './services/photos.js';
+import { createPickup, createReport } from './services/report_management.js';
 import {
   approveUser,
   getUser,
@@ -30,6 +35,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // parse application/json
 app.use(express.json());
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
+  },
+});
 
 // security best practices
 app.use(helmet());
@@ -108,6 +120,22 @@ app.post(
 app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
 app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
 // app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
+
+// data submission
+app.post(
+  '/reports/report',
+  handleAsyncErrors(authenticate),
+  multer.single('photo'),
+  validate(reportSchema.omit(['photo'])),
+  handleAsyncErrors(getNewReportHandler(upload, createReport))
+);
+app.post(
+  '/reports/pickup',
+  handleAsyncErrors(authenticate),
+  multer.single('photo'),
+  validate(pickupSchema.omit(['photo'])),
+  handleAsyncErrors(getNewPickupHandler(upload, createPickup))
+);
 
 app.use(
   expressWinston.errorLogger({
