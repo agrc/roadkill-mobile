@@ -7,7 +7,7 @@ describe('PhotoCapture', () => {
         GPSLatitude: 40.5,
         GPSLongitude: -111.5,
       };
-      const expected = [40.5, -111.5];
+      const expected = { latitude: 40.5, longitude: -111.5 };
       expect(getCoordinatesFromExif(exif)).toEqual(expected);
     });
     it('parses string values', () => {
@@ -15,7 +15,7 @@ describe('PhotoCapture', () => {
         GPSLatitude: '40.5',
         GPSLongitude: '-111.5',
       };
-      const expected = [40.5, -111.5];
+      const expected = { latitude: 40.5, longitude: -111.5 };
       expect(getCoordinatesFromExif(exif)).toEqual(expected);
     });
     it('forces longitude to be negative', () => {
@@ -23,7 +23,7 @@ describe('PhotoCapture', () => {
         GPSLatitude: 40.5,
         GPSLongitude: 111.5,
       };
-      const expected = [40.5, -111.5];
+      const expected = { latitude: 40.5, longitude: -111.5 };
       expect(getCoordinatesFromExif(exif)).toEqual(expected);
     });
     it('returns null if no exif data', () => {
@@ -36,7 +36,7 @@ describe('PhotoCapture', () => {
       const exif = {
         DateTimeOriginal: '2018:12:01 12:00:00',
       };
-      const expected = new Date('2018-12-01T12:00:00.000Z');
+      const expected = '2018-12-01T12:00:00.000Z';
 
       expect(getDateFromExif(exif)).toEqual(expected);
     });
