@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const location = yup.array().of(yup.number());
+const location = yup.string();
 const photo = yup.object().shape({
   uri: yup.string().required(),
   type: yup.string().required(),

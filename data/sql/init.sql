@@ -4,6 +4,8 @@ DROP SCHEMA IF EXISTS tiger CASCADE;
 DROP SCHEMA IF EXISTS tiger_data CASCADE;
 DROP SCHEMA IF EXISTS topology CASCADE;
 
+SET TIME ZONE 'America/Denver';
+
 -- users
 DROP TYPE IF EXISTS roles CASCADE;
 CREATE TYPE roles as ENUM('admin', 'reporter', 'agency', 'contractor');
@@ -39,10 +41,10 @@ CREATE TABLE users
   email varchar(256) NOT NULL,
   first_name varchar(25) NOT NULL,
   last_name varchar(25) NOT NULL,
-  registered_date timestamp NOT NULL,
-  last_logged_in timestamp NOT NULL,
+  registered_date timestamptz NOT NULL,
+  last_logged_in timestamptz NOT NULL,
   phone varchar(25) NOT NULL,
-  approved_date timestamp
+  approved_date timestamptz
 );
 
 DROP TABLE IF EXISTS users_have_notification_areas CASCADE;
@@ -61,17 +63,24 @@ CREATE TYPE genders AS ENUM ('male', 'female');
 DROP TYPE IF EXISTS age_classes CASCADE;
 CREATE TYPE age_classes AS ENUM ('adult', 'juvenile');
 
+DROP TABLE IF EXISTS photos CASCADE;
+CREATE TABLE photos
+(
+  id serial PRIMARY KEY,
+  bucket_path varchar(256) NOT NULL,
+  photo_location geography(POINT, 4326),
+  photo_date timestamptz CHECK (photo_date <= CURRENT_TIMESTAMP + interval '1 minute')
+);
+
 DROP TABLE IF EXISTS report_infos CASCADE;
 CREATE TABLE report_infos
 (
   report_id serial PRIMARY KEY,
   user_id integer NOT NULL REFERENCES users (id),
   animal_location geography(POINT, 4326) NOT NULL,
-  photo_location geography(POINT, 4326),
-  photo varchar(256),
-  photo_date timestamp CHECK (photo_date <= CURRENT_TIMESTAMP),
+  photo_id integer REFERENCES photos (id),
   submit_location geography(POINT, 4326) NOT NULL,
-  submit_date timestamp NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP),
+  submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute'),
   species varchar(25),
   species_confidence_level confidence_levels,
   sex genders,
@@ -84,17 +93,16 @@ CREATE TABLE public_reports
 (
   report_id integer NOT NULL REFERENCES report_infos (report_id),
   repeat_submission bool NOT NULL DEFAULT false,
-  discovery_date timestamp NOT NULL CHECK (discovery_date <= CURRENT_TIMESTAMP)
+  discovery_date timestamptz NOT NULL CHECK (discovery_date <= CURRENT_TIMESTAMP + interval '1 minute')
 );
 
 DROP TABLE IF EXISTS pickup_reports CASCADE;
 CREATE TABLE pickup_reports
 (
   report_id integer NOT NULL REFERENCES report_infos (report_id),
-  pickup_date timestamp NOT NULL CHECK (pickup_date <= CURRENT_TIMESTAMP),
+  pickup_date timestamptz NOT NULL CHECK (pickup_date <= CURRENT_TIMESTAMP + interval '1 minute'),
   route_id integer NOT NULL
 );
-
 
 -- routes
 DROP TABLE IF EXISTS routes CASCADE;
@@ -103,9 +111,9 @@ CREATE TABLE routes
   route_id serial PRIMARY KEY,
   user_id integer NOT NULL REFERENCES users (id),
   geog geography(LINESTRING, 4326) NOT NULL,
-  start_time timestamp NOT NULL CHECK (start_time <= CURRENT_TIMESTAMP),
-  end_time timestamp NOT NULL CHECK (end_time <= CURRENT_TIMESTAMP),
-  submit_date timestamp NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP)
+  start_time timestamptz NOT NULL CHECK (start_time <= CURRENT_TIMESTAMP + interval '1 minute'),
+  end_time timestamptz NOT NULL CHECK (end_time <= CURRENT_TIMESTAMP + interval '1 minute'),
+  submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute')
 );
 
 
