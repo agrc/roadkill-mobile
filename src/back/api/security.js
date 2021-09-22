@@ -55,6 +55,11 @@ export async function getToken(request, response) {
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
     const [authProvider, authToken] = request.headers.authorization.split(':');
+
+    if (!authToken) {
+      return response.status(401).send('empty token');
+    }
+
     const token = authToken.split(' ').pop();
     const isJWTToken = authProvider === 'utahid';
 
