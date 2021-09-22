@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import React from 'react';
 
 export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
@@ -28,8 +29,19 @@ export function locationToRegion(location) {
   };
 }
 
-export async function followUser(mapView, zoom) {
-  const onLocationUpdate = (location) => {
+export function useFollowUser(mapViewRef) {
+  const [subscription, setSubscription] = React.useState(false);
+  const lastUserLocation = React.useRef(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
+  }, []);
+
+  const zoomTo = (location, zoom) => {
     const camera = {
       center: {
         latitude: location.coords.latitude,
@@ -41,16 +53,43 @@ export async function followUser(mapView, zoom) {
       camera.zoom = zoom;
     }
 
-    mapView.animateCamera(camera);
+    if (mapViewRef.current) {
+      mapViewRef.current.animateCamera(camera);
+    }
   };
 
-  const subscription = await Location.watchPositionAsync(
-    {
-      accuracy: Location.Accuracy.Highest,
-      distanceInterval: 1, // in meters
-    },
-    onLocationUpdate
-  );
+  const getCallback = (zoom) => {
+    return (location) => {
+      lastUserLocation.current = location;
 
-  return subscription;
+      zoomTo(location, zoom);
+    };
+  };
+
+  const followUser = async (zoom) => {
+    if (lastUserLocation.current) {
+      zoomTo(lastUserLocation.current, zoom);
+    }
+
+    if (subscription) return;
+
+    const sub = await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.Highest,
+        distanceInterval: 1, // in meters
+      },
+      getCallback(zoom)
+    );
+
+    setSubscription(sub);
+  };
+
+  const stopFollowUser = () => {
+    if (!subscription) return;
+
+    subscription.remove();
+    setSubscription(null);
+  };
+
+  return { followUser, stopFollowUser, isFollowing: !!subscription };
 }
