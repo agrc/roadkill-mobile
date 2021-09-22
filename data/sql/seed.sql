@@ -20,9 +20,13 @@ INSERT INTO public.users_have_notification_areas (user_id,area_id) VALUES
   (1,2),
   (3,1);
 
-INSERT INTO public.report_infos (user_id,animal_location,photo_location,photo,photo_date,submit_location,submit_date,species,species_confidence_level,sex,age_class,"comments") VALUES
-  (1,'SRID=4326;POINT (-112.79974093314752 40.11589497651387)'::geography,'SRID=4326;POINT (-112.78974093314751 40.12589497651387)'::geography,'https://somebucket/image.jpg','2021-07-20 00:00:00','SRID=4326;POINT (-112.79874093314751 40.11489497651387)'::geography,'2021-07-20 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments'),
-  (2,'SRID=4326;POINT (-111.79974093314752 39.11589497651387)'::geography,'SRID=4326;POINT (-111.78974093314751 39.12589497651387)'::geography,'https://somebucket/image2.jpg','2021-07-18 00:00:00','SRID=4326;POINT (-111.79874093314751 39.11489497651387)'::geography,'2021-07-18 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments');
+INSERT INTO public.photos (bucket_path,photo_location,photo_date) VALUES
+  ('1/e12518c4-b827-406a-96fc-97caaaeb98df','SRID=4326;POINT (-112.78974093314751 40.12589497651387)'::geography,'2021-07-20 00:00:00'),
+  ('3/e2965d05-9bed-47f4-955c-8d6fac01f0c7', 'SRID=4326;POINT (-111.78974093314751 39.12589497651387)'::geography,'2021-07-18 00:00:00');
+
+INSERT INTO public.report_infos (user_id,animal_location,photo_id,submit_location,submit_date,species,species_confidence_level,sex,age_class,"comments") VALUES
+  (1,'SRID=4326;POINT (-112.79974093314752 40.11589497651387)'::geography,1,'SRID=4326;POINT (-112.79874093314751 40.11489497651387)'::geography,'2021-07-20 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments'),
+  (2,'SRID=4326;POINT (-111.79974093314752 39.11589497651387)'::geography,2,'SRID=4326;POINT (-111.79874093314751 39.11489497651387)'::geography,'2021-07-18 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments');
 
 INSERT INTO public.pickup_reports (report_id,pickup_date,route_id) VALUES
   (1,'2021-07-20 00:00:00',1);

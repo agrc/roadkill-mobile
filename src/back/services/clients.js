@@ -1,4 +1,5 @@
 import { Firestore } from '@google-cloud/firestore';
+import { Storage } from '@google-cloud/storage';
 import sgMail from '@sendgrid/mail';
 import knex from 'knex';
 
@@ -18,3 +19,5 @@ export const db = knex({
 export const firestore = new Firestore();
 
 export const mail = sgMail;
+
+export const storage = new Storage();
