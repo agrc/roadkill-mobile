@@ -60,6 +60,7 @@
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "ky": "^0.28.5",
+    "mime": "^2.5.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",

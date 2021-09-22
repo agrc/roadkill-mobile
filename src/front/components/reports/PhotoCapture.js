@@ -1,5 +1,6 @@
 import { Button, Text, useTheme } from '@ui-kitten/components';
 import * as ImagePicker from 'expo-image-picker';
+import mime from 'mime';
 import propTypes from 'prop-types';
 import React from 'react';
 import { ActivityIndicator, Alert, Image, StyleSheet, View } from 'react-native';
@@ -7,6 +8,7 @@ import config from '../../config';
 import { getIcon } from '../../icons';
 import { ACCURACY, getLocation } from '../../location';
 import useStyles from '../../styles';
+import { coordinatesToString } from '../../utilities';
 
 const THUMBNAIL_SIZE = 100;
 export function getCoordinatesFromExif(exif) {
@@ -15,7 +17,7 @@ export function getCoordinatesFromExif(exif) {
     let latitude = parseFloat(exif.GPSLatitude, 10);
     longitude = longitude < 0 ? longitude : -longitude;
 
-    return [latitude, longitude];
+    return { latitude, longitude };
   }
 
   return null;
@@ -26,7 +28,7 @@ export function getDateFromExif(exif) {
     const parts = exif.DateTimeOriginal.split(' ');
     const dateString = `${parts[0].replace(/:/g, '-')}T${parts[1]}Z`;
 
-    return new Date(dateString);
+    return new Date(dateString).toISOString();
   }
 
   return null;
@@ -58,7 +60,7 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
     const result = await getImageFunctionAsync(photoOptions);
 
     if (!result.cancelled) {
-      const { uri, exif, type } = result;
+      const { uri, exif } = result;
 
       // on iOS when capturing a new image, the GPS tags are not included in the exif data.
       // might as well get them on both platforms when taking a new image
@@ -67,18 +69,18 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
         setShowLoader(true);
         try {
           const { coords } = await getLocation(ACCURACY.Highest);
-          coordinates = [coords.latitude, coords.longitude];
+          coordinates = coordinatesToString(coords);
         } catch (error) {
           console.error(error);
           // ignore
         }
       } else {
-        coordinates = getCoordinatesFromExif(exif);
+        coordinates = coordinatesToString(getCoordinatesFromExif(exif));
       }
 
       onChange({
         uri,
-        type,
+        type: mime.getType(uri),
         name: 'photo',
         coordinates,
         date: getDateFromExif(exif),

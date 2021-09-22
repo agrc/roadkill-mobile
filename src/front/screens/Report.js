@@ -5,7 +5,6 @@ import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useMutation } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
 import useAuth from '../auth/context';
@@ -16,6 +15,7 @@ import config from '../config';
 import { getIcon } from '../icons';
 import { ACCURACY, getLocation } from '../location';
 import useStyles from '../styles';
+import { coordinatesToString } from '../utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -26,6 +26,36 @@ const COMMON_ANIMATION_PROPS = {
 export const REPORT_TYPES = {
   report: 'report',
   pickup: 'pickup',
+};
+const commonInitialValues = {
+  photo: null,
+  photo_location: null,
+  photo_date: null,
+};
+const initialFormValues = {
+  // skip values that are gathered outside of the form
+  report: {
+    ...commonInitialValues,
+    repeat_submission: false,
+  },
+  pickup: {
+    ...commonInitialValues,
+  },
+};
+const formShapes = {
+  report: {},
+  pickup: {},
+};
+// pick only the props that the form manages
+for (let key in initialFormValues.report) {
+  formShapes.report[key] = yup.reach(reportSchemas.report, key);
+}
+for (let key in initialFormValues.pickup) {
+  formShapes.pickup[key] = yup.reach(reportSchemas.pickup, key);
+}
+const formSchemas = {
+  report: yup.object().shape(formShapes.report),
+  pickup: yup.object().shape(formShapes.pickup),
 };
 
 const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
@@ -40,6 +70,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     getBearerToken,
   } = useAuth();
   const commonStyles = useStyles();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
@@ -53,7 +84,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
         })}
         size="tiny"
         appearance="ghost"
-        onPress={onClose}
+        onPress={() => onClose()}
         style={styles.closeButton}
       />
     </View>
@@ -103,7 +134,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     return carcassCoordinates !== null || formikRef.current?.dirty;
   };
 
-  const onClose = async () => {
+  const onClose = async (force = false) => {
     const close = () => {
       hideReport();
       setView(SET_LOCATION_VIEW);
@@ -111,7 +142,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
       formikRef.current?.resetForm();
     };
 
-    if (isDirty()) {
+    if (!force && isDirty()) {
       Alert.alert('Are you sure?', 'All in-progress report data will be lost.', [
         {
           text: 'Cancel',
@@ -141,57 +172,32 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const reportFormikRef = React.useRef(null);
   const pickupFormikRef = React.useRef(null);
   const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
-  const commonInitialValues = {
-    photo: null,
-    photo_location: null,
-    photo_date: null,
-  };
-  const initialFormValues = {
-    // skip values that are gathered outside of the form
-    report: {
-      ...commonInitialValues,
-      repeat_submission: false,
-    },
-    pickup: {
-      ...commonInitialValues,
-    },
-  };
-  const formShapes = {
-    report: {},
-    pickup: {},
-  };
-  // pick only the props that the form manages
-  for (let key in initialFormValues.report) {
-    formShapes.report[key] = yup.reach(reportSchemas.report, key);
-  }
-  for (let key in initialFormValues.pickup) {
-    formShapes.pickup[key] = yup.reach(reportSchemas.pickup, key);
-  }
-  const formSchemas = {
-    report: yup.object().shape(formShapes.report),
-    pickup: yup.object().shape(formShapes.pickup),
-  };
 
   const submitReport = async (values) => {
-    const token = await getBearerToken();
+    console.log('submitReport', values);
+    setIsLoading(true);
     const formData = new FormData();
     for (let valueName in values) {
-      formData.append(valueName, values[valueName]);
+      if (values[valueName] !== null) {
+        formData.append(valueName, values[valueName]);
+      }
     }
 
     // add data gathered from outside of the form
-    formData.append('animal_location', carcassCoordinates);
+    formData.append('animal_location', coordinatesToString(carcassCoordinates));
     formData.append('user_id', user.id);
     formData.append('submit_date', new Date().toISOString());
-    formData.append('submit_location', await getLocation(ACCURACY.Highest));
+    const currentLocation = await getLocation(ACCURACY.Highest);
+    formData.append('submit_location', coordinatesToString(currentLocation.coords));
 
+    console.log('formData', formData);
     let responseJson;
     try {
       responseJson = await ky
         .post(`${config.API}/reports/${reportType}`, {
           body: formData,
           headers: {
-            Authorization: token,
+            Authorization: await getBearerToken(),
           },
         })
         .json();
@@ -204,21 +210,21 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     }
 
     if (responseJson.success) {
-      Alert.alert('Success', 'Your report has been submitted.', [
+      console.log('responseJson.report_id', responseJson.report_id);
+
+      Alert.alert('Success!', 'Your report has been submitted.', [
         {
           text: 'OK',
-          onPress: () => {
-            formikRef.current.resetForm();
-            hideReport();
-          },
+          onPress: () => onClose(true),
         },
       ]);
     } else {
       Alert.alert('Error', responseJson.error);
     }
   };
-  const submitReportMutation = useMutation('submit-report', submitReport);
+
   const onPhotoChange = (newPhotoProps) => {
+    console.log('onPhotoChange', newPhotoProps);
     if (!newPhotoProps) {
       formikRef.current.setFieldValue('photo', null);
       formikRef.current.setFieldValue('photo_location', null);
@@ -241,8 +247,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
         innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={submitReportMutation.mutate}
-        isSubmitting={submitReportMutation.isLoading}
+        onSubmit={(values) => submitReport(values).then(() => setIsLoading(false))}
       >
         {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
           <>
@@ -252,15 +257,15 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
               status="info"
               style={commonStyles.margin}
               onPress={handleSubmit}
-              disabled={!dirty || !isValid || submitReportMutation.isLoading}
+              disabled={!dirty || !isValid || isLoading}
             >
               Submit Report
             </Button>
             <Text>[The submit button is not working yet...]</Text>
             {__DEV__ ? (
               <>
-                <Text>values: {JSON.stringify(values, null, '  ')}</Text>
                 <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
+                <Text>values: {JSON.stringify(values, null, '  ')}</Text>
               </>
             ) : null}
           </>
@@ -290,6 +295,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
             {reportType === REPORT_TYPES.report ? (
               // report form
               <Form
+                key="report-form"
                 formikRef={reportFormikRef}
                 initialValues={initialFormValues.report}
                 validationSchema={formSchemas.report}
@@ -299,7 +305,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                     <RepeatSubmission
                       checked={values.repeat_submission}
                       onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
-                      cancelReport={onClose}
+                      cancelReport={() => onClose()}
                     />
                     <PhotoCapture
                       isRequired={formSchemas.report.fields.photo.spec.presence === 'required'}
@@ -312,6 +318,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
             ) : (
               // pickup form
               <Form
+                key="pickup-form"
                 formikRef={pickupFormikRef}
                 initialValues={initialFormValues.pickup}
                 validationSchema={formSchemas.pickup}

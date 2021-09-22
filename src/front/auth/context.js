@@ -52,9 +52,9 @@ export function AuthContextProvider({ children, onReady }) {
   const currentProvider = React.useRef(null);
   const throwAsyncError = useAsyncError();
 
-  // best practice to speed up browser for android
-  // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
   React.useEffect(() => {
+    // best practice to speed up browser for android
+    // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
     WebBrowser.warmUpAsync();
 
     return () => {

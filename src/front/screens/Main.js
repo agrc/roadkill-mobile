@@ -10,10 +10,31 @@ import useAuth from '../auth/context';
 import MapButton from '../components/MapButton';
 import config from '../config';
 import { getIcon } from '../icons';
-import { followUser, getLocation, locationToRegion } from '../location';
+import { getLocation, locationToRegion, useFollowUser } from '../location';
 import RootView from '../RootView';
 import { wrapAsyncWithDelay } from '../utilities';
 import Report, { REPORT_TYPES } from './Report';
+
+const initialReportState = {
+  reportType: REPORT_TYPES.report,
+  showReport: false,
+};
+const reportReducer = (state, action) => {
+  switch (action.type) {
+    case 'show':
+      return {
+        showReport: true,
+        reportType: action.meta,
+      };
+    case 'hide':
+      return {
+        ...state,
+        showReport: false,
+      };
+    default:
+      throw new Error(`Unknown action type: ${action.type}`);
+  }
+};
 
 export default function MainScreen() {
   const navigation = useNavigation();
@@ -24,14 +45,12 @@ export default function MainScreen() {
   const { authInfo } = useAuth();
   // eslint-disable-next-line no-unused-vars
   const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
-  const [reportType, setReportType] = React.useState(REPORT_TYPES.report);
-  const [showCrosshair, setShowCrosshair] = React.useState(false);
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
-  const [followSubscription, setFollowSubscription] = React.useState(null);
-  const [showReport, setShowReport] = React.useState(false);
+  const [reportState, dispatchReportState] = React.useReducer(reportReducer, initialReportState);
+  const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
 
   React.useEffect(() => {
     const initLocation = async () => {
@@ -87,28 +106,20 @@ export default function MainScreen() {
     setCarcassCoordinates(coordinates);
   };
 
-  const followIfNotFollowing = async (zoom) => {
-    if (!followSubscription) {
-      setFollowSubscription(await followUser(mapView.current, zoom));
-    } else if (zoom) {
-      mapView.current.animateCamera({
-        zoom: zoom,
-      });
-    }
-  };
-
   const showAddReport = () => {
     const displayReport = (newReportType) => {
-      setShowReport(true);
-      setReportType(newReportType);
+      dispatchReportState({
+        type: 'show',
+        meta: newReportType,
+      });
+
       const zoom = async () => {
-        setShowCrosshair(true);
-        await followIfNotFollowing(config.MAX_ZOOM_LEVEL);
+        await followUser(config.MAX_ZOOM_LEVEL);
       };
 
       if (Platform.OS === 'android') {
         // give map padding time to catch up
-        setTimeout(zoom, 300);
+        setTimeout(zoom, 350);
       } else {
         zoom();
       }
@@ -133,16 +144,15 @@ export default function MainScreen() {
   };
 
   const onRegionChange = (_, event) => {
-    if (followSubscription && event.isGesture) {
-      followSubscription.remove();
-
-      setFollowSubscription(null);
+    if (isFollowing && event.isGesture) {
+      stopFollowUser();
     }
   };
 
   const hideAddReport = () => {
-    setShowReport(false);
-    setShowCrosshair(false);
+    dispatchReportState({
+      type: 'hide',
+    });
     setCarcassCoordinates(null);
   };
 
@@ -198,7 +208,7 @@ export default function MainScreen() {
             loadingEnabled={true}
             onRegionChange={onRegionChange}
             mapPadding={
-              showReport
+              reportState.showReport
                 ? Platform.select({
                     ios: {
                       bottom: reportHeight + 15,
@@ -227,7 +237,7 @@ export default function MainScreen() {
             {carcassCoordinates ? <Marker coordinate={carcassCoordinates} /> : null}
             <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
           </MapView>
-          {showCrosshair && reportHeight > 0 ? (
+          {reportState.showReport && reportHeight > 0 ? (
             <View
               pointerEvents="none"
               style={[styles.crosshairContainer, { top: crosshairCoordinates.y, left: crosshairCoordinates.x }]}
@@ -249,8 +259,8 @@ export default function MainScreen() {
         <View>
           <MapButton
             iconPack="material"
-            iconName={followSubscription ? 'my-location' : 'location-searching'}
-            onPress={() => followIfNotFollowing()}
+            iconName={isFollowing ? 'my-location' : 'location-searching'}
+            onPress={() => followUser()}
           />
         </View>
       </View>
@@ -264,8 +274,8 @@ export default function MainScreen() {
         </View>
       </View>
       <Report
-        show={showReport}
-        reportType={reportType}
+        show={reportState.showReport}
+        reportType={reportState.reportType}
         hideReport={hideAddReport}
         setHeight={setReportHeight}
         setMarker={setMarker}
