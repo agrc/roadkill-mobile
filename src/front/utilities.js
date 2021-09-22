@@ -48,11 +48,22 @@ export function useSecureState(key) {
 export function useAsyncError() {
   // eslint-disable-next-line no-unused-vars
   const [_, setError] = React.useState(null);
+  const mounted = React.useRef(false);
+
+  React.useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   const throwAsyncError = React.useCallback(
     (error) => {
-      setError(() => {
-        throw error;
-      });
+      if (mounted.current) {
+        setError(() => {
+          throw error;
+        });
+      }
     },
     [setError]
   );
