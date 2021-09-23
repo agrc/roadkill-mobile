@@ -14,4 +14,5 @@ COPY ./back .
 
 EXPOSE 3000
 
-CMD [ "node", "back/server.js" ]
+WORKDIR /usr/src/back
+CMD [ "node", "server.js" ]
