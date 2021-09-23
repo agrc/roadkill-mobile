@@ -70,7 +70,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     getBearerToken,
   } = useAuth();
   const commonStyles = useStyles();
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
@@ -173,56 +172,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const pickupFormikRef = React.useRef(null);
   const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
 
-  const submitReport = async (values) => {
-    console.log('submitReport', values);
-    setIsLoading(true);
-    const formData = new FormData();
-    for (let valueName in values) {
-      if (values[valueName] !== null) {
-        formData.append(valueName, values[valueName]);
-      }
-    }
-
-    // add data gathered from outside of the form
-    formData.append('animal_location', coordinatesToString(carcassCoordinates));
-    formData.append('user_id', user.id);
-    formData.append('submit_date', new Date().toISOString());
-    const currentLocation = await getLocation(ACCURACY.Highest);
-    formData.append('submit_location', coordinatesToString(currentLocation.coords));
-
-    console.log('formData', formData);
-    let responseJson;
-    try {
-      responseJson = await ky
-        .post(`${config.API}/reports/${reportType}`, {
-          body: formData,
-          headers: {
-            Authorization: await getBearerToken(),
-          },
-        })
-        .json();
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      Alert.alert('Error', error.message);
-      // TODO: allow them to cache the report for submission at a later time.
-
-      return;
-    }
-
-    if (responseJson.success) {
-      console.log('responseJson.report_id', responseJson.report_id);
-
-      Alert.alert('Success!', 'Your report has been submitted.', [
-        {
-          text: 'OK',
-          onPress: () => onClose(true),
-        },
-      ]);
-    } else {
-      Alert.alert('Error', responseJson.error);
-    }
-  };
-
   const onPhotoChange = (newPhotoProps) => {
     console.log('onPhotoChange', newPhotoProps);
     if (!newPhotoProps) {
@@ -232,7 +181,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     } else {
       const { uri, type, name, coordinates, date } = newPhotoProps;
       formikRef.current.setFieldValue('photo', {
-        uri, // might need something like this: Platform.OS === 'ios' ? uri.replace('file://', '') : uri,
+        uri,
         type,
         name,
       });
@@ -242,12 +191,67 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   };
 
   const Form = ({ formikRef, initialValues, validationSchema, children }) => {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const submitReport = async (values) => {
+      console.log('submitReport');
+
+      setIsLoading(true);
+      const formData = new FormData();
+      for (let valueName in values) {
+        if (values[valueName] !== null) {
+          formData.append(valueName, values[valueName]);
+        }
+      }
+
+      // add data gathered from outside of the form
+      formData.append('animal_location', coordinatesToString(carcassCoordinates));
+      formData.append('user_id', user.id);
+      formData.append('submit_date', new Date().toISOString());
+      const currentLocation = await getLocation(ACCURACY.Highest);
+      formData.append('submit_location', coordinatesToString(currentLocation.coords));
+
+      console.log('formData', formData);
+
+      let responseJson;
+      try {
+        responseJson = await ky
+          .post(`${config.API}/reports/${reportType}`, {
+            body: formData,
+            headers: {
+              Authorization: await getBearerToken(),
+            },
+          })
+          .json();
+      } catch (error) {
+        Sentry.Native.captureException(error);
+        Alert.alert('Error', error.message);
+        // TODO: allow them to cache the report for submission at a later time.
+
+        return;
+      }
+
+      if (responseJson.success) {
+        console.log('responseJson.report_id', responseJson.report_id);
+
+        Alert.alert('Success!', 'Your report has been submitted.', [
+          {
+            text: 'OK',
+            onPress: () => onClose(true),
+          },
+        ]);
+      } else {
+        Alert.alert('Error', responseJson.error);
+      }
+
+      setIsLoading(false);
+    };
+
     return (
       <Formik
         innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => submitReport(values).then(() => setIsLoading(false))}
+        onSubmit={(values) => submitReport(values)}
       >
         {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
           <>
