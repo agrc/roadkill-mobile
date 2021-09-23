@@ -1,4 +1,4 @@
-import { getReleaseChannelBranch, isTokenExpired, wrapAsyncWithDelay } from './utilities';
+import { coordinatesToString, getReleaseChannelBranch, isTokenExpired, wrapAsyncWithDelay } from './utilities';
 
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {
@@ -72,5 +72,19 @@ describe('wrapAsyncWithDelay', () => {
 describe('getReleaseChannelBranch', () => {
   it('returns the correct branch name', () => {
     expect(getReleaseChannelBranch('production-v3.0.0')).toBe('production');
+  });
+});
+
+describe('coordinatesToString', () => {
+  it('returns the appropriate string', () => {
+    const coordinates = {
+      longitude: -1,
+      latitude: 2,
+    };
+
+    expect(coordinatesToString(coordinates)).toBe('-1 2');
+  });
+  it('returns null if null is passed', () => {
+    expect(coordinatesToString(null)).toBe(null);
   });
 });
