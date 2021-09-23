@@ -5,6 +5,7 @@ on:
     paths:
       - 'src/back/**'
       - '.github/workflows/back.yml'
+      - '.github/actions/back/**'
 
 env:
   SERVICE_NAME: api
@@ -54,64 +55,23 @@ jobs:
     environment:
       name: Staging
     if: github.ref == 'refs/heads/staging'
+    env:
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      API: ${{ secrets.API }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get Variables
-        id: variables
-        shell: bash
-        run: |
-          PROJECT_ID="${{ secrets.PROJECT_ID }}"
-          echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
-
-      # this could be removed once setup-node adds support for .nvmrc files
-      # ref: https://github.com/actions/setup-node/issues/32
-      - name: Get node version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
-      - run: |
-          npm ci
-          cd ../common && npm ci
-
-      - uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          project_id: ${{ secrets.PROJECT_ID }}
-
-      - run: |-
-          gcloud --quiet auth configure-docker
-
-      - name: Build Image
-        run: |-
-          docker build \
-            -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
-            -t "${{ steps.variables.outputs.image }}:latest" \
-            .
-
-      - name: Publish Image
-        run: |-
-          docker push "${{ steps.variables.outputs.image }}" -a
-
       - name: Deploy
-        run: |-
-          gcloud run deploy "$SERVICE_NAME" \
-            --quiet \
-            --platform "managed" \
-            --region "us-central1" \
-            --image "${{ steps.variables.outputs.image }}:latest" \
-            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" \
-            --update-env-vars "API=${{ secrets.API }}" \
-            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" \
-            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
-            --update-env-vars "ENVIRONMENT=Staging" \
-            --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
+        uses: ./.github/actions/back/deploy
+        with:
+          environment: Staging
 
   deploy-prod:
     name: Build and Deploy to Production
@@ -121,60 +81,20 @@ jobs:
       name: Production
     if: github.ref == 'refs/heads/production'
 
+    env:
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+      API: ${{ secrets.API }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Get Variables
-        id: variables
-        shell: bash
-        run: |
-          PROJECT_ID="${{ secrets.PROJECT_ID }}"
-          echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
-
-      # this could be removed once setup-node adds support for .nvmrc files
-      # ref: https://github.com/actions/setup-node/issues/32
-      - name: Get node version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
-      - run: |
-          npm ci
-          cd ../common && npm ci
-
-      - uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          project_id: ${{ secrets.PROJECT_ID }}
-
-      - run: |-
-          gcloud --quiet auth configure-docker
-
-      - name: Build Image
-        run: |-
-          docker build \
-            -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
-            -t "${{ steps.variables.outputs.image }}:latest" \
-            .
-
-      - name: Publish Image
-        run: |-
-          docker push "${{ steps.variables.outputs.image }}" -a
-
       - name: Deploy
-        run: |-
-          gcloud run deploy "$SERVICE_NAME" \
-            --quiet \
-            --platform "managed" \
-            --region "us-central1" \
-            --image "${{ steps.variables.outputs.image }}:latest" \
-            --update-env-vars "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" \
-            --update-env-vars "API=${{ secrets.API }}" \
-            --update-env-vars "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" \
-            --update-env-vars "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
-            --update-env-vars "ENVIRONMENT=Production" \
-            --update-env-vars "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}"
+        uses: ./.github/actions/back/deploy
+        with:
+          environment: Production
