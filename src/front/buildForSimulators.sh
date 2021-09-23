@@ -2,7 +2,7 @@
 # build apps for simulators for testing before submitting to app stores
 set -e
 
-RELEASE_CHANNEL=$(./getReleaseChannel.sh)
+RELEASE_CHANNEL="$(./getReleaseChannel.sh)-sims"
 echo "Building simulator builds for release channel: $RELEASE_CHANNEL"
 
 RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
