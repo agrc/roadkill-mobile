@@ -1,0 +1,59 @@
+name: Build and Deploy Back
+description: Build and deploy express app to Cloud Run.
+inputs:
+  environment:
+    description: environment
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Get Variables
+      id: variables
+      shell: bash
+      run: echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
+
+    - name: Setup GCloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ env.SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+
+    - name: Authenticate GCloud
+      shell: bash
+      working-directory: src/back
+      run: |-
+        gcloud --quiet auth configure-docker
+
+    - name: Build Image
+      shell: bash
+      working-directory: src
+      run: |-
+        docker build \
+          -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
+          -t "${{ steps.variables.outputs.image }}:latest" \
+          -f ./back/Dockerfile \
+          .
+
+    - name: Publish Image
+      shell: bash
+      working-directory: src
+      run: |-
+        docker push "${{ steps.variables.outputs.image }}" -a
+
+    - name: Deploy to GCP
+      shell: bash
+      working-directory: src
+      run: |-
+        gcloud run deploy "$SERVICE_NAME" \
+          --quiet \
+          --platform "managed" \
+          --region "us-central1" \
+          --image "${{ steps.variables.outputs.image }}:latest" \
+          --update-env-vars "ADMIN_EMAIL=$ADMIN_EMAIL" \
+          --update-env-vars "API=$API" \
+          --update-env-vars "DATABASE_HOST=$DATABASE_HOST" \
+          --update-env-vars "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
+          --update-env-vars "ENVIRONMENT=$ENVIRONMENT" \
+          --update-env-vars "SENDGRID_API_KEY=$SENDGRID_API_KEY" \
+          --update-env-vars "PROJECT_ID=$PROJECT_ID"
