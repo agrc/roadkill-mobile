@@ -157,5 +157,9 @@ export function getReleaseChannelBranch(releaseChannel) {
 }
 
 export function coordinatesToString(coordinates) {
+  if (!coordinates) {
+    return null;
+  }
+
   return `${coordinates.longitude} ${coordinates.latitude}`;
 }
