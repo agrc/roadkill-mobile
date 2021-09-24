@@ -4,3 +4,4 @@ npm-debug.*
 !.env*.sample
 !.env.test
 fire*-debug.log
+firebase-export*
