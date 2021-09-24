@@ -3,12 +3,13 @@ import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
 import propTypes from 'prop-types';
 import React from 'react';
-import { ActivityIndicator, Alert, Image, StyleSheet, View } from 'react-native';
+import { Alert, Image, StyleSheet, View } from 'react-native';
 import config from '../../config';
 import { getIcon } from '../../icons';
 import { ACCURACY, getLocation } from '../../location';
 import useStyles from '../../styles';
 import { coordinatesToString } from '../../utilities';
+import Spinner from '../Spinner';
 
 const THUMBNAIL_SIZE = 100;
 export function getCoordinatesFromExif(exif) {
@@ -172,17 +173,7 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
             <PlaceholderIcon />
           </View>
         )}
-        {showLoader ? (
-          <View
-            style={[
-              styles.loader,
-              commonStyles.roundedBorders,
-              { backgroundColor: theme['color-basic-transparent-600'] },
-            ]}
-          >
-            <ActivityIndicator color={theme['color-basic-1100']} size="large" />
-          </View>
-        ) : null}
+        <Spinner show={showLoader} />
       </View>
     </>
   );
@@ -221,13 +212,5 @@ const styles = StyleSheet.create({
     width: THUMBNAIL_SIZE,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  loader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
   },
 });
