@@ -8,6 +8,7 @@ import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
+import Spinner from '../components/Spinner';
 import { getIcon } from '../icons';
 
 const SET_LOCATION_VIEW = 'set_location_view';
@@ -58,6 +59,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
@@ -200,6 +202,8 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 carcassCoordinates={carcassCoordinates}
                 reportType={reportType}
                 onClose={onClose}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
               >
                 {({ values, setFieldValue }) => (
                   <>
@@ -226,6 +230,8 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 carcassCoordinates={carcassCoordinates}
                 reportType={reportType}
                 onClose={onClose}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
               >
                 {({ values }) => (
                   <>
@@ -241,6 +247,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
           </View>
         ) : null}
       </Card>
+      <Spinner show={isLoading} />
     </Animated.View>
   );
 };
