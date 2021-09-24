@@ -265,7 +265,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
             >
               Submit Report
             </Button>
-            <Text>[The submit button is not working yet...]</Text>
             {__DEV__ ? (
               <>
                 <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>

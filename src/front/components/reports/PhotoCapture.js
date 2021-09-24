@@ -39,25 +39,68 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
   const theme = useTheme();
   const commonStyles = useStyles();
 
-  const getImageAsync = async (requestPermissionsAsync, getImageFunctionAsync, permissionsJustification) => {
-    const { status } = await requestPermissionsAsync();
+  const photoOptions = {
+    quality: config.IMAGE_COMPRESSION_QUALITY,
+    exif: true,
+  };
+
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Error', permissionsJustification);
+      Alert.alert('Error', `status: ${status}`);
+      // 'Media library permissions are required chose a photo.'
 
       return;
     }
 
-    const photoOptions = {
-      quality: config.IMAGE_COMPRESSION_QUALITY,
-      exif: true,
-    };
-
+    console.log('status', status);
     // For `ImagePicker.launchImageLibraryAsync`: there may be issues with this on android if the memory on the device is low.
     // I'm not sure that there is a great solution for this app since the app reboots and it's
     // not set up to go back to the report screen. I'm going to just leave it as is for now and wait
     // until we have users running into it. I'm guessing that most users will be capturing new photos anyways.
     // Ref: https://github.com/expo/expo/issues/11103
-    const result = await getImageFunctionAsync(photoOptions);
+    let result;
+    try {
+      console.log('launchImageLibraryAsync');
+      result = await ImagePicker.launchImageLibraryAsync(photoOptions);
+      console.log('result', result);
+    } catch (error) {
+      console.log('error', error);
+    }
+
+    if (!result.cancelled) {
+      const { uri, exif } = result;
+
+      const coordinates = coordinatesToString(getCoordinatesFromExif(exif));
+
+      onChange({
+        uri,
+        type: mime.getType(uri),
+        name: 'photo',
+        coordinates,
+        date: getDateFromExif(exif),
+      });
+    }
+  };
+
+  const captureImage = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      // 'Cameral permissions are required to take a new photo.'
+      Alert.alert('Error', `status: ${status}`);
+
+      return;
+    }
+    console.log('status', status);
+
+    console.log('photoOptions', photoOptions);
+    let result;
+    try {
+      result = await ImagePicker.launchCameraAsync(photoOptions);
+    } catch (error) {
+      console.log('error', error);
+    }
+    console.log('result', result);
 
     if (!result.cancelled) {
       const { uri, exif } = result;
@@ -65,17 +108,13 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
       // on iOS when capturing a new image, the GPS tags are not included in the exif data.
       // might as well get them on both platforms when taking a new image
       let coordinates = null;
-      if (getImageFunctionAsync == ImagePicker.launchCameraAsync) {
-        setShowLoader(true);
-        try {
-          const { coords } = await getLocation(ACCURACY.Highest);
-          coordinates = coordinatesToString(coords);
-        } catch (error) {
-          console.error(error);
-          // ignore
-        }
-      } else {
-        coordinates = coordinatesToString(getCoordinatesFromExif(exif));
+      setShowLoader(true);
+      try {
+        const { coords } = await getLocation(ACCURACY.Highest);
+        coordinates = coordinatesToString(coords);
+      } catch (error) {
+        console.error(error);
+        // ignore
       }
 
       onChange({
@@ -88,22 +127,6 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
     }
 
     setShowLoader(false);
-  };
-
-  const pickImage = async () => {
-    return await getImageAsync(
-      ImagePicker.requestMediaLibraryPermissionsAsync,
-      ImagePicker.launchImageLibraryAsync,
-      'Cameral roll permissions are required to chose an existing photo.'
-    );
-  };
-
-  const captureImage = async () => {
-    return await getImageAsync(
-      ImagePicker.requestCameraPermissionsAsync,
-      ImagePicker.launchCameraAsync,
-      'Cameral permissions are required to take a new photo.'
-    );
   };
 
   const PlaceholderIcon = getIcon({ pack: 'font-awesome', name: 'photo', size: 50, color: theme['color-basic-400'] });
