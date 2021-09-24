@@ -19,8 +19,9 @@ export default function Form({
   reportType,
   onClose,
   children,
+  isLoading,
+  setIsLoading,
 }) {
-  const [isLoading, setIsLoading] = React.useState(false);
   const {
     authInfo: { user },
     getBearerToken,
@@ -31,6 +32,7 @@ export default function Form({
     console.log('submitReport');
 
     setIsLoading(true);
+
     const formData = new FormData();
     for (let valueName in values) {
       if (values[valueName] !== null) {
@@ -119,4 +121,6 @@ Form.propTypes = {
   carcassCoordinates: propTypes.object,
   reportType: propTypes.string.isRequired,
   onClose: propTypes.func.isRequired,
+  isLoading: propTypes.bool.isRequired,
+  setIsLoading: propTypes.func.isRequired,
 };
