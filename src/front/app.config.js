@@ -70,8 +70,14 @@ export default {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
     },
-    // permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_BACKGROUND_LOCATION'],
-    permissions: ['ACCESS_FINE_LOCATION', 'ACCESS_COURSE_LOCATION', 'FOREGROUND_SERVICE'],
+    permissions: [
+      'ACCESS_FINE_LOCATION',
+      'ACCESS_COURSE_LOCATION',
+      'FOREGROUND_SERVICE',
+      'CAMERA',
+      'READ_EXTERNAL_STORAGE',
+      'WRITE_EXTERNAL_STORAGE',
+    ],
     config: {
       googleMaps: {
         apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
