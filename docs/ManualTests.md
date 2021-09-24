@@ -63,12 +63,14 @@ password: `tester`
 
 Setup: open the report and select a location
 
-| set up                         | action                         | assertion  |
-|--------------------------------|--------------------------------|------------|
-|                                | set repeat submission to "Yes" | alert is presented with cancel and continue options |
-| set repeat submission to "Yes" | click on cancel                | report is closed |
-| set repeat submission to "Yes" | click on continue              | report remains open |
-|                                | submit report with no photo    | success dialog should show and report should be reset and closed |
+| set up                              | action                         | assertion |
+|-------------------------------------|--------------------------------|-------|
+|                                     | set repeat submission to "Yes" | alert is presented with cancel and continue options |
+| set repeat submission to "Yes"      | click on cancel                | report is closed |
+| set repeat submission to "Yes"      | click on continue              | report remains open |
+|                                     | submit report with no photo    | success dialog should show and report should be reset and closed |
+|                                     | submit report with photo       | success dialog should show and report should be reset and closed |
+| login with both google and facebook | submit report                  | success dialog |
 
 ### Contractor Role
 
@@ -80,12 +82,13 @@ Setup: open the report and select a location
 
 Setup: open the report and select a location
 
-| set up | action                | assertion                                   |
-|--------|-----------------------|---------------------------------------------|
-|        |                       | repeat submission is not shown and photo is required |
-|        | take new photo        | native photo capture is shown and photo is passed back to the form |
-|        | choose existing photo | native photo selection is shown and photo is passed back to the form |
-|        | submit report         | success dialog should show and report should be reset and closed |
+| set up                 | action                | assertion                   |
+|------------------------|-----------------------|-----------------------------|
+|                        |                       | repeat submission is not shown and photo is required |
+|                        | take new photo        | native photo capture is shown and photo is passed back to the form |
+|                        | choose existing photo | native photo selection is shown and photo is passed back to the form |
+| take or choose a photo | click on "X" button   | verify that photo was cleared |
+|                        | submit report         | success dialog should show and report should be reset and closed |
 
 ### Agency/Admin Role
 
