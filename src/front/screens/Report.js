@@ -1,21 +1,14 @@
-import { Button, Card, Divider, Text, useTheme } from '@ui-kitten/components';
+import { Button, Card, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
-import { Formik } from 'formik';
-import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
-import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
-import useAuth from '../auth/context';
+import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
-import config from '../config';
 import { getIcon } from '../icons';
-import { ACCURACY, getLocation } from '../location';
-import useStyles from '../styles';
-import { coordinatesToString } from '../utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -65,11 +58,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
-  const {
-    authInfo: { user },
-    getBearerToken,
-  } = useAuth();
-  const commonStyles = useStyles();
 
   const Header = (props) => (
     <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
@@ -190,99 +178,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     }
   };
 
-  const Form = ({ formikRef, initialValues, validationSchema, children }) => {
-    const [isLoading, setIsLoading] = React.useState(false);
-    const submitReport = async (values) => {
-      console.log('submitReport');
-
-      setIsLoading(true);
-      const formData = new FormData();
-      for (let valueName in values) {
-        if (values[valueName] !== null) {
-          formData.append(valueName, values[valueName]);
-        }
-      }
-
-      // add data gathered from outside of the form
-      formData.append('animal_location', coordinatesToString(carcassCoordinates));
-      formData.append('user_id', user.id);
-      formData.append('submit_date', new Date().toISOString());
-      const currentLocation = await getLocation(ACCURACY.Highest);
-      formData.append('submit_location', coordinatesToString(currentLocation.coords));
-
-      console.log('formData', formData);
-
-      let responseJson;
-      try {
-        responseJson = await ky
-          .post(`${config.API}/reports/${reportType}`, {
-            body: formData,
-            headers: {
-              Authorization: await getBearerToken(),
-            },
-          })
-          .json();
-      } catch (error) {
-        Sentry.Native.captureException(error);
-        Alert.alert('Error', error.message);
-        // TODO: allow them to cache the report for submission at a later time.
-
-        return;
-      }
-
-      if (responseJson.success) {
-        console.log('responseJson.report_id', responseJson.report_id);
-
-        Alert.alert('Success!', 'Your report has been submitted.', [
-          {
-            text: 'OK',
-            onPress: () => onClose(true),
-          },
-        ]);
-      } else {
-        Alert.alert('Error', responseJson.error);
-      }
-
-      setIsLoading(false);
-    };
-
-    return (
-      <Formik
-        innerRef={formikRef}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values) => submitReport(values)}
-      >
-        {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
-          <>
-            {children({ values, setFieldValue, errors })}
-            <Divider style={commonStyles.margin} />
-            <Button
-              status="info"
-              style={commonStyles.margin}
-              onPress={handleSubmit}
-              disabled={!dirty || !isValid || isLoading}
-            >
-              Submit Report
-            </Button>
-            {__DEV__ ? (
-              <>
-                <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
-                <Text>values: {JSON.stringify(values, null, '  ')}</Text>
-              </>
-            ) : null}
-          </>
-        )}
-      </Formik>
-    );
-  };
-  Form.propTypes = {
-    formikRef: propTypes.object.isRequired,
-    initialValues: propTypes.object.isRequired,
-    validationSchema: propTypes.object.isRequired,
-    children: propTypes.func.isRequired,
-  };
-
   return (
     <Animated.View
       // The reason why I'm doing maxHeight rather than height is because we can't find the
@@ -302,6 +197,9 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 formikRef={reportFormikRef}
                 initialValues={initialFormValues.report}
                 validationSchema={formSchemas.report}
+                carcassCoordinates={carcassCoordinates}
+                reportType={reportType}
+                onClose={onClose}
               >
                 {({ values, setFieldValue }) => (
                   <>
@@ -325,6 +223,9 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 formikRef={pickupFormikRef}
                 initialValues={initialFormValues.pickup}
                 validationSchema={formSchemas.pickup}
+                carcassCoordinates={carcassCoordinates}
+                reportType={reportType}
+                onClose={onClose}
               >
                 {({ values }) => (
                   <>
