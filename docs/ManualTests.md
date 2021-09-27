@@ -57,7 +57,7 @@ password: `tester`
 | open the report drawer and don't set a location | tap close button                      | dialog is closed without confirmation |
 | open the report drawer                          | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator) |
 | open the report drawer                          | tap "Set Location"                    | marker is placed on the map at the crosshair location, drawer animates up to full height, set location controls are hidden, and main form is shown |
-| open report drawer, set location                | tap "Edit Location"                   | drawer is pulled back down and set location controls are shown |
+| open report drawer, set location                | tap "Change Location"                 | drawer is pulled back down and set location controls are shown |
 
 #### Public Report Type
 
