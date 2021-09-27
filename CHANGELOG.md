@@ -1,3 +1,23 @@
+# [v3.0.0-412](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-372...v3.0.0-412) (2021-09-27)
+
+
+### Bug Fixes
+
+* **front:** better icon size management ([f515277](https://github.com/agrc/roadkill-mobile/commit/f515277a72398a7b1aaf0441cd3eeb780f857500))
+* **front:** better management of tokens for utahid provider ([e0840e2](https://github.com/agrc/roadkill-mobile/commit/e0840e233c220ade4408df049c751f624e43befe))
+
+
+### Features
+
+* **back:** better error message when no token is passed ([26ab6ba](https://github.com/agrc/roadkill-mobile/commit/26ab6ba1d48421ba73c097d1ab120226c9431220))
+* **back:** minimal implementation of new report endpoints ([b3cd66a](https://github.com/agrc/roadkill-mobile/commit/b3cd66ab2bb057f617121020333bf54462c5bfaa)), closes [#103](https://github.com/agrc/roadkill-mobile/issues/103) [#104](https://github.com/agrc/roadkill-mobile/issues/104)
+* **front:** add repeat submission component ([c6087f4](https://github.com/agrc/roadkill-mobile/commit/c6087f46bc815bc66d9ef32d9ea945ec8b066845)), closes [#96](https://github.com/agrc/roadkill-mobile/issues/96)
+* **front:** handle different report scenario based on role ([180d935](https://github.com/agrc/roadkill-mobile/commit/180d935631fd4a93ae6ee557adf5657b8dfd292f)), closes [#95](https://github.com/agrc/roadkill-mobile/issues/95)
+* **front:** implement capture photo component ([ae80432](https://github.com/agrc/roadkill-mobile/commit/ae804324b244480844605f4b554c0c364c6e9239)), closes [#97](https://github.com/agrc/roadkill-mobile/issues/97)
+* **front:** submit reports to backend ([c2417e9](https://github.com/agrc/roadkill-mobile/commit/c2417e96ddc50f3cc51b7d975c77b7e04a26bc87))
+
+
+
 # [v3.0.0-372](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-362...v3.0.0-372) (2021-09-10)
 
 ### Bug Fixes
