@@ -79,8 +79,6 @@ export default function Form({
     } else {
       Alert.alert('Error', responseJson.error);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -88,7 +86,7 @@ export default function Form({
       innerRef={formikRef}
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => submitReport(values)}
+      onSubmit={(values) => submitReport(values).then(() => setIsLoading(false))}
     >
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
         <>
