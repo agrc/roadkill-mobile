@@ -56,13 +56,6 @@ CREATE TABLE users_have_notification_areas
 
 
 -- reports
-DROP TYPE IF EXISTS confidence_levels CASCADE;
-CREATE TYPE confidence_levels AS ENUM ('high', 'medium', 'low');
-DROP TYPE IF EXISTS genders CASCADE;
-CREATE TYPE genders AS ENUM ('male', 'female');
-DROP TYPE IF EXISTS age_classes CASCADE;
-CREATE TYPE age_classes AS ENUM ('adult', 'juvenile');
-
 DROP TABLE IF EXISTS photos CASCADE;
 CREATE TABLE photos
 (
@@ -71,6 +64,13 @@ CREATE TABLE photos
   photo_location geography(POINT, 4326),
   photo_date timestamptz CHECK (photo_date <= CURRENT_TIMESTAMP + interval '1 minute')
 );
+
+DROP TYPE IF EXISTS confidence_levels CASCADE;
+CREATE TYPE confidence_levels AS ENUM ('high', 'medium', 'low');
+DROP TYPE IF EXISTS genders CASCADE;
+CREATE TYPE genders AS ENUM ('male', 'female');
+DROP TYPE IF EXISTS age_classes CASCADE;
+CREATE TYPE age_classes AS ENUM ('adult', 'juvenile');
 
 DROP TABLE IF EXISTS report_infos CASCADE;
 CREATE TABLE report_infos
@@ -81,7 +81,7 @@ CREATE TABLE report_infos
   photo_id integer REFERENCES photos (id),
   submit_location geography(POINT, 4326) NOT NULL,
   submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute'),
-  species varchar(25),
+  species varchar(64),
   species_confidence_level confidence_levels,
   sex genders,
   age_class age_classes,
