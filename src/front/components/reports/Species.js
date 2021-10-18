@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useImmerReducer } from 'use-immer';
+import config from '../../config';
 import { PADDING } from '../../styles';
 import RadioPills from './RadioPills';
 import SearchList from './SearchList';
@@ -22,9 +23,8 @@ const ATTRIBUTES = [
   { label: 'scales', value: 'reptile' },
   { label: 'slime', value: 'amphibian' },
 ];
-const UNKNOWN = 'unknown';
 const UNKNOWN_SPECIES = {
-  latin: UNKNOWN,
+  latin: config.UNKNOWN,
   common: 'Unknown',
 };
 
@@ -133,8 +133,8 @@ function reducer(draft, action) {
       draft.speciesValue = undefined;
       draft.selectedClass = action.payload;
 
-      if (action.payload === UNKNOWN) {
-        draft.speciesValue = UNKNOWN;
+      if (action.payload === config.UNKNOWN) {
+        draft.speciesValue = config.UNKNOWN;
       }
 
       break;
@@ -145,7 +145,7 @@ function reducer(draft, action) {
 
       // this is set to undefined to prevent the entire component from being reset
       draft.speciesValue = undefined;
-      if (action.payload === UNKNOWN) {
+      if (action.payload === config.UNKNOWN) {
         draft.speciesValue = `${draft.selectedClass}-${action.payload}`.toLowerCase();
       }
 
@@ -178,7 +178,7 @@ const initialState = {
   speciesValue: null,
 };
 
-export default function Species({ onChange, values }) {
+export default function Species({ onChange, values, style }) {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const families = dedupeBy(
     species
@@ -192,7 +192,7 @@ export default function Species({ onChange, values }) {
     'label'
   )
     .sort(sortBy('label'))
-    .concat([{ label: 'Unknown', value: UNKNOWN }]);
+    .concat([{ label: 'Unknown', value: config.UNKNOWN }]);
 
   React.useEffect(() => {
     if (values.species === null && values.species_confidence_level === null) {
@@ -281,7 +281,7 @@ export default function Species({ onChange, values }) {
   };
 
   return (
-    <>
+    <View style={style}>
       <Text category="h6" style={{ marginTop: PADDING }}>
         Are you able to identify the species?
       </Text>
@@ -305,12 +305,10 @@ export default function Species({ onChange, values }) {
               <Tab key={type} title={type} />
             ))}
           </TabBar>
-          {renderSearch()}
+          <View style={styles.searchContainer}>{renderSearch()}</View>
           {state.selectedSpecies ? (
             <>
-              <Text category="h6" style={{ marginTop: PADDING }}>
-                How confident are you in your species identification?
-              </Text>
+              <Text category="h6">How confident are you in your species identification?</Text>
               <RadioPills
                 value={state.confidenceLevel}
                 onChange={(value) => dispatch({ type: 'SET_CONFIDENCE_LEVEL', payload: value })}
@@ -328,7 +326,7 @@ export default function Species({ onChange, values }) {
             options={ATTRIBUTES}
           />
 
-          {state.selectedClass && state.selectedClass !== UNKNOWN ? (
+          {state.selectedClass && state.selectedClass !== config.UNKNOWN ? (
             <>
               <Text category="h6">Does the animal look like a...</Text>
               <RadioPills
@@ -339,7 +337,10 @@ export default function Species({ onChange, values }) {
             </>
           ) : null}
 
-          {state.selectedClass && state.selectedClass !== UNKNOWN && state.family && state.family !== UNKNOWN ? (
+          {state.selectedClass &&
+          state.selectedClass !== config.UNKNOWN &&
+          state.family &&
+          state.family !== config.UNKNOWN ? (
             <>
               <Text category="h6">Select a species...</Text>
               <RadioPills
@@ -354,13 +355,14 @@ export default function Species({ onChange, values }) {
           ) : null}
         </>
       )}
-    </>
+    </View>
   );
 }
 
 Species.propTypes = {
   onChange: propTypes.func.isRequired,
   values: propTypes.object.isRequired,
+  style: propTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -370,5 +372,8 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  searchContainer: {
+    marginBottom: PADDING,
   },
 });

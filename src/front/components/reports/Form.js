@@ -3,15 +3,19 @@ import { Formik } from 'formik';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../../auth/context';
 import config from '../../config';
 import { ACCURACY, getLocation } from '../../location';
-import useStyles from '../../styles';
+import useStyles, { PADDING } from '../../styles';
 import { coordinatesToString } from '../../utilities';
 import PhotoCapture from './PhotoCapture';
+import RadioPills from './RadioPills';
 import Species from './Species';
+
+const GENDERS = ['female', 'male'];
+const AGES = ['adult', 'juvenile'];
 
 export default function Form({
   formikRef,
@@ -126,6 +130,21 @@ export default function Form({
               species: values.species,
               species_confidence_level: values.species_confidence_level,
             }}
+            style={styles.bottomBump}
+          />
+          <Text category="h6">Animal age?</Text>
+          <RadioPills
+            value={values.age_class}
+            onChange={(value) => setFieldValue('age_class', value)}
+            options={AGES.concat([config.UNKNOWN])}
+            style={styles.bottomBump}
+          />
+          <Text category="h6">Animal sex?</Text>
+          <RadioPills
+            value={values.sex}
+            onChange={(value) => setFieldValue('sex', value)}
+            options={GENDERS.concat([config.UNKNOWN])}
+            style={styles.bottomBump}
           />
           <Divider style={commonStyles.margin} />
           <Button
@@ -147,6 +166,7 @@ export default function Form({
     </Formik>
   );
 }
+
 Form.propTypes = {
   formikRef: propTypes.object.isRequired,
   initialValues: propTypes.object.isRequired,
@@ -159,3 +179,9 @@ Form.propTypes = {
   setIsLoading: propTypes.func.isRequired,
   style: propTypes.object,
 };
+
+const styles = StyleSheet.create({
+  bottomBump: {
+    marginBottom: PADDING,
+  },
+});

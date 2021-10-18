@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PADDING } from '../../styles';
 
-export default function RadioPills({ options, value, onChange, label }) {
+export default function RadioPills({ options, value, onChange, label, style }) {
   const renderPill = (option) => {
     let optionValue;
     let optionLabel;
@@ -35,10 +35,10 @@ export default function RadioPills({ options, value, onChange, label }) {
   };
 
   return (
-    <>
+    <View style={style}>
       {label ? <Text category="label">{label}</Text> : null}
       <View style={styles.container}>{options.map(renderPill)}</View>
-    </>
+    </View>
   );
 }
 
@@ -47,6 +47,7 @@ RadioPills.propTypes = {
   value: propTypes.string,
   onChange: propTypes.func.isRequired,
   label: propTypes.string,
+  style: propTypes.object,
 };
 
 const styles = StyleSheet.create({

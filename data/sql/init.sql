@@ -68,9 +68,9 @@ CREATE TABLE photos
 DROP TYPE IF EXISTS confidence_levels CASCADE;
 CREATE TYPE confidence_levels AS ENUM ('high', 'medium', 'low');
 DROP TYPE IF EXISTS genders CASCADE;
-CREATE TYPE genders AS ENUM ('male', 'female');
+CREATE TYPE genders AS ENUM ('male', 'female', 'unknown');
 DROP TYPE IF EXISTS age_classes CASCADE;
-CREATE TYPE age_classes AS ENUM ('adult', 'juvenile');
+CREATE TYPE age_classes AS ENUM ('adult', 'juvenile', 'unknown');
 
 DROP TABLE IF EXISTS report_infos CASCADE;
 CREATE TABLE report_infos
