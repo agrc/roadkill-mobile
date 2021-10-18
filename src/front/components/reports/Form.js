@@ -10,6 +10,8 @@ import config from '../../config';
 import { ACCURACY, getLocation } from '../../location';
 import useStyles from '../../styles';
 import { coordinatesToString } from '../../utilities';
+import PhotoCapture from './PhotoCapture';
+import Species from './Species';
 
 export default function Form({
   formikRef,
@@ -18,7 +20,7 @@ export default function Form({
   carcassCoordinates,
   reportType,
   onClose,
-  children,
+  children = () => null,
   isLoading,
   setIsLoading,
   style,
@@ -82,6 +84,23 @@ export default function Form({
     }
   };
 
+  const onPhotoChange = (newPhotoProps) => {
+    if (!newPhotoProps) {
+      formikRef.current.setFieldValue('photo', null);
+      formikRef.current.setFieldValue('photo_location', null);
+      formikRef.current.setFieldValue('photo_date', null);
+    } else {
+      const { uri, type, name, coordinates, date } = newPhotoProps;
+      formikRef.current.setFieldValue('photo', {
+        uri,
+        type,
+        name,
+      });
+      formikRef.current.setFieldValue('photo_location', coordinates);
+      formikRef.current.setFieldValue('photo_date', date);
+    }
+  };
+
   return (
     <Formik
       innerRef={formikRef}
@@ -93,6 +112,21 @@ export default function Form({
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
         <>
           {children({ values, setFieldValue, errors })}
+          <PhotoCapture
+            isRequired={validationSchema.fields.photo.spec.presence === 'required'}
+            onChange={onPhotoChange}
+            uri={values.photo?.uri}
+          />
+          <Species
+            onChange={(newValue) => {
+              setFieldValue('species', newValue.species);
+              setFieldValue('species_confidence_level', newValue.species_confidence_level);
+            }}
+            values={{
+              species: values.species,
+              species_confidence_level: values.species_confidence_level,
+            }}
+          />
           <Divider style={commonStyles.margin} />
           <Button
             status="info"
@@ -117,7 +151,7 @@ Form.propTypes = {
   formikRef: propTypes.object.isRequired,
   initialValues: propTypes.object.isRequired,
   validationSchema: propTypes.object.isRequired,
-  children: propTypes.func.isRequired,
+  children: propTypes.func,
   carcassCoordinates: propTypes.object,
   reportType: propTypes.string.isRequired,
   onClose: propTypes.func.isRequired,

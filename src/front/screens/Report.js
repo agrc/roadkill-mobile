@@ -7,9 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as yup from 'yup';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
-import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
-import Species from '../components/reports/Species';
 import Spinner from '../components/Spinner';
 import { getIcon } from '../icons';
 import { PADDING } from '../styles';
@@ -142,24 +140,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const pickupFormikRef = React.useRef(null);
   const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
 
-  const onPhotoChange = (newPhotoProps) => {
-    console.log('onPhotoChange', newPhotoProps);
-    if (!newPhotoProps) {
-      formikRef.current.setFieldValue('photo', null);
-      formikRef.current.setFieldValue('photo_location', null);
-      formikRef.current.setFieldValue('photo_date', null);
-    } else {
-      const { uri, type, name, coordinates, date } = newPhotoProps;
-      formikRef.current.setFieldValue('photo', {
-        uri,
-        type,
-        name,
-      });
-      formikRef.current.setFieldValue('photo_location', coordinates);
-      formikRef.current.setFieldValue('photo_date', date);
-    }
-  };
-
   const containerStyle = {
     ...styles.container,
     maxHeight: animatedMaxHeight.current,
@@ -229,21 +209,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                       onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
                       cancelReport={() => onClose()}
                     />
-                    <PhotoCapture
-                      isRequired={formSchemas.report.fields.photo.spec.presence === 'required'}
-                      onChange={onPhotoChange}
-                      uri={values.photo?.uri}
-                    />
-                    <Species
-                      onChange={(newValue) => {
-                        setFieldValue('species', newValue.species);
-                        setFieldValue('species_confidence_level', newValue.species_confidence_level);
-                      }}
-                      values={{
-                        species: values.species,
-                        species_confidence_level: values.species_confidence_level,
-                      }}
-                    />
                   </>
                 )}
               </Form>
@@ -259,27 +224,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 reportType={reportType}
                 setIsLoading={setIsLoading}
                 validationSchema={formSchemas.pickup}
-              >
-                {({ values, setFieldValue }) => (
-                  <>
-                    <PhotoCapture
-                      isRequired={formSchemas.pickup.fields.photo.spec.presence === 'required'}
-                      onChange={onPhotoChange}
-                      uri={values.photo?.uri}
-                    />
-                    <Species
-                      onChange={(newValue) => {
-                        setFieldValue('species', newValue.species);
-                        setFieldValue('species_confidence_level', newValue.species_confidence_level);
-                      }}
-                      values={{
-                        species: values.species,
-                        species_confidence_level: values.species_confidence_level,
-                      }}
-                    />
-                  </>
-                )}
-              </Form>
+              ></Form>
             )}
           </View>
         </View>
