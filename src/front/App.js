@@ -1,5 +1,5 @@
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Updates from 'expo-updates';
@@ -32,6 +32,7 @@ export default function App() {
   }, []);
 
   const onReady = () => {
+    console.log('onReady', authIsReady, splashIsHidden.current);
     if (authIsReady && !splashIsHidden.current) {
       SplashScreen.hideAsync();
       splashIsHidden.current = true;
@@ -53,7 +54,9 @@ export default function App() {
               <View onLayout={onReady} style={{ flex: 1 }}>
                 <AppNavigator />
               </View>
-            ) : null}
+            ) : (
+              <Text>Loading...</Text>
+            )}
           </AuthContextProvider>
         </QueryClientProvider>
       </ApplicationProvider>
