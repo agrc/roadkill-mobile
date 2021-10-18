@@ -10,6 +10,7 @@ if (__DEV__) {
   redirectUri += '/--/';
 }
 redirectUri += config.OAUTH_REDIRECT_SCREEN;
+console.log('redirectUri', redirectUri);
 
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',

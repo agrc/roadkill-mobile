@@ -21,6 +21,7 @@ export default function Form({
   children,
   isLoading,
   setIsLoading,
+  style,
 }) {
   const {
     authInfo: { user },
@@ -87,6 +88,7 @@ export default function Form({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => submitReport(values).then(() => setIsLoading(false))}
+      style={style}
     >
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
         <>
@@ -121,4 +123,5 @@ Form.propTypes = {
   onClose: propTypes.func.isRequired,
   isLoading: propTypes.bool.isRequired,
   setIsLoading: propTypes.func.isRequired,
+  style: propTypes.object,
 };
