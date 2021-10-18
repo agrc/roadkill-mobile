@@ -43,7 +43,11 @@ export default function Form({
     const formData = new FormData();
     for (let valueName in values) {
       if (values[valueName] !== null) {
-        formData.append(valueName, values[valueName]);
+        let newValue = values[valueName];
+        if (values[valueName] instanceof Date) {
+          newValue = newValue.toISOString();
+        }
+        formData.append(valueName, newValue);
       }
     }
 

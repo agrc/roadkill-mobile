@@ -9,9 +9,9 @@ export async function createReport({
   animal_location,
   user_id,
   repeat_submission,
+  discovery_date,
   ...reportInfo
 }) {
-  console.log('createReport');
   return await db.transaction(async (transaction) => {
     let photoInsertResult;
     if (bucket_path) {
@@ -41,9 +41,7 @@ export async function createReport({
     await transaction('public_reports').insert({
       report_id: reportId,
       repeat_submission,
-
-      // TODO: replace this with actual data
-      discovery_date: new Date(1632266401947).toISOString(),
+      discovery_date,
     });
 
     return reportId;
@@ -57,9 +55,9 @@ export async function createPickup({
   submit_location,
   animal_location,
   user_id,
+  pickup_date,
   ...reportInfo
 }) {
-  console.log('createPickup');
   return await db.transaction(async (transaction) => {
     const photoInsertResult = await transaction('photos').insert(
       {
@@ -80,6 +78,14 @@ export async function createPickup({
       'report_id'
     );
 
-    return infosInsertResult[0];
+    const reportId = infosInsertResult[0];
+
+    await transaction('pickup_reports').insert({
+      report_id: reportId,
+      pickup_date,
+      route_id: 1, // TODO - replace with real route id
+    });
+
+    return reportId;
   });
 }
