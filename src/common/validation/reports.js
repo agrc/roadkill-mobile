@@ -11,6 +11,8 @@ const animal_location = location.required();
 const user_id = yup.number().required();
 const submit_location = location.required();
 const submit_date = yup.date().required();
+const species = yup.string().nullable();
+const species_confidence_level = yup.string().nullable();
 
 export const report = yup.object().shape({
   user_id,
@@ -21,6 +23,8 @@ export const report = yup.object().shape({
   repeat_submission: yup.boolean().required(),
   submit_location,
   submit_date,
+  species,
+  species_confidence_level,
 });
 
 export const pickup = yup.object().shape({
@@ -31,4 +35,6 @@ export const pickup = yup.object().shape({
   photo_date: yup.date().required(),
   submit_location,
   submit_date,
+  species,
+  species_confidence_level,
 });

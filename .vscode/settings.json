@@ -9,6 +9,7 @@
     "formik",
     "formurlencoded",
     "IDFA",
+    "immer",
     "inblow",
     "key",
     "lsof",
