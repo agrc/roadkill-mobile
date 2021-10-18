@@ -1,4 +1,4 @@
-import { Button, Divider, Text } from '@ui-kitten/components';
+import { Button, Divider, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import ky from 'ky';
 import propTypes from 'prop-types';
@@ -146,6 +146,13 @@ export default function Form({
             onChange={(value) => setFieldValue('sex', value)}
             options={GENDERS.concat([config.UNKNOWN])}
             style={styles.bottomBump}
+          />
+          <Text category="h6">Additional comments:</Text>
+          <Input
+            multiline
+            textStyle={{ minHeight: 64 }}
+            value={values.comments}
+            onChangeText={(value) => setFieldValue('comments', value)}
           />
           <Divider style={commonStyles.margin} />
           <Button
