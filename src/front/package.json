@@ -92,6 +92,7 @@
     "@storybook/addon-ondevice-actions": "^5.3.23",
     "@storybook/addon-ondevice-knobs": "^5.3.25",
     "@storybook/react-native": "^5.3.25",
+    "@storybook/theming": "^6.3.12",
     "@testing-library/jest-native": "^4.0.1",
     "@testing-library/react-native": "^7.2.0",
     "babel-loader": "^8.2.2",
