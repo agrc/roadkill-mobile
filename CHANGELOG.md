@@ -1,3 +1,13 @@
+# [v3.0.0-418](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-412...v3.0.0-418) (2021-10-18)
+
+
+### Features
+
+* add loading text to app if auth is not ready ([3eb1e57](https://github.com/agrc/roadkill-mobile/commit/3eb1e57b6777e2a6533d4bfa779559ff03eace2f))
+* implement species component ([a694e9d](https://github.com/agrc/roadkill-mobile/commit/a694e9d1e35b6be44e0a15ddc246960a163e23c8)), closes [#98](https://github.com/agrc/roadkill-mobile/issues/98)
+
+
+
 # [v3.0.0-412](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-372...v3.0.0-412) (2021-09-27)
 
 
