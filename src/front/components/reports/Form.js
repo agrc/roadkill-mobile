@@ -64,6 +64,7 @@ export default function Form({
           headers: {
             Authorization: await getBearerToken(),
           },
+          timeout: 20000, // give cloud run time to spin up especially in dev project
         })
         .json();
     } catch (error) {
