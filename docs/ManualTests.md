@@ -59,7 +59,54 @@ password: `tester`
 | open the report drawer                          | tap "Set Location"                    | marker is placed on the map at the crosshair location, drawer animates up to full height, set location controls are hidden, and main form is shown |
 | open report drawer, set location                | tap "Change Location"                 | drawer is pulled back down and set location controls are shown |
 
-#### Public Report Type
+### Contractor Role
+
+| set up | action          | assertion           |
+|--------|-----------------|---------------------|
+|        | tap plus button | pickup report shows |
+
+### Agency/Admin Role
+
+| set up | action          | assertion                            |
+|--------|-----------------|--------------------------------------|
+|        | tap plus button | alert shows asking which report type |
+
+### Species Component
+
+Setup: open a report and click "Set Location"
+
+| set up | action                  | assertion                                 |
+|--------|-------------------------|-------------------------------------------|
+|        | toggle able to identify | validate that yes shows search types and no shows "Does the animal have" |
+
+Setup: able to identify to "No"
+
+| set up | action                          | assertion                         |
+|--------|---------------------------------|-----------------------------------|
+|        | select a "have" value           | "look like a..." is shown         |
+|        | select a "look" value           | "species..." is shown             |
+|        | select a species value          | validate that a species value is set on the form |
+|        | select a different "have" value | "species..." is hidden and "look like a..." is reset |
+|        | select "Unknown" "look" value   | validate that species value is something like "scales-unknown" |
+|        | select a known "look" value     | validate that the species is reset and shown |
+
+Setup: able to identify to "Yes"
+
+| set up                                        | action                              | assertion |
+|-----------------------------------------------|-------------------------------------|-----|
+|                                               | select a frequent species           | validate the species value is populated and that the confidence control is shown |
+|                                               | select a confidence level           | validate that the confidence level value is populated |
+|                                               | select a different frequent species | validate that the species value is updated and that the confidence level is reset |
+|                                               | select a different search type      | validate that the species and confidence values are reset and the new controls are shown |
+| select "common"                               | tap on input                        | validate that search modal is displayed with the species list |
+|                                               | begin typing                        | verify that the list values are filtered |
+|                                               | tap on "X" to clear the search      | validate that input value is cleared and the list filter is reset |
+|                                               | select a value                      | validate that the species value is populated and the confidence level is shown |
+| clear search input                            | tap on "X" again                    | verify that modal is closed and value is reset |
+|                                               | select "class" search type          | select value and verify that species pills are shown and selectable |
+| duplicate test above for "order" and "family" |                                     |     |
+
+### Public Report Type
 
 Setup: open the report and select a location
 
@@ -72,13 +119,7 @@ Setup: open the report and select a location
 |                                     | submit report with photo       | success dialog should show and report should be reset and closed |
 | login with both google and facebook | submit report                  | success dialog |
 
-### Contractor Role
-
-| set up | action          | assertion           |
-|--------|-----------------|---------------------|
-|        | tap plus button | pickup report shows |
-
-#### Pickup Report Type
+### Pickup Report Type
 
 Setup: open the report and select a location
 
@@ -90,8 +131,9 @@ Setup: open the report and select a location
 | take or choose a photo | click on "X" button   | verify that photo was cleared |
 |                        | submit report         | success dialog should show and report should be reset and closed |
 
-### Agency/Admin Role
 
-| set up | action          | assertion                            |
-|--------|-----------------|--------------------------------------|
-|        | tap plus button | alert shows asking which report type |
+### Form Reset
+
+| set up                        | action         | assertion                   |
+|-------------------------------|----------------|-----------------------------|
+| fill out all values in a form | close the form | reopen the same report type and verify that all controls have been reset |

@@ -1,15 +1,18 @@
-import { Button, Card, Text, useTheme } from '@ui-kitten/components';
+import { Button, Divider, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import PhotoCapture from '../components/reports/PhotoCapture';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
+import Species from '../components/reports/Species';
 import Spinner from '../components/Spinner';
 import { getIcon } from '../icons';
+import { PADDING } from '../styles';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -25,6 +28,8 @@ const commonInitialValues = {
   photo: null,
   photo_location: null,
   photo_date: null,
+  species: null,
+  species_confidence_level: null,
 };
 const initialFormValues = {
   // skip values that are gathered outside of the form
@@ -60,27 +65,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-
-  const Header = (props) => (
-    <View {...props} style={[props.style, styles.header, { paddingTop: showMain ? 50 : null }]}>
-      <Text category="h5">{reportType == REPORT_TYPES.report ? 'Report a Carcass' : 'Pickup a Carcass'}</Text>
-      <Button
-        accessoryLeft={getIcon({
-          pack: 'material-community',
-          name: 'close-circle-outline',
-          size: 30,
-          color: theme['color-basic-800'],
-        })}
-        size="tiny"
-        appearance="ghost"
-        onPress={() => onClose()}
-        style={styles.closeButton}
-      />
-    </View>
-  );
-  Header.propTypes = {
-    style: propTypes.array,
-  };
 
   React.useEffect(() => {
     if (show) {
@@ -153,10 +137,6 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     setTimeout(() => setView(MAIN_VIEW), 600);
   };
 
-  const onEditLocation = () => {
-    setView(SET_LOCATION_VIEW);
-  };
-
   // set up form
   const reportFormikRef = React.useRef(null);
   const pickupFormikRef = React.useRef(null);
@@ -180,30 +160,67 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     }
   };
 
+  const containerStyle = {
+    ...styles.container,
+    maxHeight: animatedMaxHeight.current,
+    backgroundColor: theme['color-basic-100'],
+    borderColor: theme['color-basic-400'],
+  };
+  if (showMain) {
+    containerStyle.height = windowDimensions.height;
+  } else {
+    containerStyle.borderTopLeftRadius = RADIUS;
+    containerStyle.borderTopRightRadius = RADIUS;
+  }
+
   return (
     <Animated.View
       // The reason why I'm doing maxHeight rather than height is because we can't find the
       // height of the animated view until it's displayed. A fixed height would not be flexible
       // enough for different screen sizes.
-      style={[styles.container, { maxHeight: animatedMaxHeight.current }]}
+      style={containerStyle}
       onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
-      <Card style={styles.card} header={Header} disabled>
-        <Location onSetLocation={onSetLocation} onEditLocation={onEditLocation} showEdit={!showMain} />
-        {showMain ? (
-          <View style={{ height: windowDimensions.height }}>
+      <View style={[styles.header, { paddingTop: showMain ? 50 : null }]}>
+        <Text category="h5">{reportType == REPORT_TYPES.report ? 'Report a Carcass' : 'Pickup a Carcass'}</Text>
+        <Button
+          accessoryLeft={getIcon({
+            pack: 'material-community',
+            name: 'close-circle-outline',
+            size: 30,
+            color: theme['color-basic-800'],
+          })}
+          size="tiny"
+          appearance="ghost"
+          onPress={() => onClose()}
+          style={styles.closeButton}
+        />
+      </View>
+      <Divider />
+      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
+        <View style={styles.body}>
+          <Location
+            onSetLocation={onSetLocation}
+            onEditLocation={() => setView(SET_LOCATION_VIEW)}
+            showEdit={!showMain}
+          />
+
+          {
+            // this is to prevent the form from being remounted when it's hidden
+          }
+          <View style={showMain ? null : styles.hidden}>
             {reportType === REPORT_TYPES.report ? (
               // report form
               <Form
-                key="report-form"
+                carcassCoordinates={carcassCoordinates}
                 formikRef={reportFormikRef}
                 initialValues={initialFormValues.report}
-                validationSchema={formSchemas.report}
-                carcassCoordinates={carcassCoordinates}
-                reportType={reportType}
-                onClose={onClose}
                 isLoading={isLoading}
+                key="report-form"
+                onClose={onClose}
+                reportType={reportType}
                 setIsLoading={setIsLoading}
+                validationSchema={formSchemas.report}
               >
                 {({ values, setFieldValue }) => (
                   <>
@@ -217,36 +234,56 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                       onChange={onPhotoChange}
                       uri={values.photo?.uri}
                     />
+                    <Species
+                      onChange={(newValue) => {
+                        setFieldValue('species', newValue.species);
+                        setFieldValue('species_confidence_level', newValue.species_confidence_level);
+                      }}
+                      values={{
+                        species: values.species,
+                        species_confidence_level: values.species_confidence_level,
+                      }}
+                    />
                   </>
                 )}
               </Form>
             ) : (
               // pickup form
               <Form
-                key="pickup-form"
+                carcassCoordinates={carcassCoordinates}
                 formikRef={pickupFormikRef}
                 initialValues={initialFormValues.pickup}
-                validationSchema={formSchemas.pickup}
-                carcassCoordinates={carcassCoordinates}
-                reportType={reportType}
-                onClose={onClose}
                 isLoading={isLoading}
+                key="pickup-form"
+                onClose={onClose}
+                reportType={reportType}
                 setIsLoading={setIsLoading}
+                validationSchema={formSchemas.pickup}
               >
-                {({ values }) => (
+                {({ values, setFieldValue }) => (
                   <>
                     <PhotoCapture
                       isRequired={formSchemas.pickup.fields.photo.spec.presence === 'required'}
                       onChange={onPhotoChange}
                       uri={values.photo?.uri}
                     />
+                    <Species
+                      onChange={(newValue) => {
+                        setFieldValue('species', newValue.species);
+                        setFieldValue('species_confidence_level', newValue.species_confidence_level);
+                      }}
+                      values={{
+                        species: values.species,
+                        species_confidence_level: values.species_confidence_level,
+                      }}
+                    />
                   </>
                 )}
               </Form>
             )}
           </View>
-        ) : null}
-      </Card>
+        </View>
+      </KeyboardAwareScrollView>
       <Spinner show={isLoading} />
     </Animated.View>
   );
@@ -269,16 +306,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  card: {
-    borderTopLeftRadius: RADIUS,
-    borderTopRightRadius: RADIUS,
+  body: {
+    padding: PADDING * 2,
   },
   header: {
+    padding: PADDING * 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   closeButton: { marginRight: -10 },
+  hidden: { display: 'none' },
 });
 
 export default Report;
