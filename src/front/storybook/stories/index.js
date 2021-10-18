@@ -1,5 +1,8 @@
 import './Location.stories';
 import './MapButton.stories';
 import './PhotoCapture.stories';
+import './RadioPills.stories';
 import './RepeatSubmission.stories';
+import './SearchList.stories';
+import './Species.stories';
 import './Spinner.stories';

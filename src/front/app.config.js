@@ -66,6 +66,7 @@ export default {
     package: bundleId,
     googleServicesFile: `./${process.env.GOOGLE_SERVICES_ANDROID}`,
     versionCode: commitCount,
+    softwareKeyboardLayoutMode: 'pan',
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',

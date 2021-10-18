@@ -1,0 +1,1148 @@
+[
+  {
+    "common": "Mule Deer",
+    "latin": "Odocoileus hemionus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Deer",
+    "rareWarning": false,
+    "frequent": true
+  },
+  {
+    "common": "White-tailed Deer",
+    "latin": "Odocoileus virginianus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Deer",
+    "rareWarning": true
+  },
+  {
+    "common": "Elk",
+    "latin": "Cervus canadensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Deer",
+    "rareWarning": false,
+    "frequent": true
+  },
+  {
+    "common": "Moose",
+    "latin": "Alces alces",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Deer",
+    "rareWarning": false
+  },
+  {
+    "common": "Bison",
+    "latin": "Bison bison",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Bison",
+    "rareWarning": false
+  },
+  {
+    "common": "Bighorn Sheep",
+    "latin": "Ovis canadensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Sheep",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Sheep",
+    "latin": "Ovis aries",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Sheep",
+    "rareWarning": false
+  },
+  {
+    "common": "Pronghorn Antelope",
+    "latin": "Antilocapra americana",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Antelope",
+    "rareWarning": false
+  },
+  {
+    "common": "Mountain Goat",
+    "latin": "Oreamnos americanus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Goats",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Goat",
+    "latin": "Capra aegagrus",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Goats",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Cow",
+    "latin": "Bos taurus",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Cows",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Horse",
+    "latin": "Equus caballus",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Horses",
+    "rareWarning": false
+  },
+  {
+    "common": "Wild Horse",
+    "latin": "Equus ferus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Hoofed Animals",
+    "family": "Horses",
+    "rareWarning": false
+  },
+  {
+    "common": "Black Bear",
+    "latin": "Ursus americanus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Bears",
+    "rareWarning": false
+  },
+  {
+    "common": "Cougar (Mountiain Lion)",
+    "latin": "Puma concolor",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Cats",
+    "rareWarning": false
+  },
+  {
+    "common": "Bobcat",
+    "latin": "Lynx rufus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Cats",
+    "rareWarning": false
+  },
+  {
+    "common": "Canada Lynx",
+    "latin": "Lynx canadensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Cats",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Cat",
+    "latin": "Felis catus",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Cats",
+    "rareWarning": false
+  },
+  {
+    "common": "Coyote",
+    "latin": "Canis latrans",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Gray Wolf",
+    "latin": "Canis lupus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": true
+  },
+  {
+    "common": "Kit Fox",
+    "latin": "Vulpes macrotis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Red Fox",
+    "latin": "Vulpes vulpes",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Gray Fox",
+    "latin": "Urocyon cinereoargenteus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Domestic Dog",
+    "latin": "Canis lupus familiaris",
+    "type": "Domestic",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Black-footed ferret",
+    "latin": "Mustela nigripes",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Fisher",
+    "latin": "Martes pennanti",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Marten",
+    "latin": "Martes americana",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Wolverine",
+    "latin": "Gulo gulo",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "River Otter",
+    "latin": "Lontra canadensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "American Badger",
+    "latin": "Taxidea taxus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "American Mink",
+    "latin": "Vison vison",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Short-tailed Weasel (Ermine)",
+    "latin": "Mustela erminea",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Long-tailed Weasel",
+    "latin": "Mustela frenata",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Weasels",
+    "rareWarning": false
+  },
+  {
+    "common": "Northern Raccoon",
+    "latin": "Procyon lotor",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Raccoons",
+    "rareWarning": false,
+    "frequent": true
+  },
+  {
+    "common": "Ringtail",
+    "latin": "Bassariscus astutus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Raccoons",
+    "rareWarning": false
+  },
+  {
+    "common": "Striped Skunk",
+    "latin": "Mephitis mephitis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Skunks",
+    "rareWarning": false
+  },
+  {
+    "common": "Spotted Shunk",
+    "latin": "Spilogale putorius",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Carnivores",
+    "family": "Skunks",
+    "rareWarning": false
+  },
+  {
+    "common": "Cottontail Rabbit",
+    "latin": "Sylvilagus spp.",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rabbits/Hares",
+    "family": "Rabbits & Hares",
+    "rareWarning": false
+  },
+  {
+    "common": "Pygmy Rabbit",
+    "latin": "Brachylagus idahoensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rabbits/Hares",
+    "family": "Rabbits & Hares",
+    "rareWarning": false
+  },
+  {
+    "common": "Jackrabbit",
+    "latin": "Lepus spp.",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rabbits/Hares",
+    "family": "Rabbits & Hares",
+    "rareWarning": false
+  },
+  {
+    "common": "Snowshoe Hare",
+    "latin": "Lepus americanus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rabbits/Hares",
+    "family": "Rabbits & Hares",
+    "rareWarning": false
+  },
+  {
+    "common": "American Pika",
+    "latin": "Ochotona princeps",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rabbits/Hares",
+    "family": "Rabbits & Hares",
+    "rareWarning": false
+  },
+  {
+    "common": "Porcupine",
+    "latin": "Erethizon dorsatum",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rodents",
+    "family": "Porcupines",
+    "rareWarning": false
+  },
+  {
+    "common": "Beaver",
+    "latin": "Castor canadensis",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rodents",
+    "family": "Beavers",
+    "rareWarning": false
+  },
+  {
+    "common": "Utah Prairie Dog",
+    "latin": "Cynomys parvidens",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rodents",
+    "family": "Prairie Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "White-tailed Prairie Dog",
+    "latin": "Cynomys leucurus",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rodents",
+    "family": "Prairie Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Gunnison's Prairie Dog",
+    "latin": "Cynomys gunnisoni",
+    "type": "Wild",
+    "class": "Mammal",
+    "order": "Rodents",
+    "family": "Prairie Dogs",
+    "rareWarning": false
+  },
+  {
+    "common": "Arizona Toad",
+    "latin": "Anaxyrus microscaphus",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Boreal Toad",
+    "latin": "Anaxyrus boreas",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Columbia Spotted Frog",
+    "latin": "Rana luteiventris",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Great Plains Toad",
+    "latin": "Anaxyrus cognatus",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Mexican Spadefoot",
+    "latin": "Spea multiplicata",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Northern Leopard Frog",
+    "latin": "Lithobates pipiens",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Plains Spadefoot",
+    "latin": "Spea bombifrons",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Great Basin Spadefoot",
+    "latin": "Spea intermontana",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Relict Leopard Frog",
+    "latin": "Lithobates onca",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Toad",
+    "latin": "Anaxyrus boreas",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Canyon Treefrog",
+    "latin": "Dryophytes arenicolor",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Chorus Frog",
+    "latin": "Pseudacris maculata",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Green Frog",
+    "latin": "Lithobates clamitans",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "American Bullfrog",
+    "latin": "Lithobates catesbeianus",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Woodhouse's Toad",
+    "latin": "Anaxyrus woodhousii",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Red-spotted Toad",
+    "latin": "Anaxyrus punctatus",
+    "type": "Wild",
+    "class": "Amphibian",
+    "order": "",
+    "family": "Frogs/toads",
+    "rareWarning": false
+  },
+  {
+    "common": "Midget Faded Rattlesnake",
+    "latin": "Crotalus oreganus concolor",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Mojave Rattlesnake",
+    "latin": "Crotalus scutulatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Sidewinder",
+    "latin": "Crotalus cerastes",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Speckled Rattlesnake",
+    "latin": "Crotalus mitchellii",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Pyro Mountain Kingsnake",
+    "latin": "Lampropeltis pyromelana",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Smith's Black-headed Snake",
+    "latin": "Tantilla hobartsmithi",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Utah Milksnake",
+    "latin": "Lampropeltis triangulum taylori",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Threadsnake",
+    "latin": "Rena humilis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Rubber Boa",
+    "latin": "Charina bottae",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Black-necked Gartersnake",
+    "latin": "Thamnophis cyrtopsis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Coachwhip",
+    "latin": "Coluber flagellum",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Common Gartersnake",
+    "latin": "Thamnophis sirtalis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Eastern Racer",
+    "latin": "Coluber constrictor",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Glossy Snake",
+    "latin": "Arizona elegans",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Gophersnake",
+    "latin": "Pituophis catenifer",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Groundsnake",
+    "latin": "Sonora semiannulata",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Long-nosed Snake",
+    "latin": "Rhinocheilus lecontei",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Ring-necked Snake",
+    "latin": "Diadophis punctatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Smooth Greensnake",
+    "latin": "Opheodrys vernalis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Sonoran Mountain Kingsnake",
+    "latin": "Lampropeltis pyromelana",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Spotted Leaf-nosed Snake",
+    "latin": "Phyllorhynchus decurtatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Striped Whipsnake",
+    "latin": "Coluber taeniatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Terrestrial Gartersnake",
+    "latin": "Thamnophis elegans",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Lyresnake",
+    "latin": "Trimorphodon lambda",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Patch-nosed Snake",
+    "latin": "Salvadora hexalepis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Snakes",
+    "rareWarning": false
+  },
+  {
+    "common": "Eastern Collared Lizard",
+    "latin": "Crotaphytus collaris",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Great Basin Collared Lizard",
+    "latin": "Crotaphytus bicinctores",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Long-nosed Leopard Lizard",
+    "latin": "Gambelia wislizenii",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Common Chuckwalla",
+    "latin": "Sauromalus ater",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Desert Iguana",
+    "latin": "Dipsosaurus dorsalis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "New Mexico Whiptail",
+    "latin": "Aspidoscelis neomexicana",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Plateau Striped Whiptail",
+    "latin": "Aspidoscelis velox",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Tiger Whiptail",
+    "latin": "Aspidoscelis tigris",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Desert Night Lizard",
+    "latin": "Xantusia vigilis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Common Lesser Earless Lizard",
+    "latin": "Holbrookia maculata",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Common Sagebrush Lizard",
+    "latin": "Sceloporus graciosus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Common Side-blotched Lizard",
+    "latin": "Uta stansburiana",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Desert Horned Lizard",
+    "latin": "Phrynosoma platyrhinos",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Desert Spiny Lizard",
+    "latin": "Sceloporus magister",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Eastern Fence Lizard",
+    "latin": "Sceloporus undulatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Greater Short-horned Lizard",
+    "latin": "Phrynosoma hernandesi",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Ornate Tree Lizard",
+    "latin": "Urosaurus ornatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Fence Lizard",
+    "latin": "Sceloporus occidentalis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Zebra-tailed Lizard",
+    "latin": "Callisaurus draconoides",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Gila Monster",
+    "latin": "Heloderma suspectum",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Many-lined Skink",
+    "latin": "Plestiodon multivirgatus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Western Skink",
+    "latin": "Plestiodon skiltonianus",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Utah Banded Gecko",
+    "latin": "Coleonyx variegatus utahensis",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Lizards",
+    "rareWarning": false
+  },
+  {
+    "common": "Painted Turtle",
+    "latin": "Chrysemys picta",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Turtle/Tortoise",
+    "rareWarning": false
+  },
+  {
+    "common": "Snapping Turtle",
+    "latin": "Chelydra serpentina",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Turtle/Tortoise",
+    "rareWarning": false
+  },
+  {
+    "common": "Spiny Softshell",
+    "latin": "Apalone spinifera",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Turtle/Tortoise",
+    "rareWarning": false
+  },
+  {
+    "common": "Mojave Desert Tortoise",
+    "latin": "Gopherus agassizii",
+    "type": "Wild",
+    "class": "Reptile",
+    "order": "",
+    "family": "Turtle/Tortoise",
+    "rareWarning": false
+  },
+  {
+    "common": "Chukar Partridge",
+    "latin": "Alectoris chukar",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Partridge",
+    "rareWarning": false
+  },
+  {
+    "common": "Gray Partridge",
+    "latin": "Perdix perdix",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Partridge",
+    "rareWarning": false
+  },
+  {
+    "common": "Gunnison Sage-grouse",
+    "latin": "Centrocercus minimus",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Grouse",
+    "rareWarning": false
+  },
+  {
+    "common": "Dusky Grouse",
+    "latin": "Dendragapus obscurus",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Grouse",
+    "rareWarning": false
+  },
+  {
+    "common": "Ruffed Grouse",
+    "latin": "Bonasa umbellus",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Grouse",
+    "rareWarning": false
+  },
+  {
+    "common": "Columbian Sharp-tailed Grouse",
+    "latin": "Tympanuchus phasianellus",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Grouse",
+    "rareWarning": false
+  },
+  {
+    "common": "California Quail",
+    "latin": "Callipepla californica",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Quail",
+    "rareWarning": false
+  },
+  {
+    "common": "Gambel's Quail",
+    "latin": "Callipepla gambelii",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Quail",
+    "rareWarning": false
+  },
+  {
+    "common": "Scaled Quail",
+    "latin": "Callipepla squamata",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Quail",
+    "rareWarning": false
+  },
+  {
+    "common": "White-tailed Ptarmigans",
+    "latin": "Lagopus leucura",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Ptarmingans",
+    "rareWarning": false
+  },
+  {
+    "common": "Ring-necked Pheasant",
+    "latin": "Phasianus colchicus",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Upland Birds",
+    "family": "Pheasant",
+    "rareWarning": false
+  },
+  {
+    "common": "Turkey Vulture",
+    "latin": "Cathartes aura",
+    "type": "Wild",
+    "class": "Bird",
+    "order": "Vultures",
+    "family": "Vultures",
+    "rareWarning": false
+  }
+]
