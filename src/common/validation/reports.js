@@ -31,6 +31,7 @@ export const report = yup.object().shape({
   age_class,
   sex,
   comments,
+  discovery_date: yup.date().required(),
 });
 
 export const pickup = yup.object().shape({
@@ -46,4 +47,5 @@ export const pickup = yup.object().shape({
   age_class,
   sex,
   comments,
+  pickup_date: yup.date().required(),
 });
