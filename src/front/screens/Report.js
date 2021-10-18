@@ -1,4 +1,4 @@
-import { Button, Divider, Text, useTheme } from '@ui-kitten/components';
+import { Button, Datepicker, Divider, NativeDateService, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -37,9 +37,11 @@ const initialFormValues = {
   report: {
     ...commonInitialValues,
     repeat_submission: false,
+    discovery_date: null,
   },
   pickup: {
     ...commonInitialValues,
+    pickup_date: null,
   },
 };
 const formShapes = {
@@ -57,6 +59,7 @@ const formSchemas = {
   report: yup.object().shape(formShapes.report),
   pickup: yup.object().shape(formShapes.pickup),
 };
+const localDateService = new NativeDateService('en', { format: 'MM/DD/YYYY' });
 
 const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
   const animatedMaxHeight = React.useRef(new Animated.Value(0));
@@ -143,6 +146,14 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const pickupFormikRef = React.useRef(null);
   const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
 
+  React.useEffect(() => {
+    if (show) {
+      // reset the default date values on form open
+      initialFormValues.report.discovery_date = new Date();
+      initialFormValues.pickup.pickup_date = new Date();
+    }
+  }, [show]);
+
   const containerStyle = {
     ...styles.container,
     maxHeight: animatedMaxHeight.current,
@@ -212,6 +223,18 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                       onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
                       cancelReport={() => onClose()}
                     />
+                    <Text category="h6">When was the animal discovered?</Text>
+                    <Datepicker
+                      accessoryRight={getIcon({
+                        pack: 'font-awesome-5',
+                        name: 'calendar-alt',
+                      })}
+                      date={values.discovery_date}
+                      dateService={localDateService}
+                      max={new Date()}
+                      onSelect={(newValue) => setFieldValue('discovery_date', newValue)}
+                      style={styles.bumpBottom}
+                    />
                   </>
                 )}
               </Form>
@@ -227,7 +250,24 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                 reportType={reportType}
                 setIsLoading={setIsLoading}
                 validationSchema={formSchemas.pickup}
-              ></Form>
+              >
+                {({ values, setFieldValue }) => (
+                  <>
+                    <Text category="h6">When was the animal picked up?</Text>
+                    <Datepicker
+                      accessoryRight={getIcon({
+                        pack: 'font-awesome-5',
+                        name: 'calendar-alt',
+                      })}
+                      date={values.pickup_date}
+                      dateService={localDateService}
+                      max={new Date()}
+                      onSelect={(newValue) => setFieldValue('pickup_date', newValue)}
+                      style={styles.bumpBottom}
+                    />
+                  </>
+                )}
+              </Form>
             )}
           </View>
         </View>
@@ -265,6 +305,7 @@ const styles = StyleSheet.create({
   },
   closeButton: { marginRight: -10 },
   hidden: { display: 'none' },
+  bumpBottom: { marginBottom: PADDING },
 });
 
 export default Report;
