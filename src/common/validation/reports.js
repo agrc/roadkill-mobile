@@ -13,6 +13,8 @@ const submit_location = location.required();
 const submit_date = yup.date().required();
 const species = yup.string().nullable();
 const species_confidence_level = yup.string().nullable();
+const age_class = yup.string().required();
+const sex = yup.string().required();
 
 export const report = yup.object().shape({
   user_id,
@@ -25,6 +27,8 @@ export const report = yup.object().shape({
   submit_date,
   species,
   species_confidence_level,
+  age_class,
+  sex,
 });
 
 export const pickup = yup.object().shape({
@@ -37,4 +41,6 @@ export const pickup = yup.object().shape({
   submit_date,
   species,
   species_confidence_level,
+  age_class,
+  sex,
 });

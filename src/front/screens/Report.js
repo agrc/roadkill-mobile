@@ -28,6 +28,8 @@ const commonInitialValues = {
   photo_date: null,
   species: null,
   species_confidence_level: null,
+  age_class: null,
+  sex: null,
 };
 const initialFormValues = {
   // skip values that are gathered outside of the form
