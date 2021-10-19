@@ -1,11 +1,24 @@
-# [v3.0.0-421](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-412...v3.0.0-421) (2021-10-18)
+# [v3.0.0-436](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-412...v3.0.0-436) (2021-10-19)
+
+
+### Bug Fixes
+
+* add missing export for facebook provider ([e722c16](https://github.com/agrc/roadkill-mobile/commit/e722c1692185c3fc7f17fabd9c680f9f90db06c4))
+* add storybook package to help with missing dep ([a696f99](https://github.com/agrc/roadkill-mobile/commit/a696f99576836098d43153bb85d42bffbbef4d99))
+* check for valid token before attempting to hit logout endpoint ([9e7df30](https://github.com/agrc/roadkill-mobile/commit/9e7df30a449be87cfa9fc453d7a9f9e13b4d292b))
+* close keyboard on report form close ([cea1972](https://github.com/agrc/roadkill-mobile/commit/cea1972b666d02b968c33fe2b4995deab9550878))
+* fix bug causing double log in prompt on submit ([d28e1e5](https://github.com/agrc/roadkill-mobile/commit/d28e1e5a42cb597e45085379b3220b736cfe4075)), closes [#110](https://github.com/agrc/roadkill-mobile/issues/110)
+* increase post report timeout ([1b3777e](https://github.com/agrc/roadkill-mobile/commit/1b3777e0a9375c3dd34f7546c39945893930e467))
+* add loading text to app if auth is not ready ([3eb1e57](https://github.com/agrc/roadkill-mobile/commit/3eb1e57b6777e2a6533d4bfa779559ff03eace2f))
+* implement species component ([a694e9d](https://github.com/agrc/roadkill-mobile/commit/a694e9d1e35b6be44e0a15ddc246960a163e23c8)), closes [#98](https://github.com/agrc/roadkill-mobile/issues/98)
 
 
 ### Features
 
-* add loading text to app if auth is not ready ([3eb1e57](https://github.com/agrc/roadkill-mobile/commit/3eb1e57b6777e2a6533d4bfa779559ff03eace2f))
-* implement species component ([a694e9d](https://github.com/agrc/roadkill-mobile/commit/a694e9d1e35b6be44e0a15ddc246960a163e23c8)), closes [#98](https://github.com/agrc/roadkill-mobile/issues/98)
-
+* add comments component ([89a98b2](https://github.com/agrc/roadkill-mobile/commit/89a98b22025db8884a72588982739245b4ba61ff)), closes [#101](https://github.com/agrc/roadkill-mobile/issues/101)
+* add proper logout ([e05f3d7](https://github.com/agrc/roadkill-mobile/commit/e05f3d7a612ac82ed0b3e09f0c2c164d4eb649f5)), closes [#108](https://github.com/agrc/roadkill-mobile/issues/108)
+* implement age_class & sex components ([592084b](https://github.com/agrc/roadkill-mobile/commit/592084b3c1a40ea12dcc6bce18dd5516bdda5e81)), closes [#99](https://github.com/agrc/roadkill-mobile/issues/99)
+* implement discover/pickup date component ([210da0f](https://github.com/agrc/roadkill-mobile/commit/210da0f0f17a068c5098f419a1bda9ba8165bc10)), closes [#100](https://github.com/agrc/roadkill-mobile/issues/100)
 
 
 # [v3.0.0-412](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-372...v3.0.0-412) (2021-09-27)
