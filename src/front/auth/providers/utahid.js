@@ -1,6 +1,5 @@
 import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
-import React from 'react';
 import config from '../../config';
 import { isTokenExpired, useAsyncError, useSecureRef } from '../../utilities';
 
@@ -34,13 +33,9 @@ export default function useUtahIDProvider() {
   );
   const throwAsyncError = useAsyncError();
 
-  React.useEffect(() => {
-    if (refreshToken.current && isTokenExpired(jwt_decode(refreshToken.current))) {
-      getTokens();
-    }
-  }, [refreshToken.current]);
-
   const getTokens = async () => {
+    console.log('getTokens');
+
     try {
       const response = await promptAsync();
 
