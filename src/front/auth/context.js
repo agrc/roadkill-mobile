@@ -190,6 +190,8 @@ export function AuthContextProvider({ children, onReady }) {
   };
 
   const getBearerToken = async () => {
+    console.log('context/getBearerToken');
+
     if (!authInfo) {
       throw new Error('user is not logged in!');
     }
