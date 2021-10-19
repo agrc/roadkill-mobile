@@ -101,7 +101,7 @@ export default function useGoogleProvider() {
 
   const getBearerToken = async () => {
     const prefix = `${config.PROVIDER_NAMES.google}:Bearer `;
-    if (authentication.current && !isAuthenticationExpired(authentication.current)) {
+    if (hasValidToken()) {
       return prefix + authentication.current.accessToken;
     }
 
@@ -114,5 +114,7 @@ export default function useGoogleProvider() {
     }
   };
 
-  return { logIn, logOut, getBearerToken };
+  const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
+
+  return { logIn, logOut, getBearerToken, hasValidToken };
 }

@@ -151,18 +151,20 @@ export function AuthContextProvider({ children, onReady }) {
       const doLogOut = async () => {
         setStatus(STATUS.loading);
 
-        try {
-          const response = await ky.post(`${config.API}/user/logout`, {
-            headers: {
-              Authorization: await getBearerToken(),
-            },
-          });
+        if (currentProvider.current.hasValidToken()) {
+          try {
+            const response = await ky.post(`${config.API}/user/logout`, {
+              headers: {
+                Authorization: await getBearerToken(),
+              },
+            });
 
-          if (response.status !== 200) {
-            console.error(`logout failed: ${response.body}`);
+            if (response.status !== 200) {
+              console.error(`logout failed: ${response.body}`);
+            }
+          } catch (error) {
+            console.error(`logout failed: ${error.message}`);
           }
-        } catch (error) {
-          console.error(`logout failed: ${error.message}`);
         }
 
         try {
