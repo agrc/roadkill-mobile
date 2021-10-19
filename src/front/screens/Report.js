@@ -2,7 +2,7 @@ import { Button, Datepicker, Divider, NativeDateService, Text, useTheme } from '
 import * as reportSchemas from 'common/validation/reports';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, Animated, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Animated, Keyboard, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import Form from '../components/reports/Form';
@@ -113,6 +113,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
 
   const onClose = async (force = false) => {
     const close = () => {
+      Keyboard.dismiss();
       hideReport();
       setView(SET_LOCATION_VIEW);
       setShowMain(false);
