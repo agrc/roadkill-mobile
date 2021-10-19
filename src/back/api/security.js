@@ -1,5 +1,5 @@
 import got from 'got';
-import { getUser, setUser } from '../services/user_cache.js';
+import { deleteUser, getUser, setUser } from '../services/user_cache.js';
 
 export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
@@ -52,16 +52,40 @@ export async function getToken(request, response) {
   }
 }
 
+export async function logout(request, response) {
+  const { token, isJWTToken } = getTokenFromHeader(request.headers.authorization);
+
+  if (!token) {
+    return response.status(401).send('empty token');
+  }
+
+  if (isJWTToken) {
+    await deleteUser(token);
+  }
+
+  return response.status(200).send('user logged out successfully');
+}
+
+function getTokenFromHeader(authorization) {
+  const [authProvider, authToken] = authorization.split(':');
+
+  let token;
+  let isJWTToken;
+  if (authToken) {
+    token = authToken.split(' ').pop();
+    isJWTToken = authProvider === 'utahid';
+  }
+
+  return { token, isJWTToken, authProvider, authToken };
+}
+
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
-    const [authProvider, authToken] = request.headers.authorization.split(':');
+    const { token, isJWTToken, authProvider, authToken } = getTokenFromHeader(request.headers.authorization);
 
-    if (!authToken) {
+    if (!token) {
       return response.status(401).send('empty token');
     }
-
-    const token = authToken.split(' ').pop();
-    const isJWTToken = authProvider === 'utahid';
 
     if (isJWTToken) {
       const cachedUser = await getUser(token);

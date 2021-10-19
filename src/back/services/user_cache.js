@@ -31,3 +31,10 @@ export async function setUser(token, user) {
     user,
   });
 }
+
+export async function deleteUser(token) {
+  const decodedToken = jwt_decode(token);
+  const document = await firestore.doc(`${DOC_TYPE}/${decodedToken.sub}`);
+
+  await document.delete();
+}
