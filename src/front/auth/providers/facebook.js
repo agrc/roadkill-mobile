@@ -79,7 +79,7 @@ export default function useFacebookProvider() {
   const getBearerToken = async () => {
     const prefix = `${config.PROVIDER_NAMES.facebook}: Bearer `;
 
-    if (authentication.current && !isAuthenticationExpired(authentication.current)) {
+    if (hasValidToken()) {
       return prefix + authentication.current.token;
     }
 
@@ -91,6 +91,8 @@ export default function useFacebookProvider() {
       throwAsyncError(new Error('No access token'));
     }
   };
+
+  const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
 
   return { logIn, logOut, getBearerToken };
 }

@@ -57,5 +57,5 @@ export default function useGoogleProviderForStandalone() {
     return `${config.PROVIDER_NAMES.google}:Bearer ${cachedUser.current.auth.accessToken}`;
   };
 
-  return { logIn, logOut, getBearerToken };
+  return { logIn, logOut, getBearerToken, hasValidToken: () => false };
 }
