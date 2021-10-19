@@ -327,21 +327,21 @@ export default function Species({ onChange, values, style }) {
           />
 
           {state.selectedClass && state.selectedClass !== config.UNKNOWN ? (
-            <>
+            <View style={styles.marginTop}>
               <Text category="h6">Does the animal look like a...</Text>
               <RadioPills
                 value={state.family}
                 onChange={(value) => dispatch({ type: 'SET_FAMILY', payload: value })}
                 options={families}
               />
-            </>
+            </View>
           ) : null}
 
           {state.selectedClass &&
           state.selectedClass !== config.UNKNOWN &&
           state.family &&
           state.family !== config.UNKNOWN ? (
-            <>
+            <View style={styles.marginTop}>
               <Text category="h6">Select a species...</Text>
               <RadioPills
                 value={state.selectedSpecies?.latin}
@@ -351,7 +351,7 @@ export default function Species({ onChange, values, style }) {
                   .concat(UNKNOWN_SPECIES)
                   .map(specieToOption)}
               />
-            </>
+            </View>
           ) : null}
         </>
       )}
@@ -375,5 +375,8 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     marginBottom: PADDING,
+  },
+  marginTop: {
+    marginTop: PADDING,
   },
 });
