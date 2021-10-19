@@ -114,7 +114,7 @@ export default function useUtahIDProvider() {
     console.log('getBearerToken');
 
     const prefix = `${config.PROVIDER_NAMES.utahid}:Bearer `;
-    if (hasValidToken()) {
+    if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
       return prefix + accessToken.current;
     }
 
