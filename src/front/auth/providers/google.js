@@ -1,4 +1,5 @@
-import { useAuthRequest } from 'expo-auth-session/providers/google';
+import { revokeAsync } from 'expo-auth-session';
+import { discovery, useAuthRequest } from 'expo-auth-session/providers/google';
 import ky from 'ky';
 import React from 'react';
 import config from '../../config';
@@ -14,7 +15,7 @@ export default function useGoogleProvider() {
   const authentication = React.useRef(null);
   const exchangePromise = React.useRef(null);
   // eslint-disable-next-line no-unused-vars
-  const [_, result, promptAsync] = useAuthRequest(
+  const [request, result, promptAsync] = useAuthRequest(
     {
       expoClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_EXPO_GO,
       androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
@@ -90,7 +91,11 @@ export default function useGoogleProvider() {
     return user;
   };
 
-  const logOut = () => {
+  const logOut = async () => {
+    if (authentication.current && !isAuthenticationExpired(authentication.current)) {
+      await revokeAsync({ token: authentication.current.accessToken }, discovery);
+    }
+
     authentication.current = null;
   };
 

@@ -1,5 +1,6 @@
-import { exchangeCodeAsync, makeRedirectUri, refreshAsync, useAuthRequest } from 'expo-auth-session';
+import { exchangeCodeAsync, makeRedirectUri, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
+import ky from 'ky';
 import config from '../../config';
 import { isTokenExpired, useAsyncError, useSecureRef } from '../../utilities';
 
@@ -11,17 +12,17 @@ if (__DEV__) {
 redirectUri += config.OAUTH_REDIRECT_SCREEN;
 console.log('redirectUri', redirectUri);
 
+// ref: https://login.dts.utah.gov/sso/oauth2/.well-known/openid-configuration
 const discovery = {
   authorizationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/authorize',
   tokenEndpoint: `${config.API}/user/token`,
-
-  // this is not used at the moment but could be used to log the user out of the browser session
-  endSessionEndpoint: 'https://login.dts.utah.gov/sso/oauth2/connect/endSession',
+  revocationEndpoint: 'https://login.dts.utah.gov/sso/oauth2/token/revoke',
 };
 
 export default function useUtahIDProvider() {
   const [accessToken, setAccessToken] = useSecureRef('UTAHID_ACCESS_TOKEN');
   const [refreshToken, setRefreshToken] = useSecureRef('UTAHID_REFRESH_TOKEN');
+  const [idToken, setIdToken] = useSecureRef('UTAHID_ID_TOKEN');
   // eslint-disable-next-line no-unused-vars
   const [request, _, promptAsync] = useAuthRequest(
     {
@@ -43,6 +44,7 @@ export default function useUtahIDProvider() {
         const tokenResponse = await exchangeCodeForToken(response.params.code);
         setAccessToken(tokenResponse.accessToken);
         setRefreshToken(tokenResponse.refreshToken);
+        setIdToken(tokenResponse.idToken);
 
         return {
           idToken: tokenResponse.idToken,
@@ -69,9 +71,43 @@ export default function useUtahIDProvider() {
     return jwt_decode(tokens.idToken);
   };
 
-  const logOut = () => {
+  const logOut = async () => {
+    console.log('utahid: logOut');
+
+    // I'm not sure that I need the two token revoking if I'm hitting the endSession endpoint...
+    if (refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current))) {
+      await revokeAsync(
+        {
+          clientId: config.CLIENT_ID,
+          token: refreshToken.current,
+        },
+        discovery
+      );
+    }
+
+    if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
+      await revokeAsync(
+        {
+          clientId: config.CLIENT_ID,
+          token: accessToken.current,
+        },
+        discovery
+      );
+    }
+
+    if (idToken.current && !isTokenExpired(jwt_decode(idToken.current))) {
+      const response = await ky.get('https://login.dts.utah.gov/sso/oauth2/connect/endSession', {
+        searchParams: { id_token_hint: idToken.current },
+      });
+
+      if (response.status !== 204) {
+        console.warn('logOut: failed to end session', response.body);
+      }
+    }
+
     setAccessToken(null);
     setRefreshToken(null);
+    setIdToken(null);
   };
 
   const getBearerToken = async () => {
