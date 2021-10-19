@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import Multer from 'multer';
 import winston from 'winston';
 import { getNewPickupHandler, getNewReportHandler } from './api/reports.js';
-import { authenticate, getToken } from './api/security.js';
+import { authenticate, getToken, logout } from './api/security.js';
 import { getApprove, getLogin, getRegister, getReject } from './api/user.js';
 import validate from './api/validation.js';
 import { upload } from './services/photos.js';
@@ -116,7 +116,7 @@ app.post(
   validate(loginSchema),
   handleAsyncErrors(getLogin(getUser, updateUser))
 );
-// app.post('/user/logout', // TODO)
+app.post('/user/logout', handleAsyncErrors(logout));
 app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
 app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
 // app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
