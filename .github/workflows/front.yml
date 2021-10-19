@@ -6,6 +6,8 @@ on:
       - 'src/front/**'
       - '.github/workflows/front.yml'
       - '.github/actions/front/**'
+      - 'CHANGELOG.md'
+      - 'changelog_context.json'
 
 defaults:
   run:
