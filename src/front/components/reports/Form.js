@@ -167,12 +167,15 @@ export default function Form({
           >
             Submit Report
           </Button>
-          {__DEV__ ? (
-            <>
-              <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
-              <Text>values: {JSON.stringify(values, null, '  ')}</Text>
-            </>
-          ) : null}
+          {/* {__DEV__ ? ( */}
+          <>
+            <Text category="c1">
+              [The below text is only for debugging the values sent to the database. It will not show up in production.]
+            </Text>
+            <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
+            <Text>values: {JSON.stringify(values, null, '  ')}</Text>
+          </>
+          {/* ) : null} */}
         </>
       )}
     </Formik>
