@@ -75,7 +75,7 @@ export default function useUtahIDProvider() {
     console.log('utahid: logOut');
 
     // I'm not sure that I need the two token revoking if I'm hitting the endSession endpoint...
-    if (hasValidToken()) {
+    if (hasValidRefreshToken()) {
       await revokeAsync(
         {
           clientId: config.CLIENT_ID,
@@ -153,7 +153,7 @@ export default function useUtahIDProvider() {
   const refreshAccessToken = async () => {
     console.log('refreshAccessToken');
 
-    if (!hasValidToken()) {
+    if (!hasValidRefreshToken()) {
       const tokens = await getTokens();
 
       return tokens?.accessToken;
@@ -176,9 +176,9 @@ export default function useUtahIDProvider() {
     }
   };
 
-  const hasValidToken = () => {
+  const hasValidRefreshToken = () => {
     return refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current));
   };
 
-  return { logIn, logOut, getBearerToken, hasValidToken };
+  return { logIn, logOut, getBearerToken, hasValidToken: hasValidRefreshToken };
 }
