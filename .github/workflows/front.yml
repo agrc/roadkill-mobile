@@ -8,6 +8,7 @@ on:
       - '.github/actions/front/**'
       - 'CHANGELOG.md'
       - 'changelog_context.json'
+      - 'src/common/**'
 
 defaults:
   run:

@@ -6,6 +6,7 @@ on:
       - 'src/back/**'
       - '.github/workflows/back.yml'
       - '.github/actions/back/**'
+      - 'src/common/**'
 
 env:
   SERVICE_NAME: api
