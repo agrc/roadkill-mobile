@@ -7,6 +7,7 @@ const photo = yup.object().shape({
   name: yup.string().required(),
 });
 const photo_location = location.nullable();
+const photo_date = yup.date().nullable();
 const animal_location = location.required();
 const user_id = yup.number().required();
 const submit_location = location.required();
@@ -22,7 +23,7 @@ export const report = yup.object().shape({
   animal_location,
   photo: photo.nullable(),
   photo_location,
-  photo_date: yup.date().nullable(),
+  photo_date,
   repeat_submission: yup.boolean().required(),
   submit_location,
   submit_date,
@@ -39,7 +40,7 @@ export const pickup = yup.object().shape({
   animal_location,
   photo: photo.required().typeError('A photo is required.'),
   photo_location,
-  photo_date: yup.date().required(),
+  photo_date,
   submit_location,
   submit_date,
   species,
