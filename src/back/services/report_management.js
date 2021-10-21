@@ -89,3 +89,42 @@ export async function createPickup({
     return reportId;
   });
 }
+
+export async function getAllReports(auth_id, auth_provider) {
+  return await db('report_infos as r')
+    .join('users', 'users.id', 'r.user_id')
+    .select('r.report_id', 'r.photo_id', 'r.submit_date', 'r.species')
+    .orderBy('r.submit_date', 'desc')
+    .limit(100)
+    .where({
+      'users.auth_id': auth_id,
+      'users.auth_provider': auth_provider,
+    });
+}
+
+export async function getReport(reportId) {
+  return await db('report_infos as r')
+    .leftJoin('photos as p', 'p.id', 'r.photo_id')
+    .leftJoin('public_reports as pub', 'pub.report_id', 'r.report_id')
+    .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
+    .columns(
+      'r.report_id',
+      'r.animal_location',
+      'r.photo_id',
+      'p.photo_location',
+      'p.photo_date',
+      'r.submit_location',
+      'r.submit_date',
+      'r.species',
+      'r.species_confidence_level',
+      'r.sex',
+      'r.age_class',
+      'r.comments',
+      'pick.pickup_date',
+      'pick.route_id',
+      'pub.repeat_submission',
+      'pub.discovery_date'
+    )
+    .where({ 'r.report_id': reportId })
+    .first();
+}

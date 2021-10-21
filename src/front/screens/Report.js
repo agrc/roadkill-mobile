@@ -1,16 +1,23 @@
 import { Button, Datepicker, Divider, NativeDateService, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
+import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, Keyboard, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useMutation, useQueryClient } from 'react-query';
+import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
+import useAuth from '../auth/context';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import Spinner from '../components/Spinner';
+import config from '../config';
 import { getIcon } from '../icons';
+import { ACCURACY, getLocation } from '../location';
 import { PADDING } from '../styles';
+import { coordinatesToString } from '../utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -68,7 +75,75 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+
+  const {
+    authInfo: { user },
+    getBearerToken,
+  } = useAuth();
+
+  const submitReport = async (values) => {
+    console.log('submitReport');
+
+    const formData = new FormData();
+    for (let valueName in values) {
+      if (values[valueName] !== null) {
+        let newValue = values[valueName];
+        if (values[valueName] instanceof Date) {
+          newValue = newValue.toISOString();
+        }
+        formData.append(valueName, newValue);
+      }
+    }
+
+    // add data gathered from outside of the form
+    formData.append('animal_location', coordinatesToString(carcassCoordinates));
+    formData.append('user_id', user.id);
+    formData.append('submit_date', new Date().toISOString());
+    const currentLocation = await getLocation(ACCURACY.Highest);
+    formData.append('submit_location', coordinatesToString(currentLocation.coords));
+
+    console.log('formData', formData);
+
+    let responseJson;
+    try {
+      responseJson = await ky
+        .post(`${config.API}/reports/${reportType}`, {
+          body: formData,
+          headers: {
+            Authorization: await getBearerToken(),
+          },
+          timeout: 20000, // give cloud run time to spin up especially in dev project
+        })
+        .json();
+    } catch (error) {
+      Sentry.Native.captureException(error);
+      throw error;
+      // TODO: allow them to cache the report for submission at a later time.
+    }
+
+    if (responseJson.success) {
+      console.log('responseJson.report_id', responseJson.report_id);
+
+      Alert.alert('Success!', 'Your report has been submitted.', [
+        {
+          text: 'OK',
+          onPress: () => onClose(true),
+        },
+      ]);
+    } else {
+      throw new Error(responseJson.error);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(submitReport, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(config.QUERY_KEYS.reports);
+    },
+    onError: (error) => {
+      Alert.alert('Error', error.message);
+    },
+  });
 
   React.useEffect(() => {
     if (show) {
@@ -201,20 +276,19 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
           />
 
           {
-            // this is to prevent the form from being remounted when it's hidden
+            // the Form components are wrapped in a view and hidden via styling
+            // to prevent them from being remounted when they are hidden
           }
           <View style={showMain ? null : styles.hidden}>
             {reportType === REPORT_TYPES.report ? (
               // report form
               <Form
-                carcassCoordinates={carcassCoordinates}
                 formikRef={reportFormikRef}
                 initialValues={initialFormValues.report}
-                isLoading={isLoading}
                 key="report-form"
+                mutation={mutation}
                 onClose={onClose}
                 reportType={reportType}
-                setIsLoading={setIsLoading}
                 validationSchema={formSchemas.report}
               >
                 {({ values, setFieldValue }) => (
@@ -242,14 +316,12 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
             ) : (
               // pickup form
               <Form
-                carcassCoordinates={carcassCoordinates}
                 formikRef={pickupFormikRef}
                 initialValues={initialFormValues.pickup}
-                isLoading={isLoading}
                 key="pickup-form"
+                mutation={mutation}
                 onClose={onClose}
                 reportType={reportType}
-                setIsLoading={setIsLoading}
                 validationSchema={formSchemas.pickup}
               >
                 {({ values, setFieldValue }) => (
@@ -273,7 +345,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <Spinner show={isLoading} />
+      <Spinner show={mutation.isLoading} />
     </Animated.View>
   );
 };
