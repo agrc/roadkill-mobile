@@ -1,11 +1,11 @@
-import { Text } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import React from 'react';
-import RootView from '../RootView';
+import { PADDING } from '../styles';
 
 export default function ProfileScreen() {
   return (
-    <RootView>
+    <Layout style={{ flex: 1, padding: PADDING }}>
       <Text>Not yet implemented</Text>
-    </RootView>
+    </Layout>
   );
 }

@@ -1,5 +1,4 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { HeaderBackButton } from '@react-navigation/elements';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Drawer, DrawerItem, IndexPath, useTheme } from '@ui-kitten/components';
@@ -10,6 +9,8 @@ import * as SecureStorage from 'expo-secure-store';
 import * as Updates from 'expo-updates';
 import propTypes from 'prop-types';
 import React from 'react';
+import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
 import useAuth from './auth/context';
@@ -21,6 +22,8 @@ import MainScreen from './screens/Main';
 import MyReportsScreen from './screens/MyReports';
 import NewUserScreen from './screens/NewUser';
 import ProfileScreen from './screens/Profile';
+import ReportInfoScreen from './screens/ReportInfo';
+import { PADDING } from './styles';
 import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from './utilities';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -56,7 +59,11 @@ const DrawerIcon = (props) => {
     color: theme['color-basic-700'],
   });
 
-  return <Icon />;
+  return (
+    <View style={{ paddingRight: PADDING }}>
+      <Icon />
+    </View>
+  );
 };
 DrawerIcon.propTypes = {
   name: propTypes.string.isRequired,
@@ -101,20 +108,65 @@ const getDrawContent = ({ navigation, state, logOut }) => {
   );
 };
 
+const CloseButton = () => {
+  const navigation = useNavigation();
+  const theme = useTheme();
+  const CloseIcon = getIcon({
+    pack: 'material-community',
+    name: 'close-circle-outline',
+    size: 30,
+    color: theme['color-basic-800'],
+  });
+
+  return (
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: PADDING }}>
+      <CloseIcon />
+    </TouchableOpacity>
+  );
+};
+const getHeaderIcon = (name) => <DrawerIcon name={name} style={{ marginRight: 10 }} />;
+const BackButton = () => {
+  const navigation = useNavigation();
+  const theme = useTheme();
+  const BackIcon = getIcon({
+    pack: 'font-awesome-5',
+    name: 'chevron-left',
+    size: 30,
+    color: theme['color-basic-800'],
+  });
+
+  return (
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: PADDING }}>
+      <BackIcon />
+    </TouchableOpacity>
+  );
+};
+const ReportsNavigator = () => {
+  const { Navigator, Screen } = createStackNavigator();
+
+  return (
+    <Navigator screenOptions={{ headerLeft: BackButton }}>
+      <Screen
+        name="My Reports"
+        component={MyReportsScreen}
+        options={{ headerLeft: CloseButton, headerRight: () => getHeaderIcon('list') }}
+      />
+      <Screen name="Report Info" component={ReportInfoScreen} options={{ headerRight: () => getHeaderIcon('info') }} />
+    </Navigator>
+  );
+};
+
 const MainNavigator = () => {
   const { Navigator, Screen } = createDrawerNavigator();
-  const navigation = useNavigation();
-  const GoBack = () => <HeaderBackButton onPress={() => navigation.goBack()} />;
-  const getHeaderIcon = (name) => <DrawerIcon name={name} style={{ marginRight: 10 }} />;
   const { logOut } = useAuth();
 
   return (
     <Navigator
       drawerContent={(args) => getDrawContent({ ...args, logOut })}
-      screenOptions={{ swipeEnabled: false, headerLeft: GoBack }}
+      screenOptions={{ swipeEnabled: false, headerLeft: CloseButton }}
     >
       <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-      <Screen name="My Reports" component={MyReportsScreen} options={{ headerRight: () => getHeaderIcon('list') }} />
+      <Screen name="Reports Navigator" component={ReportsNavigator} options={{ headerShown: false }} />
       <Screen name="Profile" component={ProfileScreen} options={{ headerRight: () => getHeaderIcon('person') }} />
       {config.SHOW_STORYBOOK ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
     </Navigator>

@@ -37,3 +37,27 @@ export function getNewPickupHandler(upload, createPickup) {
     });
   };
 }
+
+export function getGetAllHandler(getAllReports) {
+  return async function getAllHandler(request, response) {
+    const reports = await getAllReports(response.locals.user.sub, response.locals.authProvider);
+
+    return response.status(200).json({
+      reports,
+    });
+  };
+}
+
+export function getGetReportHandler(getReport) {
+  return async function getReportHandler(request, response) {
+    const report = await getReport(request.params.reportId);
+
+    if (report) {
+      return response.status(200).json({
+        report,
+      });
+    } else {
+      return response.status(404).send(`no report found for id: ${request.params.reportId}`);
+    }
+  };
+}
