@@ -87,6 +87,8 @@ export async function authenticate(request, response, next) {
       return response.status(401).send('empty token');
     }
 
+    response.locals.authProvider = authProvider;
+
     if (isJWTToken) {
       const cachedUser = await getUser(token);
       if (cachedUser) {
