@@ -38,7 +38,7 @@ export default function useUtahIDProvider() {
     console.log('getTokens');
 
     try {
-      const response = await promptAsync();
+      const response = await promptAsync({ showInRecents: true });
 
       if (response?.type === 'success') {
         const tokenResponse = await exchangeCodeForToken(response.params.code);
