@@ -1,5 +1,6 @@
 import got from 'got';
 import { deleteUser, getUser, setUser } from '../services/user_cache.js';
+import { getUser as getAppUser } from '../services/user_management.js';
 
 export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
@@ -123,8 +124,14 @@ export async function authenticate(request, response, next) {
     if (userResponse.statusCode === 200 && userResponse.body) {
       response.locals.user = userResponse.body;
 
+      const appUser = await getAppUser(userResponse.body.sub, authProvider);
+      response.locals.appUser = appUser;
+
       if (isJWTToken) {
-        setUser(token, userResponse.body);
+        setUser(token, {
+          ...userResponse.body,
+          appUser,
+        });
       }
 
       return next();

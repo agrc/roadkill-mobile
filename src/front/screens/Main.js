@@ -5,8 +5,9 @@ import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import useAuth from '../auth/context';
+import Map from '../components/Map';
 import MapButton from '../components/MapButton';
 import config from '../config';
 import { getIcon } from '../icons';
@@ -203,9 +204,8 @@ export default function MainScreen() {
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
       {initialLocation ? (
         <>
-          <MapView
+          <Map
             initialRegion={locationToRegion(initialLocation)}
-            loadingEnabled={true}
             onRegionChange={onRegionChange}
             mapPadding={
               reportState.showReport
@@ -219,24 +219,16 @@ export default function MainScreen() {
                   })
                 : null
             }
-            mapType="none"
-            maxZoomLevel={18}
-            minZoomLevel={5}
             onLayout={(event) => {
               const { width, height } = event.nativeEvent.layout;
               mapDimensions.current = { width, height };
             }}
-            pitchEnabled={false}
-            provider={PROVIDER_GOOGLE}
-            ref={mapView}
-            rotateEnabled={false}
-            showsMyLocationButton={false}
-            showsUserLocation={true}
+            innerRef={mapView}
             style={[styles.map, mapSizeStyle]}
+            showsUserLocation={true}
           >
             {carcassCoordinates ? <Marker coordinate={carcassCoordinates} /> : null}
-            <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
-          </MapView>
+          </Map>
           {reportState.showReport && reportHeight > 0 ? (
             <View
               pointerEvents="none"

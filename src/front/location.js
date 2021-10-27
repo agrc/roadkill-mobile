@@ -20,13 +20,26 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   return location;
 };
 
+const REGION_BUFFER = {
+  latitudeDelta: 0.1,
+  longitudeDelta: 0.05,
+};
 export function locationToRegion(location) {
   return {
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.05,
+    ...REGION_BUFFER,
   };
+}
+
+export function coordsToLocation(coords) {
+  if (!coords) {
+    return null;
+  }
+
+  const [x, y] = coords.split(' ');
+
+  return { longitude: parseFloat(x), latitude: parseFloat(y) };
 }
 
 export function useFollowUser(mapViewRef) {

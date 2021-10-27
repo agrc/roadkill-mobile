@@ -18,6 +18,7 @@
     "nvmrc",
     "oauthredirect",
     "openid",
+    "postgis",
     "POSTGRES",
     "pressable",
     "Reactotron",

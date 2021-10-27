@@ -3,3 +3,7 @@ export function coordStringToWKT(coordString) {
 
   return `SRID=4326;POINT(${coordString})`;
 }
+
+export function geographyToCoordinates(columnName) {
+  return `ST_X(${columnName}::geometry) || ' ' || ST_Y(${columnName}::geometry) as ${columnName}`;
+}

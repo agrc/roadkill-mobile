@@ -56,8 +56,8 @@ export function getGetReportHandler(getReport) {
       return response.status(200).json({
         report,
       });
-    } else {
-      return response.status(404).send(`no report found for id: ${request.params.reportId}`);
     }
+
+    return response.status(404).send(`no report found for id: ${request.params.reportId}`);
   };
 }
