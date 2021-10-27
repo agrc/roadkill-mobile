@@ -115,7 +115,7 @@ const CloseButton = () => {
     pack: 'material-community',
     name: 'close-circle-outline',
     size: 30,
-    color: theme['color-basic-800'],
+    color: theme['color-basic-700'],
   });
 
   return (
@@ -132,7 +132,7 @@ const BackButton = () => {
     pack: 'font-awesome-5',
     name: 'chevron-left',
     size: 30,
-    color: theme['color-basic-800'],
+    color: theme['color-basic-700'],
   });
 
   return (

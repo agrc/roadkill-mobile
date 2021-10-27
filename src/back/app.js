@@ -7,11 +7,12 @@ import expressWinston from 'express-winston';
 import helmet from 'helmet';
 import Multer from 'multer';
 import winston from 'winston';
+import { getGetPhotoHandler } from './api/photos.js';
 import { getGetAllHandler, getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
 import { authenticate, getToken, logout } from './api/security.js';
 import { getApprove, getLogin, getRegister, getReject } from './api/user.js';
 import validate from './api/validation.js';
-import { upload } from './services/photos.js';
+import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getAllReports, getReport } from './services/report_management.js';
 import {
   approveUser,
@@ -136,11 +137,18 @@ app.post(
   validate(pickupSchema.omit(['photo'])),
   handleAsyncErrors(getNewPickupHandler(upload, createPickup))
 );
+
+// data retrieval
 app.get('/reports/reports', handleAsyncErrors(authenticate), handleAsyncErrors(getGetAllHandler(getAllReports)));
 app.get(
   '/reports/report/:reportId',
   handleAsyncErrors(authenticate),
   handleAsyncErrors(getGetReportHandler(getReport))
+);
+app.get(
+  '/photos/thumb/:photoId',
+  handleAsyncErrors(authenticate),
+  handleAsyncErrors(getGetPhotoHandler(true, getPhoto))
 );
 
 app.use(

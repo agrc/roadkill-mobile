@@ -58,8 +58,8 @@ export default function MyReportsScreen() {
             renderItem={({ item }) => (
               <ListItem
                 key={item.report_id}
-                title={item.species}
-                description={new Date(item.submit_date).toLocaleDateString()}
+                title={`${item.species}`}
+                description={`${new Date(item.submit_date).toLocaleString()}`}
                 accessoryRight={ArrowIcon}
                 onPress={() => navigation.navigate('Report Info', { reportId: item.report_id })}
               />

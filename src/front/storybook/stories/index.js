@@ -3,6 +3,7 @@ import './MapButton.stories';
 import './PhotoCapture.stories';
 import './RadioPills.stories';
 import './RepeatSubmission.stories';
+import './ReportInfo.stories';
 import './SearchList.stories';
 import './Species.stories';
 import './Spinner.stories';
