@@ -1,5 +1,5 @@
 import { db } from './clients.js';
-import { coordStringToWKT } from './utilities.js';
+import { coordStringToWKT, geographyToCoordinates } from './utilities.js';
 
 export async function createReport({
   bucket_path,
@@ -109,11 +109,11 @@ export async function getReport(reportId) {
     .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
     .columns(
       'r.report_id',
-      'r.animal_location',
+      db.raw(geographyToCoordinates('animal_location')),
       'r.photo_id',
-      'p.photo_location',
+      db.raw(geographyToCoordinates('photo_location')),
       'p.photo_date',
-      'r.submit_location',
+      db.raw(geographyToCoordinates('submit_location')),
       'r.submit_date',
       'r.species',
       'r.species_confidence_level',

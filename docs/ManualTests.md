@@ -137,3 +137,22 @@ Setup: open the report and select a location
 | set up                        | action         | assertion                   |
 |-------------------------------|----------------|-----------------------------|
 | fill out all values in a form | close the form | reopen the same report type and verify that all controls have been reset |
+
+## My Reports
+
+Setup: open the My Reports view in the main menu
+
+| set up | action          | assertion                                         |
+|--------|-----------------|---------------------------------------------------|
+|        |                 | existing reports should be listed in descending chronological order |
+|        | tap on a report | the app navigates to the report info page and displays data about the specific report |
+
+### Report Info
+
+Setup: Main menu -> My Reports -> Tap on a report
+
+| set up | action                                | assertion                   |
+|--------|---------------------------------------|-----------------------------|
+|        | tap on a report with a valid photo    | the photo thumbnail and id is displayed |
+|        | tap on a report without a valid photo | the photo controls are not displayed |
+|        |                                       | map is zoomed to the extent of the pins associated with the report |

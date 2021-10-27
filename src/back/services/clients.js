@@ -2,6 +2,8 @@ import { Firestore } from '@google-cloud/firestore';
 import { Storage } from '@google-cloud/storage';
 import sgMail from '@sendgrid/mail';
 import knex from 'knex';
+import knexPostgis from 'knex-postgis';
+import config from '../config.js';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -15,9 +17,12 @@ export const db = knex({
   },
 });
 
+export const st = knexPostgis(db);
+
 // no auth needed if running via cloud run or if you have a local emulator running
 export const firestore = new Firestore();
 
 export const mail = sgMail;
 
-export const storage = new Storage();
+const storage = new Storage();
+export const bucket = storage.bucket(config.GCP_BUCKET);
