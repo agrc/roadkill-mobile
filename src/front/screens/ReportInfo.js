@@ -148,7 +148,7 @@ export function ReportInfo({ data }) {
       <ValueContainer label="Comments" value={data.comments} />
       {data.photo_id ? (
         <>
-          <ValueWithLegend color={photoColor} setColor={setPhotoColor}>
+          <ValueWithLegend color={photoColor} setColor={setPhotoColor} hideLegend={data.photo_location === null}>
             <View style={[styles.valueContainer, styles.photoContainer]}>
               <View style={{ marginLeft: -PADDING, flex: 1 }}>
                 <ValueContainer label="Photo ID" value={data.photo_id} divider={false} />
@@ -170,7 +170,7 @@ ReportInfo.propTypes = {
   data: propTypes.object,
 };
 
-function ValueWithLegend({ children, setColor, color }) {
+function ValueWithLegend({ children, setColor, color, hideLegend }) {
   const originalColor = useRef(color);
 
   return (
@@ -180,7 +180,7 @@ function ValueWithLegend({ children, setColor, color }) {
       style={styles.legendContainer}
     >
       {children}
-      <View style={[styles.legendSwatch, { backgroundColor: originalColor.current }]} />
+      {!hideLegend ? <View style={[styles.legendSwatch, { backgroundColor: originalColor.current }]} /> : null}
     </PressableOpacity>
   );
 }
@@ -188,6 +188,7 @@ ValueWithLegend.propTypes = {
   setColor: propTypes.func.isRequired,
   color: propTypes.string.isRequired,
   children: propTypes.node.isRequired,
+  hideLegend: propTypes.bool,
 };
 
 function ValueContainer({ label, value, divider = true }) {

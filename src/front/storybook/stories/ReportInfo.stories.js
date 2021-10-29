@@ -45,9 +45,14 @@ const distinctLocations = {
   submit_location: '-111.51 40.01',
   photo_location: '-111.49 40.02',
 };
+const noPhotoLocation = {
+  ...pickupData,
+  photo_location: null,
+};
 
 storiesOf('ReportInfo', module)
   .addDecorator((getStory) => <ScrollView>{getStory()}</ScrollView>)
   .add('public report', () => <ReportInfo data={publicData} />)
   .add('pickup report', () => <ReportInfo data={pickupData} />)
-  .add('distinct locations', () => <ReportInfo data={distinctLocations} />);
+  .add('distinct locations', () => <ReportInfo data={distinctLocations} />)
+  .add('no photo location', () => <ReportInfo data={noPhotoLocation} />);
