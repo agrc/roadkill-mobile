@@ -1,3 +1,21 @@
+# [v3.0.0-451](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-436...v3.0.0-451) (2021-10-29)
+
+
+### Bug Fixes
+
+* check for access not refresh token ([584911c](https://github.com/agrc/roadkill-mobile/commit/584911c39e82de1ba2e497351e4d52701f33b3c0))
+* fix bug preventing utahid auth via authenticator app ([e4dde2c](https://github.com/agrc/roadkill-mobile/commit/e4dde2c0d502ab93ed944635df8dc9273e211695)), closes [#112](https://github.com/agrc/roadkill-mobile/issues/112) [#76](https://github.com/agrc/roadkill-mobile/issues/76)
+* make photo date not required ([0aa6586](https://github.com/agrc/roadkill-mobile/commit/0aa6586c10a1ee41dbd954eae9ff5db91bc22c34))
+
+
+### Features
+
+* add custom icon and splash screen ([59e5855](https://github.com/agrc/roadkill-mobile/commit/59e58553d8df9ecd3f6c48b6965f7656396add4f)), closes [#114](https://github.com/agrc/roadkill-mobile/issues/114)
+* basic my reports list ([756bcb1](https://github.com/agrc/roadkill-mobile/commit/756bcb17cb41ddf5c05f4254015b10748c1d3b26)), closes [#78](https://github.com/agrc/roadkill-mobile/issues/78)
+* implement report info screen ([f784fb9](https://github.com/agrc/roadkill-mobile/commit/f784fb95cf75a7d55368ca81113589ba7ec2a413))
+
+
+
 # [v3.0.0-436](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-412...v3.0.0-436) (2021-10-19)
 
 
