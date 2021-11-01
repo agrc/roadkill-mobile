@@ -1,3 +1,12 @@
+# [v3.0.0-453](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-451...v3.0.0-453) (2021-11-01)
+
+
+### Features
+
+* **front:** refine app icons, splashscreen and app text ([b728812](https://github.com/agrc/roadkill-mobile/commit/b7288126529df842212b289c716ad6f3fcb174d7)), closes [#114](https://github.com/agrc/roadkill-mobile/issues/114)
+
+
+
 # [v3.0.0-451](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-436...v3.0.0-451) (2021-10-29)
 
 
