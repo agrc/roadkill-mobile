@@ -24,7 +24,7 @@ if (process.env.JEST_WORKER_ID) {
 const commitCount = git.count('HEAD');
 
 export default {
-  name: 'Utah Wildlife-Vehicle Collision Reporter',
+  name: 'WVC Reporter',
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
   // this needs to be different from the bundleId, otherwise android presents two options for redirect
