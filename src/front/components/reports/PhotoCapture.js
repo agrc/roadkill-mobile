@@ -29,7 +29,13 @@ export function getDateFromExif(exif) {
     const parts = exif.DateTimeOriginal.split(' ');
     const dateString = `${parts[0].replace(/:/g, '-')}T${parts[1]}Z`;
 
-    return new Date(dateString).toISOString();
+    const date = new Date(dateString);
+
+    // exif date string is in the current timezone of the device
+    // we need to adjust it to UTC
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+    return date.toISOString();
   }
 
   return null;
@@ -54,7 +60,6 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
       return;
     }
 
-    console.log('status', status);
     // For `ImagePicker.launchImageLibraryAsync`: there may be issues with this on android if the memory on the device is low.
     // I'm not sure that there is a great solution for this app since the app reboots and it's
     // not set up to go back to the report screen. I'm going to just leave it as is for now and wait
@@ -62,9 +67,7 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
     // Ref: https://github.com/expo/expo/issues/11103
     let result;
     try {
-      console.log('launchImageLibraryAsync');
       result = await ImagePicker.launchImageLibraryAsync(photoOptions);
-      console.log('result', result);
     } catch (error) {
       console.log('error', error);
     }
@@ -92,16 +95,13 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
 
       return;
     }
-    console.log('status', status);
 
-    console.log('photoOptions', photoOptions);
     let result;
     try {
       result = await ImagePicker.launchCameraAsync(photoOptions);
     } catch (error) {
       console.log('error', error);
     }
-    console.log('result', result);
 
     if (!result.cancelled) {
       const { uri, exif } = result;
