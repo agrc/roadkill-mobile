@@ -49,7 +49,7 @@ export default function ReportInfoScreen() {
   React.useEffect(() => {
     if (data) {
       navigation.setOptions({
-        title: `${isPickupReport(data) ? 'Pickup' : 'Public'} Report Info`,
+        title: `${isPickupReport(data) ? 'Pickup' : 'Carcass'} Report Info`,
       });
     }
   }, [data]);
