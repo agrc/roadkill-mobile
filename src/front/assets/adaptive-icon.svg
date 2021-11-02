@@ -2,15 +2,15 @@
 <svg
    id="Layer_1"
    data-name="Layer 1"
-   viewBox="0 0 600 600.00001"
+   viewBox="0 0 1024 1024"
    version="1.1"
    sodipodi:docname="adaptive-icon.svg"
-   width="600"
-   height="600"
+   width="1024"
+   height="1024"
    inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
-   inkscape:export-filename="/Users/stdavis/Documents/Projects/roadkill-mobile-rewrite/src/front/assets/icon.png"
-   inkscape:export-xdpi="163.84"
-   inkscape:export-ydpi="163.84"
+   inkscape:export-filename="/Users/stdavis/Documents/Projects/roadkill-mobile-rewrite/src/front/assets/adaptive-icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -33,9 +33,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      showborder="true"
-     inkscape:zoom="0.92408866"
-     inkscape:cx="133.64519"
-     inkscape:cy="182.88288"
+     inkscape:zoom="0.53572999"
+     inkscape:cx="1066.7687"
+     inkscape:cy="365.85594"
      inkscape:window-width="1938"
      inkscape:window-height="1218"
      inkscape:window-x="0"
@@ -43,8 +43,8 @@
      inkscape:window-maximized="0"
      inkscape:current-layer="Layer_1" />
   <image
-     width="596.44196"
-     height="633.15356"
+     width="1017.3069"
+     height="1019.9493"
      preserveAspectRatio="none"
      xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwIAAAMECAYAAAAM5ZKlAAAABHNCSVQICAgIfAhkiAAAIABJREFU
 eJzsvdly47jWLJygRlu2y1Wuqffp+C/O+z/Tufii9/52DbZlWxPFAf8FvSiIAolpuUxJyIiOLldJ
@@ -2805,11 +2805,11 @@ PieJwM3NFZJk97t997K+1iXx9dXLsizHcrnavAOSRGCxmGM8thuU9MXLTIhepkZVyeAxgA5xXOaG
 Q3rZYrGoJwLBfzkiIiIiIiIiIiIi4qjwf80baUZtXebLAAAAAElFTkSuQmCC
 "
      id="image920"
-     x="2.5349045"
-     y="-31.581715" />
+     x="1114.9198"
+     y="-3.2667646" />
   <g
      id="g6969"
-     transform="translate(32.500002,14.500002)">
+     transform="matrix(1.0202732,0,0,1.0202732,239.07692,173.88588)">
     <path
        d="M 267.34856,476.79248 H 46.798557 c -2.822149,0.13363 -5.649179,-0.12551 -8.4,-0.77 -8.143084,-2.42723 -12.349872,-11.41105 -9,-19.22 0.450777,-1.07495 0.975362,-2.11744 1.57,-3.12 74.426673,-129 148.883333,-257.98 223.370003,-386.939989 4.83637,-8.36925 13.3739,-10.855415 20.38211,-6.521365 0.78776,0.487171 1.5562,1.060516 2.29789,1.721365 1.67775,1.617586 3.08858,3.490815 4.18,5.55 74.16,128.373319 148.29333,256.763319 222.4,385.169989 7.59,13.16 1.11,24.12 -14.19,24.12 -74.02,0.02 -148.04,0.0233 -222.06,0.01 z"
        id="path9-7"
