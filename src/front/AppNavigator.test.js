@@ -4,6 +4,7 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import React from 'react';
 import { View } from 'react-native';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
 
@@ -19,14 +20,26 @@ jest.mock('@storybook/react-native', () => ({
   addDecorator: jest.fn(),
   configure: jest.fn(),
 }));
+
+const queryClient = new QueryClient();
+const Wrapper = ({ children }) => (
+  // if I use a fragment rather than a view below, the press event chokes
+  <View>
+    <IconRegistry icons={EvaIconsPack} />
+    <QueryClientProvider client={queryClient}>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </ApplicationProvider>
+    </QueryClientProvider>
+  </View>
+);
+
 describe('AppNavigator', () => {
   it('renders choose type screen correctly', async () => {
     const component = (
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <AuthContextProvider>
-          <AppNavigator />
-        </AuthContextProvider>
-      </ApplicationProvider>
+      <Wrapper>
+        <AppNavigator />
+      </Wrapper>
     );
     const { findAllByRole } = render(component);
 
@@ -35,15 +48,9 @@ describe('AppNavigator', () => {
   });
   it('filters the auth options appropriately for public', async () => {
     const component = (
-      // if I use a fragment rather than a view below, the press event chokes
-      <View>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <AuthContextProvider>
-            <AppNavigator />
-          </AuthContextProvider>
-        </ApplicationProvider>
-      </View>
+      <Wrapper>
+        <AppNavigator />
+      </Wrapper>
     );
     const { findByText, findAllByAccessibilityLabel } = render(component);
 
@@ -56,15 +63,9 @@ describe('AppNavigator', () => {
   });
   it('filters the auth options appropriately for contractor', async () => {
     const component = (
-      // if I use a fragment rather than a view below, the press event chokes
-      <View>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <AuthContextProvider>
-            <AppNavigator />
-          </AuthContextProvider>
-        </ApplicationProvider>
-      </View>
+      <Wrapper>
+        <AppNavigator />
+      </Wrapper>
     );
     const { findByText, findAllByAccessibilityLabel } = render(component);
 
@@ -77,15 +78,9 @@ describe('AppNavigator', () => {
   });
   it('filters the auth options appropriately for agency', async () => {
     const component = (
-      // if I use a fragment rather than a view below, the press event chokes
-      <View>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <AuthContextProvider>
-            <AppNavigator />
-          </AuthContextProvider>
-        </ApplicationProvider>
-      </View>
+      <Wrapper>
+        <AppNavigator />
+      </Wrapper>
     );
     const { findByText, findAllByAccessibilityLabel } = render(component);
 
