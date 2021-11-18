@@ -10,18 +10,20 @@ import winston from 'winston';
 import { getGetPhotoHandler } from './api/photos.js';
 import { getGetAllHandler, getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
 import { authenticate, getToken, logout } from './api/security.js';
-import { getApprove, getLogin, getRegister, getReject } from './api/user.js';
+import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getAllReports, getReport } from './services/report_management.js';
 import {
   approveUser,
+  getProfile,
   getUser,
   isExistingUser,
   loginSchema,
   registerSchema,
   registerUser,
   rejectUser,
+  updateProfile,
   updateUser,
 } from './services/user_management.js';
 
@@ -120,6 +122,10 @@ app.post(
 app.post('/user/logout', handleAsyncErrors(logout));
 app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
 app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
+
+app.get('/user/profile', handleAsyncErrors(authenticate), handleAsyncErrors(getGetProfile(getProfile)));
+// TODO: add validation after we get legit organizations implemented
+app.post('/user/profile/update', handleAsyncErrors(authenticate), handleAsyncErrors(getUpdateProfile(updateProfile)));
 // app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
 
 // data submission

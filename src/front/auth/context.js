@@ -4,6 +4,7 @@ import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
+import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../config';
 import { useAsyncError, useSecureState } from '../utilities';
@@ -146,6 +147,7 @@ export function AuthContextProvider({ children, onReady }) {
     });
   };
 
+  const queryClient = useQueryClient();
   const logOut = (skipConfirm = false) => {
     return new Promise((resolve) => {
       const doLogOut = async () => {
@@ -177,6 +179,8 @@ export function AuthContextProvider({ children, onReady }) {
 
         await SecureStore.deleteItemAsync(config.USER_STORE_KEY);
         await SecureStore.deleteItemAsync(config.USER_TYPE_KEY);
+
+        queryClient.clear();
 
         setStatus(STATUS.idle);
 

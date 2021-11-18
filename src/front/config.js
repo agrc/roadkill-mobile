@@ -48,5 +48,6 @@ export default {
   UNKNOWN: 'unknown',
   QUERY_KEYS: {
     reports: 'reports',
+    profile: 'profile',
   },
 };

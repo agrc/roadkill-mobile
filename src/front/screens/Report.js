@@ -139,6 +139,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const mutation = useMutation(submitReport, {
     onSuccess: () => {
       queryClient.invalidateQueries(config.QUERY_KEYS.reports);
+      queryClient.invalidateQueries(config.QUERY_KEYS.profile);
     },
     onError: (error) => {
       Alert.alert('Error', error.message);

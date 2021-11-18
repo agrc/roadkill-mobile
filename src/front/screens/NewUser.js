@@ -7,6 +7,7 @@ import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import 'yup-phone';
 import useAuth from '../auth/context';
+import MyPhoneInput from '../components/MyPhoneInput';
 import config from '../config';
 import RootView from '../RootView';
 
@@ -60,7 +61,7 @@ export default function NewUserScreen() {
           onSubmit={register}
           isSubmitting={registerMutation.isLoading}
         >
-          {({ values, handleChange, handleBlur, handleSubmit, errors, isValid, touched }) => (
+          {({ values, handleChange, handleBlur, handleSubmit, errors, isValid, touched, dirty }) => (
             <>
               <View style={styles.inputsContainer}>
                 <Input style={styles.input} label="Name" value={authInfo?.oauthUser.name} disabled />
@@ -78,7 +79,7 @@ export default function NewUserScreen() {
                     status={errors.organization ? 'danger' : null}
                   />
                 ) : null}
-                <Input
+                <MyPhoneInput
                   accessibilityRole="text"
                   style={styles.input}
                   label="Phone"
@@ -87,12 +88,16 @@ export default function NewUserScreen() {
                   keyboardType="phone-pad"
                   textContentType="telephoneNumber"
                   value={values.phone}
-                  onChangeText={handleChange('phone')}
+                  onChange={handleChange('phone')}
                   onBlur={handleBlur('phone')}
                   status={errors.phone ? 'danger' : null}
                 />
               </View>
-              <Button onPress={handleSubmit} style={styles.input} disabled={!isValid || registerMutation.isLoading}>
+              <Button
+                onPress={handleSubmit}
+                style={styles.input}
+                disabled={!dirty || !isValid || registerMutation.isLoading}
+              >
                 Register
               </Button>
             </>
