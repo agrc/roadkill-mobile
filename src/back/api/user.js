@@ -72,3 +72,28 @@ export function getReject(rejectUser) {
     return response.status(200).send(result);
   };
 }
+
+export function getGetProfile(getProfile) {
+  return async function getProfileHandler(request, response) {
+    let profileData;
+    try {
+      profileData = await getProfile(response.locals.user.appUser.id);
+    } catch (error) {
+      return response.status(500).send(error.message);
+    }
+
+    return response.status(200).json({ profile: profileData });
+  };
+}
+
+export function getUpdateProfile(updateProfile) {
+  return async function updateProfileHandler(request, response) {
+    try {
+      await updateProfile(response.locals.user.appUser.id, request.body, response.locals.user.appUser.organization_id);
+    } catch (error) {
+      return response.status(500).send(error.message);
+    }
+
+    return response.status(200).json({ success: true });
+  };
+}

@@ -125,7 +125,7 @@ export async function authenticate(request, response, next) {
       response.locals.user = userResponse.body;
 
       const appUser = await getAppUser(userResponse.body.sub, authProvider);
-      response.locals.appUser = appUser;
+      response.locals.user.appUser = appUser;
 
       if (isJWTToken) {
         setUser(token, {
