@@ -17,7 +17,6 @@ import useAuth from './auth/context';
 import config from './config';
 import { getIcon } from './icons';
 import ChooseTypeScreen from './screens/ChooseType';
-import LoginScreen from './screens/Login';
 import MainScreen from './screens/Main';
 import MyReportsScreen from './screens/MyReports';
 import NewUserScreen from './screens/NewUser';
@@ -41,7 +40,6 @@ const AuthNavigator = () => {
   return (
     <Navigator screenOptions={{ headerShown: false }} initialRouteName={userType ? 'login' : null}>
       <Screen name="choose-type" component={ChooseTypeScreen} />
-      <Screen name="login" component={LoginScreen} />
       <Screen name="new-user" component={NewUserScreen} />
       {config.SHOW_STORYBOOK ? <Screen name="storybook" component={StorybookUIRoot} /> : null}
     </Navigator>
