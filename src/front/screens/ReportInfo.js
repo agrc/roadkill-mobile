@@ -11,9 +11,11 @@ import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
+import ValueContainer from '../components/ValueContainer';
 import config from '../config';
 import { coordsToLocation } from '../location';
 import useStyles, { PADDING } from '../styles';
+import { dateToString } from '../utilities';
 
 const isPickupReport = (report) => {
   return report.pickup_date !== null;
@@ -93,9 +95,6 @@ export function ReportInfo({ data }) {
     allCoords = [submitCoords, animalCoords, photoCoords].filter((value) => value);
   }
   const EDGE_PADDING = 45;
-  const dateToString = (date) => {
-    return date ? new Date(date).toLocaleString() : null;
-  };
 
   return (
     <>
@@ -149,7 +148,7 @@ export function ReportInfo({ data }) {
       {data.photo_id ? (
         <>
           <ValueWithLegend color={photoColor} setColor={setPhotoColor} hideLegend={data.photo_location === null}>
-            <View style={[styles.valueContainer, styles.photoContainer]}>
+            <View style={styles.photoContainer}>
               <View style={{ marginLeft: -PADDING, flex: 1 }}>
                 <ValueContainer label="Photo ID" value={data.photo_id} divider={false} />
                 <ValueContainer label="Photo Date" value={dateToString(data.photo_date)} divider={false} />
@@ -191,36 +190,12 @@ ValueWithLegend.propTypes = {
   hideLegend: propTypes.bool,
 };
 
-function ValueContainer({ label, value, divider = true }) {
-  return (
-    <>
-      <View style={styles.valueContainer}>
-        <Text category="s1">{label}</Text>
-        <Text>{value}</Text>
-      </View>
-      {divider ? <Divider /> : null}
-    </>
-  );
-}
-ValueContainer.propTypes = {
-  label: propTypes.string.isRequired,
-  value: propTypes.any,
-  divider: propTypes.bool,
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   map: {
     height: 200,
-  },
-  valueContainer: {
-    flex: 1,
-    padding: PADDING,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
   },
   legendContainer: {
     flexDirection: 'row',
@@ -233,5 +208,11 @@ const styles = StyleSheet.create({
     height: 75,
     width: 75,
   },
-  photoContainer: {},
+  photoContainer: {
+    flex: 1,
+    padding: PADDING,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
 });

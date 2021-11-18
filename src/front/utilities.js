@@ -163,3 +163,7 @@ export function coordinatesToString(coordinates) {
 
   return `${coordinates.longitude} ${coordinates.latitude}`;
 }
+
+export function dateToString(date) {
+  return date ? new Date(date).toLocaleString() : null;
+}

@@ -186,3 +186,40 @@ export async function getUser(auth_id, auth_provider) {
 
   return rows[0];
 }
+
+export async function getProfile(userId) {
+  const profileData = await db('users as u')
+    .leftJoin('organizations as o', 'u.organization_id', 'o.id')
+    .columns(
+      'u.auth_provider',
+      'u.email',
+      'u.first_name',
+      'u.last_name',
+      'u.phone',
+      'u.role',
+      'u.approved',
+      'u.registered_date',
+      { organization: 'o.name' }
+    )
+    .where({ 'u.id': userId })
+    .first();
+
+  const reportsSubmitted = await db('report_infos').count('report_id').where({ user_id: userId });
+
+  return {
+    ...profileData,
+    reports_submitted: reportsSubmitted[0].count,
+  };
+}
+
+export async function updateProfile(userId, profile, organizationId) {
+  const { phone, organization } = profile;
+
+  await db('users').where({ id: userId }).update({
+    phone,
+  });
+
+  await db('organizations').where({ id: organizationId }).update({
+    name: organization,
+  });
+}
