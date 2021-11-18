@@ -43,9 +43,7 @@ export default function ChooseTypeScreen({ navigation }) {
         </Text>
 
         <View style={styles.optionsContainer}>
-          <Option type={config.USER_TYPES.public}>
-            Member of the public that would like to report an animal carcass
-          </Option>
+          <Option type={config.USER_TYPES.public}>Member of the public</Option>
           <Option type={config.USER_TYPES.contractor}>State contractor</Option>
           <Option type={config.USER_TYPES.agencyEmployee}>State agency employee</Option>
           {config.SHOW_STORYBOOK ? <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button> : null}
