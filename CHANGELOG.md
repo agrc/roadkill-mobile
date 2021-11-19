@@ -1,3 +1,25 @@
+# [v3.0.0-487](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-453...v3.0.0-487) (2021-11-19)
+
+
+### Bug Fixes
+
+* **front:** adjust photo date for current timezone on device ([9d3ca38](https://github.com/agrc/roadkill-mobile/commit/9d3ca3896b3b170fadbe3f3cb0f412eef7424bc1))
+* **front:** permission name typo ([00a03c6](https://github.com/agrc/roadkill-mobile/commit/00a03c617d9e2dc5350d6b684e9dfad0aa82d7d8))
+* make sure that we always have a fresh version of the current auth provider ([f9a83e1](https://github.com/agrc/roadkill-mobile/commit/f9a83e12c821bc4b1fb8f63d77f70ef3c8bd90f5)), closes [#111](https://github.com/agrc/roadkill-mobile/issues/111)
+* remove unused map prop and add altitude ([4d736cb](https://github.com/agrc/roadkill-mobile/commit/4d736cb999017a0ab26daae8d2faaaa97b9c3905))
+* remove welcome page ([69018f8](https://github.com/agrc/roadkill-mobile/commit/69018f8dce864b473f16d908362275f4e4e78a04)), closes [#121](https://github.com/agrc/roadkill-mobile/issues/121)
+* simplify text for public choice ([5b73a54](https://github.com/agrc/roadkill-mobile/commit/5b73a54cd2d69178b02fe0b1cc7b73310790809c)), closes [#120](https://github.com/agrc/roadkill-mobile/issues/120)
+* true/false -> yes/no for repeat submission value ([f83ab1a](https://github.com/agrc/roadkill-mobile/commit/f83ab1a7a784d16b7d0d7304be77f98d0d050d93)), closes [#140](https://github.com/agrc/roadkill-mobile/issues/140)
+
+
+### Features
+
+* add check to make sure that location services are turned on ([26c7b06](https://github.com/agrc/roadkill-mobile/commit/26c7b06e25f9c8ae3594001b73e41cc30fc8a4bd))
+* conditionally hide age & sex components ([cca2601](https://github.com/agrc/roadkill-mobile/commit/cca2601a82a7f0e25f96bb104af62b41feded674)), closes [#138](https://github.com/agrc/roadkill-mobile/issues/138)
+* implement profile screen ([66037c8](https://github.com/agrc/roadkill-mobile/commit/66037c8784b2c01c1b3b54b042a0c587a4c5c46b)), closes [#73](https://github.com/agrc/roadkill-mobile/issues/73)
+
+
+
 # [v3.0.0-453](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-451...v3.0.0-453) (2021-11-01)
 
 
