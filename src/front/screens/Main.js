@@ -64,6 +64,13 @@ export default function MainScreen() {
         return;
       }
 
+      const enabled = await Location.hasServicesEnabledAsync();
+      if (!enabled) {
+        Alert.alert('Error', 'Location services are required to submit reports.', [
+          { text: 'OK', onPress: () => Linking.openSettings() },
+        ]);
+      }
+
       const location = await getLocation();
 
       setInitialLocation(location);
