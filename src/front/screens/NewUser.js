@@ -46,7 +46,7 @@ export default function NewUserScreen() {
   };
 
   const cancel = () => {
-    navigation.navigate('login');
+    navigation.navigate('choose-type');
     logOut(true);
   };
 
