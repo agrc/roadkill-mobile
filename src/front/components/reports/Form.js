@@ -37,6 +37,16 @@ export default function Form({
       formikRef.current.setFieldValue('photo_date', date);
     }
   };
+  const [ableToIdentify, setAbleToIdentify] = React.useState(true);
+  React.useEffect(() => {
+    if (!ableToIdentify) {
+      formikRef.current.setFieldValue('age_class', config.UNKNOWN);
+      formikRef.current.setFieldValue('sex', config.UNKNOWN);
+    } else {
+      formikRef.current.setFieldValue('age_class', null);
+      formikRef.current.setFieldValue('sex', null);
+    }
+  }, [ableToIdentify]);
 
   return (
     <Formik
@@ -46,7 +56,7 @@ export default function Form({
       onSubmit={(values) => mutation.mutate(values)}
       style={style}
     >
-      {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
+      {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange }) => (
         <>
           <Species
             onChange={(newValue) => {
@@ -58,21 +68,27 @@ export default function Form({
               species_confidence_level: values.species_confidence_level,
             }}
             style={styles.bottomBump}
+            ableToIdentify={ableToIdentify}
+            setAbleToIdentify={setAbleToIdentify}
           />
-          <Text category="h6">Animal age?</Text>
-          <RadioPills
-            value={values.age_class}
-            onChange={(value) => setFieldValue('age_class', value)}
-            options={AGES.concat([config.UNKNOWN])}
-            style={styles.bottomBump}
-          />
-          <Text category="h6">Animal sex?</Text>
-          <RadioPills
-            value={values.sex}
-            onChange={(value) => setFieldValue('sex', value)}
-            options={GENDERS.concat([config.UNKNOWN])}
-            style={styles.bottomBump}
-          />
+          {ableToIdentify ? (
+            <>
+              <Text category="h6">Animal age?</Text>
+              <RadioPills
+                value={values.age_class}
+                onChange={handleChange('age_class')}
+                options={AGES.concat([config.UNKNOWN])}
+                style={styles.bottomBump}
+              />
+              <Text category="h6">Animal sex?</Text>
+              <RadioPills
+                value={values.sex}
+                onChange={handleChange('sex')}
+                options={GENDERS.concat([config.UNKNOWN])}
+                style={styles.bottomBump}
+              />
+            </>
+          ) : null}
           {children({ values, setFieldValue, errors })}
           <PhotoCapture
             isRequired={validationSchema.fields.photo.spec.presence === 'required'}
@@ -85,7 +101,7 @@ export default function Form({
             multiline
             textStyle={{ minHeight: 64 }}
             value={values.comments}
-            onChangeText={(value) => setFieldValue('comments', value)}
+            onChangeText={handleChange('comments')}
           />
           <View style={styles.buttonContainer}>
             <Button appearance="ghost" onPress={() => onClose()} style={styles.button}>
