@@ -5,7 +5,8 @@ let API = process.env.API;
 // how to handle separate devices? ngrok? localtunnel? deploy to gcp dev?
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
   if (!Constants.isDevice && Constants.platform.android) {
-    API = API.replace('localhost', '10.0.2.2');
+    // API = API.replace('localhost', '10.0.3.2'); // genymotion emulator
+    API = API.replace('localhost', '10.0.2.2'); // android studio emulator
   } else if (Constants.isDevice) {
     API = API.replace('localhost', Constants.manifest.debuggerHost.split(':').shift());
   }
