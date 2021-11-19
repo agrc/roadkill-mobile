@@ -24,7 +24,6 @@ export default function RepeatSubmission({ checked, onChange, cancelReport }) {
 
   return (
     <>
-      <Text category="h6">Repeat Submission</Text>
       <Text appearance="hint">Have you reported this animal before?</Text>
       <Toggle checked={checked} onChange={onToggle} style={styles.toggle}>
         {checked ? 'Yes' : 'No'}

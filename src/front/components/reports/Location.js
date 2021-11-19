@@ -13,9 +13,6 @@ function Location({ onSetLocation }) {
 
   return (
     <View>
-      <Text category="h6" style={commonStyles.margin}>
-        Location
-      </Text>
       <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
       <Button
         accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs' })}

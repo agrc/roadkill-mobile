@@ -7,7 +7,7 @@ import { Alert, Image, StyleSheet, View } from 'react-native';
 import config from '../../config';
 import { getIcon } from '../../icons';
 import { ACCURACY, getLocation } from '../../location';
-import useStyles from '../../styles';
+import useStyles, { PADDING } from '../../styles';
 import { coordinatesToString } from '../../utilities';
 import Spinner from '../Spinner';
 
@@ -134,13 +134,6 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
 
   return (
     <>
-      <Text category="h6">Photo</Text>
-      {isRequired ? (
-        <Text appearance="hint">A photo of the animal at the pick up location is required.</Text>
-      ) : (
-        <Text appearance="hint">If possible and safe, please take a photo.</Text>
-      )}
-
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Button accessoryLeft={getIcon({ pack: 'font-awesome', name: 'camera' })} onPress={captureImage}>
@@ -175,6 +168,11 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
         )}
         <Spinner show={showLoader} />
       </View>
+      {isRequired ? (
+        <Text appearance="hint">A photo of the animal at the pick up location is required.</Text>
+      ) : (
+        <Text appearance="hint">If possible and safe, please take a photo.</Text>
+      )}
     </>
   );
 }
@@ -187,13 +185,14 @@ PhotoCapture.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: PADDING,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 5,
   },
   buttonContainer: {
     flex: 1,
-    marginRight: 10,
+    marginRight: PADDING,
     justifyContent: 'space-between',
   },
   image: {
