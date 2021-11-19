@@ -4,7 +4,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../../config';
-import useStyles, { PADDING } from '../../styles';
+import { PADDING } from '../../styles';
 import PhotoCapture from './PhotoCapture';
 import RadioPills from './RadioPills';
 import Species from './Species';
@@ -21,8 +21,6 @@ export default function Form({
   style,
   onClose,
 }) {
-  const commonStyles = useStyles();
-
   const onPhotoChange = (newPhotoProps) => {
     if (!newPhotoProps) {
       formikRef.current.setFieldValue('photo', null);
@@ -136,6 +134,7 @@ const styles = StyleSheet.create({
     marginTop: PADDING * 2,
     width: '100%',
     flexDirection: 'row',
+    marginBottom: PADDING * 2,
   },
   button: {
     flex: 1,
