@@ -367,11 +367,12 @@ Species.propTypes = {
 
 const styles = StyleSheet.create({
   toggle: {
-    marginVertical: PADDING,
+    marginTop: PADDING / 2,
   },
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginBottom: PADDING,
   },
   searchContainer: {
     marginBottom: PADDING,
