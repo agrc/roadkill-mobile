@@ -20,6 +20,8 @@ const isPickupReport = (report) => {
   return report.pickup_date !== null;
 };
 
+const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');
+
 export default function ReportInfoScreen() {
   const { reportId } = useRoute().params;
   const { getBearerToken } = useAuth();
@@ -106,7 +108,7 @@ export function ReportInfo({ data }) {
       ) : (
         // public report
         <>
-          <ValueContainer label="Repeat Submission" value={data.repeat_submission.toString()} />
+          <ValueContainer label="Repeat Submission" value={booleanToYesNo(data.repeat_submission)} />
           <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date)} />
         </>
       )}
