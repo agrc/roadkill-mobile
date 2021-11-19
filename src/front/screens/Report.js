@@ -278,6 +278,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
                       checked={values.repeat_submission}
                       onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
                       cancelReport={() => onClose()}
+                      style={styles.bumpBottom}
                     />
                     <Text category="h6">When was the animal discovered?</Text>
                     <Datepicker
