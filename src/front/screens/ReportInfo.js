@@ -89,8 +89,7 @@ export function ReportInfo({ data }) {
         style={styles.map}
         isStatic={true}
         innerRef={mapRef}
-        maxZoomLevel={16}
-        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0 }}
+        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0, altitude: -1 }}
       >
         <Marker coordinate={animalCoords} />
       </Map>
