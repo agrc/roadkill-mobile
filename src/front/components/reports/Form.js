@@ -2,7 +2,7 @@ import { Button, Divider, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import propTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import config from '../../config';
 import useStyles, { PADDING } from '../../styles';
 import PhotoCapture from './PhotoCapture';
@@ -12,7 +12,15 @@ import Species from './Species';
 const GENDERS = ['female', 'male'];
 const AGES = ['adult', 'juvenile'];
 
-export default function Form({ formikRef, initialValues, validationSchema, children = () => null, mutation, style }) {
+export default function Form({
+  formikRef,
+  initialValues,
+  validationSchema,
+  children = () => null,
+  mutation,
+  style,
+  onClose,
+}) {
   const commonStyles = useStyles();
 
   const onPhotoChange = (newPhotoProps) => {
@@ -81,14 +89,19 @@ export default function Form({ formikRef, initialValues, validationSchema, child
             onChangeText={(value) => setFieldValue('comments', value)}
           />
           <Divider style={commonStyles.margin} />
-          <Button
-            status="info"
-            style={commonStyles.margin}
-            onPress={handleSubmit}
-            disabled={!dirty || !isValid || mutation.isLoading}
-          >
-            Submit Report
-          </Button>
+          <View style={[commonStyles.margin, styles.buttonContainer]}>
+            <Button appearance="ghost" onPress={() => onClose()} style={styles.button}>
+              Cancel
+            </Button>
+            <Button
+              status="info"
+              onPress={handleSubmit}
+              disabled={!dirty || !isValid || mutation.isLoading}
+              style={styles.button}
+            >
+              Submit Report
+            </Button>
+          </View>
           {/* {__DEV__ ? ( */}
           <>
             <Text category="c1">
@@ -118,5 +131,12 @@ Form.propTypes = {
 const styles = StyleSheet.create({
   bottomBump: {
     marginBottom: PADDING,
+  },
+  buttonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  button: {
+    flex: 1,
   },
 });
