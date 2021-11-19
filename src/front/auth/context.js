@@ -50,7 +50,12 @@ export function AuthContextProvider({ children, onReady }) {
     google: googleProvider,
     utahid: utahidProvider,
   };
-  const currentProvider = React.useRef(null);
+
+  let currentProvider;
+  if (authInfo) {
+    currentProvider = PROVIDER_LOOKUP[authInfo.providerName];
+  }
+
   const throwAsyncError = useAsyncError();
 
   React.useEffect(() => {
@@ -65,10 +70,6 @@ export function AuthContextProvider({ children, onReady }) {
 
   React.useEffect(() => {
     if (authInfo === null || authInfo) {
-      if (authInfo) {
-        console.log('authInfo', authInfo);
-        currentProvider.current = PROVIDER_LOOKUP[authInfo.providerName];
-      }
       onReady();
     }
   }, [authInfo]);
@@ -153,7 +154,7 @@ export function AuthContextProvider({ children, onReady }) {
       const doLogOut = async () => {
         setStatus(STATUS.loading);
 
-        if (currentProvider.current.hasValidToken()) {
+        if (currentProvider.hasValidToken()) {
           try {
             const response = await ky.post(`${config.API}/user/logout`, {
               headers: {
@@ -170,7 +171,7 @@ export function AuthContextProvider({ children, onReady }) {
         }
 
         try {
-          await currentProvider.current.logOut();
+          await currentProvider.logOut();
         } catch (error) {
           console.error(`provider logout failed: ${error.message}`);
         }
@@ -221,7 +222,7 @@ export function AuthContextProvider({ children, onReady }) {
     }
 
     try {
-      return await currentProvider.current.getBearerToken();
+      return await currentProvider.getBearerToken();
     } catch (error) {
       throwAsyncError(error);
     }
