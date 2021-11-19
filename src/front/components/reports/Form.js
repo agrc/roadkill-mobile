@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Text } from '@ui-kitten/components';
+import { Button, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -50,12 +50,6 @@ export default function Form({
     >
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit }) => (
         <>
-          {children({ values, setFieldValue, errors })}
-          <PhotoCapture
-            isRequired={validationSchema.fields.photo.spec.presence === 'required'}
-            onChange={onPhotoChange}
-            uri={values.photo?.uri}
-          />
           <Species
             onChange={(newValue) => {
               setFieldValue('species', newValue.species);
@@ -81,6 +75,13 @@ export default function Form({
             options={GENDERS.concat([config.UNKNOWN])}
             style={styles.bottomBump}
           />
+          {children({ values, setFieldValue, errors })}
+          <PhotoCapture
+            isRequired={validationSchema.fields.photo.spec.presence === 'required'}
+            onChange={onPhotoChange}
+            uri={values.photo?.uri}
+            style={styles.bottomBump}
+          />
           <Text category="h6">Additional comments:</Text>
           <Input
             multiline
@@ -88,8 +89,7 @@ export default function Form({
             value={values.comments}
             onChangeText={(value) => setFieldValue('comments', value)}
           />
-          <Divider style={commonStyles.margin} />
-          <View style={[commonStyles.margin, styles.buttonContainer]}>
+          <View style={styles.buttonContainer}>
             <Button appearance="ghost" onPress={() => onClose()} style={styles.button}>
               Cancel
             </Button>
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     marginBottom: PADDING,
   },
   buttonContainer: {
+    marginTop: PADDING * 2,
     width: '100%',
     flexDirection: 'row',
   },

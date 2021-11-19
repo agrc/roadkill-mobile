@@ -41,7 +41,7 @@ export function getDateFromExif(exif) {
   return null;
 }
 
-export default function PhotoCapture({ isRequired, onChange, uri }) {
+export default function PhotoCapture({ isRequired, onChange, uri, style }) {
   const [showLoader, setShowLoader] = React.useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
@@ -133,7 +133,7 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
   const PlaceholderIcon = getIcon({ pack: 'font-awesome', name: 'photo', size: 50, color: theme['color-basic-400'] });
 
   return (
-    <>
+    <View style={style}>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Button accessoryLeft={getIcon({ pack: 'font-awesome', name: 'camera' })} onPress={captureImage}>
@@ -173,7 +173,7 @@ export default function PhotoCapture({ isRequired, onChange, uri }) {
       ) : (
         <Text appearance="hint">If possible and safe, please take a photo.</Text>
       )}
-    </>
+    </View>
   );
 }
 
@@ -181,6 +181,7 @@ PhotoCapture.propTypes = {
   isRequired: propTypes.bool.isRequired,
   uri: propTypes.string,
   onChange: propTypes.func.isRequired,
+  style: propTypes.oneOfType([propTypes.object, propTypes.array]),
 };
 
 const styles = StyleSheet.create({
