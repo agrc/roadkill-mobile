@@ -250,9 +250,10 @@ export default function MainScreen() {
         </View>
         <View>
           <MapButton
-            iconPack="material"
-            iconName={isFollowing ? 'my-location' : 'location-searching'}
+            iconPack="font-awesome"
+            iconName={isFollowing ? 'location-arrow' : 'location-arrow'}
             onPress={() => followUser()}
+            color={isFollowing ? theme['color-info-600'] : null}
           />
         </View>
       </View>

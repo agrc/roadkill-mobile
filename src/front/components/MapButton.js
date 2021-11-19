@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../icons';
 
-const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize }) => {
+const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color }) => {
   const theme = useTheme();
   const buttonSize = 30;
   const alertSize = 12;
@@ -12,7 +12,7 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize }) 
     const Icon = getIcon({
       pack: iconPack,
       name: iconName,
-      color: 'white',
+      color: color || 'white',
       size: iconSize || buttonSize,
     });
     const AlertIcon = getIcon({
@@ -44,6 +44,7 @@ MapButton.propTypes = {
   style: propTypes.object,
   showAlert: propTypes.bool,
   iconSize: propTypes.number,
+  color: propTypes.string,
 };
 
 const styles = StyleSheet.create({
