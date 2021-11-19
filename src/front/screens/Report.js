@@ -1,4 +1,4 @@
-import { Button, Datepicker, Divider, NativeDateService, Text, useTheme } from '@ui-kitten/components';
+import { Datepicker, NativeDateService, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
 import ky from 'ky';
 import propTypes from 'prop-types';
@@ -197,13 +197,13 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     };
 
     if (!force && isDirty()) {
-      Alert.alert('Are you sure?', 'All in-progress report data will be lost.', [
+      Alert.alert('Are you sure you want to close the report?', 'All in-progress report data will be lost.', [
         {
           text: 'Cancel',
           style: 'cancel',
         },
         {
-          text: 'Close',
+          text: 'Close report',
           onPress: () => close(),
         },
       ]);
@@ -249,25 +249,9 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
       // The reason why I'm doing maxHeight rather than height is because we can't find the
       // height of the animated view until it's displayed. A fixed height would not be flexible
       // enough for different screen sizes.
-      style={containerStyle}
+      style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
       onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
-      <View style={[styles.header, { paddingTop: showMain ? 50 : null }]}>
-        <Text category="h5">{reportType == REPORT_TYPES.report ? 'Report a Carcass' : 'Pickup a Carcass'}</Text>
-        <Button
-          accessoryLeft={getIcon({
-            pack: 'material-community',
-            name: 'close-circle-outline',
-            size: 30,
-            color: theme['color-basic-800'],
-          })}
-          size="tiny"
-          appearance="ghost"
-          onPress={() => onClose()}
-          style={styles.closeButton}
-        />
-      </View>
-      <Divider />
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
         <View style={styles.body}>
           {!showMain ? <Location onSetLocation={onSetLocation} /> : null}
@@ -367,13 +351,6 @@ const styles = StyleSheet.create({
   body: {
     padding: PADDING * 2,
   },
-  header: {
-    padding: PADDING * 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  closeButton: { marginRight: -10 },
   hidden: { display: 'none' },
   bumpBottom: { marginBottom: PADDING },
 });
