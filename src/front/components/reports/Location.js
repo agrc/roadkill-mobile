@@ -1,4 +1,4 @@
-import { Button, Divider, Text } from '@ui-kitten/components';
+import { Button, Text } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -15,10 +15,6 @@ function Location({ onSetLocation, onEditLocation, showEdit }) {
     <>
       {showEdit ? (
         <View>
-          <Text appearance="hint" style={styles.note}>
-            <Autolink phone text={callText} />
-          </Text>
-          <Divider />
           <Text category="h6" style={commonStyles.margin}>
             Location
           </Text>
@@ -30,6 +26,9 @@ function Location({ onSetLocation, onEditLocation, showEdit }) {
           >
             Set Location
           </Button>
+          <Text appearance="hint" style={styles.note}>
+            <Autolink phone text={callText} />
+          </Text>
         </View>
       ) : (
         <Button
