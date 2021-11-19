@@ -193,28 +193,6 @@ export default function Species({ onChange, values, style, ableToIdentify, setAb
   }, [values]);
 
   React.useEffect(() => {
-    console.log('Species mounted');
-
-    if (__DEV__ && !process.env.JEST_WORKER_ID) {
-      // check for duplicates in species data
-      const checkForDuplicates = (key) => {
-        const speciesList = species.map((specie) => specie[key]);
-        const duplicates = speciesList.filter((item, index) => speciesList.indexOf(item) !== index);
-        if (duplicates.length > 0) {
-          console.warn('Duplicate species found: ', duplicates);
-        }
-      };
-
-      checkForDuplicates(COMMON);
-      checkForDuplicates('latin');
-    }
-
-    return () => {
-      console.log('Species unmounted');
-    };
-  }, []);
-
-  React.useEffect(() => {
     onChange({
       species: state.speciesValue,
       species_confidence_level: state.confidenceLevel,
