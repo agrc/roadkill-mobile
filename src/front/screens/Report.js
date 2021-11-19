@@ -124,7 +124,11 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
     if (responseJson.success) {
       console.log('responseJson.report_id', responseJson.report_id);
 
-      Alert.alert('Success!', 'Your report has been submitted.', [
+      const successMessages = {
+        pickup: 'Your report has been submitted.',
+        report: 'Your report has been submitted and a notification has been sent to remove the animal.',
+      };
+      Alert.alert('Success!', successMessages[reportType], [
         {
           text: 'OK',
           onPress: () => onClose(true),
