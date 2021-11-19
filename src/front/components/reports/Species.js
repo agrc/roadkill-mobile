@@ -119,13 +119,6 @@ function reducer(draft, action) {
 
       break;
 
-    case 'SWITCH_ABLE_TO_IDENTIFY':
-      draft.ableToIdentify = !draft.ableToIdentify;
-
-      reset();
-
-      break;
-
     case 'SET_SELECTED_CLASS':
       reset();
 
@@ -167,7 +160,6 @@ function reducer(draft, action) {
 }
 
 const initialState = {
-  ableToIdentify: true,
   searchType: SEARCH_TYPES[0],
   selectedSpecies: null,
   autoCompleteItems: null,
@@ -178,7 +170,7 @@ const initialState = {
   speciesValue: null,
 };
 
-export default function Species({ onChange, values, style }) {
+export default function Species({ onChange, values, style, ableToIdentify, setAbleToIdentify }) {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const families = dedupeBy(
     species
@@ -286,15 +278,11 @@ export default function Species({ onChange, values, style }) {
         Are you able to identify the species?
       </Text>
       <View style={styles.toggleContainer}>
-        <Toggle
-          checked={state.ableToIdentify}
-          onChange={() => dispatch({ type: 'SWITCH_ABLE_TO_IDENTIFY' })}
-          style={styles.toggle}
-        >
-          {state.ableToIdentify ? 'Yes' : 'No'}
+        <Toggle checked={ableToIdentify} onChange={() => setAbleToIdentify(!ableToIdentify)} style={styles.toggle}>
+          {ableToIdentify ? 'Yes' : 'No'}
         </Toggle>
       </View>
-      {state.ableToIdentify ? (
+      {ableToIdentify ? (
         <>
           <Text category="label">Search by...</Text>
           <TabBar
@@ -362,6 +350,8 @@ export default function Species({ onChange, values, style }) {
 Species.propTypes = {
   onChange: propTypes.func.isRequired,
   values: propTypes.object.isRequired,
+  ableToIdentify: propTypes.bool.isRequired,
+  setAbleToIdentify: propTypes.func.isRequired,
   style: propTypes.object,
 };
 
