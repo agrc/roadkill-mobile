@@ -54,6 +54,7 @@ export default function Form({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => mutation.mutate(values)}
+      onReset={() => setAbleToIdentify(true)}
       style={style}
     >
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange }) => (
