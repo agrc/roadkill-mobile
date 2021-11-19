@@ -29,7 +29,7 @@ export default {
   },
   // if user is already registered, then they will be sent to the main navigator
   // don't redirect to new-user because we don't want registered users to see that screen
-  OAUTH_REDIRECT_SCREEN: 'login',
+  OAUTH_REDIRECT_SCREEN: 'choose-type',
   USER_STORE_KEY: 'USER_INFO',
   USER_TYPE_KEY: 'USER_TYPE',
   URLS: {
