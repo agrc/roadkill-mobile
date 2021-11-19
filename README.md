@@ -28,9 +28,9 @@ HTTP Toolkit can be used to capture network requests made from the backend. Fidd
 
 | branch     | version | deployed                | release-channel | expo version |
 |------------|---------|-------------------------|-----------------|-----------|
-| production | 3.0.0   | App Stores              | production-v3   | 42.0.0    |
-| staging    | 3.0.0   | TestFlight/Google Alpha | staging-v3      | 42.0.0    |
-| dev        | 3.0.0   | n/a                     | dev-v3          | 42.0.0    |
+| production | 3.0.0   | App Stores              | production-v3   | 43.0.0    |
+| staging    | 3.0.0   | TestFlight/Google Alpha | staging-v3      | 43.0.0    |
+| dev        | 3.0.0   | n/a                     | dev-v3          | 43.0.0    |
 
 Release channels are based on the major number (e.g. `production-v3`). If you need to change something that requires a new app build (e.g. changes to `app.config.js` or SDK upgrade), bump the major version of the app to keep it on a new release channel thus preventing conflicts with older app builds. [src/front/getReleaseChannel.sh](src/front/getReleaseChannel.sh) returns the appropriate version number.
 
