@@ -2,10 +2,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import ky from 'ky';
 import propTypes from 'prop-types';
-import React, { useRef } from 'react';
+import React from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { PressableOpacity } from 'react-native-pressable-opacity';
 import { useQuery } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
@@ -72,14 +71,7 @@ export default function ReportInfoScreen() {
   );
 }
 
-const SUBMIT_COLOR = 'indigo';
-const ANIMAL_COLOR = 'red';
-const PHOTO_COLOR = 'blue';
-const HIGHLIGHT_COLOR = 'gold';
 export function ReportInfo({ data }) {
-  const [submitColor, setSubmitColor] = React.useState(SUBMIT_COLOR);
-  const [animalColor, setAnimalColor] = React.useState(ANIMAL_COLOR);
-  const [photoColor, setPhotoColor] = React.useState(PHOTO_COLOR);
   const mapRef = React.useRef(null);
   const commonStyles = useStyles();
 
@@ -87,14 +79,7 @@ export function ReportInfo({ data }) {
     return null;
   }
 
-  let submitCoords, animalCoords, photoCoords, allCoords;
-  if (data) {
-    submitCoords = coordsToLocation(data.submit_location);
-    animalCoords = coordsToLocation(data.animal_location);
-    photoCoords = coordsToLocation(data.photo_location);
-    allCoords = [submitCoords, animalCoords, photoCoords].filter((value) => value);
-  }
-  const EDGE_PADDING = 45;
+  const animalCoords = coordsToLocation(data.animal_location);
 
   return (
     <>
@@ -103,27 +88,13 @@ export function ReportInfo({ data }) {
         isStatic={true}
         innerRef={mapRef}
         maxZoomLevel={16}
-        onLayout={() => {
-          mapRef.current.fitToCoordinates(allCoords, {
-            animated: false,
-            edgePadding: {
-              top: EDGE_PADDING,
-              right: EDGE_PADDING / 2,
-              bottom: EDGE_PADDING / 4,
-              left: EDGE_PADDING / 2,
-            },
-          });
-        }}
+        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0 }}
       >
-        <Marker coordinate={submitCoords} pinColor={submitColor} />
-        <Marker coordinate={animalCoords} pinColor={animalColor} />
-        {data.photo_location ? <Marker coordinate={photoCoords} pinColor={photoColor} /> : null}
+        <Marker coordinate={animalCoords} />
       </Map>
       <Divider />
       <ValueContainer label="Report ID" value={data.report_id} />
-      <ValueWithLegend color={submitColor} setColor={setSubmitColor}>
-        <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
-      </ValueWithLegend>
+      <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
       <Divider />
       <ValueContainer label="Species" value={data.species} />
       <ValueContainer label="Species Confidence Level" value={data.species_confidence_level} />
@@ -131,34 +102,28 @@ export function ReportInfo({ data }) {
       <ValueContainer label="Age Class" value={data.age_class} />
       {isPickupReport(data) ? (
         // pickup report
-        <ValueWithLegend color={animalColor} setColor={setAnimalColor}>
-          <ValueContainer label="Pickup Date" value={dateToString(data.pickup_date)} />
-        </ValueWithLegend>
+        <ValueContainer label="Pickup Date" value={dateToString(data.pickup_date)} />
       ) : (
         // public report
         <>
           <ValueContainer label="Repeat Submission" value={data.repeat_submission.toString()} />
-          <ValueWithLegend color={animalColor} setColor={setAnimalColor}>
-            <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date)} />
-          </ValueWithLegend>
+          <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date)} />
         </>
       )}
       <Divider />
       <ValueContainer label="Comments" value={data.comments} />
       {data.photo_id ? (
         <>
-          <ValueWithLegend color={photoColor} setColor={setPhotoColor} hideLegend={data.photo_location === null}>
-            <View style={styles.photoContainer}>
-              <View style={{ marginLeft: -PADDING, flex: 1 }}>
-                <ValueContainer label="Photo ID" value={data.photo_id} divider={false} />
-                <ValueContainer label="Photo Date" value={dateToString(data.photo_date)} divider={false} />
-              </View>
-              <Image
-                source={{ uri: `${config.API}/photos/thumb/${data.photo_id}`, headers: data.headers }}
-                style={[commonStyles.image, styles.thumbnail]}
-              />
+          <View style={styles.photoContainer}>
+            <View style={{ marginLeft: -PADDING, flex: 1 }}>
+              <ValueContainer label="Photo ID" value={data.photo_id} divider={false} />
+              <ValueContainer label="Photo Date" value={dateToString(data.photo_date)} divider={false} />
             </View>
-          </ValueWithLegend>
+            <Image
+              source={{ uri: `${config.API}/photos/thumb/${data.photo_id}`, headers: data.headers }}
+              style={[commonStyles.image, styles.thumbnail]}
+            />
+          </View>
           <Divider />
         </>
       ) : null}
@@ -169,40 +134,12 @@ ReportInfo.propTypes = {
   data: propTypes.object,
 };
 
-function ValueWithLegend({ children, setColor, color, hideLegend }) {
-  const originalColor = useRef(color);
-
-  return (
-    <PressableOpacity
-      onPressIn={() => setColor(HIGHLIGHT_COLOR)}
-      onPressOut={() => setColor(originalColor.current)}
-      style={styles.legendContainer}
-    >
-      {children}
-      {!hideLegend ? <View style={[styles.legendSwatch, { backgroundColor: originalColor.current }]} /> : null}
-    </PressableOpacity>
-  );
-}
-ValueWithLegend.propTypes = {
-  setColor: propTypes.func.isRequired,
-  color: propTypes.string.isRequired,
-  children: propTypes.node.isRequired,
-  hideLegend: propTypes.bool,
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   map: {
     height: 200,
-  },
-  legendContainer: {
-    flexDirection: 'row',
-  },
-  legendSwatch: {
-    width: 5,
-    height: '100%',
   },
   thumbnail: {
     height: 75,
