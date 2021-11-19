@@ -9,11 +9,10 @@ password: `tester`
 
 ## Select Role
 
-| setup             | action                       | assertion                 |
-|-------------------|------------------------------|---------------------------|
-|                   | select public                | confirm that all three oauth options are presented on the login screen |
-|                   | select contractor and agency | confirm that only utahid is available |
-| select contractor | restart app                  | confirm that select role screen is skipped and selection is remembered |
+| setup | action                       | assertion                             |
+|-------|------------------------------|---------------------------------------|
+|       | select public                | confirm that all three oauth options are presented on the login screen |
+|       | select contractor and agency | you are taken directly to the utahid signin |
 
 ## Auth
 
@@ -47,17 +46,15 @@ password: `tester`
 
 ### Public Role
 
-| set up                                          | action                                | assertion |
-|-------------------------------------------------|---------------------------------------|-----|
-|                                                 | tap plus button                       | report drawer slides open so that you can see everything down to the set location button, shows public report form |
-|                                                 | tap plus button                       | crosshair icon is displayed in the center of the remaining map |
-|                                                 | tap plus button                       | the map zooms into the highest zoom level and follow user location is enabled |
-| open the report drawer                          | tap on map button to zoom to location | map is centered on user's location |
-| open the report drawer and set a location       | tap close button                      | "are you sure" dialog is presented and acts appropriately |
-| open the report drawer and don't set a location | tap close button                      | dialog is closed without confirmation |
-| open the report drawer                          | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator) |
-| open the report drawer                          | tap "Set Location"                    | marker is placed on the map at the crosshair location, drawer animates up to full height, set location controls are hidden, and main form is shown |
-| open report drawer, set location                | tap "Change Location"                 | drawer is pulled back down and set location controls are shown |
+| set up                                    | action                                | assertion |
+|-------------------------------------------|---------------------------------------|-----|
+|                                           | tap plus button                       | report drawer slides open so that you can see everything down to the "If you encounter...", shows public report form |
+|                                           | tap plus button                       | crosshair icon is displayed in the center of the remaining map |
+|                                           | tap plus button                       | the map zooms into the highest zoom level and follow user location is enabled |
+| open the report drawer                    | tap on map button to zoom to location | map is centered on user's location |
+| open the report drawer                    | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator) |
+| open the report drawer                    | tap "Set Location"                    | marker is placed on the map at the crosshair location, drawer animates up to full height, set location controls are hidden, and main form is shown |
+| open the report drawer and set a location | tap "Cancel" button                   | "are you sure" dialog is presented and acts appropriately |
 
 ### Public Report Type
 
@@ -155,4 +152,13 @@ Setup: Main menu -> My Reports -> Tap on a report
 |--------|---------------------------------------|-----------------------------|
 |        | tap on a report with a valid photo    | the photo thumbnail and id is displayed |
 |        | tap on a report without a valid photo | the photo controls are not displayed |
-|        |                                       | map is zoomed to the extent of the pins associated with the report |
+|        |                                       | map is zoomed to the animal location associated with the report |
+
+### My Profile
+
+Setup: Main menu -> My Profile
+
+| set up | action                             | assertion                      |
+|--------|------------------------------------|--------------------------------|
+|        |                                    | verify that all of the info looks correct |
+|        | change phone number and hit update | go away from screen and then back into it and verify that the phone change was persisted |
