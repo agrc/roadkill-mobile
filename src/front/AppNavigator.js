@@ -35,10 +35,8 @@ if (config.SHOW_STORYBOOK) {
 }
 
 const AuthNavigator = () => {
-  const { userType } = useAuth();
-
   return (
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName={userType ? 'login' : null}>
+    <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="choose-type" component={ChooseTypeScreen} />
       <Screen name="new-user" component={NewUserScreen} />
       {config.SHOW_STORYBOOK ? <Screen name="storybook" component={StorybookUIRoot} /> : null}
