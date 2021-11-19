@@ -270,11 +270,7 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
       <Divider />
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
         <View style={styles.body}>
-          <Location
-            onSetLocation={onSetLocation}
-            onEditLocation={() => setView(SET_LOCATION_VIEW)}
-            showEdit={!showMain}
-          />
+          {!showMain ? <Location onSetLocation={onSetLocation} /> : null}
 
           {
             // the Form components are wrapped in a view and hidden via styling

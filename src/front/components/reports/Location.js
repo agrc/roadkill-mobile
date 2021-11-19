@@ -7,50 +7,32 @@ import config from '../../config';
 import { getIcon } from '../../icons';
 import useStyles from '../../styles';
 
-function Location({ onSetLocation, onEditLocation, showEdit }) {
+function Location({ onSetLocation }) {
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
   const commonStyles = useStyles();
 
   return (
-    <>
-      {showEdit ? (
-        <View>
-          <Text category="h6" style={commonStyles.margin}>
-            Location
-          </Text>
-          <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
-          <Button
-            accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs' })}
-            style={commonStyles.margin}
-            onPress={onSetLocation}
-          >
-            Set Location
-          </Button>
-          <Text appearance="hint" style={styles.note}>
-            <Autolink phone text={callText} />
-          </Text>
-        </View>
-      ) : (
-        <Button
-          accessoryLeft={getIcon({
-            pack: 'font-awesome-5',
-            name: 'crosshairs',
-          })}
-          style={commonStyles.margin}
-          onPress={onEditLocation}
-          appearance="outline"
-        >
-          Change Location
-        </Button>
-      )}
-    </>
+    <View>
+      <Text category="h6" style={commonStyles.margin}>
+        Location
+      </Text>
+      <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
+      <Button
+        accessoryLeft={getIcon({ pack: 'font-awesome-5', name: 'crosshairs' })}
+        style={commonStyles.margin}
+        onPress={onSetLocation}
+      >
+        Set Location
+      </Button>
+      <Text appearance="hint" style={styles.note}>
+        <Autolink phone text={callText} />
+      </Text>
+    </View>
   );
 }
 
 Location.propTypes = {
   onSetLocation: propTypes.func.isRequired,
-  onEditLocation: propTypes.func.isRequired,
-  showEdit: propTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({
