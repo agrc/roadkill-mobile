@@ -4,7 +4,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Updates from 'expo-updates';
 import * as React from 'react';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -20,6 +20,15 @@ Sentry.init({
   dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
   environment: Updates.releaseChannel,
 });
+
+if (__DEV__) {
+  /*
+    react-query causes these types of logs to be shown but they say that they are nothing to worry about
+    this may be able to be removed after upgrading to RN 0.65
+    ref: https://github.com/tannerlinsley/react-query/issues/1259
+  */
+  LogBox.ignoreLogs(['Setting a timer']);
+}
 
 export default function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
