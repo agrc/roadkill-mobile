@@ -125,9 +125,12 @@ export async function authenticate(request, response, next) {
       response.locals.user = userResponse.body;
 
       const appUser = await getAppUser(userResponse.body.sub, authProvider);
-      response.locals.user.appUser = appUser;
+      if (appUser) {
+        response.locals.user.appUser = appUser;
+      }
 
-      if (isJWTToken) {
+      // don't cache until we have the app user in the database
+      if (isJWTToken && appUser) {
         setUser(token, {
           ...userResponse.body,
           appUser,
