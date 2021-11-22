@@ -10,6 +10,7 @@
     "test": "env-cmd -f .env.test jest --watch --coverage=false --changedSince=origin/main",
     "test:debug": "env-cmd -f .env.test jest -o --watch --coverage=false",
     "test:final": "env-cmd -f .env.test jest",
+    "update-constants": "env-cmd -f .env node scripts/updateConstants.mjs",
     "update-snapshots": "jest -u --coverage=false",
     "web": "expo start --web"
   },
@@ -107,6 +108,7 @@
     "git-rev-sync": "github:stdavis/git-rev-sync-js#feat/count-arguments",
     "jest-expo": "^43.0.1",
     "knex": "^0.95.14",
+    "pg": "^8.7.1",
     "prettier": "^2.4.1",
     "prettier-plugin-organize-imports": "^2.3.4",
     "react-test-renderer": "17.0.1",
