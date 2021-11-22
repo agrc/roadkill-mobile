@@ -55,6 +55,32 @@ CREATE TABLE users_have_notification_areas
 );
 
 
+-- species
+DROP TABLE IF EXISTS species CASCADE;
+
+DROP TYPE IF EXISTS species_types CASCADE;
+CREATE TYPE species_types as ENUM('domestic', 'wild');
+DROP TYPE IF EXISTS species_classes CASCADE;
+CREATE TYPE species_classes as ENUM('amphibians', 'birds', 'mammals', 'reptiles');
+DROP TYPE IF EXISTS species_orders CASCADE;
+CREATE TYPE species_orders as ENUM('carnivores', 'hoofed animals', 'rabbits/hares', 'rodents', 'upland birds', 'vultures');
+DROP TYPE IF EXISTS species_families CASCADE;
+CREATE TYPE species_families as ENUM('antelope', 'bears', 'beavers', 'bison', 'cats', 'cows', 'deer', 'dogs', 'frogs/toads', 'goats', 'grouse', 'horses', 'lizards', 'partridge', 'pheasant', 'porcupines', 'prairie dogs', 'ptarmingans', 'quail', 'rabbits & hares', 'raccoons', 'sheep', 'skunks', 'snakes', 'turtle/tortoise', 'vultures', 'weasels');
+
+CREATE TABLE species
+(
+  id serial PRIMARY KEY,
+  common_name varchar(128) NOT NULL,
+  scientific_name varchar(128) NOT NULL,
+  species_type species_types NOT NULL,
+  species_class species_classes NOT NULL,
+  species_order species_orders,
+  family species_families NOT NULL,
+  rare boolean NOT NULL DEFAULT false,
+  image_url varchar(256)
+);
+
+
 -- reports
 DROP TABLE IF EXISTS photos CASCADE;
 CREATE TABLE photos
@@ -81,7 +107,13 @@ CREATE TABLE report_infos
   photo_id integer REFERENCES photos (id),
   submit_location geography(POINT, 4326) NOT NULL,
   submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute'),
-  species varchar(64),
+  species_id integer NOT NULL REFERENCES species (id),
+  common_name varchar(128) NOT NULL,
+  scientific_name varchar(128) NOT NULL,
+  species_type species_types NOT NULL,
+  species_class species_classes NOT NULL,
+  species_order species_orders,
+  family species_families NOT NULL,
   species_confidence_level confidence_levels,
   sex genders,
   age_class age_classes,
