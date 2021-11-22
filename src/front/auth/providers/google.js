@@ -2,8 +2,8 @@ import { revokeAsync } from 'expo-auth-session';
 import { discovery, useAuthRequest } from 'expo-auth-session/providers/google';
 import ky from 'ky';
 import React from 'react';
-import config from '../../config';
-import { useAsyncError } from '../../utilities';
+import config from '../../services/config';
+import { useAsyncError } from '../../services/utilities';
 
 export const isAuthenticationExpired = (auth) => {
   const expireTime = (auth.issuedAt + parseInt(auth.expiresIn)) * 1000;

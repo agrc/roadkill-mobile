@@ -8,8 +8,8 @@ import * as yup from 'yup';
 import 'yup-phone';
 import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
-import config from '../config';
-import RootView from '../RootView';
+import RootView from '../components/RootView';
+import config from '../services/config';
 
 export default function NewUserScreen() {
   const { logOut, userType, authInfo, registerUser } = useAuth();

@@ -11,10 +11,9 @@ import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
-import config from '../config';
-import { coordsToLocation } from '../location';
-import useStyles, { PADDING } from '../styles';
-import { dateToString } from '../utilities';
+import config from '../services/config';
+import { coordsToLocation } from '../services/location';
+import useStyles, { PADDING } from '../services/styles';
 
 const isPickupReport = (report) => {
   return report.pickup_date !== null;

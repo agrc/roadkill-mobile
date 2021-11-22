@@ -1,8 +1,8 @@
 import * as Facebook from 'expo-facebook';
 import ky from 'ky';
 import React from 'react';
-import config from '../../config';
-import { useAsyncError } from '../../utilities';
+import config from '../../services/config';
+import { useAsyncError } from '../../services/utilities';
 
 export const isAuthenticationExpired = (auth) => {
   return new Date(auth.expirationDate) < Date.now();

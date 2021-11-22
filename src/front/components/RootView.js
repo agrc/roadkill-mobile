@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Spinner from './components/Spinner';
+import Spinner from './Spinner';
 
 export default function RootView({ children, showSpinner = false, spinnerMessage, style }) {
   const theme = useTheme();
