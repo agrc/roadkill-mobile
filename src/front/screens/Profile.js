@@ -29,7 +29,7 @@ export default function ProfileScreen() {
       return responseJson.profile;
     } catch (error) {
       Sentry.Native.captureException(error);
-      throw new Error(`Error getting profile from server! ${error.message}`);
+      throw error;
     }
   };
   const { data, isLoading, isError, error } = useQuery(config.QUERY_KEYS.profile, getProfileData);
@@ -138,7 +138,7 @@ export default function ProfileScreen() {
               <Text category="h5">Other Information</Text>
             </View>
             <Divider />
-            <ValueContainer label="Approved" value={data.approved.toString()} />
+            <ValueContainer label="Approved" value={booleanToYesNo(data.approved)} />
             <ValueContainer label="Registered Date" value={dateToString(data.registered_date)} />
             <ValueContainer label="Role" value={data.role} />
             <ValueContainer label="Sign-in Provider" value={data.auth_provider} />
