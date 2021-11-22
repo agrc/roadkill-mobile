@@ -14,12 +14,11 @@ import ValueContainer from '../components/ValueContainer';
 import config from '../services/config';
 import { coordsToLocation } from '../services/location';
 import useStyles, { PADDING } from '../services/styles';
+import { booleanToYesNo, dateToString } from '../services/utilities';
 
 const isPickupReport = (report) => {
   return report.pickup_date !== null;
 };
-
-const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');
 
 export default function ReportInfoScreen() {
   const { reportId } = useRoute().params;
