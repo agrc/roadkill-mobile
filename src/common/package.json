@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "shared code between front and back ends",
   "scripts": {
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -10,5 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier-plugin-organize-imports": "^2.3.4"
   }
 }
