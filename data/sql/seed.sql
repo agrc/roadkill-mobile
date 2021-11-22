@@ -1,34 +1,167 @@
+INSERT INTO public.species (common_name, scientific_name, species_type, species_class, species_order, family, rare) VALUES
+  ('Mule Deer', 'Odocoileus hemionus', 'wild', 'mammals', 'hoofed animals', 'deer', false),
+  ('White-tailed Deer', 'Odocoileus virginianus', 'wild', 'mammals', 'hoofed animals', 'deer', true),
+  ('Elk', 'Cervus canadensis', 'wild', 'mammals', 'hoofed animals', 'deer', false),
+  ('Moose', 'Alces alces', 'wild', 'mammals', 'hoofed animals', 'deer', false),
+  ('Bison', 'Bison bison', 'wild', 'mammals', 'hoofed animals', 'bison', false),
+  ('Bighorn Sheep', 'Ovis canadensis', 'wild', 'mammals', 'hoofed animals', 'sheep', false),
+  ('Domestic Sheep', 'Ovis aries', 'domestic', 'mammals', 'hoofed animals', 'sheep', false),
+  ('Pronghorn Antelope', 'Antilocapra americana', 'wild', 'mammals', 'hoofed animals', 'antelope', false),
+  ('Mountain Goat', 'Oreamnos americanus', 'wild', 'mammals', 'hoofed animals', 'goats', false),
+  ('Domestic Goat', 'Capra aegagrus', 'domestic', 'mammals', 'hoofed animals', 'goats', false),
+  ('Domestic Cow', 'Bos taurus', 'domestic', 'mammals', 'hoofed animals', 'cows', false),
+  ('Domestic Horse', 'Equus caballus', 'domestic', 'mammals', 'hoofed animals', 'horses', false),
+  ('Wild Horse ', 'Equus ferus', 'wild', 'mammals', 'hoofed animals', 'horses', false),
+  ('Black Bear', 'Ursus americanus', 'wild', 'mammals', 'carnivores', 'bears', false),
+  ('Cougar (Mountiain Lion)', 'Puma concolor', 'wild', 'mammals', 'carnivores', 'cats', false),
+  ('Bobcat', 'Lynx rufus', 'wild', 'mammals', 'carnivores', 'cats', false),
+  ('Canada Lynx', 'Lynx canadensis', 'wild', 'mammals', 'carnivores', 'cats', false),
+  ('Domestic Cat', 'Felis catus', 'domestic', 'mammals', 'carnivores', 'cats', false),
+  ('Coyote', 'Canis latrans', 'wild', 'mammals', 'carnivores', 'dogs', false),
+  ('Gray Wolf', 'Canis lupus', 'wild', 'mammals', 'carnivores', 'dogs', true),
+  ('Kit Fox', 'Vulpes macrotis', 'wild', 'mammals', 'carnivores', 'dogs', false),
+  ('Red Fox', 'Vulpes vulpes', 'wild', 'mammals', 'carnivores', 'dogs', false),
+  ('Gray Fox', 'Urocyon cinereoargenteus', 'wild', 'mammals', 'carnivores', 'dogs', false),
+  ('Domestic Dog', 'Canis lupus familiaris', 'domestic', 'mammals', 'carnivores', 'dogs', false),
+  ('Black-footed ferret', 'Mustela nigripes', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('Fisher', 'Martes pennanti', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('Marten', 'Martes americana', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('Wolverine', 'Gulo gulo', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('River Otter', 'Lontra canadensis', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('American Badger', 'Taxidea taxus', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('American Mink', 'Vison vison', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('Short-tailed Weasel (Ermine)', 'Mustela erminea', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('Long-tailed Weasel', 'Mustela frenata', 'wild', 'mammals', 'carnivores', 'weasels', false),
+  ('falserthern Raccoon', 'Procyon lotor', 'wild', 'mammals', 'carnivores', 'raccoons', false),
+  ('Ringtail ', 'Bassariscus astutus', 'wild', 'mammals', 'carnivores', 'raccoons', false),
+  ('Striped Skunk', 'Mephitis mephitis', 'wild', 'mammals', 'carnivores', 'skunks', false),
+  ('Spotted Shunk', 'Spilogale putorius', 'wild', 'mammals', 'carnivores', 'skunks', false),
+  ('Cottontail Rabbit', 'Sylvilagus spp.', 'wild', 'mammals', 'rabbits/hares', 'rabbits & hares', false),
+  ('Pygmy Rabbit', 'Brachylagus idahoensis', 'wild', 'mammals', 'rabbits/hares', 'rabbits & hares', false),
+  ('Jackrabbit', 'Lepus spp.', 'wild', 'mammals', 'rabbits/hares', 'rabbits & hares', false),
+  ('Snowshoe Hare', 'Lepus americanus', 'wild', 'mammals', 'rabbits/hares', 'rabbits & hares', false),
+  ('American Pika', 'Ochotona princeps', 'wild', 'mammals', 'rabbits/hares', 'rabbits & hares', false),
+  ('Porcupine', 'Erethizon dorsatum', 'wild', 'mammals', 'rodents', 'porcupines', false),
+  ('Beaver', 'Castor canadensis', 'wild', 'mammals', 'rodents', 'beavers', false),
+  ('Utah Prairie Dog', 'Cynomys parvidens', 'wild', 'mammals', 'rodents', 'prairie dogs', false),
+  ('White-tailed Prairie Dog', 'Cynomys leucurus', 'wild', 'mammals', 'rodents', 'prairie dogs', false),
+  ('Gunnison''s Prairie Dog', 'Cynomys gunnisoni', 'wild', 'mammals', 'rodents', 'prairie dogs', false),
+  ('Arizona Toad', 'Anaxyrus microscaphus', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Boreal Toad', 'Anaxyrus boreas', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Columbia Spotted Frog', 'Rana luteiventris', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Great Plains Toad', 'Anaxyrus cognatus', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Mexican Spadefoot', 'Spea multiplicata', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('falserthern Leopard Frog', 'Lithobates pipiens', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Plains Spadefoot', 'Spea bombifrons', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Great Basin Spadefoot', 'Spea intermontana', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Relict Leopard Frog', 'Lithobates onca', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Western Toad', 'Anaxyrus boreas', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Canyon Treefrog', 'Dryophytes arenicolor', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Western Chorus Frog', 'Pseudacris maculata', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Green Frog', 'Lithobates clamitans', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('American Bullfrog', 'Lithobates catesbeianus', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Woodhouse''s Toad', 'Anaxyrus woodhousii', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Red-spotted Toad', 'Anaxyrus punctatus', 'wild', 'amphibians', NULL, 'frogs/toads', false),
+  ('Midget Faded Rattlesnake', 'Crotalus oreganus concolor', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Mojave Rattlesnake', 'Crotalus scutulatus', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Sidewinder', 'Crotalus cerastes', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Speckled Rattlesnake', 'Crotalus mitchellii', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Pyro Mountain Kingsnake ', 'Lampropeltis pyromelana', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Smithnulls Black-headed Snake', 'Tantilla hobartsmithi', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Spotted Leaf-nosed Snake', 'Phyllorhynchus decurtatus', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Utah Milksnake', 'Lampropeltis triangulum taylori', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Western Threadsnake', 'Rena humilis', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Rubber Boa', 'Charina bottae', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Black-necked Gartersnake', 'Thamnophis cyrtopsis', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Coachwhip', 'Coluber flagellum', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Common Gartersnake', 'Thamnophis sirtalis', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Eastern Racer', 'Coluber constrictor', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Glossy Snake', 'Arizona elegans', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Gophersnake', 'Pituophis catenifer', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Groundsnake', 'Sonora semiannulata', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Long-nosed Snake', 'Rhinocheilus lecontei', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Ring-necked Snake', 'Diadophis punctatus', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Smooth Greensnake', 'Opheodrys vernalis', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Sonoran Mountain Kingsnake', 'Lampropeltis pyromelana', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Spotted Leaf-nosed Snake', 'Phyllorhynchus decurtatus', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Striped Whipsnake', 'Coluber taeniatus', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Terrestrial Gartersnake', 'Thamnophis elegans', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Western Lyresnake', 'Trimorphodon lambda', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Western Patch-nosed Snake', 'Salvadora hexalepis', 'wild', 'reptiles', NULL, 'snakes', false),
+  ('Eastern Collared Lizard', 'Crotaphytus collaris', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Great Basin Collared Lizard', 'Crotaphytus bicinctores', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Long-nosed Leopard Lizard', 'Gambelia wislizenii', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Common Chuckwalla', 'Sauromalus ater', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Desert Iguana', 'Dipsosaurus dorsalis', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('New Mexico Whiptail', 'Aspidoscelis neomexicana', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Plateau Striped Whiptail', 'Aspidoscelis velox', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Tiger Whiptail', 'Aspidoscelis tigris', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Desert Night Lizard', 'Xantusia vigilis', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Common Lesser Earless Lizard', 'Holbrookia maculata', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Common Sagebrush Lizard', 'Sceloporus graciosus', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Common Side-blotched Lizard', 'Uta stansburiana', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Desert Horned Lizard', 'Phrynosoma platyrhinos', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Desert Spiny Lizard', 'Sceloporus magister', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Eastern Fence Lizard', 'Sceloporus undulatus', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Greater Short-horned Lizard', 'Phrynosoma hernandesi', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Ornate Tree Lizard', 'Urosaurus ornatus', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Western Fence Lizard', 'Sceloporus occidentalis', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Zebra-tailed Lizard', 'Callisaurus draconoides', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Gila Monster', 'Heloderma suspectum', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Many-lined Skink', 'Plestiodon multivirgatus', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Western Skink', 'Plestiodon skiltonianus', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Utah Banded Gecko', 'Coleonyx variegatus utahensis', 'wild', 'reptiles', NULL, 'lizards', false),
+  ('Painted Turtle', 'Chrysemys picta', 'wild', 'reptiles', NULL, 'turtle/tortoise', false),
+  ('Snapping Turtle', 'Chelydra serpentina', 'wild', 'reptiles', NULL, 'turtle/tortoise', false),
+  ('Spiny Softshell', 'Apalone spinifera', 'wild', 'reptiles', NULL, 'turtle/tortoise', false),
+  ('Mojave Desert Tortoise', 'Gopherus agassizii', 'wild', 'reptiles', NULL, 'turtle/tortoise', false),
+  ('Chukar Partridge', 'Alectoris chukar', 'wild', 'birds', 'upland birds', 'partridge', false),
+  ('Gray Partridge', 'Perdix perdix', 'wild', 'birds', 'upland birds', 'partridge', false),
+  ('Dusky Grouse', 'Dendragapus obscurus', 'wild', 'birds', 'upland birds', 'grouse', false),
+  ('Gunnison Sage-grouse', 'Centrocercus minimus', 'wild', 'birds', 'upland birds', 'grouse', false),
+  ('Dusky Grouse', 'Dendragapus obscurus', 'wild', 'birds', 'upland birds', 'grouse', false),
+  ('Ruffed Grouse', 'Bonasa umbellus', 'wild', 'birds', 'upland birds', 'grouse', false),
+  ('Columbian Sharp-tailed Grouse', 'Tympanuchus phasianellus', 'wild', 'birds', 'upland birds', 'grouse', false),
+  ('California Quail', 'Callipepla californica', 'wild', 'birds', 'upland birds', 'quail', false),
+  ('Gambel''s Quail', 'Callipepla gambelii', 'wild', 'birds', 'upland birds', 'quail', false),
+  ('Scaled Quail', 'Callipepla squamata', 'wild', 'birds', 'upland birds', 'quail', false),
+  ('White-tailed Ptarmigans', 'Lagopus leucura', 'wild', 'birds', 'upland birds', 'ptarmingans', false),
+  ('Ring-necked Pheasant', 'Phasianus colchicus', 'wild', 'birds', 'upland birds', 'pheasant', false),
+  ('Turkey Vulture', 'Cathartes aura', 'wild', 'birds', 'vultures', 'vultures', false),
+  ('California Condor', 'Gymnogyps californianus', 'wild', 'birds', 'vultures', 'vultures', false);
+
+-- test data
 INSERT INTO public.notification_areas (geog) VALUES
   ('SRID=4326;POLYGON ((-113.5445979786333 41.38303727457798, -114.19835336083736 40.15421928765741, -113.42353216711405 39.3793980939341, -112.54580503359935 40.269231808600715, -112.54580503359935 40.269231808600715, -113.5445979786333 41.38303727457798))'::geography),
   ('SRID=4326;POLYGON ((-111.17170807285567 40.03920676671411, -111.51069234510962 39.016200659376295, -110.20923487127749 38.12636694470967, -109.33150773776279 40.00894031383429, -111.17170807285567 40.03920676671411))'::geography);
 
-INSERT INTO public.organizations ("name",org_type) VALUES
+INSERT INTO public.organizations ("name", org_type) VALUES
   ('UGRC','agency'::org_types::org_types),
   ('UDWR','agency'::org_types::org_types),
   ('EcoLife','contractor'::org_types::org_types);
 
-INSERT INTO public.users (organization_id,"role",approved,auth_provider,auth_id,email,first_name,last_name,registered_date,last_logged_in,phone) VALUES
+INSERT INTO public.users (organization_id, "role", approved, auth_provider, auth_id, email, first_name, last_name, registered_date, last_logged_in, phone) VALUES
   (1,'admin'::roles::roles,true,'utahid'::auth_providers::auth_providers,'123456789','scott@utah.gov','Scott','Davis','2021-07-20 00:00:00','2021-07-20 00:00:00','801-699-7187'),
   (NULL,'reporter'::roles::roles,NULL,'google'::auth_providers::auth_providers,'234567891','dscottus@gmail.com','Dave','Scottus','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
   (3,'contractor'::roles::roles,false,'utahid'::auth_providers::auth_providers,'345678912','ablackham@ecolife.com','Abcde','Blackham','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
   (2,'agency'::roles::roles,false,'utahid'::auth_providers::auth_providers,'345678912','cthompson@utah.gov','Caleb','Thompson','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567');
 
-INSERT INTO public.routes (user_id,geog,start_time,end_time,submit_date) VALUES
+INSERT INTO public.routes (user_id, geog, start_time, end_time, submit_date) VALUES
   (3,'SRID=4326;LINESTRING (-112.5700181959032 41.13485236096348, -113.15718738177165 40.08763309132181, -112.68503071684651 38.58641702848289, -111.8436233267876 39.2462257012629)'::geography,'2021-07-08 02:00:00','2021-07-08 02:20:52.449','2021-07-08 12:29:08.02');
 
-INSERT INTO public.users_have_notification_areas (user_id,area_id) VALUES
+INSERT INTO public.users_have_notification_areas (user_id, area_id) VALUES
   (1,2),
   (3,1);
 
-INSERT INTO public.photos (bucket_path,photo_location,photo_date) VALUES
+INSERT INTO public.photos (bucket_path, photo_location, photo_date) VALUES
   ('1/e12518c4-b827-406a-96fc-97caaaeb98df','SRID=4326;POINT (-112.78974093314751 40.12589497651387)'::geography,'2021-07-20 00:00:00'),
   ('3/e2965d05-9bed-47f4-955c-8d6fac01f0c7', 'SRID=4326;POINT (-111.78974093314751 39.12589497651387)'::geography,'2021-07-18 00:00:00');
 
-INSERT INTO public.report_infos (user_id,animal_location,photo_id,submit_location,submit_date,species,species_confidence_level,sex,age_class,"comments") VALUES
-  (1,'SRID=4326;POINT (-112.79974093314752 40.11589497651387)'::geography,1,'SRID=4326;POINT (-112.79874093314751 40.11489497651387)'::geography,'2021-07-20 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments'),
-  (2,'SRID=4326;POINT (-111.79974093314752 39.11589497651387)'::geography,2,'SRID=4326;POINT (-111.79874093314751 39.11489497651387)'::geography,'2021-07-18 00:00:00',NULL,'high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments');
+INSERT INTO public.report_infos (user_id, animal_location, photo_id, submit_location, submit_date, species_id, common_name, scientific_name, species_type, species_class, species_order, family, species_confidence_level, sex, age_class, "comments") VALUES
+  (1,'SRID=4326;POINT (-112.79974093314752 40.11589497651387)'::geography,1,'SRID=4326;POINT (-112.79874093314751 40.11489497651387)'::geography,'2021-07-20 00:00:00', 1, 'Mule Deer', 'Odocoileus hemionus', 'wild', 'mammals', 'hoofed animals', 'deer','high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments'),
+  (2,'SRID=4326;POINT (-111.79974093314752 39.11589497651387)'::geography,2,'SRID=4326;POINT (-111.79874093314751 39.11489497651387)'::geography,'2021-07-18 00:00:00', 1, 'Mule Deer', 'Odocoileus hemionus', 'wild', 'mammals', 'hoofed animals', 'deer','high'::confidence_levels::confidence_levels,'male'::genders::genders,'adult'::age_classes::age_classes,'some comments');
 
-INSERT INTO public.pickup_reports (report_id,pickup_date,route_id) VALUES
+INSERT INTO public.pickup_reports (report_id, pickup_date, route_id) VALUES
   (1,'2021-07-20 00:00:00',1);
 
 INSERT INTO public.public_reports (report_id, repeat_submission, discovery_date) VALUES
