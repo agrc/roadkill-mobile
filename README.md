@@ -53,6 +53,7 @@ These values are managed in two places: `.env.*` files in your local project and
 
 ### Cutting a New Release
 
+1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Optionally bump version number in [src/front/app.config.js](src/front/app.config.js) and [package.json](package.json).
 1. Update `version` in [changelog_context.json](changelog_context.json).
    - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.

@@ -7,6 +7,7 @@ import { Alert, Platform } from 'react-native';
 import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../services/config';
+import { updateConstants } from '../services/constants';
 import { useAsyncError, useSecureState } from '../services/utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
@@ -109,7 +110,7 @@ export function AuthContextProvider({ children, onReady }) {
           },
         })
         .json();
-      const { user, registered } = loginResponse;
+      const { user, registered, constants } = loginResponse;
 
       setAuthInfo({
         oauthUser,
@@ -117,6 +118,8 @@ export function AuthContextProvider({ children, onReady }) {
         providerName,
         registered,
       });
+
+      updateConstants(constants);
 
       setStatus(STATUS.success);
 

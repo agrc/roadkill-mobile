@@ -1,4 +1,5 @@
 import { LoggingWinston } from '@google-cloud/logging-winston';
+import { getConstants } from 'common/constants.js';
 import { pickup as pickupSchema, report as reportSchema } from 'common/validation/reports.js';
 import compression from 'compression';
 import cors from 'cors';
@@ -117,7 +118,7 @@ app.post(
   '/user/login',
   handleAsyncErrors(authenticate),
   validate(loginSchema),
-  handleAsyncErrors(getLogin(getUser, updateUser))
+  handleAsyncErrors(getLogin(getUser, updateUser, getConstants))
 );
 app.post('/user/logout', handleAsyncErrors(logout));
 app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
