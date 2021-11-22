@@ -2,7 +2,7 @@ import { Text, Toggle } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { PADDING } from '../../styles';
+import { PADDING } from '../../services/styles';
 
 export default function RepeatSubmission({ checked, onChange, cancelReport, style }) {
   const onToggle = (newValue) => {

@@ -3,9 +3,9 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Autolink from 'react-native-autolink';
-import config from '../../config';
-import { getIcon } from '../../icons';
-import useStyles from '../../styles';
+import config from '../../services/config';
+import { getIcon } from '../../services/icons';
+import useStyles from '../../services/styles';
 
 function Location({ onSetLocation }) {
   const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;

@@ -1,8 +1,8 @@
 import { exchangeCodeAsync, makeRedirectUri, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
 import jwt_decode from 'jwt-decode';
 import ky from 'ky';
-import config from '../../config';
-import { isTokenExpired, useAsyncError, useSecureRef } from '../../utilities';
+import config from '../../services/config';
+import { isTokenExpired, useAsyncError, useSecureRef } from '../../services/utilities';
 
 let redirectUri = makeRedirectUri({ scheme: config.SCHEME });
 if (__DEV__) {

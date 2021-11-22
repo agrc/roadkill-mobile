@@ -10,8 +10,8 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { getIcon } from '../../icons';
-import { PADDING } from '../../styles';
+import { getIcon } from '../../services/icons';
+import { PADDING } from '../../services/styles';
 
 export default function SearchList({ value, onChange, placeholder, items, field = null, style }) {
   const [filteredItems, setFilteredItems] = React.useState([]);

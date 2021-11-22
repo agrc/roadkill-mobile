@@ -167,3 +167,5 @@ export function coordinatesToString(coordinates) {
 export function dateToString(date) {
   return date ? new Date(date).toLocaleString() : null;
 }
+
+export const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');

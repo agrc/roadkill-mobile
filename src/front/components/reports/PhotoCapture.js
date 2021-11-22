@@ -4,11 +4,11 @@ import mime from 'mime';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
-import config from '../../config';
-import { getIcon } from '../../icons';
-import { ACCURACY, getLocation } from '../../location';
-import useStyles, { PADDING } from '../../styles';
-import { coordinatesToString } from '../../utilities';
+import config from '../../services/config';
+import { getIcon } from '../../services/icons';
+import { ACCURACY, getLocation } from '../../services/location';
+import useStyles, { PADDING } from '../../services/styles';
+import { coordinatesToString } from '../../services/utilities';
 import Spinner from '../Spinner';
 
 const THUMBNAIL_SIZE = 100;

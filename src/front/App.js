@@ -9,10 +9,10 @@ import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import * as Sentry from 'sentry-expo';
-import AppNavigator from './AppNavigator';
 import { AuthContextProvider } from './auth/context';
+import AppNavigator from './components/AppNavigator';
 import { default as theme } from './custom-theme.json';
-import packs from './icons';
+import packs from './services/icons';
 
 const queryClient = new QueryClient();
 

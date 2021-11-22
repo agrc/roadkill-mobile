@@ -2,7 +2,7 @@ import { Button, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getIcon } from '../icons';
+import { getIcon } from '../services/icons';
 
 const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color }) => {
   const theme = useTheme();
