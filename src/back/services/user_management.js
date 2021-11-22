@@ -98,6 +98,11 @@ export async function sendApprovalEmail(user, organization) {
     from: 'noreply@utah.gov',
     templateId: 'd-021d5c287a1d4295a7ade35724bd2994',
     dynamicTemplateData: data,
+    trackingSettings: {
+      clickTracking: {
+        enable: false,
+      },
+    },
   };
 
   try {
