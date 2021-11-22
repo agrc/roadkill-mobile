@@ -30,16 +30,10 @@ jobs:
           path: ~/.cache/firebase/emulators
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
 
-      # this could be removed once setup-node adds support for .nvmrc files
-      # ref: https://github.com/actions/setup-node/issues/32
-      - name: Get node version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+          node-version: lts/*
       - run: |
           npm ci
           cd ../common && npm ci
