@@ -1,3 +1,4 @@
+import { db } from '../services/clients.js';
 import { ARCHIVED_USER } from '../services/user_management.js';
 
 export function getRegister(isExistingUser, registerUser, getUser) {
@@ -18,7 +19,7 @@ export function getRegister(isExistingUser, registerUser, getUser) {
   };
 }
 
-export function getLogin(getUser, updateUser) {
+export function getLogin(getUser, updateUser, getConstants) {
   return async function login(request, response) {
     const user = await getUser(request.body.auth_id, request.body.auth_provider);
 
@@ -29,6 +30,7 @@ export function getLogin(getUser, updateUser) {
     return response.status(200).json({
       user: user?.id ? user : null,
       registered: user?.id ? true : false,
+      constants: await getConstants(db),
     });
   };
 }
