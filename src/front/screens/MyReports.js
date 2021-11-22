@@ -7,9 +7,9 @@ import { useQuery } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import Spinner from '../components/Spinner';
-import config from '../config';
-import { getIcon } from '../icons';
-import { PADDING } from '../styles';
+import config from '../services/config';
+import { getIcon } from '../services/icons';
+import { PADDING } from '../services/styles';
 
 export default function MyReportsScreen() {
   const { getBearerToken } = useAuth();

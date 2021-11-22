@@ -3,7 +3,7 @@ import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Species from '../../components/reports/Species';
-import RootView from '../../RootView';
+import RootView from '../../components/RootView';
 
 const Default = () => {
   return React.createElement(() => {

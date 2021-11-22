@@ -9,11 +9,11 @@ import { Marker } from 'react-native-maps';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
-import config from '../config';
-import { getIcon } from '../icons';
-import { getLocation, locationToRegion, useFollowUser } from '../location';
-import RootView from '../RootView';
-import { wrapAsyncWithDelay } from '../utilities';
+import RootView from '../components/RootView';
+import config from '../services/config';
+import { getIcon } from '../services/icons';
+import { getLocation, locationToRegion, useFollowUser } from '../services/location';
+import { wrapAsyncWithDelay } from '../services/utilities';
 import Report, { REPORT_TYPES } from './Report';
 
 const initialReportState = {

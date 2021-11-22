@@ -13,17 +13,17 @@ import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
-import useAuth from './auth/context';
-import config from './config';
-import { getIcon } from './icons';
-import ChooseTypeScreen from './screens/ChooseType';
-import MainScreen from './screens/Main';
-import MyReportsScreen from './screens/MyReports';
-import NewUserScreen from './screens/NewUser';
-import ProfileScreen from './screens/Profile';
-import ReportInfoScreen from './screens/ReportInfo';
-import { PADDING } from './styles';
-import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from './utilities';
+import useAuth from '../auth/context';
+import ChooseTypeScreen from '../screens/ChooseType';
+import MainScreen from '../screens/Main';
+import MyReportsScreen from '../screens/MyReports';
+import NewUserScreen from '../screens/NewUser';
+import ProfileScreen from '../screens/Profile';
+import ReportInfoScreen from '../screens/ReportInfo';
+import config from '../services/config';
+import { getIcon } from '../services/icons';
+import { PADDING } from '../services/styles';
+import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from '../services/utilities';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
@@ -31,7 +31,7 @@ const prefix = Linking.createURL('/');
 let StorybookUIRoot;
 if (config.SHOW_STORYBOOK) {
   // don't ship this code in production
-  StorybookUIRoot = require('./storybook').default;
+  StorybookUIRoot = require('../storybook').default;
 }
 
 const AuthNavigator = () => {

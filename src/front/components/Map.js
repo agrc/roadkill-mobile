@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
-import config from '../config';
+import config from '../services/config';
 
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
   if (isStatic) {

@@ -13,11 +13,11 @@ import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import Spinner from '../components/Spinner';
-import config from '../config';
-import { getIcon } from '../icons';
-import { ACCURACY, getLocation } from '../location';
-import { PADDING } from '../styles';
-import { coordinatesToString } from '../utilities';
+import config from '../services/config';
+import { getIcon } from '../services/icons';
+import { ACCURACY, getLocation } from '../services/location';
+import { PADDING } from '../services/styles';
+import { coordinatesToString } from '../services/utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';

@@ -1,7 +1,7 @@
 import * as GoogleSignIn from 'expo-google-sign-in';
 import React from 'react';
-import config from '../../config';
-import { useAsyncError } from '../../utilities';
+import config from '../../services/config';
+import { useAsyncError } from '../../services/utilities';
 
 const remapUser = (user) => {
   return {

@@ -2,7 +2,7 @@ import { Button, Text } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PADDING } from '../../styles';
+import { PADDING } from '../../services/styles';
 
 export default function RadioPills({ options, value, onChange, label, style }) {
   const renderPill = (option) => {

@@ -11,9 +11,9 @@ import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
-import config from '../config';
-import { PADDING } from '../styles';
-import { dateToString } from '../utilities';
+import config from '../services/config';
+import { PADDING } from '../services/styles';
+import { booleanToYesNo, dateToString } from '../services/utilities';
 
 export default function ProfileScreen() {
   const { getBearerToken } = useAuth();

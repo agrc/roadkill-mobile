@@ -11,9 +11,9 @@ import googleBtn from '../assets/google/btn_google_signin_light_normal_web.png';
 import googleBtnPressed from '../assets/google/btn_google_signin_light_pressed_web.png';
 import utahIdLogo from '../assets/logo-utahid.png';
 import useAuth, { STATUS } from '../auth/context';
-import config from '../config';
-import { getIcon } from '../icons';
-import RootView from '../RootView';
+import RootView from '../components/RootView';
+import config from '../services/config';
+import { getIcon } from '../services/icons';
 
 const carrotRight = getIcon({
   pack: 'font-awesome',
