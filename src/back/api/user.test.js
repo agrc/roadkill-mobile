@@ -24,6 +24,7 @@ describe('login', () => {
     };
     const getUser = jest.fn().mockReturnValue(new Promise((resolve) => resolve({ id: userId })));
     const updateUser = jest.fn().mockReturnValue(new Promise((resolve) => resolve()));
+    const getConstants = jest.fn().mockReturnValue(new Promise((resolve) => resolve({})));
 
     const requestMock = {
       body,
@@ -36,9 +37,10 @@ describe('login', () => {
       return response;
     };
     const responseMock = getResponseMock();
-    await getLogin(getUser, updateUser)(requestMock, responseMock);
+    await getLogin(getUser, updateUser, getConstants)(requestMock, responseMock);
 
     expect(getUser).toHaveBeenCalled();
+    expect(getConstants).toHaveBeenCalled();
     expect(updateUser).toHaveBeenCalledWith(body);
     expect(responseMock.status).toHaveBeenCalledWith(200);
   });
