@@ -1,6 +1,4 @@
-// Silence the warning https://github.com/facebook/react-native/issues/11094#issuecomment-263240420
-// Use with React Native <= 0.63
-// jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
-// Use this instead with React Native >= 0.64
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
