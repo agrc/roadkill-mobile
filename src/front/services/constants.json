@@ -9,6 +9,7 @@
       "species_order": "hoofed animals",
       "family": "deer",
       "rare": false,
+      "frequent": true,
       "image_url": null
     },
     {
@@ -20,6 +21,7 @@
       "species_order": "hoofed animals",
       "family": "deer",
       "rare": true,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -31,6 +33,7 @@
       "species_order": "hoofed animals",
       "family": "deer",
       "rare": false,
+      "frequent": true,
       "image_url": null
     },
     {
@@ -42,6 +45,7 @@
       "species_order": "hoofed animals",
       "family": "deer",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -53,6 +57,7 @@
       "species_order": "hoofed animals",
       "family": "bison",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -64,6 +69,7 @@
       "species_order": "hoofed animals",
       "family": "sheep",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -75,6 +81,7 @@
       "species_order": "hoofed animals",
       "family": "sheep",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -86,6 +93,7 @@
       "species_order": "hoofed animals",
       "family": "antelope",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -97,6 +105,7 @@
       "species_order": "hoofed animals",
       "family": "goats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -108,6 +117,7 @@
       "species_order": "hoofed animals",
       "family": "goats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -119,6 +129,7 @@
       "species_order": "hoofed animals",
       "family": "cows",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -130,6 +141,7 @@
       "species_order": "hoofed animals",
       "family": "horses",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -141,6 +153,7 @@
       "species_order": "hoofed animals",
       "family": "horses",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -152,6 +165,7 @@
       "species_order": "carnivores",
       "family": "bears",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -163,6 +177,7 @@
       "species_order": "carnivores",
       "family": "cats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -174,6 +189,7 @@
       "species_order": "carnivores",
       "family": "cats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -185,6 +201,7 @@
       "species_order": "carnivores",
       "family": "cats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -196,6 +213,7 @@
       "species_order": "carnivores",
       "family": "cats",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -207,6 +225,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -218,6 +237,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": true,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -229,6 +249,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -240,6 +261,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -251,6 +273,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -262,6 +285,7 @@
       "species_order": "carnivores",
       "family": "dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -273,6 +297,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -284,6 +309,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -295,6 +321,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -306,6 +333,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -317,6 +345,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -328,6 +357,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -339,6 +369,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -350,6 +381,7 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -361,17 +393,19 @@
       "species_order": "carnivores",
       "family": "weasels",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
       "id": 34,
-      "common_name": "falserthern Raccoon",
+      "common_name": "Northerthern Raccoon",
       "scientific_name": "Procyon lotor",
       "species_type": "wild",
       "species_class": "mammals",
       "species_order": "carnivores",
       "family": "raccoons",
       "rare": false,
+      "frequent": true,
       "image_url": null
     },
     {
@@ -383,6 +417,7 @@
       "species_order": "carnivores",
       "family": "raccoons",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -394,6 +429,7 @@
       "species_order": "carnivores",
       "family": "skunks",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -405,6 +441,7 @@
       "species_order": "carnivores",
       "family": "skunks",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -416,6 +453,7 @@
       "species_order": "rabbits/hares",
       "family": "rabbits & hares",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -427,6 +465,7 @@
       "species_order": "rabbits/hares",
       "family": "rabbits & hares",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -438,6 +477,7 @@
       "species_order": "rabbits/hares",
       "family": "rabbits & hares",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -449,6 +489,7 @@
       "species_order": "rabbits/hares",
       "family": "rabbits & hares",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -460,6 +501,7 @@
       "species_order": "rabbits/hares",
       "family": "rabbits & hares",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -471,6 +513,7 @@
       "species_order": "rodents",
       "family": "porcupines",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -482,6 +525,7 @@
       "species_order": "rodents",
       "family": "beavers",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -493,6 +537,7 @@
       "species_order": "rodents",
       "family": "prairie dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -504,6 +549,7 @@
       "species_order": "rodents",
       "family": "prairie dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -515,6 +561,7 @@
       "species_order": "rodents",
       "family": "prairie dogs",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -526,6 +573,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -537,6 +585,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -548,6 +597,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -559,6 +609,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -570,6 +621,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -581,6 +633,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -592,6 +645,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -603,6 +657,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -614,6 +669,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -625,6 +681,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -636,6 +693,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -647,6 +705,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -658,6 +717,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -669,6 +729,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -680,6 +741,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -691,6 +753,7 @@
       "species_order": null,
       "family": "frogs/toads",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -702,6 +765,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -713,6 +777,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -724,6 +789,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -735,6 +801,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -746,6 +813,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -757,6 +825,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -768,6 +837,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -779,6 +849,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -790,6 +861,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -801,6 +873,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -812,6 +885,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -823,6 +897,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -834,6 +909,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -845,6 +921,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -856,6 +933,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -867,6 +945,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -878,6 +957,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -889,6 +969,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -900,6 +981,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -911,6 +993,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -922,6 +1005,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -933,6 +1017,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -944,6 +1029,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -955,6 +1041,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -966,6 +1053,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -977,6 +1065,7 @@
       "species_order": null,
       "family": "snakes",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -988,6 +1077,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -999,6 +1089,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1010,6 +1101,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1021,6 +1113,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1032,6 +1125,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1043,6 +1137,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1054,6 +1149,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1065,6 +1161,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1076,6 +1173,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1087,6 +1185,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1098,6 +1197,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1109,6 +1209,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1120,6 +1221,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1131,6 +1233,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1142,6 +1245,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1153,6 +1257,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1164,6 +1269,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1175,6 +1281,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1186,6 +1293,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1197,6 +1305,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1208,6 +1317,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1219,6 +1329,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1230,6 +1341,7 @@
       "species_order": null,
       "family": "lizards",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1241,6 +1353,7 @@
       "species_order": null,
       "family": "turtle/tortoise",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1252,6 +1365,7 @@
       "species_order": null,
       "family": "turtle/tortoise",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1263,6 +1377,7 @@
       "species_order": null,
       "family": "turtle/tortoise",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1274,6 +1389,7 @@
       "species_order": null,
       "family": "turtle/tortoise",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1285,6 +1401,7 @@
       "species_order": "upland birds",
       "family": "partridge",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1296,6 +1413,7 @@
       "species_order": "upland birds",
       "family": "partridge",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1307,6 +1425,7 @@
       "species_order": "upland birds",
       "family": "grouse",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1318,6 +1437,7 @@
       "species_order": "upland birds",
       "family": "grouse",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1329,6 +1449,7 @@
       "species_order": "upland birds",
       "family": "grouse",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1340,6 +1461,7 @@
       "species_order": "upland birds",
       "family": "grouse",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1351,6 +1473,7 @@
       "species_order": "upland birds",
       "family": "grouse",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1362,6 +1485,7 @@
       "species_order": "upland birds",
       "family": "quail",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1373,6 +1497,7 @@
       "species_order": "upland birds",
       "family": "quail",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1384,6 +1509,7 @@
       "species_order": "upland birds",
       "family": "quail",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1395,6 +1521,7 @@
       "species_order": "upland birds",
       "family": "ptarmingans",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1406,6 +1533,7 @@
       "species_order": "upland birds",
       "family": "pheasant",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1417,6 +1545,7 @@
       "species_order": "vultures",
       "family": "vultures",
       "rare": false,
+      "frequent": false,
       "image_url": null
     },
     {
@@ -1428,6 +1557,7 @@
       "species_order": "vultures",
       "family": "vultures",
       "rare": false,
+      "frequent": false,
       "image_url": null
     }
   ]
