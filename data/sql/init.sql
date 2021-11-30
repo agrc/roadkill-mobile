@@ -69,7 +69,7 @@ CREATE TYPE species_families as ENUM('antelope', 'bears', 'beavers', 'bison', 'c
 
 CREATE TABLE species
 (
-  id serial PRIMARY KEY,
+  species_id serial PRIMARY KEY,
   common_name varchar(128) NOT NULL,
   scientific_name varchar(128) NOT NULL,
   species_type species_types NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE report_infos
   photo_id integer REFERENCES photos (id),
   submit_location geography(POINT, 4326) NOT NULL,
   submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute'),
-  species_id integer NOT NULL REFERENCES species (id),
+  species_id integer REFERENCES species (species_id),
   common_name varchar(128) NOT NULL,
   scientific_name varchar(128) NOT NULL,
   species_type species_types NOT NULL,
