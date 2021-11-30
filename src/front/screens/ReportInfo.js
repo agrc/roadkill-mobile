@@ -3,7 +3,7 @@ import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useQuery } from 'react-query';
 import * as Sentry from 'sentry-expo';
@@ -82,7 +82,7 @@ export function ReportInfo({ data }) {
   const animalCoords = coordsToLocation(data.animal_location);
 
   return (
-    <>
+    <SafeAreaView>
       <Map
         style={styles.map}
         isStatic={true}
@@ -95,7 +95,12 @@ export function ReportInfo({ data }) {
       <ValueContainer label="Report ID" value={data.report_id} />
       <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
       <Divider />
-      <ValueContainer label="Species" value={data.species} />
+      <ValueContainer label="Common Name" value={data.common_name} />
+      <ValueContainer label="Scientific Name" value={data.scientific_name} />
+      <ValueContainer label="Type" value={data.species_type} />
+      <ValueContainer label="Class" value={data.species_class} />
+      <ValueContainer label="Order" value={data.species_order} />
+      <ValueContainer label="Family" value={data.family} />
       <ValueContainer label="Species Confidence Level" value={data.species_confidence_level} />
       <ValueContainer label="Sex" value={data.sex} />
       <ValueContainer label="Age Class" value={data.age_class} />
@@ -126,7 +131,7 @@ export function ReportInfo({ data }) {
           <Divider />
         </>
       ) : null}
-    </>
+    </SafeAreaView>
   );
 }
 ReportInfo.propTypes = {
