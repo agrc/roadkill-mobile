@@ -1,13 +1,15 @@
-import { Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
+import { Divider, Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
+import { omit } from 'lodash';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
+import { getConstants } from '../../services/constants';
 import { PADDING } from '../../services/styles';
+import { useMounted } from '../../services/utilities';
 import RadioPills from './RadioPills';
 import SearchList from './SearchList';
-import species from './species.json';
 
 const FREQUENT = 'frequent';
 const COMMON = 'common';
@@ -15,47 +17,24 @@ const ORDER = 'order';
 const CLASS = 'class';
 const FAMILY = 'family';
 const SEARCH_TYPES = [FREQUENT, COMMON, CLASS, ORDER, FAMILY];
-const frequentSpecies = species.filter((speciesItem) => speciesItem.frequent).map(specieToOption);
+const SEARCH_TYPE_TO_FIELD = {
+  [COMMON]: 'common_name',
+  [ORDER]: 'species_order',
+  [CLASS]: 'species_class',
+  [FAMILY]: 'family',
+};
 const CONFIDENCE_LEVELS = ['high', 'medium', 'low'];
-const ATTRIBUTES = [
-  { label: 'hair', value: 'mammal' },
-  { label: 'feathers', value: 'bird' },
-  { label: 'scales', value: 'reptile' },
-  { label: 'slime', value: 'amphibian' },
-];
-const UNKNOWN_SPECIES = {
-  latin: config.UNKNOWN,
-  common: 'Unknown',
+const CLASS_DESCRIPTION_TO_VALUE = {
+  hair: 'mammals',
+  feathers: 'birds',
+  scales: 'reptiles',
+  slime: 'amphibians',
+  [config.UNKNOWN]: config.UNKNOWN,
 };
 
 // utility functions
-function getSpeciesByLatin(latin) {
-  return species.concat([UNKNOWN_SPECIES]).find((speciesItem) => speciesItem.latin === latin);
-}
-
 function dedupe(array) {
-  return Array.from(new Set(array));
-}
-
-function dedupeBy(array, key) {
-  const keys = [];
-
-  return array.filter((item) => {
-    if (keys.includes(item[key])) {
-      return false;
-    }
-
-    keys.push(item[key]);
-
-    return true;
-  });
-}
-
-function specieToOption(specie) {
-  return {
-    label: specie.common,
-    value: specie.latin,
-  };
+  return [...new Set(array)];
 }
 
 function sortBy(key) {
@@ -64,48 +43,76 @@ function sortBy(key) {
   };
 }
 
-function reducer(draft, action) {
+const initialState = {
+  searchType: SEARCH_TYPES[0],
+  autoCompleteItems: null,
+  filterValue: null,
+  value: {
+    species_id: null,
+    common_name: null,
+    scientific_name: null,
+    species_type: null,
+    species_class: null,
+    species_order: null,
+    family: null,
+    species_confidence_level: null,
+  },
+  constants: {
+    species: null,
+    frequentSpecies: null,
+  },
+};
+
+const reducer = (draft, action) => {
   const reset = () => {
-    draft.selectedSpecies = null;
-    draft.filterValue = null;
-    draft.selectedClass = null;
-    draft.family = null;
-    draft.confidenceLevel = null;
-    draft.speciesValue = null;
+    draft.filterValue = initialState.filterValue;
+
+    // the spread helps immer when we modify one of the values after calling reset
+    draft.value = { ...initialState.value };
   };
 
   switch (action.type) {
+    case 'SET_SPECIES': {
+      draft.constants.species = action.payload;
+      draft.constants.frequentSpecies = action.payload.filter((item) => item.frequent);
+
+      break;
+    }
+
     case 'SELECT_SPECIES': {
-      const selectedItem = action.payload;
-
-      draft.selectedSpecies = selectedItem;
-
-      if (selectedItem) {
-        draft.speciesValue =
-          selectedItem.latin !== UNKNOWN_SPECIES.latin
-            ? selectedItem.latin
-            : `${draft.selectedClass}-${draft.family}-${selectedItem.latin}`.toLowerCase();
+      if (typeof action.payload === 'string' && action.payload.toLowerCase() === config.UNKNOWN.toLowerCase()) {
+        draft.value.species_id = null;
+        draft.value.common_name = config.UNKNOWN;
+        draft.value.scientific_name = config.UNKNOWN;
+        draft.value.species_type = config.UNKNOWN;
       } else {
-        // this is set to undefined to prevent the entire component from being reset
-        draft.speciesValue = undefined;
+        const selectedItem = { ...action.payload };
+
+        if (selectedItem) {
+          draft.value = selectedItem;
+        } else {
+          draft.value = initialState.value;
+        }
       }
 
-      draft.confidenceLevel = null;
+      draft.value.species_confidence_level = null;
 
       break;
     }
 
     case 'CHANGE_SEARCH_TYPE':
-      draft.searchType = action.payload;
-
       reset();
 
+      draft.searchType = action.payload;
+
       if ([ORDER, CLASS, FAMILY].includes(action.payload)) {
-        const newValues = species.map((speciesItem) => speciesItem[draft.searchType]).filter((value) => value);
+        const newValues = draft.constants.species
+          .map((item) => item[SEARCH_TYPE_TO_FIELD[draft.searchType]])
+          .filter((value) => value);
 
         draft.autoCompleteItems = dedupe(newValues).sort();
       } else if (action.payload === COMMON) {
-        draft.autoCompleteItems = Array.from(species).sort(sortBy(COMMON));
+        draft.autoCompleteItems = Array.from(draft.constants.species).sort(sortBy('common_name'));
       }
 
       break;
@@ -113,8 +120,6 @@ function reducer(draft, action) {
     case 'SET_FILTER':
       reset();
 
-      // this is set to undefined to prevent the entire component from being reset
-      draft.speciesValue = undefined;
       draft.filterValue = action.payload;
 
       break;
@@ -122,101 +127,93 @@ function reducer(draft, action) {
     case 'SET_SELECTED_CLASS':
       reset();
 
-      // this is set to undefined to prevent the entire component from being reset
-      draft.speciesValue = undefined;
-      draft.selectedClass = action.payload;
-
-      if (action.payload === config.UNKNOWN) {
-        draft.speciesValue = config.UNKNOWN;
+      draft.value.species_class = action.payload;
+      if (draft.value.species_class === config.UNKNOWN) {
+        draft.value.common_name = config.UNKNOWN;
+        draft.value.scientific_name = config.UNKNOWN;
+        draft.value.species_type = config.UNKNOWN;
+        draft.value.species_order = config.UNKNOWN;
+        draft.value.family = config.UNKNOWN;
       }
 
       break;
 
     case 'SET_FAMILY':
-      draft.family = action.payload;
-      draft.selectedSpecies = null;
+      draft.value.family = action.payload;
+      draft.value.common_name = null;
+      draft.value.scientific_name = null;
+      draft.value.species_type = null;
+      draft.value.species_order = null;
 
-      // this is set to undefined to prevent the entire component from being reset
-      draft.speciesValue = undefined;
-      if (action.payload === config.UNKNOWN) {
-        draft.speciesValue = `${draft.selectedClass}-${action.payload}`.toLowerCase();
+      if (draft.value.family === config.UNKNOWN) {
+        draft.value.common_name = config.UNKNOWN;
+        draft.value.scientific_name = config.UNKNOWN;
+        draft.value.species_type = config.UNKNOWN;
+        draft.value.species_order = config.UNKNOWN;
       }
 
       break;
 
     case 'SET_CONFIDENCE_LEVEL':
-      draft.confidenceLevel = action.payload;
+      draft.value.species_confidence_level = action.payload;
 
       break;
 
     case 'RESET':
       reset();
+      draft.searchType = SEARCH_TYPES[0];
 
       break;
 
     default:
       throw new Error(`Unsupported action type: ${action.type}`);
   }
-}
-
-const initialState = {
-  searchType: SEARCH_TYPES[0],
-  selectedSpecies: null,
-  autoCompleteItems: null,
-  filterValue: null,
-  selectedClass: null,
-  family: null,
-  confidenceLevel: null,
-  speciesValue: null,
 };
 
-export default function Species({ onChange, values, style, ableToIdentify, setAbleToIdentify }) {
+function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const families = dedupeBy(
-    species
-      .filter((item) => item.class.toLowerCase() === state.selectedClass?.toLowerCase())
-      .map((speciesItem) => {
-        return {
-          label: speciesItem.family.replace(/s$/, ''),
-          value: speciesItem.family,
-        };
-      }),
-    'label'
-  )
-    .sort(sortBy('label'))
-    .concat([{ label: 'Unknown', value: config.UNKNOWN }]);
+  const isMounted = useMounted();
+
+  useEffect(() => {
+    const init = async () => {
+      const constants = await getConstants();
+
+      if (isMounted) {
+        dispatch({ type: 'SET_SPECIES', payload: constants.species });
+      }
+    };
+
+    init();
+  }, []);
 
   React.useEffect(() => {
-    if (values.species === null && values.species_confidence_level === null) {
+    if (reset) {
       dispatch({ type: 'RESET' });
     }
-  }, [values]);
+  }, [reset]);
 
   React.useEffect(() => {
-    onChange({
-      species: state.speciesValue,
-      species_confidence_level: state.confidenceLevel,
-    });
-  }, [state.confidenceLevel, state.speciesValue]);
+    // exclude fields that are not part of the report_info table
+    onChange(omit(state.value, ['rare', 'frequent', 'image_url']));
+  }, [state.value]);
 
   const renderSearch = () => {
     switch (state.searchType) {
       case FREQUENT:
         return (
-          <RadioPills
-            value={state.selectedSpecies?.latin}
-            onChange={(latin) => dispatch({ type: 'SELECT_SPECIES', payload: getSpeciesByLatin(latin) })}
-            options={frequentSpecies}
+          <SearchList
+            value={state.value}
+            onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+            items={state.constants.frequentSpecies}
           />
         );
 
       case COMMON:
         return (
           <SearchList
-            value={state.selectedSpecies}
-            onChange={(specie) => dispatch({ type: 'SELECT_SPECIES', payload: specie })}
+            value={state.value}
+            onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
             items={state.autoCompleteItems}
-            field={COMMON}
             placeholder="common name"
           />
         );
@@ -234,13 +231,20 @@ export default function Species({ onChange, values, style, ableToIdentify, setAb
               style={{ marginBottom: PADDING }}
             />
             {state.filterValue ? (
-              <RadioPills
-                value={state.selectedSpecies?.latin}
-                onChange={(latin) => dispatch({ type: 'SELECT_SPECIES', payload: getSpeciesByLatin(latin) })}
-                options={species
-                  .filter((speciesItem) => speciesItem[state.searchType] === state.filterValue)
-                  .map(specieToOption)}
-              />
+              <>
+                <Text category="h6">Select a species:</Text>
+                <SearchList
+                  value={state.value}
+                  onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+                  items={state.constants.species
+                    .filter(
+                      (item) =>
+                        item[SEARCH_TYPE_TO_FIELD[state.searchType]]?.toLowerCase() === state.filterValue.toLowerCase()
+                    )
+                    .sort(sortBy('common_name'))}
+                  placeholder={state.filterValue}
+                />
+              </>
             ) : null}
           </>
         );
@@ -250,19 +254,25 @@ export default function Species({ onChange, values, style, ableToIdentify, setAb
     }
   };
 
-  return (
+  return state.constants.species ? (
     <View style={style}>
       <Text category="h6" style={{ marginTop: PADDING }}>
         Are you able to identify the species?
       </Text>
       <View style={styles.toggleContainer}>
-        <Toggle checked={ableToIdentify} onChange={() => setAbleToIdentify(!ableToIdentify)} style={styles.toggle}>
+        <Toggle
+          checked={ableToIdentify}
+          onChange={() => {
+            setAbleToIdentify(!ableToIdentify);
+            dispatch({ type: 'RESET' });
+          }}
+          style={styles.toggle}
+        >
           {ableToIdentify ? 'Yes' : 'No'}
         </Toggle>
       </View>
       {ableToIdentify ? (
         <>
-          <Text category="label">Search by...</Text>
           <TabBar
             selectedIndex={SEARCH_TYPES.indexOf(state.searchType)}
             onSelect={(index) => dispatch({ type: 'CHANGE_SEARCH_TYPE', payload: SEARCH_TYPES[index] })}
@@ -271,12 +281,15 @@ export default function Species({ onChange, values, style, ableToIdentify, setAb
               <Tab key={type} title={type} />
             ))}
           </TabBar>
-          <View style={styles.searchContainer}>{renderSearch()}</View>
-          {state.selectedSpecies ? (
+          <View style={styles.searchContainer}>
+            <Divider />
+            {renderSearch()}
+          </View>
+          {state.value.species_id ? (
             <>
               <Text category="h6">How confident are you in your species identification?</Text>
               <RadioPills
-                value={state.confidenceLevel}
+                value={state.value.species_confidence_level}
                 onChange={(value) => dispatch({ type: 'SET_CONFIDENCE_LEVEL', payload: value })}
                 options={CONFIDENCE_LEVELS}
               />
@@ -286,49 +299,64 @@ export default function Species({ onChange, values, style, ableToIdentify, setAb
       ) : (
         <>
           <Text category="h6">Does the animal have...</Text>
-          <RadioPills
-            value={state.selectedClass}
-            onChange={(value) => dispatch({ type: 'SET_SELECTED_CLASS', payload: value })}
-            options={ATTRIBUTES}
+          <SearchList
+            value={
+              Object.keys(CLASS_DESCRIPTION_TO_VALUE).filter(
+                (key) => CLASS_DESCRIPTION_TO_VALUE[key].toLowerCase() === state.value.species_class?.toLowerCase()
+              )[0]
+            }
+            onChange={(value) => dispatch({ type: 'SET_SELECTED_CLASS', payload: CLASS_DESCRIPTION_TO_VALUE[value] })}
+            items={Object.keys(CLASS_DESCRIPTION_TO_VALUE)}
           />
 
-          {state.selectedClass && state.selectedClass !== config.UNKNOWN ? (
+          {state.value.species_class && state.value.species_class !== config.UNKNOWN ? (
             <View style={styles.marginTop}>
               <Text category="h6">Does the animal look like a...</Text>
-              <RadioPills
-                value={state.family}
+              <SearchList
+                value={state.value.family}
                 onChange={(value) => dispatch({ type: 'SET_FAMILY', payload: value })}
-                options={families}
+                items={dedupe(
+                  state.constants.species
+                    .filter((item) => item.species_class.toLowerCase() === state.value.species_class?.toLowerCase())
+                    .map((item) => item.family)
+                )
+                  .sort()
+                  .concat([config.UNKNOWN])}
+                placeholder={state.value.family}
               />
             </View>
           ) : null}
 
-          {state.selectedClass &&
-          state.selectedClass !== config.UNKNOWN &&
-          state.family &&
-          state.family !== config.UNKNOWN ? (
+          {state.value.species_class &&
+          state.value.species_class !== config.UNKNOWN &&
+          state.value.family &&
+          state.value.family !== config.UNKNOWN ? (
             <View style={styles.marginTop}>
-              <Text category="h6">Select a species...</Text>
-              <RadioPills
-                value={state.selectedSpecies?.latin}
-                onChange={(latin) => dispatch({ type: 'SELECT_SPECIES', payload: getSpeciesByLatin(latin) })}
-                options={species
-                  .filter((speciesItem) => speciesItem.family.toLowerCase() === state.family.toLowerCase())
-                  .concat(UNKNOWN_SPECIES)
-                  .map(specieToOption)}
+              <Text category="h6">Select a species:</Text>
+              <SearchList
+                value={
+                  state.value.common_name?.toLowerCase() === config.UNKNOWN.toLowerCase() ? config.UNKNOWN : state.value
+                }
+                onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+                items={state.constants.species
+                  .filter((item) => item.family.toLowerCase() === state.value.family.toLowerCase())
+                  .sort(sortBy('common_name'))
+                  .concat([config.UNKNOWN])}
+                placeholder="common name"
               />
             </View>
           ) : null}
         </>
       )}
     </View>
-  );
+  ) : null;
 }
+export default memo(Species);
 
 Species.propTypes = {
-  onChange: propTypes.func.isRequired,
-  values: propTypes.object.isRequired,
   ableToIdentify: propTypes.bool.isRequired,
+  onChange: propTypes.func.isRequired,
+  reset: propTypes.bool.isRequired,
   setAbleToIdentify: propTypes.func.isRequired,
   style: propTypes.object,
 };
@@ -343,6 +371,7 @@ const styles = StyleSheet.create({
     marginBottom: PADDING,
   },
   searchContainer: {
+    marginTop: PADDING,
     marginBottom: PADDING,
   },
   marginTop: {

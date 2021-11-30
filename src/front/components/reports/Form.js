@@ -1,7 +1,7 @@
 import { Button, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../../services/config';
 import { PADDING } from '../../services/styles';
@@ -47,6 +47,7 @@ export default function Form({
       formikRef.current.setFieldValue('sex', null);
     }
   }, [ableToIdentify]);
+  const [resetSpecies, setResetSpecies] = React.useState(false);
 
   return (
     <Formik
@@ -54,20 +55,23 @@ export default function Form({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => mutation.mutate(values)}
-      onReset={() => setAbleToIdentify(true)}
+      onReset={() => {
+        setAbleToIdentify(true);
+        setResetSpecies(true);
+      }}
       style={style}
     >
-      {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange }) => (
+      {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange, setValues }) => (
         <>
           <Species
-            onChange={(newValue) => {
-              setFieldValue('species', newValue.species);
-              setFieldValue('species_confidence_level', newValue.species_confidence_level);
-            }}
-            values={{
-              species: values.species,
-              species_confidence_level: values.species_confidence_level,
-            }}
+            onChange={useCallback((speciesValues) => {
+              setValues({
+                ...values,
+                ...speciesValues,
+              });
+              setResetSpecies(false);
+            }, [])}
+            reset={resetSpecies}
             style={styles.bottomBump}
             ableToIdentify={ableToIdentify}
             setAbleToIdentify={setAbleToIdentify}

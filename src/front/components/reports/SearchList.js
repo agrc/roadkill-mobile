@@ -13,7 +13,58 @@ import {
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
 
-export default function SearchList({ value, onChange, placeholder, items, field = null, style }) {
+const MIN_NUM_FOR_POPUP = 20;
+const COMMON = 'common_name';
+const ID = 'species_id';
+const SCIENTIFIC = 'scientific_name';
+
+function itemPropOrString(item, field) {
+  if (item === null || item === undefined) {
+    return null;
+  }
+
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  return item[field];
+}
+
+const MyListItem = ({ item, onPress, selected }) => {
+  const theme = useTheme();
+  const selectedStyle = {
+    borderColor: theme['color-primary-500'],
+  };
+  const style = selected ? selectedStyle : null;
+  const title = itemPropOrString(item, COMMON);
+  const description = itemPropOrString(item, SCIENTIFIC);
+
+  return (
+    <ListItem
+      title={title}
+      description={
+        title !== description
+          ? ({ style }) => (
+              <Text category="c1" style={[style, { fontStyle: 'italic' }]}>
+                {description}
+              </Text>
+            )
+          : null
+      }
+      onPress={onPress}
+      style={[styles.listItem, style]}
+    />
+  );
+};
+
+MyListItem.propTypes = {
+  item: propTypes.oneOfType([propTypes.string, propTypes.object]).isRequired,
+  onPress: propTypes.func.isRequired,
+  selected: propTypes.bool.isRequired,
+};
+
+export default function SearchList({ value, onChange, placeholder, items, style }) {
+  // items could be species objects or strings
   const [filteredItems, setFilteredItems] = React.useState([]);
   const [inputValue, setInputValue] = React.useState('');
   const [showModal, setShowModal] = React.useState(false);
@@ -25,15 +76,11 @@ export default function SearchList({ value, onChange, placeholder, items, field 
     }
   }, [showModal]);
 
-  function itemOrValue(item) {
-    return field ? item[field] : item;
-  }
-
   const getFilter = (text) => {
     return (item) => {
       if (text === null) return false;
 
-      return itemOrValue(item).toLowerCase().includes(text.toLowerCase());
+      return itemPropOrString(item, COMMON).toLowerCase().includes(text.toLowerCase());
     };
   };
 
@@ -44,7 +91,7 @@ export default function SearchList({ value, onChange, placeholder, items, field 
   const onChangeText = (text) => {
     setInputValue(text);
     let filteredItems = items.filter(getFilter(text));
-    if (filteredItems.length === 1 && itemOrValue(filteredItems[0]) === text) {
+    if (filteredItems.length === 1 && itemPropOrString(filteredItems[0], COMMON) === text) {
       setFilteredItems([]);
     } else {
       setFilteredItems(filteredItems);
@@ -54,7 +101,7 @@ export default function SearchList({ value, onChange, placeholder, items, field 
   const onSelectItem = (item) => {
     onChange(item);
 
-    setInputValue(itemOrValue(item));
+    setInputValue(itemPropOrString(item, COMMON));
     setFilteredItems([]);
     setShowModal(false);
   };
@@ -102,7 +149,7 @@ export default function SearchList({ value, onChange, placeholder, items, field 
       ios: '100%',
       android: windowDimensions.height - StatusBar.currentHeight * 2,
     }),
-    width: windowDimensions.width - PADDING * 4,
+    width: windowDimensions.width - PADDING * 2,
   };
 
   const onValuePress = () => {
@@ -110,41 +157,69 @@ export default function SearchList({ value, onChange, placeholder, items, field 
     setShowModal(true);
   };
 
+  if (!items) {
+    return null;
+  }
+
   return (
     <View style={style}>
-      <Card onPress={onValuePress}>
-        <View style={styles.innerValueContainer}>
-          <Text style={valueStyle}>{value ? itemOrValue(value) : `search by ${placeholder}`}</Text>
-          <ArrowIcon />
-        </View>
-      </Card>
-
-      <Modal
-        visible={showModal}
-        backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
-        style={modalStyle}
-      >
-        <SafeAreaView style={{ flex: 1 }}>
-          <Card disabled={true} style={{ flex: 1 }}>
-            <Input
-              accessoryRight={renderClearIcon}
-              value={inputValue}
-              placeholder={placeholder}
-              onChangeText={onChangeText}
-              ref={searchInputRef}
-            />
-            <List
-              data={filteredItems}
-              ItemSeparatorComponent={Divider}
-              renderItem={({ item }) => (
-                <ListItem key={itemOrValue(item)} title={itemOrValue(item)} onPress={() => onSelectItem(item)} />
-              )}
-              keyboardShouldPersistTaps="always"
-              style={{ backgroundColor: theme['color-basic-100'] }}
-            />
+      {items.length > MIN_NUM_FOR_POPUP ? (
+        <>
+          <Card onPress={onValuePress}>
+            <View style={styles.innerValueContainer}>
+              <Text style={valueStyle}>
+                {typeof value === 'string' || value?.species_id
+                  ? itemPropOrString(value, COMMON)
+                  : `search by ${placeholder}`}
+              </Text>
+              <ArrowIcon />
+            </View>
           </Card>
-        </SafeAreaView>
-      </Modal>
+
+          <Modal
+            visible={showModal}
+            backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
+            style={modalStyle}
+          >
+            <SafeAreaView style={{ flex: 1 }}>
+              <View style={styles.container}>
+                <Input
+                  accessoryRight={renderClearIcon}
+                  value={inputValue}
+                  placeholder={placeholder}
+                  onChangeText={onChangeText}
+                  ref={searchInputRef}
+                />
+                <List
+                  data={filteredItems}
+                  ItemSeparatorComponent={Divider}
+                  renderItem={({ item }) => (
+                    <MyListItem
+                      key={itemPropOrString(item, ID)}
+                      item={item}
+                      onPress={() => onSelectItem(item)}
+                      selected={itemPropOrString(item, ID) === itemPropOrString(value, ID)}
+                    />
+                  )}
+                  keyboardShouldPersistTaps="always"
+                  style={{ backgroundColor: theme['color-basic-100'] }}
+                />
+              </View>
+            </SafeAreaView>
+          </Modal>
+        </>
+      ) : (
+        items.map((item) => (
+          <View key={itemPropOrString(item, ID)}>
+            <MyListItem
+              item={item}
+              onPress={() => onSelectItem(item)}
+              selected={itemPropOrString(item, ID) === itemPropOrString(value, ID)}
+            />
+            <Divider />
+          </View>
+        ))
+      )}
     </View>
   );
 }
@@ -156,13 +231,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: -8,
   },
+  // eslint-disable-next-line react-native/no-color-literals
+  listItem: {
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    paddingHorizontal: 0,
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  container: {
+    flex: 1,
+    padding: PADDING,
+    backgroundColor: 'white',
+    borderRadius: PADDING,
+    marginBottom: PADDING,
+  },
 });
 
 SearchList.propTypes = {
   value: propTypes.oneOfType([propTypes.string, propTypes.object]),
   onChange: propTypes.func.isRequired,
-  placeholder: propTypes.string.isRequired,
+  placeholder: propTypes.string,
   items: propTypes.array.isRequired,
-  field: propTypes.string,
   style: propTypes.object,
 };

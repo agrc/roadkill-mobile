@@ -12,10 +12,16 @@ const animal_location = location.required();
 const user_id = yup.number().required();
 const submit_location = location.required();
 const submit_date = yup.date().required();
-const species = yup.string().nullable();
+const species_id = yup.number().nullable();
+const common_name = yup.string().required();
+const scientific_name = yup.string().required();
+const species_type = yup.string().required();
+const species_class = yup.string().required();
+const species_order = yup.string().nullable();
+const family = yup.string().required();
 const species_confidence_level = yup.string().nullable();
-const age_class = yup.string().required();
-const sex = yup.string().required();
+const age_class = yup.string().nullable();
+const sex = yup.string().nullable();
 const comments = yup.string().nullable();
 
 export const report = yup.object().shape({
@@ -27,7 +33,13 @@ export const report = yup.object().shape({
   repeat_submission: yup.boolean().required(),
   submit_location,
   submit_date,
-  species,
+  species_id,
+  common_name,
+  scientific_name,
+  species_type,
+  species_class,
+  species_order,
+  family,
   species_confidence_level,
   age_class,
   sex,
@@ -43,7 +55,13 @@ export const pickup = yup.object().shape({
   photo_date,
   submit_location,
   submit_date,
-  species,
+  species_id,
+  common_name,
+  scientific_name,
+  species_type,
+  species_class,
+  species_order,
+  family,
   species_confidence_level,
   age_class,
   sex,
