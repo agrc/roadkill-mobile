@@ -2,7 +2,7 @@ import { Divider, Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
 import { omit } from 'lodash';
 import propTypes from 'prop-types';
 import React, { memo, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
 import { getConstants } from '../../services/constants';
@@ -11,8 +11,8 @@ import { useMounted } from '../../services/utilities';
 import RadioPills from './RadioPills';
 import SearchList from './SearchList';
 
-const FREQUENT = 'frequent';
-const COMMON = 'common';
+const FREQUENT = 'frequently reported';
+const COMMON = 'common name';
 const ORDER = 'order';
 const CLASS = 'class';
 const FAMILY = 'family';
@@ -254,6 +254,10 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
     }
   };
 
+  const { width } = useWindowDimensions();
+  const shrinkTabText = width < 380;
+  const tabTextStyle = shrinkTabText ? { fontSize: 12 } : {};
+
   return state.constants.species ? (
     <View style={style}>
       <Text category="h6" style={{ marginTop: PADDING }}>
@@ -278,7 +282,14 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
             onSelect={(index) => dispatch({ type: 'CHANGE_SEARCH_TYPE', payload: SEARCH_TYPES[index] })}
           >
             {SEARCH_TYPES.map((type) => (
-              <Tab key={type} title={type} />
+              <Tab
+                key={type}
+                title={({ category, style }) => (
+                  <Text category={category} style={[style, tabTextStyle]}>
+                    {type}
+                  </Text>
+                )}
+              />
             ))}
           </TabBar>
           <View style={styles.searchContainer}>
