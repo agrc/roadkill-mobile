@@ -13,7 +13,7 @@ export function useMounted() {
       isMounted.current = false;
     };
   }, []);
-  return isMounted;
+  return isMounted.current;
 }
 
 export function useSecureState(key) {
