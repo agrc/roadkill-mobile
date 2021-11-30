@@ -93,7 +93,7 @@ export async function createPickup({
 export async function getAllReports(auth_id, auth_provider) {
   return await db('report_infos as r')
     .join('users', 'users.id', 'r.user_id')
-    .select('r.report_id', 'r.photo_id', 'r.submit_date', 'r.species')
+    .select('r.report_id', 'r.photo_id', 'r.submit_date', 'r.common_name')
     .orderBy('r.submit_date', 'desc')
     .limit(100)
     .where({
@@ -115,7 +115,13 @@ export async function getReport(reportId) {
       'p.photo_date',
       db.raw(geographyToCoordinates('submit_location')),
       'r.submit_date',
-      'r.species',
+      'r.species_id',
+      'r.common_name',
+      'r.scientific_name',
+      'r.species_type',
+      'r.species_class',
+      'r.species_order',
+      'r.family',
       'r.species_confidence_level',
       'r.sex',
       'r.age_class',
