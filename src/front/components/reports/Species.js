@@ -2,7 +2,7 @@ import { Divider, Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
 import { omit } from 'lodash';
 import propTypes from 'prop-types';
 import React, { memo, useEffect } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
 import { getConstants } from '../../services/constants';
@@ -31,6 +31,8 @@ const CLASS_DESCRIPTION_TO_VALUE = {
   slime: 'amphibians',
   [config.UNKNOWN]: config.UNKNOWN,
 };
+const RARE_SPECIES_WARNING =
+  'The species you selected is rare in this area. Please consider this selection carefully before submitting your report, or select a different species.';
 
 // utility functions
 function dedupe(array) {
@@ -90,6 +92,10 @@ const reducer = (draft, action) => {
 
         if (selectedItem) {
           draft.value = selectedItem;
+
+          if (selectedItem.rare) {
+            Alert.alert('Warning', RARE_SPECIES_WARNING);
+          }
         } else {
           draft.value = initialState.value;
         }
