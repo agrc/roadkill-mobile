@@ -59,13 +59,13 @@ CREATE TABLE users_have_notification_areas
 DROP TABLE IF EXISTS species CASCADE;
 
 DROP TYPE IF EXISTS species_types CASCADE;
-CREATE TYPE species_types as ENUM('domestic', 'wild');
+CREATE TYPE species_types as ENUM('domestic', 'wild', 'unknown');
 DROP TYPE IF EXISTS species_classes CASCADE;
-CREATE TYPE species_classes as ENUM('amphibians', 'birds', 'mammals', 'reptiles');
+CREATE TYPE species_classes as ENUM('amphibians', 'birds', 'mammals', 'reptiles', 'unknown');
 DROP TYPE IF EXISTS species_orders CASCADE;
-CREATE TYPE species_orders as ENUM('carnivores', 'hoofed animals', 'rabbits/hares', 'rodents', 'upland birds', 'vultures');
+CREATE TYPE species_orders as ENUM('carnivores', 'hoofed animals', 'rabbits/hares', 'rodents', 'upland birds', 'vultures', 'unknown');
 DROP TYPE IF EXISTS species_families CASCADE;
-CREATE TYPE species_families as ENUM('antelope', 'bears', 'beavers', 'bison', 'cats', 'cows', 'deer', 'dogs', 'frogs/toads', 'goats', 'grouse', 'horses', 'lizards', 'partridge', 'pheasant', 'porcupines', 'prairie dogs', 'ptarmingans', 'quail', 'rabbits & hares', 'raccoons', 'sheep', 'skunks', 'snakes', 'turtle/tortoise', 'vultures', 'weasels');
+CREATE TYPE species_families as ENUM('antelope', 'bears', 'beavers', 'bison', 'cats', 'cows', 'deer', 'dogs', 'frogs/toads', 'goats', 'grouse', 'horses', 'lizards', 'partridge', 'pheasant', 'porcupines', 'prairie dogs', 'ptarmingans', 'quail', 'rabbits & hares', 'raccoons', 'sheep', 'skunks', 'snakes', 'turtle/tortoise', 'vultures', 'weasels', 'unknown');
 
 CREATE TABLE species
 (
