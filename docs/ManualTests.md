@@ -29,7 +29,7 @@ password: `tester`
 |-------------------------------|-----------------------------------------|-----|
 |                               | log in with unregistered user           | navigates to new user screen, name and email are populated |
 | log in with unregistered user | press "Cancel"                          | navigates back to log in screen |
-| log in with unregistered user | input phone number and press "Register" | navigates to main screen and an email is sent to admins |
+| log in with unregistered user | input phone number and press "Register" | navigates to main screen and an email is sent to admins (for non-public users) |
 
 ## Main
 
@@ -111,10 +111,11 @@ Setup: able to identify to "Yes"
 |                                               | select a different search type      | validate that the species and confidence values are reset and the new controls are shown |
 | select "common"                               | tap on input                        | validate that search modal is displayed with the species list |
 |                                               | begin typing                        | verify that the list values are filtered |
+|                                               | select white-tailed deer (rare)     | rare warning dialog is displayed |
 |                                               | tap on "X" to clear the search      | validate that input value is cleared and the list filter is reset |
 |                                               | select a value                      | validate that the species value is populated and the confidence level is shown |
 | clear search input                            | tap on "X" again                    | verify that modal is closed and value is reset |
-|                                               | select "class" search type          | select value and verify that species pills are shown and selectable |
+|                                               | select "class" search type          | select value and verify that species options are shown and selectable |
 | duplicate test above for "order" and "family" |                                     |     |
 
 ### Pickup Report Type
