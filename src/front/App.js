@@ -2,6 +2,7 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import * as React from 'react';
 import { LogBox, View } from 'react-native';
@@ -69,6 +70,7 @@ export default function App() {
           </AuthContextProvider>
         </QueryClientProvider>
       </ApplicationProvider>
+      <StatusBar style="dark" />
     </ErrorBoundary>
   );
 }
