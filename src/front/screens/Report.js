@@ -50,11 +50,11 @@ const initialFormValues = {
   report: {
     ...commonInitialValues,
     repeat_submission: false,
-    discovery_date: null,
+    discovery_date: new Date(),
   },
   pickup: {
     ...commonInitialValues,
-    pickup_date: null,
+    pickup_date: new Date(),
   },
 };
 const formShapes = {
