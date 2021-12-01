@@ -64,13 +64,16 @@ export default function Form({
       {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange, setValues }) => (
         <>
           <Species
-            onChange={useCallback((speciesValues) => {
-              setValues({
-                ...values,
-                ...speciesValues,
-              });
-              setResetSpecies(false);
-            }, [])}
+            onChange={useCallback(
+              (speciesValues) => {
+                setValues({
+                  ...values,
+                  ...speciesValues,
+                });
+                setResetSpecies(false);
+              },
+              [values]
+            )}
             reset={resetSpecies}
             style={styles.bottomBump}
             ableToIdentify={ableToIdentify}
