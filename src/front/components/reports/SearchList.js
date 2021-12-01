@@ -2,6 +2,7 @@ import { Card, Divider, Input, List, ListItem, Modal, Text, useTheme } from '@ui
 import propTypes from 'prop-types';
 import React from 'react';
 import {
+  Image,
   Platform,
   SafeAreaView,
   StatusBar,
@@ -35,12 +36,25 @@ const MyListItem = ({ item, onPress, selected }) => {
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
   };
-  const style = selected ? selectedStyle : null;
+  const style = selected ? selectedStyle : {};
   const title = itemPropOrString(item, COMMON);
   const description = itemPropOrString(item, SCIENTIFIC);
+  const imageSize = 50;
+  const showImage = typeof item === 'object';
+  if (showImage) {
+    style.paddingVertical = 0;
+  }
 
   return (
     <ListItem
+      accessoryLeft={() =>
+        showImage ? (
+          <Image
+            style={{ width: imageSize, height: imageSize }}
+            source={{ uri: `https://picsum.photos/150.jpg?random=${title}` }}
+          />
+        ) : null
+      }
       title={title}
       description={
         title !== description
