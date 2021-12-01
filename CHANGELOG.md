@@ -1,3 +1,29 @@
+# [v3.0.0-515](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-487...v3.0.0-515) (2021-12-01)
+
+
+### Bug Fixes
+
+* **back:** don't cache user info for unapproved users ([bc7d694](https://github.com/agrc/roadkill-mobile/commit/bc7d694ed924cabb0ada84126b7dd475627bc1cb))
+* **data:** add unknown values to species types ([4a50993](https://github.com/agrc/roadkill-mobile/commit/4a50993deda804ded7118d3520f8d5ac2afb5017))
+* disable sendgrid click tracking ([21e38f5](https://github.com/agrc/roadkill-mobile/commit/21e38f52864239cd57512eab4aeeafc87bcfa522))
+* **front:** fix bug preventing multiple changes to profile data ([1d44724](https://github.com/agrc/roadkill-mobile/commit/1d4472479fcd7035e3ce4cfe8c317f01bc9d9bbe)), closes [#150](https://github.com/agrc/roadkill-mobile/issues/150)
+* **front:** fix my reports and report info after species fields additions ([6d62717](https://github.com/agrc/roadkill-mobile/commit/6d6271723d4f7e7910c966028c5e49318efef65a))
+* **front:** handle un-approved user profiles ([c8bc2f5](https://github.com/agrc/roadkill-mobile/commit/c8bc2f5266e57c9892b39921e569ef35869926d9))
+* **front:** make sure that initial form dates are set ([b8fae4e](https://github.com/agrc/roadkill-mobile/commit/b8fae4ebf10cfe18763bd635320877b4a7e039d6))
+* **front:** prevent accidental toggling of repeat submission switch while scrolling report form ([5311808](https://github.com/agrc/roadkill-mobile/commit/53118080adc9a8ed2dcc94cc428fc84a4a2fd914))
+* **front:** prevent species change from resetting other form values ([7d77936](https://github.com/agrc/roadkill-mobile/commit/7d77936b9df3b79a9b215eee5fcb62ac8cc2ceec))
+
+
+### Features
+
+* add species table and related fields to report_info ([bcf1777](https://github.com/agrc/roadkill-mobile/commit/bcf17779c5570cc292d87ec8098337274fe455e4)), closes [#135](https://github.com/agrc/roadkill-mobile/issues/135)
+* **front:** add placeholder images for species search items ([40d5662](https://github.com/agrc/roadkill-mobile/commit/40d56625794197f3b70317f4884727cd2cdafd5b)), closes [#63](https://github.com/agrc/roadkill-mobile/issues/63)
+* **front:** add rare species warning ([0f82b7e](https://github.com/agrc/roadkill-mobile/commit/0f82b7e801ee88f00a734e9c95b76f1cfa0247b3)), closes [#148](https://github.com/agrc/roadkill-mobile/issues/148)
+* **front:** make sure that status bar is visible in dark mode ([008a4ce](https://github.com/agrc/roadkill-mobile/commit/008a4ced596a46c232350fdf3ee7cfad76a3c51c))
+* implement constants system to initially house species data ([1b8eb0b](https://github.com/agrc/roadkill-mobile/commit/1b8eb0bffb7dd04d363a45f839a599c88c859be9)), closes [#135](https://github.com/agrc/roadkill-mobile/issues/135)
+
+
+
 # [v3.0.0-487](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-453...v3.0.0-487) (2021-11-19)
 
 
