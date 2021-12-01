@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Input, Layout, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import ky from 'ky';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
@@ -47,12 +47,17 @@ export default function ProfileScreen() {
     }
   };
 
+  const formikRef = useRef();
   const queryClient = useQueryClient();
   const mutation = useMutation(updateProfileData, {
     onSuccess: () => {
       Alert.alert('Success', 'Profile updated successfully!');
 
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
+
+      formikRef.current.resetForm({
+        values: formikRef.current.values,
+      });
     },
     onError: (error) => {
       Sentry.Native.captureException(error);
@@ -89,6 +94,7 @@ export default function ProfileScreen() {
               />
               <Input label="Email (from sign-in provider)" value={`${data.email}`} disabled style={styles.padded} />
               <Formik
+                innerRef={formikRef}
                 initialValues={{
                   phone: data.phone,
                   organization: data.organization,
