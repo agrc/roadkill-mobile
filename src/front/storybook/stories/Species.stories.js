@@ -29,6 +29,7 @@ const getStory = (initialAbleToIdentify) => {
               values={value}
               ableToIdentify={ableToIdentify}
               setAbleToIdentify={setAbleToIdentify}
+              reset={false}
             />
           </ScrollView>
         </RootView>
