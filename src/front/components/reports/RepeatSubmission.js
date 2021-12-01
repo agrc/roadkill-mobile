@@ -25,9 +25,11 @@ export default function RepeatSubmission({ checked, onChange, cancelReport, styl
   return (
     <View style={style}>
       <Text category="h6">Have you reported this animal before?</Text>
-      <Toggle checked={checked} onChange={onToggle} style={styles.toggle}>
-        {checked ? 'Yes' : 'No'}
-      </Toggle>
+      <View style={styles.toggleContainer}>
+        <Toggle checked={checked} onChange={onToggle} style={styles.toggle}>
+          {checked ? 'Yes' : 'No'}
+        </Toggle>
+      </View>
     </View>
   );
 }
@@ -42,5 +44,9 @@ RepeatSubmission.propTypes = {
 const styles = StyleSheet.create({
   toggle: {
     marginTop: PADDING / 2,
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
