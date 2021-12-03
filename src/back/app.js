@@ -158,11 +158,4 @@ app.get(
   handleAsyncErrors(getGetPhotoHandler(true, getPhoto))
 );
 
-app.use(
-  expressWinston.errorLogger({
-    transports: [new winston.transports.Console()],
-    format: winston.format.combine(winston.format.colorize(), winston.format.json()),
-  })
-);
-
 export default app;
