@@ -106,6 +106,10 @@ Facebook: Until the app is approved in the Google Play or App Store, we can only
 email: `open_vboxopy_user@tfbnw.net`  
 password: `tester`
 
+### Firebase Emulators
+
+The back end of this application uses firebase firestore and storage emulators during local development. Go to [http://localhost:4000](http://localhost:4000) to see the UI for them.
+
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql](data/sql/init.sql) as the single source of truth for the design.
