@@ -1,8 +1,10 @@
 import { Card, Divider, Input, List, ListItem, Modal, Text, useTheme } from '@ui-kitten/components';
+import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
 import {
   Image,
+  PixelRatio,
   Platform,
   SafeAreaView,
   StatusBar,
@@ -11,6 +13,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
 
@@ -31,30 +34,37 @@ function itemPropOrString(item, field) {
   return item[field];
 }
 
+const pixelRatio = PixelRatio.get();
+const fallbackImage = require('../../assets/id-image-fallback.png');
+
 const MyListItem = ({ item, onPress, selected }) => {
   const theme = useTheme();
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
   };
-  const style = selected ? selectedStyle : {};
+  const style = selected ? selectedStyle : { paddingVertical: 0 };
   const title = itemPropOrString(item, COMMON);
   const description = itemPropOrString(item, SCIENTIFIC);
-  const imageSize = 50;
-  const showImage = typeof item === 'object';
-  if (showImage) {
-    style.paddingVertical = 0;
-  }
+
+  const [imageSource, setImageSource] = React.useState({
+    uri: `${config.API}/reports/id_image/${itemPropOrString(item, ID)}/${pixelRatio}`,
+    width: commonConfig.searchListImageSize,
+    height: commonConfig.searchListImageSize,
+    scale: pixelRatio,
+  });
+  const switchToFallbackImage = () => {
+    setImageSource(fallbackImage);
+  };
 
   return (
     <ListItem
-      accessoryLeft={() =>
-        showImage ? (
-          <Image
-            style={{ width: imageSize, height: imageSize }}
-            source={{ uri: `https://picsum.photos/150.jpg?random=${title}` }}
-          />
-        ) : null
-      }
+      accessoryLeft={() => (
+        <Image
+          style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
+          source={imageSource}
+          onError={switchToFallbackImage}
+        />
+      )}
       title={title}
       description={
         title !== description

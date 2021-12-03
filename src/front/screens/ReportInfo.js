@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
+import commonConfig from 'common/config';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -146,8 +147,8 @@ const styles = StyleSheet.create({
     height: 200,
   },
   thumbnail: {
-    height: 75,
-    width: 75,
+    height: commonConfig.reportPhotoThumbnailSize,
+    width: commonConfig.reportPhotoThumbnailSize,
   },
   photoContainer: {
     flex: 1,

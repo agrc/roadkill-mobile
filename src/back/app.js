@@ -8,11 +8,13 @@ import expressWinston from 'express-winston';
 import helmet from 'helmet';
 import Multer from 'multer';
 import winston from 'winston';
+import { getGetIDImageHandler } from './api/id_images.js';
 import { getGetPhotoHandler } from './api/photos.js';
 import { getGetAllHandler, getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
 import { authenticate, getToken, logout } from './api/security.js';
 import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
+import { getIDImage } from './services/id_images.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getAllReports, getReport } from './services/report_management.js';
 import {
@@ -144,6 +146,8 @@ app.post(
   validate(pickupSchema.omit(['photo'])),
   handleAsyncErrors(getNewPickupHandler(upload, createPickup))
 );
+// I don't see any reason to secure this endpoint and am worried that it will just slow it down
+app.get('/reports/id_image/:key/:pixelRatio', handleAsyncErrors(getGetIDImageHandler(getIDImage)));
 
 // data retrieval
 app.get('/reports/reports', handleAsyncErrors(authenticate), handleAsyncErrors(getGetAllHandler(getAllReports)));
