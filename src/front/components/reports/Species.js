@@ -200,7 +200,7 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
 
   React.useEffect(() => {
     // exclude fields that are not part of the report_info table
-    onChange(omit(state.value, ['rare', 'frequent', 'image_url']));
+    onChange(omit(state.value, ['rare', 'frequent']));
   }, [state.value]);
 
   const renderSearch = () => {

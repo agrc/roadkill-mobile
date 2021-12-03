@@ -77,10 +77,8 @@ CREATE TABLE species
   species_order species_orders,
   family species_families NOT NULL,
   rare boolean NOT NULL DEFAULT false,
-  frequent boolean NOT NULL DEFAULT false,
-  image_url varchar(256)
+  frequent boolean NOT NULL DEFAULT false
 );
-
 
 -- reports
 DROP TABLE IF EXISTS photos CASCADE;

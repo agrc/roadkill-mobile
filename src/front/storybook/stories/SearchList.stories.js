@@ -70,7 +70,7 @@ const ManyStringItems = () => {
 const ItemsAsStrings = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(null);
-    const items = ['one', 'two', 'three', 'four', 'five'];
+    const items = ['one', 'amphibians', 'three', 'four', 'five'];
 
     return (
       <RootView>

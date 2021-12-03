@@ -3,7 +3,6 @@ import { Storage } from '@google-cloud/storage';
 import sgMail from '@sendgrid/mail';
 import knex from 'knex';
 import knexPostgis from 'knex-postgis';
-import config from '../config.js';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -24,5 +23,4 @@ export const firestore = new Firestore();
 
 export const mail = sgMail;
 
-const storage = new Storage();
-export const bucket = storage.bucket(config.GCP_BUCKET);
+export const storage = new Storage();
