@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "run-tests:ci": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest",
     "serve": "env-cmd nodemon server.js",
-    "start": "firebase emulators:exec --import=../../data/emulator-data --export-on-exit --only firestore,storage \"npm run serve\"",
+    "start": "firebase emulators:exec --import=../../data/emulator-data --export-on-exit --only firestore,storage --ui \"npm run serve\"",
     "test": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
     "test:ci": "firebase emulators:exec --import=../../data/emulator-data --export-on-exit --only firestore,storage \"npm run run-tests:ci\""
   },
