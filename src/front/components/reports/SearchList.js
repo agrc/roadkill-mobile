@@ -42,7 +42,7 @@ const MyListItem = ({ item, onPress, selected }) => {
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
   };
-  const style = selected ? selectedStyle : { paddingVertical: 0 };
+  const style = selected ? selectedStyle : {};
   const title = itemPropOrString(item, COMMON);
   const description = itemPropOrString(item, SCIENTIFIC);
 
@@ -260,6 +260,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 2,
     borderColor: 'transparent',
+    paddingVertical: 0,
     paddingHorizontal: 0,
   },
   // eslint-disable-next-line react-native/no-color-literals
