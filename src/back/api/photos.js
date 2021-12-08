@@ -21,10 +21,8 @@ export function getGetPhotoHandler(thumb, getPhoto) {
       }
 
       response.writeHead(200);
-      stream.on('data', (data) => response.write(data));
-      stream.on('error', console.error);
 
-      return stream.on('end', () => response.end());
+      return stream.pipe(response);
     }
 
     return response.status(404).send(`no photo found for id: ${photoId}`);
