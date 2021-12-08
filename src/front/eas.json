@@ -1,0 +1,57 @@
+{
+  "cli": {
+    "version": ">= 0.38.3"
+  },
+  "build": {
+    "base": {
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
+      },
+      "env": {
+        "GOOGLE_SERVICES_ANDROID": "google-services.json",
+        "GOOGLE_SERVICES_IOS": "GoogleService-Info.plist"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "releaseChannel": "default",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "simulators": {
+      "extends": "base",
+      "releaseChannel": "sims",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "staging": {
+      "extends": "base",
+      "distribution": "store",
+      "releaseChannel": "staging-v3",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "production": {
+      "extends": "base",
+      "distribution": "store",
+      "releaseChannel": "production-v3",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  }
+}
