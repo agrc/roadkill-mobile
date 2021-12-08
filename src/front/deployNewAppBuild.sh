@@ -11,17 +11,15 @@ set -o allexport
 source $ENV_FILE
 set +o allexport
 
-echo "publishing to $RELEASE_CHANNEL"
-expo publish --release-channel $RELEASE_CHANNEL
-
 echo "building ios and android apps concurrently"
-expo build:ios --release-channel $RELEASE_CHANNEL --no-publish -t archive &
-expo build:android --release-channel $RELEASE_CHANNEL --no-publish -t app-bundle &
-wait
+eas build --platform all --profile $RELEASE_CHANNEL
 
-echo "downloading app packages"
-curl -O "$(expo url:ipa)"
-curl -O "$(expo url:apk)"
+# TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
+echo "downloading artifacts"
+ANDROID_URL = eas build:list --platform android --json --limit 1 | jq '.[0].artifacts.buildUrl'
+curl -LO $ANDROID_URL
+IOS_URL = eas build:list --platform ios --json --limit 1 | jq '.[0].artifacts.buildUrl'
+curl -LO $IOS_URL
 
 echo "uploading to testflight"
 fastlane pilot upload -u stdavis@utah.gov

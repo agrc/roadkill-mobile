@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import * as React from 'react';
+import { connectToDevTools } from 'react-devtools-core';
 import { LogBox, View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
@@ -29,6 +30,12 @@ if (__DEV__) {
     ref: https://github.com/tannerlinsley/react-query/issues/1259
   */
   LogBox.ignoreLogs(['Setting a timer']);
+
+  // set up flipper
+  connectToDevTools({
+    host: 'localhost',
+    port: 8097,
+  });
 }
 
 export default function App() {

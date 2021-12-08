@@ -1,27 +1,8 @@
 import 'dotenv/config';
-import fs from 'fs';
-import git from 'git-rev-sync';
 
 const bundleId = 'gov.dts.ugrc.utahwvcr';
 
-let googleServicesJson;
-if (process.env.JEST_WORKER_ID) {
-  googleServicesJson = {
-    client: [
-      {
-        api_key: [
-          {
-            current_key: '',
-          },
-        ],
-      },
-    ],
-  };
-} else {
-  const googleServicesContent = fs.readFileSync(`./${process.env.GOOGLE_SERVICES_ANDROID}`);
-  googleServicesJson = JSON.parse(googleServicesContent);
-}
-const commitCount = git.count('HEAD');
+const buildNumber = 519;
 
 export default {
   name: 'WVC Reporter',
@@ -48,8 +29,8 @@ export default {
   assetBundlePatterns: ['**/*'],
   ios: {
     bundleIdentifier: bundleId,
-    googleServicesFile: `./${process.env.GOOGLE_SERVICES_IOS}`,
-    buildNumber: commitCount.toString(),
+    googleServicesFile: process.env.GOOGLE_SERVICES_IOS,
+    buildNumber: buildNumber.toString(),
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
@@ -64,8 +45,8 @@ export default {
   },
   android: {
     package: bundleId,
-    googleServicesFile: `./${process.env.GOOGLE_SERVICES_ANDROID}`,
-    versionCode: commitCount,
+    googleServicesFile: process.env.GOOGLE_SERVICES_ANDROID,
+    versionCode: buildNumber,
     softwareKeyboardLayoutMode: 'pan',
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
@@ -90,8 +71,8 @@ export default {
   web: {
     config: {
       firebase: {
-        apiKey: googleServicesJson.client[0].api_key[0].current_key,
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID || 'G-XXXXXXXXXX',
+        apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID ?? '',
+        measurementId: process.env.FIREBASE_MEASUREMENT_ID ?? 'G-XXXXXXXXXX',
       },
     },
   },
@@ -107,4 +88,5 @@ export default {
       },
     ],
   },
+  plugins: ['sentry-expo', 'expo-community-flipper'],
 };

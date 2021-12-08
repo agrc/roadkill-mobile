@@ -1,0 +1,10 @@
+.github/*
+.vscode/*
+data/*
+docs/*
+src/back/*
+# these are the big problem files that bloat the upload to EAS
+src/front/dev-clients/**
+src/front/store-assets/**
+*.apk
+*.ipa
