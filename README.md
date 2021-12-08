@@ -12,9 +12,7 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 
 ### Debugging
 
-I've [patched](src/front/patches/expo-random+11.2.0.patch) `expo-random` to work around [an issue](https://github.com/expo/expo/pull/10298) React Native Debugger with the `expo-auth-session` package. Reactotron is an alternative for inspecting network traffic that I've since removed.
-
-HTTP Toolkit can be used to capture network requests made from the backend. Fiddler caused issues with UtahID.
+I use [Flipper](https://fbflipper.com/) with a custom Expo development client as described in [this article](https://blog.expo.dev/developing-react-native-with-expo-and-flipper-8c426bdf995a).
 
 ### Testing Deep Links
 
@@ -36,7 +34,7 @@ Release channels are based on the major number (e.g. `production-v3`). If you ne
 
 ### Environment Variables
 
-These values are managed in two places: `.env.*` files in your local project and [GitHub Actions Secrets](https://github.com/agrc/roadkill-mobile/settings/secrets/actions). These values are injected into the deploy action in [.github/workflows/front.yml](.github/workflows/front.yml). Any new variable needs to be added in these three places. Any change to a variable value needs to be updated in the local files and GHA Secrets.
+These values are managed in three places: `.env.*` files in your local project, [GitHub Actions Secrets](https://github.com/agrc/roadkill-mobile/settings/secrets/actions) (for back end deployments), and [Expo EAS Secrets](https://expo.dev/accounts/agrc/projects/wildlife-vehicle-collision-reporter/secrets).
 
 ### One-time Setup
 
@@ -45,7 +43,7 @@ These values are managed in two places: `.env.*` files in your local project and
    - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
      - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
-   - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets.
+   - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets for the back end. Do the same thing for the front end only the secrets go in Expo EAS.
      - base64 encode the google service file contents (e.g. `base64 -i GoogleService-Info.plist`)
 1. The firebase project is created via terraform, but the apps need to be created manually via the firebase console. Follow [these steps](https://docs.expo.io/guides/setup-native-firebase/#android) from the expo docs.
    1. Enable analytics in Firebase
@@ -55,16 +53,23 @@ These values are managed in two places: `.env.*` files in your local project and
 
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Optionally bump version number in [src/front/app.config.js](src/front/app.config.js) and [package.json](package.json).
+1. Bump build number in [src/front/app.config.js](src/front/app.config.js).
 1. Update `version` in [changelog_context.json](changelog_context.json).
    - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.
 1. From root: `npm run changelog`
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
 1. Tag `git tag v3.0.0-123`
-1. Optionally run `./deployNewAppBuild.sh` if a new app build is needed.
+1. Pushing to `staging` or `production` will push a new image to the cloud run back end.
+
+Do one of the following:
+
+1. `./deployNewAppBuild.sh` if a new app build is needed.
    1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/4699387731848346247/releases/11/prepare)
    1. Apple: Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
-1. Pushing to `staging` or `production` will push an OTA update via GHA to the front end and a new image to the cloud run back end. This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
+1. Push an OTA update:
+   - `expo publish --release-channel <release-channel>`
+   - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
 
 ### Pushing a New App Build to Production
 

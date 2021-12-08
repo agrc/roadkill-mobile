@@ -2,38 +2,22 @@
 # build apps for simulators for testing before submitting to app stores
 set -e
 
-RELEASE_CHANNEL="$(./getReleaseChannel.sh)-sims"
-echo "Building simulator builds for release channel: $RELEASE_CHANNEL"
-
-RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-ENV_FILE="./.env.$RELEASE_BRANCH"
-STAGING_ENV_FILE="./.env.staging"
-if [ ! -f "$ENV_FILE" ]; then
-  echo "No environment file found for $RELEASE_BRANCH; using $STAGING_ENV_FILE instead"
-  ENV_FILE=$STAGING_ENV_FILE
-fi
-echo "getting environment variables from $ENV_FILE"
-set -o allexport
-source $ENV_FILE
-set +o allexport
-
-echo "publishing to $RELEASE_CHANNEL"
-expo publish --release-channel $RELEASE_CHANNEL
+echo "Building simulator builds"
 
 echo "building ios and android apps concurrently"
-expo build:ios --release-channel $RELEASE_CHANNEL --no-publish -t simulator &
-expo build:android --release-channel $RELEASE_CHANNEL --no-publish -t apk &
-wait
+eas build --platform all --profile simulators
 
-echo "downloading app packages"
-curl -O "$(expo url:ipa)"
-curl -O "$(expo url:apk)"
+echo "downloading artifacts"
+ANDROID_URL = eas build:list --platform android --json --limit 1 | jq '.[0].artifacts.buildUrl'
+curl -LO $ANDROID_URL
+IOS_URL = eas build:list --platform ios --json --limit 1 | jq '.[0].artifacts.buildUrl'
+curl -LO $IOS_URL
 
 echo "opening on ios simulator"
-tar -xf "$(basename $(expo url:ipa))"
+tar -xf "$(basename $IOS_URL)"
 xcrun simctl install booted ./wildlife-vehicle-collision-reporter.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr
 
 echo "opening on android simulator"
-adb install "$(basename $(expo url:apk))"
+adb install "$(basename $ANDROID_URL)"
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1

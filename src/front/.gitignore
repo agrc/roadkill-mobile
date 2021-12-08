@@ -15,10 +15,10 @@ web-build/
 !.env.sample
 !.env.test
 
-*.aab
-*.ipa
-*.apk
+./*.aab
+./*.ipa
+./*.apk
 
-google-services-*.json
-GoogleService-Info-*.plist
+google-services*.json
+GoogleService-Info*.plist
 *-simulator.tar.gz
