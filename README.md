@@ -54,26 +54,25 @@ These values are managed in three places: `.env.*` files in your local project, 
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Optionally bump version number in [src/front/app.config.js](src/front/app.config.js) and [package.json](package.json).
 1. Bump build number in [src/front/app.config.js](src/front/app.config.js).
-1. Update `version` in [changelog_context.json](changelog_context.json).
-   - build number should be `git rev-list --count HEAD` + `1` to account for the release commit.
+1. Update `version` in [changelog_context.json](changelog_context.json) to match new build number.
 1. From root: `npm run changelog`
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
 1. Tag `git tag v3.0.0-123`
 1. Pushing to `staging` or `production` will push a new image to the cloud run back end.
 
-Do one of the following:
+Do one of the following from `src/front`:
 
 1. `./deployNewAppBuild.sh` if a new app build is needed.
    1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/4699387731848346247/releases/11/prepare)
    1. Apple: Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
 1. Push an OTA update:
-   - `expo publish --release-channel <release-channel>`
+   - `./deployOTAUpdate.sh` to publish a new over-the-air update.
    - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
 
 ### Pushing a New App Build to Production
 
-After testing in Expo Go and simulator builds...
+After testing in dev client...
 
 1. `git rebase staging master`
 1. `npm ci`
@@ -83,13 +82,8 @@ After testing in Expo Go and simulator builds...
 1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app for review. (Add note about IDFA from [expo's docs](https://docs.expo.io/versions/latest/distribution/app-stores/#ios-specific-guidelines): For IDFA questions see: "https://segment.com/docs/sources/mobile/ios/quickstart/#step-5-submitting-to-the-app-store")
 1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app to the Google Play. Add "What's New" text and link to new screenshots to the notes field.
 
-### Over-the-air Updates
-
-These are done automatically for the production and staging release channels via [GitHub Actions](.github/workflows/front.yml) when pushing to the `main` and `staging` channels respectively.
-
 ### Steps for Creating a Expo New Release Channel
 
-1. Update "Production" env context in `.github/workflows/front.yml`.
 1. Update [src/front/config.js](src/front/config.js).
 
 ### Secrets
