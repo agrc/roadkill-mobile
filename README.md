@@ -118,3 +118,16 @@ The back end of this application uses firebase firestore and storage emulators d
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql](data/sql/init.sql) as the single source of truth for the design.
+
+## Identification Images
+
+These are the images that show up next to the species/class/order/family names. They are stored in a bucket named `ut-dts-agrc-roadkill-[dev|prod]-identification-images`. Members of the `ut-dts-agrc-roadkill-viewers` Google Group have object admin level access to the bucket. The images should be uploaded with the file extension: `.jpg` and sized `150` by `150` pixels.
+
+The file name should match a distinct value from one of the following columns in the `species` table:
+
+- `species_id`
+- `species_class`
+- `species_order`
+- `species_families`
+
+If a matching file in the bucket is not found, a blank gray fallback image is returned.
