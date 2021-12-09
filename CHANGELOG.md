@@ -1,3 +1,18 @@
+# [v3.0.0-520](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-515...v3.0.0-520) (2021-12-09)
+
+
+### Bug Fixes
+
+* **front:** better identification image performance ([ac2aac0](https://github.com/agrc/roadkill-mobile/commit/ac2aac01db3841cb2d25c977ebe1cac6897df4ab))
+* **front:** fix padding on selected list item ([ce9a7be](https://github.com/agrc/roadkill-mobile/commit/ce9a7beee7cd0b7027a85eb5e4c7ba3d032f2ef5))
+
+
+### Features
+
+* **back:** implement identification images api ([d3a6546](https://github.com/agrc/roadkill-mobile/commit/d3a654641590e80e0ac63d2519c11342c7f31d3f)), closes [#63](https://github.com/agrc/roadkill-mobile/issues/63)
+
+
+
 # [v3.0.0-515](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-487...v3.0.0-515) (2021-12-01)
 
 
