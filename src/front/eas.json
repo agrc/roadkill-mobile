@@ -22,14 +22,13 @@
       "releaseChannel": "default",
       "android": {
         "buildType": "apk"
-      },
-      "ios": {
-        "simulator": true
       }
     },
-    "simulators": {
+    "simulator-dev": {
       "extends": "base",
-      "releaseChannel": "sims",
+      "developmentClient": true,
+      "distribution": "internal",
+      "releaseChannel": "default",
       "android": {
         "buildType": "apk"
       },
