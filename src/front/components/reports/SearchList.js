@@ -3,7 +3,6 @@ import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
 import {
-  Image,
   PixelRatio,
   Platform,
   SafeAreaView,
@@ -13,6 +12,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
@@ -37,7 +37,7 @@ function itemPropOrString(item, field) {
 const pixelRatio = PixelRatio.get();
 const fallbackImage = require('../../assets/id-image-fallback.png');
 
-const MyListItem = ({ item, onPress, selected }) => {
+function MyListItem({ item, onPress, selected }) {
   const theme = useTheme();
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
@@ -59,7 +59,7 @@ const MyListItem = ({ item, onPress, selected }) => {
   return (
     <ListItem
       accessoryLeft={() => (
-        <Image
+        <FastImage
           style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
           source={imageSource}
           onError={switchToFallbackImage}
@@ -79,13 +79,15 @@ const MyListItem = ({ item, onPress, selected }) => {
       style={[styles.listItem, style]}
     />
   );
-};
+}
 
 MyListItem.propTypes = {
   item: propTypes.oneOfType([propTypes.string, propTypes.object]).isRequired,
   onPress: propTypes.func.isRequired,
   selected: propTypes.bool.isRequired,
 };
+
+MyListItem = React.memo(MyListItem);
 
 export default function SearchList({ value, onChange, placeholder, items, style }) {
   // items could be species objects or strings
