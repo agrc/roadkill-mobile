@@ -87,6 +87,7 @@ MyListItem.propTypes = {
   selected: propTypes.bool.isRequired,
 };
 
+// eslint-disable-next-line no-func-assign
 MyListItem = React.memo(MyListItem);
 
 export default function SearchList({ value, onChange, placeholder, items, style }) {
