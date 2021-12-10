@@ -1,24 +1,32 @@
 #!/usr/bin/env bash
-# build apps for simulators for testing before submitting to app stores
 set -e
 
 echo "Building simulator builds"
 
+./scripts/removeArtifacts.sh
+
 echo "building ios and android apps for simulator development"
 eas build --platform all --profile simulator-dev
 
-./downloadArtifacts.sh
+./scripts/downloadArtifacts.sh
+
+echo "updating files in dev-clients folder"
+rm -f -- ./dev-clients/*.gz
+cp *.gz ./dev-clients
+rm -f -- ./dev-clients/*.apk
+cp *.apk ./dev-clients
 
 echo "opening on ios simulator"
-tar -xf "$(basename $IOS_URL)"
-xcrun simctl install booted ./wildlife-vehicle-collision-reporter.app
+tar -xf *.gz
+xcrun simctl install booted ./utahwvcr.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr
+rm -rf ./utahwvcr.app
 
 echo "opening on android simulator"
-adb install "$(basename $ANDROID_URL)"
+adb install *.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
 echo "building ios and android apps for local device development"
 eas build --platform all --profile development
 
-./downloadArtifacts.sh
+./scripts/downloadArtifacts.sh
