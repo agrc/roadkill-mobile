@@ -27,6 +27,7 @@ export default {
     fallbackToCacheTimeout: 0,
   },
   assetBundlePatterns: ['**/*'],
+  jsEngine: 'hermes',
   ios: {
     bundleIdentifier: bundleId,
     googleServicesFile: process.env.GOOGLE_SERVICES_IOS,
