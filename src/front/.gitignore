@@ -18,8 +18,8 @@ web-build/
 *.aab
 *.ipa
 *.apk
+*.gz
 !dev-clients/*
 
 google-services*.json
 GoogleService-Info*.plist
-*-simulator.tar.gz

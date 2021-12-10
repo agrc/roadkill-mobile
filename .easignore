@@ -9,3 +9,4 @@ src/front/store-assets/**
 *.apk
 *.ipa
 *.aab
+*.gz

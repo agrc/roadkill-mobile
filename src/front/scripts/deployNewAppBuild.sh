@@ -10,6 +10,8 @@ set +o allexport
 
 echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH"
 
+./removeArtifacts.sh
+
 echo "building ios and android apps concurrently"
 eas build --platform all --profile $RELEASE_BRANCH
 
