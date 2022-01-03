@@ -59,43 +59,43 @@ export default function MainScreen() {
     initialVehicleTrackingState
   );
 
+  const initLocation = async () => {
+    const result = await Location.requestForegroundPermissionsAsync();
+    if (!result.granted) {
+      Alert.alert('Error', 'Location permissions are required to submit reports.', [
+        { text: 'OK', onPress: () => Linking.openSettings() },
+      ]);
+
+      return;
+    }
+
+    const enabled = await Location.hasServicesEnabledAsync();
+    if (!enabled) {
+      Alert.alert('Error', 'Location services are required to submit reports.', [
+        { text: 'OK', onPress: () => Linking.openSettings() },
+      ]);
+    }
+
+    const location = await getLocation();
+
+    setInitialLocation(location);
+  };
+
+  const handleAppStateChange = async (nextAppState) => {
+    if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !initialLocation) {
+      await wrapAsyncWithDelay(
+        initLocation,
+        () => setShowSpinner(true),
+        () => setShowSpinner(false),
+        config.SPINNER_DELAY
+      );
+    }
+
+    appState.current = nextAppState;
+  };
+
   React.useEffect(() => {
-    const initLocation = async () => {
-      const result = await Location.requestForegroundPermissionsAsync();
-      if (result.status !== 'granted') {
-        Alert.alert('Error', 'Location permission are required to submit reports.', [
-          { text: 'OK', onPress: () => Linking.openSettings() },
-        ]);
-
-        return;
-      }
-
-      const enabled = await Location.hasServicesEnabledAsync();
-      if (!enabled) {
-        Alert.alert('Error', 'Location services are required to submit reports.', [
-          { text: 'OK', onPress: () => Linking.openSettings() },
-        ]);
-      }
-
-      const location = await getLocation();
-
-      setInitialLocation(location);
-    };
-
-    const handleAppStateChange = async (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !initialLocation) {
-        await wrapAsyncWithDelay(
-          initLocation,
-          () => setShowSpinner(true),
-          () => setShowSpinner(false),
-          config.SPINNER_DELAY
-        );
-      }
-
-      appState.current = nextAppState;
-    };
-
-    AppState.addEventListener('change', handleAppStateChange);
+    const handle = AppState.addEventListener('change', handleAppStateChange);
 
     wrapAsyncWithDelay(
       initLocation,
@@ -104,7 +104,7 @@ export default function MainScreen() {
       config.SPINNER_DELAY
     );
 
-    return () => AppState.removeEventListener('change', handleAppStateChange);
+    return () => handle?.remove();
   }, []);
 
   const setMarker = async () => {
