@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { Marker } from 'react-native-maps';
+import { useImmerReducer } from 'use-immer';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
@@ -20,18 +20,17 @@ const initialReportState = {
   reportType: REPORT_TYPES.report,
   showReport: false,
 };
-const reportReducer = (state, action) => {
+const reportReducer = (draft, action) => {
   switch (action.type) {
     case 'show':
-      return {
-        showReport: true,
-        reportType: action.meta,
-      };
+      draft.showReport = true;
+      draft.reportType = action.meta;
+
+      break;
     case 'hide':
-      return {
-        ...state,
-        showReport: false,
-      };
+      draft.showReport = false;
+
+      break;
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
@@ -50,7 +49,7 @@ export default function MainScreen() {
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
-  const [reportState, dispatchReportState] = React.useReducer(reportReducer, initialReportState);
+  const [reportState, dispatchReportState] = useImmerReducer(reportReducer, initialReportState);
   const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
 
   React.useEffect(() => {
