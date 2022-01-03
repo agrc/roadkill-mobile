@@ -28,7 +28,7 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       {...mapViewProps}
     >
       {children}
-      <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-1} />
+      <UrlTile urlTemplate={config.URLS.LITE} shouldReplaceMapContent={true} minimumZ={3} zIndex={-5} />
     </MapView>
   );
 }

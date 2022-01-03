@@ -42,6 +42,7 @@ export default {
         'The app uses your location in the background for tracking routes. *Note* this is only applicable for agency employees or contractors. Background location is not used for public users.',
       NSLocationWhenInUseUsageDescription:
         'The app uses your location to help record the location of the animal that you are reporting.',
+      UIBackgroundModes: ['location'],
     },
   },
   android: {

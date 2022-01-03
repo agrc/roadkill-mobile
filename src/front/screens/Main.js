@@ -5,11 +5,13 @@ import * as Location from 'expo-location';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Marker, Polyline } from 'react-native-maps';
 import { useImmerReducer } from 'use-immer';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
 import RootView from '../components/RootView';
+import VehicleTracking, { initialVehicleTrackingState, vehicleTrackingReducer } from '../components/VehicleTracking';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { getLocation, locationToRegion, useFollowUser } from '../services/location';
@@ -20,6 +22,7 @@ const initialReportState = {
   reportType: REPORT_TYPES.report,
   showReport: false,
 };
+
 const reportReducer = (draft, action) => {
   switch (action.type) {
     case 'show':
@@ -51,6 +54,10 @@ export default function MainScreen() {
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
   const [reportState, dispatchReportState] = useImmerReducer(reportReducer, initialReportState);
   const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
+  const [vehicleTrackingState, vehicleTrackingDispatch] = useImmerReducer(
+    vehicleTrackingReducer,
+    initialVehicleTrackingState
+  );
 
   React.useEffect(() => {
     const initLocation = async () => {
@@ -163,10 +170,6 @@ export default function MainScreen() {
     setCarcassCoordinates(null);
   };
 
-  const showAddRoute = () => {
-    console.log('showAddRoute');
-  };
-
   const { height, width } = useWindowDimensions();
   const ZOOM_FACTOR = 1.3;
   const mapSizeStyle = {
@@ -233,7 +236,15 @@ export default function MainScreen() {
             style={[styles.map, mapSizeStyle]}
             showsUserLocation={true}
           >
-            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} /> : null}
+            {vehicleTrackingState.routeCoordinates.length ? (
+              <Polyline
+                coordinates={vehicleTrackingState.routeCoordinates}
+                strokeColor="black"
+                strokeWidth={8}
+                zIndex={1}
+              />
+            ) : null}
+            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} /> : null}
           </Map>
           {reportState.showReport && reportHeight > 0 ? (
             <View
@@ -267,7 +278,13 @@ export default function MainScreen() {
         <View></View>
         <View style={styles.bottomContainer}>
           {authInfo.user.role === config.USER_TYPES.public ? null : (
-            <MapButton iconPack="material" iconName="drive-eta" onPress={showAddRoute} style={styles.topButton} />
+            <MapButton
+              iconPack="material"
+              iconName="drive-eta"
+              onPress={() => vehicleTrackingDispatch({ type: 'SHOW' })}
+              style={styles.topButton}
+              color={vehicleTrackingState.isTracking ? theme['color-info-600'] : null}
+            />
           )}
           <MapButton iconPack="material" iconName="add-circle" onPress={showAddReport} />
         </View>
@@ -280,6 +297,7 @@ export default function MainScreen() {
         setMarker={setMarker}
         carcassCoordinates={carcassCoordinates}
       />
+      <VehicleTracking state={vehicleTrackingState} dispatch={vehicleTrackingDispatch} />
     </RootView>
   );
 }
