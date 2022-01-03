@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { length, lineString } from '@turf/turf';
 import { Button, Card, Modal, Text, useTheme } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
@@ -12,6 +13,7 @@ import backgroundLocationService from '../services/backgroundLocation';
 import { PADDING } from '../services/styles';
 
 const BACKGROUND_TASK_NAME = 'wvcr-vehicle-tracking-task';
+const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
 
 TaskManager.defineTask(BACKGROUND_TASK_NAME, async ({ data, error }) => {
   if (error) {
@@ -71,19 +73,19 @@ export const vehicleTrackingReducer = (draft, action) => {
       break;
 
     case 'ADD_REMOVAL':
-      // TODO: cache in some sort of local storage so that the app can crash and they won't loose data?
       draft.removals.push(action.removal);
 
       break;
 
     case 'ADD_ROUTE_COORDINATES':
-      // TODO: cache in some sort of local storage so that the app can crash and they won't loose data?
       draft.routeCoordinates = draft.routeCoordinates.concat(action.payload);
 
       break;
     case 'RESET':
-      // clear local storage backup
       return initialVehicleTrackingState;
+
+    case 'RESTORE_FROM_STORAGE':
+      return action.payload;
 
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -92,6 +94,9 @@ export const vehicleTrackingReducer = (draft, action) => {
   // derived...
   draft.isPaused = draft.status === 'paused';
   draft.isTracking = draft.status === 'tracking' || draft.isPaused;
+
+  // backup in case phone crashes
+  AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
 };
 
 async function verifyPermissions() {
@@ -158,6 +163,23 @@ export default function VehicleTracking({ state, dispatch }) {
     return () => {
       backgroundLocationService.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      const backup = await AsyncStorage.getItem(STORAGE_KEY);
+
+      if (backup && JSON.stringify(state) !== backup) {
+        const parsedBackup = JSON.parse(backup);
+        dispatch({ type: 'RESTORE_FROM_STORAGE', payload: parsedBackup });
+
+        if (parsedBackup.isTracking && !parsedBackup.isPaused) {
+          startTracking();
+        }
+      }
+    };
+
+    checkStorage();
   }, []);
 
   const stopTracking = async () => {
