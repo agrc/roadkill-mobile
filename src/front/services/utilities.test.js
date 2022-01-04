@@ -1,4 +1,10 @@
-import { coordinatesToString, getReleaseChannelBranch, isTokenExpired, wrapAsyncWithDelay } from './utilities';
+import {
+  coordinatesToString,
+  getReleaseChannelBranch,
+  isTokenExpired,
+  stringToCoordinates,
+  wrapAsyncWithDelay,
+} from './utilities';
 
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {
@@ -86,5 +92,16 @@ describe('coordinatesToString', () => {
   });
   it('returns null if null is passed', () => {
     expect(coordinatesToString(null)).toBe(null);
+  });
+});
+
+describe('stringToCoordinates', () => {
+  it('returns the appropriate object', () => {
+    const input = '-1 2';
+
+    const output = stringToCoordinates(input);
+
+    expect(output.longitude).toBe(-1);
+    expect(output.latitude).toBe(2);
   });
 });
