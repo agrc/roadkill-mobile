@@ -1,21 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { length, lineString } from '@turf/turf';
 import { Button, Card, Modal, Text, useTheme } from '@ui-kitten/components';
-import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
-import { pick } from 'lodash';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import backgroundLocationService from '../services/backgroundLocation';
 import { PADDING } from '../services/styles';
 
-const BACKGROUND_TASK_NAME = 'wvcr-vehicle-tracking-task';
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
 
-TaskManager.defineTask(BACKGROUND_TASK_NAME, async ({ data, error }) => {
+TaskManager.defineTask(backgroundLocationService.taskName, async ({ data, error }) => {
   if (error) {
     console.log(error);
     Sentry.captureException(error);
@@ -37,7 +34,7 @@ export const initialVehicleTrackingState = {
   isModalVisible: false,
   routeCoordinates: [],
   start: null,
-  removals: [],
+  pickups: [],
 
   // these are derived...
   isPaused: false,
@@ -72,16 +69,19 @@ export const vehicleTrackingReducer = (draft, action) => {
 
       break;
 
-    case 'ADD_REMOVAL':
-      draft.removals.push(action.removal);
+    case 'ADD_PICKUP': {
+      draft.pickups.push(action.payload);
 
       break;
+    }
 
     case 'ADD_ROUTE_COORDINATES':
       draft.routeCoordinates = draft.routeCoordinates.concat(action.payload);
 
       break;
     case 'RESET':
+      AsyncStorage.removeItem(STORAGE_KEY);
+
       return initialVehicleTrackingState;
 
     case 'RESTORE_FROM_STORAGE':
@@ -99,31 +99,6 @@ export const vehicleTrackingReducer = (draft, action) => {
   AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
 };
 
-async function verifyPermissions() {
-  console.log('verifyPermissions');
-  const result = await Location.requestBackgroundPermissionsAsync();
-
-  if (!result.granted) {
-    Alert.alert('Error', 'Background location permissions are required to record vehicle routes.', [
-      { text: 'OK', onPress: () => Linking.openSettings() },
-    ]);
-
-    return false;
-  }
-
-  const enabled = await Location.hasServicesEnabledAsync();
-
-  if (!enabled) {
-    Alert.alert('Error', 'Location services are required to record vehicle routes.', [
-      { text: 'OK', onPress: () => Linking.openSettings() },
-    ]);
-
-    return false;
-  }
-
-  return true;
-}
-
 const getDistance = (coords) => {
   if (coords.length < 2) {
     return 'n/a';
@@ -138,26 +113,8 @@ const getDistance = (coords) => {
   return `${miles.toFixed(2)} miles`;
 };
 
-export default function VehicleTracking({ state, dispatch }) {
+export default function VehicleTracking({ state, dispatch, startTracking, resumeRoute, startRoute }) {
   const theme = useTheme();
-
-  const onNewLocations = (locations) => {
-    dispatch({
-      type: 'ADD_ROUTE_COORDINATES',
-      payload: locations.map((location) => pick(location.coords, 'latitude', 'longitude')),
-    });
-  };
-
-  const startTracking = async () => {
-    console.log('startTracking');
-    backgroundLocationService.subscribe(onNewLocations);
-
-    await Location.startLocationUpdatesAsync(BACKGROUND_TASK_NAME, {
-      accuracy: Location.Accuracy.Balanced,
-      deferredUpdatesInterval: 2000,
-      showsBackgroundLocationIndicator: true,
-    });
-  };
 
   useEffect(() => {
     return () => {
@@ -187,15 +144,11 @@ export default function VehicleTracking({ state, dispatch }) {
 
     backgroundLocationService.unsubscribe();
 
-    await Location.stopLocationUpdatesAsync(BACKGROUND_TASK_NAME);
-  };
-
-  const startRoute = async () => {
-    console.log('startRoute');
-    if (await verifyPermissions()) {
-      await startTracking();
-
-      dispatch({ type: 'START' });
+    try {
+      await Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
+    } catch (error) {
+      console.log(error);
+      Sentry.captureException(error);
     }
   };
 
@@ -205,14 +158,6 @@ export default function VehicleTracking({ state, dispatch }) {
     await stopTracking();
 
     dispatch({ type: 'PAUSE' });
-  };
-
-  const resumeRoute = async () => {
-    console.log('resumeRoute');
-
-    await startTracking();
-
-    dispatch({ type: 'RESUME' });
   };
 
   const completeRoute = async () => {
@@ -225,7 +170,7 @@ export default function VehicleTracking({ state, dispatch }) {
       start: state.start,
       end: new Date(),
       routeCoordinates: state.routeCoordinates,
-      removals: state.removals,
+      pickups: state.pickups,
     });
 
     dispatch({ type: 'RESET' });
@@ -266,7 +211,7 @@ export default function VehicleTracking({ state, dispatch }) {
           <Text>Start: {state.start.toLocaleString()}</Text>
           <Text>Status: {state.status}</Text>
           <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
-          <Text>Removals: {state.removals.length}</Text>
+          <Text>Pickups: {state.pickups?.length}</Text>
         </Card>
       ) : (
         <Card disabled={true} header={getHeader('Vehicle Tracking')}>
@@ -283,6 +228,9 @@ export default function VehicleTracking({ state, dispatch }) {
 VehicleTracking.propTypes = {
   state: propTypes.object.isRequired,
   dispatch: propTypes.func.isRequired,
+  startTracking: propTypes.func.isRequired,
+  resumeRoute: propTypes.func.isRequired,
+  startRoute: propTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -164,6 +164,12 @@ export function coordinatesToString(coordinates) {
   return `${coordinates.longitude} ${coordinates.latitude}`;
 }
 
+export function stringToCoordinates(string) {
+  const [longitude, latitude] = string.split(' ');
+
+  return { longitude: parseFloat(longitude), latitude: parseFloat(latitude) };
+}
+
 export function dateToString(date) {
   return date ? new Date(date).toLocaleString() : null;
 }

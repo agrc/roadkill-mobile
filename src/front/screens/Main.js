@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@ui-kitten/components';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
+import { pick } from 'lodash';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
@@ -12,10 +13,11 @@ import Map from '../components/Map';
 import MapButton from '../components/MapButton';
 import RootView from '../components/RootView';
 import VehicleTracking, { initialVehicleTrackingState, vehicleTrackingReducer } from '../components/VehicleTracking';
+import backgroundLocationService, { verifyPermissions } from '../services/backgroundLocation';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { getLocation, locationToRegion, useFollowUser } from '../services/location';
-import { wrapAsyncWithDelay } from '../services/utilities';
+import { stringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
 import Report, { REPORT_TYPES } from './Report';
 
 const initialReportState = {
@@ -58,6 +60,42 @@ export default function MainScreen() {
     vehicleTrackingReducer,
     initialVehicleTrackingState
   );
+
+  // these three functions had to be hoisted from VehicleTracking
+  // so that they could be used in the alerts for contractors in the
+  // showAddReport function
+  const startTracking = async () => {
+    console.log('startTracking');
+    backgroundLocationService.subscribe((locations) => {
+      vehicleTrackingDispatch({
+        type: 'ADD_ROUTE_COORDINATES',
+        payload: locations.map((location) => pick(location.coords, 'latitude', 'longitude')),
+      });
+    });
+
+    await Location.startLocationUpdatesAsync(backgroundLocationService.taskName, {
+      accuracy: Location.Accuracy.Balanced,
+      deferredUpdatesInterval: 2000,
+      showsBackgroundLocationIndicator: true,
+    });
+  };
+
+  const startRoute = async () => {
+    console.log('startRoute');
+    if (await verifyPermissions()) {
+      await startTracking();
+
+      vehicleTrackingDispatch({ type: 'START' });
+    }
+  };
+
+  const resumeRoute = async () => {
+    console.log('resumeRoute');
+
+    await startTracking();
+
+    vehicleTrackingDispatch({ type: 'RESUME' });
+  };
 
   const initLocation = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
@@ -153,6 +191,51 @@ export default function MainScreen() {
         },
       ]);
     } else {
+      // contractor
+      if (!vehicleTrackingState.isTracking) {
+        Alert.alert(
+          'No vehicle tracking route found',
+          'A vehicle tracking route must be started to report a carcass.\n\nWould you like to start a route?',
+          [
+            {
+              text: 'Start route',
+              onPress: () => {
+                startRoute();
+
+                displayReport(REPORT_TYPES.pickup);
+              },
+            },
+            {
+              text: 'Cancel',
+            },
+          ]
+        );
+
+        return;
+      }
+
+      if (vehicleTrackingState.isTracking && vehicleTrackingState.isPaused) {
+        Alert.alert(
+          'Paused vehicle tracking route',
+          'A vehicle tracking route has been started but it is currently paused.\n\nWould you to resume?',
+          [
+            {
+              text: 'Resume tracking',
+              onPress: () => {
+                resumeRoute();
+
+                displayReport(REPORT_TYPES.pickup);
+              },
+            },
+            {
+              text: 'Cancel',
+            },
+          ]
+        );
+
+        return;
+      }
+
       displayReport(REPORT_TYPES.pickup);
     }
   };
@@ -236,7 +319,7 @@ export default function MainScreen() {
             style={[styles.map, mapSizeStyle]}
             showsUserLocation={true}
           >
-            {vehicleTrackingState.routeCoordinates.length ? (
+            {vehicleTrackingState.routeCoordinates?.length ? (
               <Polyline
                 coordinates={vehicleTrackingState.routeCoordinates}
                 strokeColor="black"
@@ -244,6 +327,16 @@ export default function MainScreen() {
                 zIndex={1}
               />
             ) : null}
+            {vehicleTrackingState.pickups?.length > 0
+              ? vehicleTrackingState.pickups.map((pickup) => (
+                  <Marker
+                    coordinate={stringToCoordinates(pickup.animal_location)}
+                    key={pickup.submit_date}
+                    zIndex={2}
+                    pinColor="navy"
+                  />
+                ))
+              : null}
             {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} /> : null}
           </Map>
           {reportState.showReport ? (
@@ -296,8 +389,16 @@ export default function MainScreen() {
         setHeight={setReportHeight}
         setMarker={setMarker}
         carcassCoordinates={carcassCoordinates}
+        vehicleTrackingDispatch={vehicleTrackingDispatch}
+        vehicleTrackingState={vehicleTrackingState}
       />
-      <VehicleTracking state={vehicleTrackingState} dispatch={vehicleTrackingDispatch} />
+      <VehicleTracking
+        state={vehicleTrackingState}
+        dispatch={vehicleTrackingDispatch}
+        startTracking={startTracking}
+        resumeRoute={resumeRoute}
+        startRoute={startRoute}
+      />
     </RootView>
   );
 }

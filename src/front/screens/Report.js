@@ -74,7 +74,44 @@ const formSchemas = {
 };
 const localDateService = new NativeDateService('en', { format: 'MM/DD/YYYY' });
 
-const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoordinates }) => {
+export function getSubmitValues(values) {
+  const output = {};
+
+  for (let key in values) {
+    const value = values[key];
+
+    if (value instanceof Date) {
+      output[key] = value.toISOString();
+    } else if (value) {
+      output[key] = value;
+    }
+  }
+
+  return output;
+}
+
+export function getFormData(submitValues) {
+  const formData = new FormData();
+
+  for (let key in submitValues) {
+    const value = submitValues[key];
+
+    formData.append(key, value);
+  }
+
+  return formData;
+}
+
+const Report = ({
+  show,
+  reportType,
+  hideReport,
+  setHeight,
+  setMarker,
+  carcassCoordinates,
+  vehicleTrackingDispatch,
+  vehicleTrackingState,
+}) => {
   const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
@@ -90,25 +127,36 @@ const Report = ({ show, reportType, hideReport, setHeight, setMarker, carcassCoo
   const submitReport = async (values) => {
     console.log('submitReport');
 
-    const formData = new FormData();
-    for (let valueName in values) {
-      if (values[valueName] !== null) {
-        let newValue = values[valueName];
-        if (values[valueName] instanceof Date) {
-          newValue = newValue.toISOString();
-        }
-        formData.append(valueName, newValue);
-      }
-    }
+    const submitValues = getSubmitValues(values);
 
     // add data gathered from outside of the form
-    formData.append('animal_location', coordinatesToString(carcassCoordinates));
-    formData.append('user_id', user.id);
-    formData.append('submit_date', new Date().toISOString());
+    submitValues.animal_location = coordinatesToString(carcassCoordinates);
+    submitValues.user_id = user.id;
+    submitValues.submit_date = new Date().toISOString();
     const currentLocation = await getLocation(ACCURACY.Highest);
-    formData.append('submit_location', coordinatesToString(currentLocation.coords));
+    submitValues.submit_location = coordinatesToString(currentLocation.coords);
 
-    console.log('formData', formData);
+    // if there is a route being collected and this is a pickup report, then cache the data on the device for later submission
+    if (vehicleTrackingState.isTracking && reportType === REPORT_TYPES.pickup) {
+      vehicleTrackingDispatch({ type: 'ADD_PICKUP', payload: submitValues });
+
+      Alert.alert(
+        'Success!',
+        'Your report has been recorded and is ready to be submitted with your vehicle tracking route.',
+        [
+          {
+            text: 'OK',
+            onPress: () => onClose(true),
+          },
+        ]
+      );
+
+      return;
+    }
+
+    // note: this FormData class is NOT the same class as in the browser
+    // ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
+    const formData = getFormData(submitValues);
 
     let responseJson;
     try {
@@ -349,6 +397,8 @@ Report.propTypes = {
   setHeight: propTypes.func.isRequired,
   setMarker: propTypes.func.isRequired,
   carcassCoordinates: propTypes.object,
+  vehicleTrackingDispatch: propTypes.func.isRequired,
+  vehicleTrackingState: propTypes.object.isRequired,
 };
 
 const RADIUS = 15;
