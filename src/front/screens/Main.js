@@ -246,7 +246,7 @@ export default function MainScreen() {
             ) : null}
             {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} /> : null}
           </Map>
-          {reportState.showReport && reportHeight > 0 ? (
+          {reportState.showReport ? (
             <View
               pointerEvents="none"
               style={[styles.crosshairContainer, { top: crosshairCoordinates.y, left: crosshairCoordinates.x }]}
