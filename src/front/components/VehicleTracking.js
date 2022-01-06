@@ -5,10 +5,16 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
+import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
+import { getFormData } from '../screens/Report';
+import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
+import config from '../services/config';
 import { PADDING } from '../services/styles';
+import { lineCoordinatesToString } from '../services/utilities';
+import Spinner from './Spinner';
 
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
 
@@ -160,21 +166,82 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     dispatch({ type: 'PAUSE' });
   };
 
+  const cancelRoute = async () => {
+    console.log('cancelRoute');
+
+    await stopTracking();
+
+    dispatch({ type: 'RESET' });
+  };
+
+  const { post } = useAPI();
   const completeRoute = async () => {
     console.log('completeRoute');
 
     await stopTracking();
 
-    // TODO: submit data
-    console.log('vehicle tracking state', {
-      start: state.start,
-      end: new Date(),
-      routeCoordinates: state.routeCoordinates,
-      pickups: state.pickups,
-    });
+    dispatch({ type: 'HIDE' });
 
-    dispatch({ type: 'RESET' });
+    mutation.mutate();
   };
+
+  const confirmCompleteRoute = () => {
+    Alert.alert(
+      'Submit Route',
+      `Are you sure that you want to stop tracking and submit this route with ${state.pickups.length} pickups?`,
+      [
+        {
+          text: 'Yes',
+          onPress: completeRoute,
+        },
+        {
+          text: 'Cancel',
+        },
+      ]
+    );
+  };
+  const [spinnerMessage, setSpinnerMessage] = React.useState('');
+
+  const submitRoute = async () => {
+    const submitValues = {
+      start_time: state.start,
+      end_time: new Date(),
+      geog: lineCoordinatesToString(state.routeCoordinates),
+      submit_date: new Date().toISOString(),
+    };
+
+    setSpinnerMessage('submitting route...');
+
+    const responseJson = await post('routes/route', submitValues);
+
+    for (let index = 0; index < state.pickups.length; index++) {
+      const pickup = state.pickups[index];
+
+      setSpinnerMessage(`submitting pickup ${index + 1} of ${state.pickups.length}...`);
+
+      await post(
+        'reports/pickup',
+        getFormData({
+          ...pickup,
+          route_id: responseJson.route_id,
+        }),
+        true
+      );
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(submitRoute, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(config.QUERY_KEYS.reports);
+      queryClient.invalidateQueries(config.QUERY_KEYS.profile);
+
+      dispatch({ type: 'RESET' });
+    },
+    onError: (error) => {
+      Alert.alert('Error', error.message);
+    },
+  });
 
   const getHeader = (title) => (
     <View style={styles.header}>
@@ -184,9 +251,14 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
 
   const Footer = (props) => (
     <View {...props} style={[props.style, styles.footer]}>
-      <Button onPress={completeRoute}>Finish</Button>
+      <Button onPress={confirmCompleteRoute} status="info">
+        Finish
+      </Button>
       {state.isPaused ? <Button onPress={resumeRoute}>Resume</Button> : <Button onPress={pauseRoute}>Pause</Button>}
       <Button onPress={close}>Close</Button>
+      <Button onPress={cancelRoute} appearance="ghost">
+        Cancel
+      </Button>
     </View>
   );
 
@@ -200,28 +272,31 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   };
 
   return (
-    <Modal
-      visible={state.isModalVisible}
-      backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
-      style={styles.modal}
-      onBackdropPress={close}
-    >
-      {state.isTracking ? (
-        <Card disabled={true} header={getHeader('Route name/ID')} footer={Footer}>
-          <Text>Start: {state.start.toLocaleString()}</Text>
-          <Text>Status: {state.status}</Text>
-          <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
-          <Text>Pickups: {state.pickups?.length}</Text>
-        </Card>
-      ) : (
-        <Card disabled={true} header={getHeader('Vehicle Tracking')}>
-          <Button onPress={startRoute}>Start new route</Button>
-          <Button onPress={() => dispatch({ type: 'HIDE' })} appearance="ghost">
-            Cancel
-          </Button>
-        </Card>
-      )}
-    </Modal>
+    <>
+      <Modal
+        visible={state.isModalVisible}
+        backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
+        style={styles.modal}
+        onBackdropPress={close}
+      >
+        {state.isTracking ? (
+          <Card disabled={true} header={getHeader('Route name/ID')} footer={Footer}>
+            <Text>Start: {state.start.toLocaleString()}</Text>
+            <Text>Status: {state.status}</Text>
+            <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
+            <Text>Pickups: {state.pickups?.length}</Text>
+          </Card>
+        ) : (
+          <Card disabled={true} header={getHeader('Vehicle Tracking')}>
+            <Button onPress={startRoute}>Start new route</Button>
+            <Button onPress={() => dispatch({ type: 'HIDE' })} appearance="ghost">
+              Cancel
+            </Button>
+          </Card>
+        )}
+      </Modal>
+      <Spinner show={mutation.isLoading} message={spinnerMessage} />
+    </>
   );
 }
 

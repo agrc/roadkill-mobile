@@ -17,7 +17,7 @@ import backgroundLocationService, { verifyPermissions } from '../services/backgr
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { getLocation, locationToRegion, useFollowUser } from '../services/location';
-import { stringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
+import { pointStringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
 import Report, { REPORT_TYPES } from './Report';
 
 const initialReportState = {
@@ -322,7 +322,7 @@ export default function MainScreen() {
             {vehicleTrackingState.routeCoordinates?.length ? (
               <Polyline
                 coordinates={vehicleTrackingState.routeCoordinates}
-                strokeColor="black"
+                strokeColor="navy"
                 strokeWidth={8}
                 zIndex={1}
               />
@@ -330,7 +330,7 @@ export default function MainScreen() {
             {vehicleTrackingState.pickups?.length > 0
               ? vehicleTrackingState.pickups.map((pickup) => (
                   <Marker
-                    coordinate={stringToCoordinates(pickup.animal_location)}
+                    coordinate={pointStringToCoordinates(pickup.animal_location)}
                     key={pickup.submit_date}
                     zIndex={2}
                     pinColor="navy"

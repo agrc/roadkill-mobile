@@ -1,5 +1,5 @@
 import { db } from './clients.js';
-import { coordStringToWKT, geographyToCoordinates } from './utilities.js';
+import { pointCoordStringToWKT, pointGeographyToCoordinates } from './utilities.js';
 
 export async function createReport({
   bucket_path,
@@ -18,7 +18,7 @@ export async function createReport({
       photoInsertResult = await transaction('photos').insert(
         {
           bucket_path,
-          photo_location: coordStringToWKT(photo_location),
+          photo_location: pointCoordStringToWKT(photo_location),
           photo_date,
         },
         'id'
@@ -29,8 +29,8 @@ export async function createReport({
       {
         ...reportInfo,
         user_id: user_id,
-        animal_location: coordStringToWKT(animal_location),
-        submit_location: coordStringToWKT(submit_location),
+        animal_location: pointCoordStringToWKT(animal_location),
+        submit_location: pointCoordStringToWKT(submit_location),
         photo_id: photoInsertResult ? photoInsertResult[0] : null,
       },
       'report_id'
@@ -56,13 +56,14 @@ export async function createPickup({
   animal_location,
   user_id,
   pickup_date,
+  route_id,
   ...reportInfo
 }) {
   return await db.transaction(async (transaction) => {
     const photoInsertResult = await transaction('photos').insert(
       {
         bucket_path,
-        photo_location: coordStringToWKT(photo_location),
+        photo_location: pointCoordStringToWKT(photo_location),
         photo_date,
       },
       'id'
@@ -71,8 +72,8 @@ export async function createPickup({
       {
         ...reportInfo,
         user_id: user_id,
-        animal_location: coordStringToWKT(animal_location),
-        submit_location: coordStringToWKT(submit_location),
+        animal_location: pointCoordStringToWKT(animal_location),
+        submit_location: pointCoordStringToWKT(submit_location),
         photo_id: photoInsertResult[0],
       },
       'report_id'
@@ -83,7 +84,7 @@ export async function createPickup({
     await transaction('pickup_reports').insert({
       report_id: reportId,
       pickup_date,
-      route_id: 1, // TODO - replace with real route id
+      route_id,
     });
 
     return reportId;
@@ -109,11 +110,11 @@ export async function getReport(reportId) {
     .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
     .columns(
       'r.report_id',
-      db.raw(geographyToCoordinates('animal_location')),
+      db.raw(pointGeographyToCoordinates('animal_location')),
       'r.photo_id',
-      db.raw(geographyToCoordinates('photo_location')),
+      db.raw(pointGeographyToCoordinates('photo_location')),
       'p.photo_date',
-      db.raw(geographyToCoordinates('submit_location')),
+      db.raw(pointGeographyToCoordinates('submit_location')),
       'r.submit_date',
       'r.species_id',
       'r.common_name',

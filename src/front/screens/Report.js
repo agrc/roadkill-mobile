@@ -1,23 +1,21 @@
 import { Datepicker, NativeDateService, Text, useTheme } from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
-import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Animated, Keyboard, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useMutation, useQueryClient } from 'react-query';
-import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
-import useAuth from '../auth/context';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
 import Spinner from '../components/Spinner';
+import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { ACCURACY, getLocation } from '../services/location';
 import { PADDING } from '../services/styles';
-import { coordinatesToString } from '../services/utilities';
+import { pointCoordinatesToString } from '../services/utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -82,7 +80,7 @@ export function getSubmitValues(values) {
 
     if (value instanceof Date) {
       output[key] = value.toISOString();
-    } else if (value) {
+    } else if (value !== null && value !== undefined) {
       output[key] = value;
     }
   }
@@ -119,10 +117,7 @@ const Report = ({
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
 
-  const {
-    authInfo: { user },
-    getBearerToken,
-  } = useAuth();
+  const { post } = useAPI();
 
   const submitReport = async (values) => {
     console.log('submitReport');
@@ -130,11 +125,10 @@ const Report = ({
     const submitValues = getSubmitValues(values);
 
     // add data gathered from outside of the form
-    submitValues.animal_location = coordinatesToString(carcassCoordinates);
-    submitValues.user_id = user.id;
+    submitValues.animal_location = pointCoordinatesToString(carcassCoordinates);
     submitValues.submit_date = new Date().toISOString();
     const currentLocation = await getLocation(ACCURACY.Highest);
-    submitValues.submit_location = coordinatesToString(currentLocation.coords);
+    submitValues.submit_location = pointCoordinatesToString(currentLocation.coords);
 
     // if there is a route being collected and this is a pickup report, then cache the data on the device for later submission
     if (vehicleTrackingState.isTracking && reportType === REPORT_TYPES.pickup) {
@@ -154,43 +148,25 @@ const Report = ({
       return;
     }
 
-    // note: this FormData class is NOT the same class as in the browser
+    // this FormData class is NOT the same class as in the browser
     // ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
     const formData = getFormData(submitValues);
 
-    let responseJson;
-    try {
-      responseJson = await ky
-        .post(`${config.API}/reports/${reportType}`, {
-          body: formData,
-          headers: {
-            Authorization: await getBearerToken(),
-          },
-          timeout: 20000, // give cloud run time to spin up especially in dev project
-        })
-        .json();
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      throw error;
-      // TODO: allow them to cache the report for submission at a later time.
-    }
+    const responseJson = await post(`reports/${reportType}`, formData, true);
 
-    if (responseJson.success) {
-      console.log('responseJson.report_id', responseJson.report_id);
+    console.log('responseJson.report_id', responseJson.report_id);
 
-      const successMessages = {
-        pickup: 'Your report has been submitted.',
-        report: 'Your report has been submitted and a notification has been sent to remove the animal.',
-      };
-      Alert.alert('Success!', successMessages[reportType], [
-        {
-          text: 'OK',
-          onPress: () => onClose(true),
-        },
-      ]);
-    } else {
-      throw new Error(responseJson.error);
-    }
+    const successMessages = {
+      pickup: 'Your report has been submitted.',
+      report: 'Your report has been submitted and a notification has been sent to remove the animal.',
+    };
+
+    Alert.alert('Success!', successMessages[reportType], [
+      {
+        text: 'OK',
+        onPress: () => onClose(true),
+      },
+    ]);
   };
 
   const queryClient = useQueryClient();

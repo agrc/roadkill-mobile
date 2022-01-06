@@ -1,6 +1,7 @@
 import { LoggingWinston } from '@google-cloud/logging-winston';
 import { getConstants } from 'common/constants.js';
 import { pickup as pickupSchema, report as reportSchema } from 'common/validation/reports.js';
+import { route as routeSchema } from 'common/validation/routes.js';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
@@ -11,12 +12,14 @@ import winston from 'winston';
 import { getGetIDImageHandler } from './api/id_images.js';
 import { getGetPhotoHandler } from './api/photos.js';
 import { getGetAllHandler, getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
+import { getNewRouteHandler } from './api/routes.js';
 import { authenticate, getToken, logout } from './api/security.js';
 import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
 import { getIDImage } from './services/id_images.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getAllReports, getReport } from './services/report_management.js';
+import { createRoute } from './services/route_management.js';
 import {
   approveUser,
   getProfile,
@@ -146,8 +149,12 @@ app.post(
   validate(pickupSchema.omit(['photo'])),
   handleAsyncErrors(getNewPickupHandler(upload, createPickup))
 );
-// I don't see any reason to secure this endpoint and am worried that it will just slow it down
-app.get('/reports/id_image/:key/:pixelRatio', handleAsyncErrors(getGetIDImageHandler(getIDImage)));
+app.post(
+  '/routes/route',
+  handleAsyncErrors(authenticate),
+  validate(routeSchema),
+  handleAsyncErrors(getNewRouteHandler(createRoute))
+);
 
 // data retrieval
 app.get('/reports/reports', handleAsyncErrors(authenticate), handleAsyncErrors(getGetAllHandler(getAllReports)));
@@ -161,5 +168,8 @@ app.get(
   handleAsyncErrors(authenticate),
   handleAsyncErrors(getGetPhotoHandler(true, getPhoto))
 );
+
+// I don't see any reason to secure this endpoint and am worried that it will just slow it down
+app.get('/reports/id_image/:key/:pixelRatio', handleAsyncErrors(getGetIDImageHandler(getIDImage)));
 
 export default app;
