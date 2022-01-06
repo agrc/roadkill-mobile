@@ -1,8 +1,9 @@
 import {
-  coordinatesToString,
   getReleaseChannelBranch,
   isTokenExpired,
-  stringToCoordinates,
+  lineCoordinatesToString,
+  pointCoordinatesToString,
+  pointStringToCoordinates,
   wrapAsyncWithDelay,
 } from './utilities';
 
@@ -81,27 +82,44 @@ describe('getReleaseChannelBranch', () => {
   });
 });
 
-describe('coordinatesToString', () => {
+describe('pointCoordinatesToString', () => {
   it('returns the appropriate string', () => {
     const coordinates = {
       longitude: -1,
       latitude: 2,
     };
 
-    expect(coordinatesToString(coordinates)).toBe('-1 2');
+    expect(pointCoordinatesToString(coordinates)).toBe('-1 2');
   });
   it('returns null if null is passed', () => {
-    expect(coordinatesToString(null)).toBe(null);
+    expect(pointCoordinatesToString(null)).toBe(null);
   });
 });
 
-describe('stringToCoordinates', () => {
+describe('pointStringToCoordinates', () => {
   it('returns the appropriate object', () => {
     const input = '-1 2';
 
-    const output = stringToCoordinates(input);
+    const output = pointStringToCoordinates(input);
 
     expect(output.longitude).toBe(-1);
     expect(output.latitude).toBe(2);
+  });
+});
+
+describe('lineCoordinatesToString', () => {
+  it('returns the appropriate string', () => {
+    const line = [
+      {
+        longitude: -1,
+        latitude: 2,
+      },
+      {
+        longitude: -3,
+        latitude: 4,
+      },
+    ];
+
+    expect(lineCoordinatesToString(line)).toBe('-1 2, -3 4');
   });
 });

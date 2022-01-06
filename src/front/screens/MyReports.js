@@ -1,35 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
 import { Card, Divider, Layout, List, ListItem, Text, useTheme } from '@ui-kitten/components';
-import ky from 'ky';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useQuery } from 'react-query';
-import * as Sentry from 'sentry-expo';
-import useAuth from '../auth/context';
 import Spinner from '../components/Spinner';
+import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { PADDING } from '../services/styles';
 
 export default function MyReportsScreen() {
-  const { getBearerToken } = useAuth();
+  const { get } = useAPI();
   const getMyReports = async () => {
-    const token = await getBearerToken();
-    let responseJson;
-    try {
-      responseJson = await ky
-        .get(`${config.API}/reports/reports`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .json();
+    const responseJson = await get('reports/reports');
 
-      return responseJson.reports;
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      throw new Error(`Error getting reports from server! ${error.message}`);
-    }
+    return responseJson.reports;
   };
 
   const { data, isLoading, isError, error } = useQuery(config.QUERY_KEYS.reports, getMyReports);

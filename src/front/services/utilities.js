@@ -156,7 +156,7 @@ export function getReleaseChannelBranch(releaseChannel) {
   return releaseChannel.split('-')[0];
 }
 
-export function coordinatesToString(coordinates) {
+export function pointCoordinatesToString(coordinates) {
   if (!coordinates) {
     return null;
   }
@@ -164,7 +164,17 @@ export function coordinatesToString(coordinates) {
   return `${coordinates.longitude} ${coordinates.latitude}`;
 }
 
-export function stringToCoordinates(string) {
+export function lineCoordinatesToString(coordinates) {
+  return coordinates.reduce((previous, coord) => {
+    if (!previous) {
+      return pointCoordinatesToString(coord);
+    }
+
+    return `${previous}, ${pointCoordinatesToString(coord)}`;
+  }, null);
+}
+
+export function pointStringToCoordinates(string) {
   const [longitude, latitude] = string.split(' ');
 
   return { longitude: parseFloat(longitude), latitude: parseFloat(latitude) };

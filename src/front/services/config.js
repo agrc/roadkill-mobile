@@ -51,4 +51,5 @@ export default {
     reports: 'reports',
     profile: 'profile',
   },
+  API_REQUEST_TIMEOUT: 20000,
 };
