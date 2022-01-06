@@ -23,6 +23,7 @@ export const STATUS = {
 
 WebBrowser.maybeCompleteAuthSession();
 const AuthContext = React.createContext();
+const timeout = config.API_REQUEST_TIMEOUT;
 
 export function AuthContextProvider({ children, onReady }) {
   const [authInfo, setAuthInfo] = useSecureState(config.USER_STORE_KEY);
@@ -108,6 +109,7 @@ export function AuthContextProvider({ children, onReady }) {
           headers: {
             Authorization: token,
           },
+          timeout,
         })
         .json();
       const { user, registered, constants } = loginResponse;
@@ -141,6 +143,7 @@ export function AuthContextProvider({ children, onReady }) {
         headers: {
           Authorization: token,
         },
+        timeout,
       })
       .json();
 
@@ -163,6 +166,7 @@ export function AuthContextProvider({ children, onReady }) {
               headers: {
                 Authorization: await getBearerToken(),
               },
+              timeout,
             });
 
             if (response.status !== 200) {
