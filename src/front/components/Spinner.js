@@ -14,7 +14,7 @@ export default function Spinner({ show, message }) {
     >
       <KittenSpinner color={theme['color-basic-1100']} size="large" status="control" />
       {message ? (
-        <Text category="h6" style={[{ color: theme['color-basic-700'] }, styles.message]}>
+        <Text category="h6" style={[{ color: theme['color-basic-900'] }, styles.message]}>
           {message}
         </Text>
       ) : null}
