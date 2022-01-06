@@ -8,7 +8,7 @@ import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { ACCURACY, getLocation } from '../../services/location';
 import useStyles, { PADDING } from '../../services/styles';
-import { coordinatesToString } from '../../services/utilities';
+import { pointCoordinatesToString } from '../../services/utilities';
 import Spinner from '../Spinner';
 
 const THUMBNAIL_SIZE = 100;
@@ -75,7 +75,7 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
     if (!result.cancelled) {
       const { uri, exif } = result;
 
-      const coordinates = coordinatesToString(getCoordinatesFromExif(exif));
+      const coordinates = pointCoordinatesToString(getCoordinatesFromExif(exif));
 
       onChange({
         uri,
@@ -112,7 +112,7 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
       setShowLoader(true);
       try {
         const { coords } = await getLocation(ACCURACY.Highest);
-        coordinates = coordinatesToString(coords);
+        coordinates = pointCoordinatesToString(coords);
       } catch (error) {
         console.error(error);
         // ignore

@@ -1,17 +1,16 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
-import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useQuery } from 'react-query';
-import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
+import { useAPI } from '../services/api';
 import config from '../services/config';
 import { coordsToLocation } from '../services/location';
 import useStyles, { PADDING } from '../services/styles';
@@ -23,28 +22,17 @@ const isPickupReport = (report) => {
 
 export default function ReportInfoScreen() {
   const { reportId } = useRoute().params;
-  const { getBearerToken } = useAuth();
   const navigation = useNavigation();
-  const getReportData = async () => {
-    const headers = {
-      Authorization: await getBearerToken(),
-    };
-    let responseJson;
-    try {
-      responseJson = await ky
-        .get(`${config.API}/reports/report/${reportId}`, {
-          headers,
-        })
-        .json();
+  const { get } = useAPI();
 
-      return {
-        ...responseJson.report,
-        headers,
-      };
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      throw new Error(`Error getting report from server! ${error.message}`);
-    }
+  const { getBearerToken } = useAuth();
+  const getReportData = async () => {
+    const responseJson = await get(`reports/report/${reportId}`);
+
+    return {
+      ...responseJson.report,
+      bearerToken: await getBearerToken(),
+    };
   };
   const { data, isLoading, isError, error } = useQuery(`report-${reportId}`, getReportData);
 
@@ -125,7 +113,10 @@ export function ReportInfo({ data }) {
               <ValueContainer label="Photo Date" value={dateToString(data.photo_date)} divider={false} />
             </View>
             <Image
-              source={{ uri: `${config.API}/photos/thumb/${data.photo_id}`, headers: data.headers }}
+              source={{
+                uri: `${config.API}/photos/thumb/${data.photo_id}`,
+                headers: { Authorization: data.bearerToken },
+              }}
               style={[commonStyles.image, styles.thumbnail]}
             />
           </View>

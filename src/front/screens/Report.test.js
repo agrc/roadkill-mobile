@@ -24,10 +24,11 @@ describe('getSubmitValues', () => {
     expect(output.b.c).toBe(2);
   });
   it('skips null values', () => {
-    const input = { a: 1, b: null };
+    const input = { a: 1, b: null, c: false };
 
     const output = getSubmitValues(input);
 
     expect(output.b).toBeUndefined();
+    expect(output.c).toBe(false);
   });
 });

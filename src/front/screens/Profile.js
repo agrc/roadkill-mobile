@@ -1,50 +1,31 @@
 import { Button, Card, Divider, Input, Layout, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
-import ky from 'ky';
 import React, { useRef } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
 import 'yup-phone';
-import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
+import { useAPI } from '../services/api';
 import config from '../services/config';
 import { PADDING } from '../services/styles';
 import { booleanToYesNo, dateToString } from '../services/utilities';
 
 export default function ProfileScreen() {
-  const { getBearerToken } = useAuth();
+  const { get, post } = useAPI();
 
   const getProfileData = async () => {
-    const headers = {
-      Authorization: await getBearerToken(),
-    };
-    let responseJson;
-    try {
-      responseJson = await ky.get(`${config.API}/user/profile`, { headers }).json();
+    const responseJson = await get('user/profile');
 
-      return responseJson.profile;
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      throw error;
-    }
+    return responseJson.profile;
   };
   const { data, isLoading, isError, error } = useQuery(config.QUERY_KEYS.profile, getProfileData);
 
   const updateProfileData = async (newData) => {
-    const headers = {
-      Authorization: await getBearerToken(),
-    };
-
-    try {
-      await ky.post(`${config.API}/user/profile/update`, { headers, json: newData }).json();
-    } catch (error) {
-      Sentry.Native.captureException(error);
-      throw error;
-    }
+    await post('user/profile/update', newData);
   };
 
   const formikRef = useRef();

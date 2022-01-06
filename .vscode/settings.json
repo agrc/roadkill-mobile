@@ -13,6 +13,7 @@
     "immer",
     "inblow",
     "key",
+    "LINESTRING",
     "lsof",
     "nanos",
     "nent",

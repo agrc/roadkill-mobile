@@ -132,7 +132,7 @@ CREATE TABLE pickup_reports
 (
   report_id integer NOT NULL REFERENCES report_infos (report_id),
   pickup_date timestamptz NOT NULL CHECK (pickup_date <= CURRENT_TIMESTAMP + interval '1 minute'),
-  route_id integer NOT NULL
+  route_id integer REFERENCES routes (route_id)
 );
 
 -- routes
