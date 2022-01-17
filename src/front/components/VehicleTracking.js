@@ -159,7 +159,11 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     backgroundLocationService.unsubscribe();
 
     try {
-      await Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
+      const hasStarted = await Location.hasStartedLocationUpdatesAsync(backgroundLocationService.taskName);
+
+      if (hasStarted) {
+        await Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
+      }
     } catch (error) {
       console.log(error);
       Sentry.captureException(error);
