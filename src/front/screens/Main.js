@@ -364,8 +364,7 @@ export default function MainScreen() {
               iconPack="material"
               iconName="drive-eta"
               onPress={() => vehicleTrackingDispatch({ type: 'SHOW' })}
-              style={styles.topButton}
-              color={vehicleTrackingState.isTracking ? theme['color-info-600'] : null}
+              status={vehicleTrackingState.buttonStatus}
             >
               Track
             </MapButton>
@@ -431,9 +430,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     paddingBottom: MAP_PADDING,
-  },
-  topButton: {
-    marginBottom: MAP_PADDING / 2,
   },
   crosshairContainer: {
     position: 'absolute',
