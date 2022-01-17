@@ -368,7 +368,9 @@ export default function MainScreen() {
             <MapButton
               iconPack="material"
               iconName="drive-eta"
-              onPress={() => vehicleTrackingDispatch({ type: 'SHOW' })}
+              onPress={() =>
+                vehicleTrackingState.isTracking ? vehicleTrackingDispatch({ type: 'SHOW' }) : startRoute()
+              }
               status={vehicleTrackingState.buttonStatus}
             >
               Track
