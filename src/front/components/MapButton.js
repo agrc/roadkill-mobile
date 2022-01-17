@@ -1,18 +1,19 @@
-import { Button, useTheme } from '@ui-kitten/components';
+import { Button, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 
-const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color }) => {
+const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color, children }) => {
   const theme = useTheme();
   const buttonSize = 30;
   const alertSize = 12;
+  color = color || 'white';
   const ButtonIcon = () => {
     const Icon = getIcon({
       pack: iconPack,
       name: iconName,
-      color: color || 'white',
+      color,
       size: iconSize || buttonSize,
     });
     const AlertIcon = getIcon({
@@ -22,13 +23,20 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, co
       color: theme['color-warning-500'],
     });
 
+    const size = { height: buttonSize, width: buttonSize };
+
     return (
-      <View style={{ height: buttonSize, width: buttonSize, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={[styles.container, children ? null : size]}>
         <Icon />
         {showAlert ? (
           <View style={styles.alertIcon}>
             <AlertIcon />
           </View>
+        ) : null}
+        {children ? (
+          <Text category="h5" style={{ color }}>
+            {` ${children}`}
+          </Text>
         ) : null}
       </View>
     );
@@ -45,9 +53,15 @@ MapButton.propTypes = {
   showAlert: propTypes.bool,
   iconSize: propTypes.number,
   color: propTypes.string,
+  children: propTypes.string,
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   alertIcon: {
     position: 'absolute',
     top: 0,
