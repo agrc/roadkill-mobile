@@ -35,6 +35,12 @@ TaskManager.defineTask(backgroundLocationService.taskName, async ({ data, error 
   }
 });
 
+const buttonStatuses = {
+  idle: 'basic',
+  tracking: 'success',
+  paused: 'danger',
+};
+
 export const initialVehicleTrackingState = {
   status: 'idle',
   isModalVisible: false,
@@ -45,6 +51,7 @@ export const initialVehicleTrackingState = {
   // these are derived...
   isPaused: false,
   isTracking: false,
+  buttonStatus: buttonStatuses.idle,
 };
 
 export const vehicleTrackingReducer = (draft, action) => {
@@ -100,6 +107,7 @@ export const vehicleTrackingReducer = (draft, action) => {
   // derived...
   draft.isPaused = draft.status === 'paused';
   draft.isTracking = draft.status === 'tracking' || draft.isPaused;
+  draft.buttonStatus = buttonStatuses[draft.status];
 
   // backup in case phone crashes
   AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
