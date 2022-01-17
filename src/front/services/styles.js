@@ -2,6 +2,7 @@ import { useTheme } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 
 export const PADDING = 10;
+export const RADIUS = 15;
 export default function useStyles() {
   const theme = useTheme();
   const roundedBorders = {
