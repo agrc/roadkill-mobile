@@ -359,6 +359,19 @@ export default function MainScreen() {
           />
         </View>
         <View>
+          {authInfo.user.role === config.USER_TYPES.public ? null : (
+            <MapButton
+              iconPack="material"
+              iconName="drive-eta"
+              onPress={() => vehicleTrackingDispatch({ type: 'SHOW' })}
+              style={styles.topButton}
+              color={vehicleTrackingState.isTracking ? theme['color-info-600'] : null}
+            >
+              Track
+            </MapButton>
+          )}
+        </View>
+        <View>
           <MapButton
             iconPack="font-awesome"
             iconName={isFollowing ? 'location-arrow' : 'location-arrow'}
@@ -370,17 +383,11 @@ export default function MainScreen() {
       <View style={styles.controlContainer}>
         <View></View>
         <View style={styles.bottomContainer}>
-          {authInfo.user.role === config.USER_TYPES.public ? null : (
-            <MapButton
-              iconPack="material"
-              iconName="drive-eta"
-              onPress={() => vehicleTrackingDispatch({ type: 'SHOW' })}
-              style={styles.topButton}
-              color={vehicleTrackingState.isTracking ? theme['color-info-600'] : null}
-            />
-          )}
-          <MapButton iconPack="material" iconName="add-circle" onPress={showAddReport} />
+          <MapButton iconPack="material" iconName="add-circle" onPress={showAddReport}>
+            Report
+          </MapButton>
         </View>
+        <View></View>
       </View>
       <Report
         show={reportState.showReport}
