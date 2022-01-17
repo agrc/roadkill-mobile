@@ -103,6 +103,21 @@ export default function MainScreen() {
     vehicleTrackingDispatch({ type: 'RESUME' });
   };
 
+  const onRouteButtonPress = async () => {
+    console.log('vehicleTrackingState.status', vehicleTrackingState.status);
+    switch (vehicleTrackingState.status) {
+      case 'tracking':
+        vehicleTrackingDispatch({ type: 'SHOW' });
+        break;
+      case 'paused':
+        await resumeRoute();
+        break;
+      case 'idle':
+        await startRoute();
+        break;
+    }
+  };
+
   const initLocation = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
     if (!result.granted) {
@@ -369,9 +384,7 @@ export default function MainScreen() {
             <MapButton
               iconPack="material"
               iconName="drive-eta"
-              onPress={() =>
-                vehicleTrackingState.isTracking ? vehicleTrackingDispatch({ type: 'SHOW' }) : startRoute()
-              }
+              onPress={onRouteButtonPress}
               status={vehicleTrackingState.buttonStatus}
             >
               Track
