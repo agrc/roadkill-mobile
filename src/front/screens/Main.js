@@ -66,10 +66,15 @@ export default function MainScreen() {
   // showAddReport function
   const startTracking = async () => {
     console.log('startTracking');
+
+    const startTime = Date.now();
     backgroundLocationService.subscribe((locations) => {
       vehicleTrackingDispatch({
         type: 'ADD_ROUTE_COORDINATES',
-        payload: locations.map((location) => pick(location.coords, 'latitude', 'longitude')),
+        payload: locations
+          // make sure that we don't get any old locations
+          .filter((location) => location.timestamp >= startTime)
+          .map((location) => pick(location.coords, 'latitude', 'longitude')),
       });
     });
 
