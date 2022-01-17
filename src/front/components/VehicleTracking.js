@@ -146,6 +146,8 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
 
       if (backup && JSON.stringify(state) !== backup) {
         const parsedBackup = JSON.parse(backup);
+        parsedBackup.start = new Date(parsedBackup.start);
+
         dispatch({ type: 'RESTORE_FROM_STORAGE', payload: parsedBackup });
 
         if (parsedBackup.isTracking && !parsedBackup.isPaused) {
