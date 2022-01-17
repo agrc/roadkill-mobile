@@ -291,21 +291,12 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
         style={styles.modal}
         onBackdropPress={close}
       >
-        {state.isTracking ? (
-          <Card disabled={true} header={getHeader('Route name/ID')} footer={Footer}>
-            <Text>Start: {state.start.toLocaleString()}</Text>
-            <Text>Status: {state.status}</Text>
-            <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
-            <Text>Pickups: {state.pickups?.length}</Text>
-          </Card>
-        ) : (
-          <Card disabled={true} header={getHeader('Vehicle Tracking')}>
-            <Button onPress={startRoute}>Start new route</Button>
-            <Button onPress={() => dispatch({ type: 'HIDE' })} appearance="ghost">
-              Cancel
-            </Button>
-          </Card>
-        )}
+        <Card disabled={true} header={getHeader('Route name/ID')} footer={Footer}>
+          <Text>Start: {state.start?.toLocaleString()}</Text>
+          <Text>Status: {state.status}</Text>
+          <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
+          <Text>Pickups: {state.pickups?.length}</Text>
+        </Card>
       </Modal>
       <Spinner show={mutation.isLoading} message={spinnerMessage} />
     </>
