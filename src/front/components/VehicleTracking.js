@@ -56,6 +56,8 @@ export const initialVehicleTrackingState = {
 };
 
 export const vehicleTrackingReducer = (draft, action) => {
+  console.log('vehicleTrackingReducer', action.type);
+
   switch (action.type) {
     case 'SHOW':
       draft.isModalVisible = true;
@@ -75,6 +77,7 @@ export const vehicleTrackingReducer = (draft, action) => {
 
     case 'PAUSE':
       draft.status = 'paused';
+      draft.isModalVisible = false;
 
       break;
 
