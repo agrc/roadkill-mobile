@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { length, lineString } from '@turf/turf';
-import { Button, Card, Modal, Text, useTheme } from '@ui-kitten/components';
+import { Button, Card, Divider, Modal, Text, useTheme } from '@ui-kitten/components';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
@@ -12,7 +12,8 @@ import { getFormData } from '../screens/Report';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
-import { PADDING } from '../services/styles';
+import { getIcon } from '../services/icons';
+import { PADDING, RADIUS } from '../services/styles';
 import { lineCoordinatesToString } from '../services/utilities';
 import Spinner from './Spinner';
 
@@ -38,7 +39,7 @@ TaskManager.defineTask(backgroundLocationService.taskName, async ({ data, error 
 const buttonStatuses = {
   idle: 'basic',
   tracking: 'success',
-  paused: 'danger',
+  paused: 'primary',
 };
 
 export const initialVehicleTrackingState = {
@@ -127,7 +128,7 @@ const getDistance = (coords) => {
   return `${miles.toFixed(2)} miles`;
 };
 
-export default function VehicleTracking({ state, dispatch, startTracking, resumeRoute, startRoute }) {
+export default function VehicleTracking({ state, dispatch, startTracking, resumeRoute }) {
   const theme = useTheme();
 
   useEffect(() => {
@@ -255,28 +256,20 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     },
   });
 
+  const CloseIcon = getIcon({
+    pack: 'material-community',
+    name: 'close',
+    size: 25,
+    color: theme['color-basic-700'],
+  });
   const getHeader = (title) => (
-    <View style={styles.header}>
-      <Text category="h5">{title}</Text>
+    <View>
+      <View style={styles.header}>
+        <Text category="h5">{title}</Text>
+        <Button accessoryLeft={CloseIcon} size="tiny" appearance="ghost" onPress={close} style={styles.closeButton} />
+      </View>
     </View>
   );
-
-  const Footer = (props) => (
-    <View {...props} style={[props.style, styles.footer]}>
-      <Button onPress={confirmCompleteRoute} status="info">
-        Finish
-      </Button>
-      {state.isPaused ? <Button onPress={resumeRoute}>Resume</Button> : <Button onPress={pauseRoute}>Pause</Button>}
-      <Button onPress={close}>Close</Button>
-      <Button onPress={cancelRoute} appearance="ghost">
-        Cancel
-      </Button>
-    </View>
-  );
-
-  Footer.propTypes = {
-    style: propTypes.array,
-  };
 
   const close = () => {
     console.log('close pressed');
@@ -288,14 +281,30 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
       <Modal
         visible={state.isModalVisible}
         backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
-        style={styles.modal}
         onBackdropPress={close}
+        style={styles.modal}
       >
-        <Card disabled={true} header={getHeader('Route name/ID')} footer={Footer}>
+        <Card disabled={true} header={getHeader('Route')} style={styles.modal}>
           <Text>Start: {state.start?.toLocaleString()}</Text>
           <Text>Status: {state.status}</Text>
           <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
           <Text>Pickups: {state.pickups?.length}</Text>
+          <Divider style={styles.divider} />
+          {state.isPaused ? (
+            <Button style={styles.button} onPress={resumeRoute}>
+              Resume
+            </Button>
+          ) : (
+            <Button style={styles.button} onPress={pauseRoute} status="primary">
+              Pause Route
+            </Button>
+          )}
+          <Button style={styles.button} onPress={confirmCompleteRoute} status="info">
+            Finish and Submit Route
+          </Button>
+          <Button style={styles.button} onPress={cancelRoute} appearance="ghost">
+            Cancel Route
+          </Button>
         </Card>
       </Modal>
       <Spinner show={mutation.isLoading} message={spinnerMessage} />
@@ -308,17 +317,24 @@ VehicleTracking.propTypes = {
   dispatch: propTypes.func.isRequired,
   startTracking: propTypes.func.isRequired,
   resumeRoute: propTypes.func.isRequired,
-  startRoute: propTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
-  header: {
-    padding: PADDING,
+  modal: {
+    borderRadius: RADIUS,
   },
-  modal: {},
-  footer: {
-    display: 'flex',
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  divider: {
+    marginVertical: PADDING,
+  },
+  button: {
+    marginTop: PADDING,
+  },
+  closeButton: {
+    marginRight: -10,
   },
 });

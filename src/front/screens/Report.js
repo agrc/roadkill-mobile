@@ -14,7 +14,7 @@ import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { ACCURACY, getLocation } from '../services/location';
-import { PADDING } from '../services/styles';
+import { PADDING, RADIUS } from '../services/styles';
 import { pointCoordinatesToString } from '../services/utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
@@ -377,7 +377,6 @@ Report.propTypes = {
   vehicleTrackingState: propTypes.object.isRequired,
 };
 
-const RADIUS = 15;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
