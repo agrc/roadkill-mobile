@@ -81,6 +81,7 @@ export default function MainScreen() {
     await Location.startLocationUpdatesAsync(backgroundLocationService.taskName, {
       accuracy: Location.Accuracy.Balanced,
       deferredUpdatesInterval: 2000,
+      deferredUpdatesDistance: 20,
       showsBackgroundLocationIndicator: true,
     });
   };
