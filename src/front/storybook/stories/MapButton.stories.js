@@ -12,21 +12,66 @@ const Container = ({ children }) => (
 Container.propTypes = {
   children: propTypes.node,
 };
+
 storiesOf('MapButton', module)
-  .addDecorator((getStory) => <Container>{getStory()}</Container>)
   .add('default', () => (
-    <MapButton
-      iconPack="material-community"
-      iconName="menu"
-      onPress={action('clicked')}
-      showAlert={boolean('showAlert', false)}
-    />
+    <>
+      <Container>
+        <MapButton
+          iconPack="material-community"
+          iconName="menu"
+          onPress={action('clicked')}
+          showAlert={boolean('showAlert', false)}
+        />
+        <MapButton
+          iconPack="material-community"
+          iconName="menu"
+          onPress={action('clicked')}
+          showAlert={boolean('showAlert', false)}
+        >
+          With Text
+        </MapButton>
+      </Container>
+      <Container>
+        <MapButton
+          iconPack="material-community"
+          iconName="menu"
+          onPress={action('clicked')}
+          showAlert={boolean('showAlert', false)}
+          status="success"
+        >
+          success
+        </MapButton>
+        <MapButton
+          iconPack="material-community"
+          iconName="menu"
+          onPress={action('clicked')}
+          showAlert={boolean('showAlert', false)}
+          status="basic"
+        >
+          basic
+        </MapButton>
+      </Container>
+      <Container>
+        <MapButton
+          iconPack="material-community"
+          iconName="menu"
+          onPress={action('clicked')}
+          showAlert={boolean('showAlert', false)}
+          status="danger"
+        >
+          danger
+        </MapButton>
+      </Container>
+    </>
   ))
   .add('showAlert', () => (
-    <MapButton
-      iconPack="material-community"
-      iconName="menu"
-      onPress={() => console.log('pressed')}
-      showAlert={boolean('showAlert', true)}
-    />
+    <Container>
+      <MapButton
+        iconPack="material-community"
+        iconName="menu"
+        onPress={() => console.log('pressed')}
+        showAlert={boolean('showAlert', true)}
+      />
+    </Container>
   ));
