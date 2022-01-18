@@ -184,12 +184,22 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     dispatch({ type: 'PAUSE' });
   };
 
-  const cancelRoute = async () => {
+  const cancelRoute = () => {
     console.log('cancelRoute');
 
-    await stopTracking();
+    Alert.alert("Canceled routes are deleted and can't be submitted.", 'Please confirm choice:', [
+      {
+        text: 'Resume Route',
+      },
+      {
+        text: 'Cancel Route',
+        onPress: async () => {
+          await stopTracking();
 
-    dispatch({ type: 'RESET' });
+          dispatch({ type: 'RESET' });
+        },
+      },
+    ]);
   };
 
   const { post } = useAPI();
