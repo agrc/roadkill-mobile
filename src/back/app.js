@@ -43,12 +43,16 @@ app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 
 // parse application/json
-app.use(express.json());
+app.use(
+  express.json({
+    limit: '50mb',
+  })
+);
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
-    fileSize: 20 * 1024 * 1024, // 20mb
+    fileSize: 40 * 1024 * 1024, // mb
   },
 });
 
