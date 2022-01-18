@@ -393,6 +393,7 @@ export default function MainScreen() {
               iconName="truck-fast"
               onPress={onRouteButtonPress}
               status={vehicleTrackingState.buttonStatus}
+              color={theme['color-basic-800']}
             >
               Track
             </MapButton>
@@ -409,7 +410,13 @@ export default function MainScreen() {
       <View style={styles.controlContainer}>
         <View></View>
         <View style={styles.bottomContainer}>
-          <MapButton iconPack="material" iconName="add-circle" onPress={showAddReport}>
+          <MapButton
+            iconPack="material"
+            iconName="add-circle"
+            onPress={showAddReport}
+            status="primary"
+            color={theme['color-basic-800']}
+          >
             Report
           </MapButton>
         </View>
