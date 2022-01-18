@@ -381,7 +381,7 @@ export default function MainScreen() {
         <View>
           <MapButton
             iconPack="material-community"
-            iconName="menu"
+            iconName="folder-account"
             onPress={navigation.openDrawer}
             showAlert={hasUnsubmittedReports}
           />
@@ -389,8 +389,8 @@ export default function MainScreen() {
         <View>
           {authInfo.user.role === config.USER_TYPES.public ? null : (
             <MapButton
-              iconPack="material"
-              iconName="drive-eta"
+              iconPack="material-community"
+              iconName="truck-fast"
               onPress={onRouteButtonPress}
               status={vehicleTrackingState.buttonStatus}
             >
@@ -400,10 +400,9 @@ export default function MainScreen() {
         </View>
         <View>
           <MapButton
-            iconPack="font-awesome"
-            iconName={isFollowing ? 'location-arrow' : 'location-arrow'}
+            iconPack="material-community"
+            iconName={isFollowing ? 'crosshairs-gps' : 'crosshairs'}
             onPress={() => followUser()}
-            color={isFollowing ? theme['color-info-600'] : null}
           />
         </View>
       </View>
