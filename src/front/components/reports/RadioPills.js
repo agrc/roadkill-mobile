@@ -22,7 +22,7 @@ export default function RadioPills({ options, value, onChange, label, style }) {
         appearance={optionValue === value ? 'filled' : 'outline'}
         onPress={() => onChange(optionValue)}
         style={styles.pill}
-        status={optionValue.toLowerCase() === 'unknown' ? 'warning' : 'primary'}
+        status={optionValue.toLowerCase() === 'unknown' ? 'info' : 'primary'}
         size="small"
       >
         {(evaProps) => (

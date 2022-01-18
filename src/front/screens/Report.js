@@ -270,6 +270,7 @@ const Report = ({
     maxHeight: animatedMaxHeight.current,
     backgroundColor: theme['color-basic-100'],
     borderColor: theme['color-basic-400'],
+    elevation: 5,
   };
   if (showMain) {
     containerStyle.height = windowDimensions.height;

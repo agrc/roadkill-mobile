@@ -1,0 +1,39 @@
+{
+  "components": {
+    "Button": {
+      "meta": {},
+      "appearances": {
+        "filled": {
+          "variantGroups": {
+            "size": {
+              "medium": {
+                "textFontSize": "text-heading-6-font-size",
+                "textFontWeight": "text-heading-6-font-weight",
+                "textFontFamily": "text-heading-6-font-family"
+              }
+            },
+            "status": {
+              "primary": {
+                "textColor": "color-basic-800"
+              }
+            }
+          }
+        },
+        "outline": {
+          "variantGroups": {
+            "status": {
+              "primary": {
+                "textColor": "color-basic-800",
+                "iconTintColor": "color-basic-800"
+              },
+              "warning": {
+                "textColor": "color-basic-800",
+                "iconTintColor": "color-basic-800"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
