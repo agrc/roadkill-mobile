@@ -264,6 +264,8 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
       queryClient.invalidateQueries(config.QUERY_KEYS.reports);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
 
+      Alert.alert('Success!', 'Your route has been submitted successfully.');
+
       dispatch({ type: 'RESET' });
     },
     onError: (error) => {
