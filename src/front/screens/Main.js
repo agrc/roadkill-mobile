@@ -69,6 +69,13 @@ export default function MainScreen() {
 
     const startTime = vehicleTrackingState.start?.getTime() || Date.now();
     backgroundLocationService.subscribe((locations) => {
+      if (Date.now() > startTime + config.MAX_TRACKING_TIME) {
+        vehicleTrackingDispatch({ type: 'PAUSE' });
+        backgroundLocationService.unsubscribe();
+
+        Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
+      }
+
       vehicleTrackingDispatch({
         type: 'ADD_ROUTE_COORDINATES',
         payload: locations
