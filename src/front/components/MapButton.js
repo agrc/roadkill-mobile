@@ -10,7 +10,7 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, co
   const alertSize = 12;
 
   if (!color) {
-    color = ['basic', 'success'].includes(status) ? theme['color-basic-700'] : 'white';
+    color = ['basic', 'success'].includes(status) ? theme['color-basic-800'] : 'white';
   }
 
   const ButtonIcon = () => {

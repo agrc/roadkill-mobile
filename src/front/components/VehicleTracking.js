@@ -39,7 +39,7 @@ TaskManager.defineTask(backgroundLocationService.taskName, async ({ data, error 
 const buttonStatuses = {
   idle: 'basic',
   tracking: 'success',
-  paused: 'primary',
+  paused: 'danger',
 };
 
 export const initialVehicleTrackingState = {
@@ -312,7 +312,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
               Resume
             </Button>
           ) : (
-            <Button style={styles.button} onPress={pauseRoute} status="primary">
+            <Button style={styles.button} onPress={pauseRoute} status="danger">
               Pause Route
             </Button>
           )}

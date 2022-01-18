@@ -11,7 +11,7 @@ import useStyles, { PADDING } from '../../services/styles';
 import { pointCoordinatesToString } from '../../services/utilities';
 import Spinner from '../Spinner';
 
-const THUMBNAIL_SIZE = 100;
+const THUMBNAIL_SIZE = 110;
 export function getCoordinatesFromExif(exif) {
   if (exif?.GPSLatitude && exif?.GPSLongitude) {
     let longitude = parseFloat(exif.GPSLongitude, 10);
@@ -136,11 +136,18 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
     <View style={style}>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
-          <Button accessoryLeft={getIcon({ pack: 'font-awesome', name: 'camera' })} onPress={captureImage}>
+          <Button
+            accessoryLeft={getIcon({ pack: 'font-awesome', name: 'camera', color: theme['color-basic-800'] })}
+            onPress={captureImage}
+          >
             Take new photo
           </Button>
-          <Button accessoryLeft={getIcon({ pack: 'font-awesome', name: 'photo' })} onPress={pickImage}>
-            Choose existing image
+          <Button
+            accessoryLeft={getIcon({ pack: 'font-awesome', name: 'photo', color: theme['color-basic-800'] })}
+            onPress={pickImage}
+            style={{ marginTop: PADDING }}
+          >
+            Choose existing
           </Button>
         </View>
 
