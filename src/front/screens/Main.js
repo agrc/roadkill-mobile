@@ -319,6 +319,9 @@ export default function MainScreen() {
         },
       })
     : null;
+  const VehicleIcon = getIcon({ pack: 'material', name: 'drive-eta', size: 36, color: theme['color-basic-900'] });
+  const showTrackingMarker =
+    vehicleTrackingState.isTracking && !vehicleTrackingState.isPaused && vehicleTrackingState.routeCoordinates.length;
 
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
@@ -345,7 +348,7 @@ export default function MainScreen() {
             }}
             innerRef={mapView}
             style={[styles.map, mapSizeStyle]}
-            showsUserLocation={true}
+            showsUserLocation={!showTrackingMarker}
           >
             {vehicleTrackingState.routeCoordinates?.length ? (
               <Polyline
@@ -362,10 +365,34 @@ export default function MainScreen() {
                     key={pickup.submit_date}
                     zIndex={2}
                     pinColor="navy"
+                    tappable={false}
                   />
                 ))
               : null}
-            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} /> : null}
+            {showTrackingMarker ? (
+              <Marker
+                coordinate={vehicleTrackingState.routeCoordinates[vehicleTrackingState.routeCoordinates.length - 1]}
+                key="current-location"
+                zIndex={10}
+                tappable={false}
+                anchor={{ x: 0.5, y: 0.5 }}
+              >
+                {
+                  <View
+                    style={{
+                      backgroundColor: theme['color-basic-200'],
+                      borderRadius: 18,
+                      padding: 2,
+                      borderWidth: 1,
+                      borderColor: theme['color-basic-900'],
+                    }}
+                  >
+                    <VehicleIcon />
+                  </View>
+                }
+              </Marker>
+            ) : null}
+            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} tappable={false} /> : null}
           </Map>
           {reportState.showReport ? (
             <View
