@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import { pick } from 'lodash';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, AppState, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
 import { useImmerReducer } from 'use-immer';
 import useAuth from '../auth/context';
@@ -44,7 +44,6 @@ const reportReducer = (draft, action) => {
 export default function MainScreen() {
   const navigation = useNavigation();
   const [initialLocation, setInitialLocation] = React.useState(null);
-  const appState = React.useRef(AppState.currentState);
   const [showSpinner, setShowSpinner] = React.useState(false);
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
@@ -126,6 +125,8 @@ export default function MainScreen() {
   };
 
   const initLocation = async () => {
+    console.log('initLocation');
+
     const result = await Location.requestForegroundPermissionsAsync();
     if (!result.granted) {
       Alert.alert('Error', 'Location permissions are required to submit reports.', [
@@ -147,30 +148,13 @@ export default function MainScreen() {
     setInitialLocation(location);
   };
 
-  const handleAppStateChange = async (nextAppState) => {
-    if (appState.current.match(/inactive|background/) && nextAppState === 'active' && !initialLocation) {
-      await wrapAsyncWithDelay(
-        initLocation,
-        () => setShowSpinner(true),
-        () => setShowSpinner(false),
-        config.SPINNER_DELAY
-      );
-    }
-
-    appState.current = nextAppState;
-  };
-
   React.useEffect(() => {
-    const handle = AppState.addEventListener('change', handleAppStateChange);
-
     wrapAsyncWithDelay(
       initLocation,
       () => setShowSpinner(true),
       () => setShowSpinner(false),
       config.SPINNER_DELAY
     );
-
-    return () => handle?.remove();
   }, []);
 
   const setMarker = async () => {
