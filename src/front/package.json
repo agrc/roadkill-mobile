@@ -75,7 +75,7 @@
     "react-native-collapsible": "^1.6.0",
     "react-native-error-boundary": "^1.1.11",
     "react-native-fast-image": "^8.5.11",
-    "react-native-flipper": "^0.128.4",
+    "react-native-flipper": "^0.129.0",
     "react-native-gesture-handler": "~1.10.3",
     "react-native-get-random-values": "~1.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
