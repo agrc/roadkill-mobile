@@ -17,13 +17,13 @@ rm -f -- ./dev-clients/*.apk
 cp *.apk ./dev-clients
 
 echo "opening on ios simulator"
-tar -xf *.gz
-xcrun simctl install booted ./utahwvcr.app
+tar -xf ./dev-clients/*.gz
+xcrun simctl install booted ./WVCReporter.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr
-rm -rf ./utahwvcr.app
+rm -rf ./WVCReporter.app
 
 echo "opening on android simulator"
-adb install *.apk
+adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
 echo "building ios and android apps for local device development"
