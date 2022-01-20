@@ -70,6 +70,7 @@ export default function MainScreen() {
     backgroundLocationService.subscribe((locations) => {
       if (Date.now() > startTime + config.MAX_TRACKING_TIME) {
         vehicleTrackingDispatch({ type: 'PAUSE' });
+        vehicleTrackingDispatch({ type: 'SHOW' });
         backgroundLocationService.unsubscribe();
 
         Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
