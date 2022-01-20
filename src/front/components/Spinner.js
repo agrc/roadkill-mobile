@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 99
   },
   message: {
     marginTop: PADDING,
