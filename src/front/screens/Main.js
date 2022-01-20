@@ -338,7 +338,7 @@ export default function MainScreen() {
             {vehicleTrackingState.routeCoordinates?.length ? (
               <Polyline
                 coordinates={vehicleTrackingState.routeCoordinates}
-                strokeColor="navy"
+                strokeColor={theme[`color-${vehicleTrackingState.buttonStatus}-500`]}
                 strokeWidth={8}
                 zIndex={1}
               />
