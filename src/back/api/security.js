@@ -124,7 +124,8 @@ export async function authenticate(request, response, next) {
     if (userResponse.statusCode === 200 && userResponse.body) {
       response.locals.user = userResponse.body;
 
-      const appUser = await getAppUser(userResponse.body.sub, authProvider);
+      // facebook returns `id`, utahid and google return `sub`
+      const appUser = await getAppUser(userResponse.body.sub || userResponse.body.id, authProvider);
       if (appUser) {
         response.locals.user.appUser = appUser;
       }
