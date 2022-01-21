@@ -58,7 +58,6 @@ export default {
       'ACCESS_FINE_LOCATION',
       'ACCESS_COARSE_LOCATION',
       'FOREGROUND_SERVICE',
-      'CAMERA',
       'READ_EXTERNAL_STORAGE',
       'WRITE_EXTERNAL_STORAGE',
     ],
@@ -90,5 +89,15 @@ export default {
       },
     ],
   },
-  plugins: ['sentry-expo', 'expo-community-flipper'],
+  plugins: [
+    'sentry-expo',
+    'expo-community-flipper',
+    [
+      'expo-image-picker',
+      {
+        photosPermission: 'The app accesses to your photos to allow you to submit a photo of the animal.',
+        cameraPermission: 'The app accesses your camera to allow you to capture and submit a photo of the animal.',
+      },
+    ],
+  ],
 };
