@@ -6,7 +6,7 @@ echo "Building simulator builds"
 ./scripts/removeArtifacts.sh
 
 echo "building ios and android apps for simulator development"
-eas build --platform all --profile simulator-dev
+eas build --platform all --profile simulator-dev --non-interactive
 
 ./scripts/downloadArtifacts.sh
 
@@ -27,6 +27,6 @@ adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
 echo "building ios and android apps for local device development"
-eas build --platform all --profile development
+eas build --platform all --profile development --non-interactive
 
 ./scripts/downloadArtifacts.sh
