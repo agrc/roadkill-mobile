@@ -17,7 +17,6 @@ export default function useGoogleProvider() {
   // eslint-disable-next-line no-unused-vars
   const [request, result, promptAsync] = useAuthRequest(
     {
-      expoClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_EXPO_GO,
       androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
       iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
