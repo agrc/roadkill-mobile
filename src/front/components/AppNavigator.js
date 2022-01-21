@@ -205,7 +205,7 @@ const AppNavigator = () => {
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
     if (previousRouteName !== currentRouteName) {
-      await Analytics.setCurrentScreen(currentRouteName);
+      await Analytics.logEvent('screen_view', { screen_name: currentRouteName });
     }
 
     routeNameRef.current = currentRouteName;
