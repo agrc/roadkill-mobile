@@ -74,9 +74,7 @@ Do one of the following from `src/front`:
 
 After testing in dev client...
 
-1. `git rebase staging master`
-1. `npm ci`
-1. `./deployNewAppBuild.sh`
+1. From `src/front`: `./scripts/deployNewAppBuild.sh`
 1. Generate new screenshots if applicable. Note: Google Play has a limit of 8.
 1. Create new version in iTunes connect and update all relevant information.
 1. Submit a [mobile deploy request ticket](https://utah.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D360c377f13bcb640d6017e276144b056%26sysparm_link_parent%3D0b596c5c1321a240abab7e776144b056%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default) for DTS to submit the app for review. (Add note about IDFA from [expo's docs](https://docs.expo.io/versions/latest/distribution/app-stores/#ios-specific-guidelines): For IDFA questions see: "https://segment.com/docs/sources/mobile/ios/quickstart/#step-5-submitting-to-the-app-store")
