@@ -163,3 +163,17 @@ Setup: Main menu -> My Profile
 |--------|------------------------------------|--------------------------------|
 |        |                                    | verify that all of the info looks correct |
 |        | change phone number and hit update | go away from screen and then back into it and verify that the phone change was persisted |
+
+### Routes
+
+Setup: log in as contractor or agency
+
+| set up                      | action                                      | assertion |
+|-----------------------------|---------------------------------------------|-----|
+|                             | tap on "Track" button                       | button turns green and vehicle icon shows on map with track displaying, and polygon begins to display |
+| active tracking             | tap on "track" button                       | modal shows up with buttons and current state |
+| active tracking, open modal | tap on pause                                | "Track" button and route polyline turn red and modal closes |
+| paused tracking             | tap on "Track" button                       | tracking is resumed |
+| active tracking             | tap on "Report" button, fill out and submit | prompt shows that report was saved and will be submitted later with route |
+| active tracking, open modal | tap on "Cancel Route"                       | are you sure prompt is displayed and acts appropriately |
+| active tracking, open modal | tap on "Finish and Submit Route"            | spinner is displayed and route/pickups are submitted and tracking state is stopped and reset |
