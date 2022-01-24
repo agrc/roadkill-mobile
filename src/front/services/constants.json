@@ -573,6 +573,17 @@
       "frequent": false
     },
     {
+      "species_id": 53,
+      "common_name": "Northern Leopard Frog",
+      "scientific_name": "Lithobates pipiens",
+      "species_type": "wild",
+      "species_class": "amphibians",
+      "species_order": null,
+      "family": "frogs/toads",
+      "rare": false,
+      "frequent": false
+    },
+    {
       "species_id": 54,
       "common_name": "Plains Spadefoot",
       "scientific_name": "Spea bombifrons",
@@ -750,17 +761,6 @@
     },
     {
       "species_id": 70,
-      "common_name": "Spotted Leaf-nosed Snake",
-      "scientific_name": "Phyllorhynchus decurtatus",
-      "species_type": "wild",
-      "species_class": "reptiles",
-      "species_order": null,
-      "family": "snakes",
-      "rare": false,
-      "frequent": false
-    },
-    {
-      "species_id": 71,
       "common_name": "Utah Milksnake",
       "scientific_name": "Lampropeltis triangulum taylori",
       "species_type": "wild",
@@ -771,7 +771,7 @@
       "frequent": false
     },
     {
-      "species_id": 72,
+      "species_id": 71,
       "common_name": "Western Threadsnake",
       "scientific_name": "Rena humilis",
       "species_type": "wild",
@@ -782,7 +782,7 @@
       "frequent": false
     },
     {
-      "species_id": 73,
+      "species_id": 72,
       "common_name": "Rubber Boa",
       "scientific_name": "Charina bottae",
       "species_type": "wild",
@@ -793,7 +793,7 @@
       "frequent": false
     },
     {
-      "species_id": 74,
+      "species_id": 73,
       "common_name": "Black-necked Gartersnake",
       "scientific_name": "Thamnophis cyrtopsis",
       "species_type": "wild",
@@ -804,7 +804,7 @@
       "frequent": false
     },
     {
-      "species_id": 75,
+      "species_id": 74,
       "common_name": "Coachwhip",
       "scientific_name": "Coluber flagellum",
       "species_type": "wild",
@@ -815,7 +815,7 @@
       "frequent": false
     },
     {
-      "species_id": 76,
+      "species_id": 75,
       "common_name": "Common Gartersnake",
       "scientific_name": "Thamnophis sirtalis",
       "species_type": "wild",
@@ -826,7 +826,7 @@
       "frequent": false
     },
     {
-      "species_id": 77,
+      "species_id": 76,
       "common_name": "Eastern Racer",
       "scientific_name": "Coluber constrictor",
       "species_type": "wild",
@@ -837,7 +837,7 @@
       "frequent": false
     },
     {
-      "species_id": 78,
+      "species_id": 77,
       "common_name": "Glossy Snake",
       "scientific_name": "Arizona elegans",
       "species_type": "wild",
@@ -848,7 +848,7 @@
       "frequent": false
     },
     {
-      "species_id": 79,
+      "species_id": 78,
       "common_name": "Gophersnake",
       "scientific_name": "Pituophis catenifer",
       "species_type": "wild",
@@ -859,7 +859,7 @@
       "frequent": false
     },
     {
-      "species_id": 80,
+      "species_id": 79,
       "common_name": "Groundsnake",
       "scientific_name": "Sonora semiannulata",
       "species_type": "wild",
@@ -870,7 +870,7 @@
       "frequent": false
     },
     {
-      "species_id": 81,
+      "species_id": 80,
       "common_name": "Long-nosed Snake",
       "scientific_name": "Rhinocheilus lecontei",
       "species_type": "wild",
@@ -881,7 +881,7 @@
       "frequent": false
     },
     {
-      "species_id": 82,
+      "species_id": 81,
       "common_name": "Ring-necked Snake",
       "scientific_name": "Diadophis punctatus",
       "species_type": "wild",
@@ -892,7 +892,7 @@
       "frequent": false
     },
     {
-      "species_id": 83,
+      "species_id": 82,
       "common_name": "Smooth Greensnake",
       "scientific_name": "Opheodrys vernalis",
       "species_type": "wild",
@@ -903,7 +903,7 @@
       "frequent": false
     },
     {
-      "species_id": 84,
+      "species_id": 83,
       "common_name": "Sonoran Mountain Kingsnake",
       "scientific_name": "Lampropeltis pyromelana",
       "species_type": "wild",
@@ -914,18 +914,18 @@
       "frequent": false
     },
     {
-      "species_id": 53,
-      "common_name": "Northern Leopard Frog",
-      "scientific_name": "Lithobates pipiens",
+      "species_id": 84,
+      "common_name": "Spotted Leaf-nosed Snake",
+      "scientific_name": "Phyllorhynchus decurtatus",
       "species_type": "wild",
-      "species_class": "amphibians",
+      "species_class": "reptiles",
       "species_order": null,
-      "family": "frogs/toads",
+      "family": "snakes",
       "rare": false,
       "frequent": false
     },
     {
-      "species_id": 86,
+      "species_id": 85,
       "common_name": "Striped Whipsnake",
       "scientific_name": "Coluber taeniatus",
       "species_type": "wild",
@@ -936,7 +936,7 @@
       "frequent": false
     },
     {
-      "species_id": 87,
+      "species_id": 86,
       "common_name": "Terrestrial Gartersnake",
       "scientific_name": "Thamnophis elegans",
       "species_type": "wild",
@@ -947,7 +947,7 @@
       "frequent": false
     },
     {
-      "species_id": 88,
+      "species_id": 87,
       "common_name": "Western Lyresnake",
       "scientific_name": "Trimorphodon lambda",
       "species_type": "wild",
@@ -958,7 +958,7 @@
       "frequent": false
     },
     {
-      "species_id": 89,
+      "species_id": 88,
       "common_name": "Western Patch-nosed Snake",
       "scientific_name": "Salvadora hexalepis",
       "species_type": "wild",
@@ -969,7 +969,7 @@
       "frequent": false
     },
     {
-      "species_id": 90,
+      "species_id": 89,
       "common_name": "Eastern Collared Lizard",
       "scientific_name": "Crotaphytus collaris",
       "species_type": "wild",
@@ -980,7 +980,7 @@
       "frequent": false
     },
     {
-      "species_id": 91,
+      "species_id": 90,
       "common_name": "Great Basin Collared Lizard",
       "scientific_name": "Crotaphytus bicinctores",
       "species_type": "wild",
@@ -991,7 +991,7 @@
       "frequent": false
     },
     {
-      "species_id": 92,
+      "species_id": 91,
       "common_name": "Long-nosed Leopard Lizard",
       "scientific_name": "Gambelia wislizenii",
       "species_type": "wild",
@@ -1002,7 +1002,7 @@
       "frequent": false
     },
     {
-      "species_id": 93,
+      "species_id": 92,
       "common_name": "Common Chuckwalla",
       "scientific_name": "Sauromalus ater",
       "species_type": "wild",
@@ -1013,7 +1013,7 @@
       "frequent": false
     },
     {
-      "species_id": 94,
+      "species_id": 93,
       "common_name": "Desert Iguana",
       "scientific_name": "Dipsosaurus dorsalis",
       "species_type": "wild",
@@ -1024,7 +1024,7 @@
       "frequent": false
     },
     {
-      "species_id": 95,
+      "species_id": 94,
       "common_name": "New Mexico Whiptail",
       "scientific_name": "Aspidoscelis neomexicana",
       "species_type": "wild",
@@ -1035,7 +1035,7 @@
       "frequent": false
     },
     {
-      "species_id": 96,
+      "species_id": 95,
       "common_name": "Plateau Striped Whiptail",
       "scientific_name": "Aspidoscelis velox",
       "species_type": "wild",
@@ -1046,7 +1046,7 @@
       "frequent": false
     },
     {
-      "species_id": 97,
+      "species_id": 96,
       "common_name": "Tiger Whiptail",
       "scientific_name": "Aspidoscelis tigris",
       "species_type": "wild",
@@ -1057,7 +1057,7 @@
       "frequent": false
     },
     {
-      "species_id": 98,
+      "species_id": 97,
       "common_name": "Desert Night Lizard",
       "scientific_name": "Xantusia vigilis",
       "species_type": "wild",
@@ -1068,7 +1068,7 @@
       "frequent": false
     },
     {
-      "species_id": 99,
+      "species_id": 98,
       "common_name": "Common Lesser Earless Lizard",
       "scientific_name": "Holbrookia maculata",
       "species_type": "wild",
@@ -1079,7 +1079,7 @@
       "frequent": false
     },
     {
-      "species_id": 100,
+      "species_id": 99,
       "common_name": "Common Sagebrush Lizard",
       "scientific_name": "Sceloporus graciosus",
       "species_type": "wild",
@@ -1090,7 +1090,7 @@
       "frequent": false
     },
     {
-      "species_id": 101,
+      "species_id": 100,
       "common_name": "Common Side-blotched Lizard",
       "scientific_name": "Uta stansburiana",
       "species_type": "wild",
@@ -1101,7 +1101,7 @@
       "frequent": false
     },
     {
-      "species_id": 102,
+      "species_id": 101,
       "common_name": "Desert Horned Lizard",
       "scientific_name": "Phrynosoma platyrhinos",
       "species_type": "wild",
@@ -1112,7 +1112,7 @@
       "frequent": false
     },
     {
-      "species_id": 103,
+      "species_id": 102,
       "common_name": "Desert Spiny Lizard",
       "scientific_name": "Sceloporus magister",
       "species_type": "wild",
@@ -1123,7 +1123,7 @@
       "frequent": false
     },
     {
-      "species_id": 104,
+      "species_id": 103,
       "common_name": "Eastern Fence Lizard",
       "scientific_name": "Sceloporus undulatus",
       "species_type": "wild",
@@ -1134,7 +1134,7 @@
       "frequent": false
     },
     {
-      "species_id": 105,
+      "species_id": 104,
       "common_name": "Greater Short-horned Lizard",
       "scientific_name": "Phrynosoma hernandesi",
       "species_type": "wild",
@@ -1145,7 +1145,7 @@
       "frequent": false
     },
     {
-      "species_id": 106,
+      "species_id": 105,
       "common_name": "Ornate Tree Lizard",
       "scientific_name": "Urosaurus ornatus",
       "species_type": "wild",
@@ -1156,7 +1156,7 @@
       "frequent": false
     },
     {
-      "species_id": 107,
+      "species_id": 106,
       "common_name": "Western Fence Lizard",
       "scientific_name": "Sceloporus occidentalis",
       "species_type": "wild",
@@ -1167,7 +1167,7 @@
       "frequent": false
     },
     {
-      "species_id": 108,
+      "species_id": 107,
       "common_name": "Zebra-tailed Lizard",
       "scientific_name": "Callisaurus draconoides",
       "species_type": "wild",
@@ -1178,7 +1178,7 @@
       "frequent": false
     },
     {
-      "species_id": 109,
+      "species_id": 108,
       "common_name": "Gila Monster",
       "scientific_name": "Heloderma suspectum",
       "species_type": "wild",
@@ -1189,7 +1189,7 @@
       "frequent": false
     },
     {
-      "species_id": 110,
+      "species_id": 109,
       "common_name": "Many-lined Skink",
       "scientific_name": "Plestiodon multivirgatus",
       "species_type": "wild",
@@ -1200,7 +1200,7 @@
       "frequent": false
     },
     {
-      "species_id": 111,
+      "species_id": 110,
       "common_name": "Western Skink",
       "scientific_name": "Plestiodon skiltonianus",
       "species_type": "wild",
@@ -1211,7 +1211,7 @@
       "frequent": false
     },
     {
-      "species_id": 112,
+      "species_id": 111,
       "common_name": "Utah Banded Gecko",
       "scientific_name": "Coleonyx variegatus utahensis",
       "species_type": "wild",
@@ -1222,7 +1222,7 @@
       "frequent": false
     },
     {
-      "species_id": 113,
+      "species_id": 112,
       "common_name": "Painted Turtle",
       "scientific_name": "Chrysemys picta",
       "species_type": "wild",
@@ -1233,7 +1233,7 @@
       "frequent": false
     },
     {
-      "species_id": 114,
+      "species_id": 113,
       "common_name": "Snapping Turtle",
       "scientific_name": "Chelydra serpentina",
       "species_type": "wild",
@@ -1244,7 +1244,7 @@
       "frequent": false
     },
     {
-      "species_id": 115,
+      "species_id": 114,
       "common_name": "Spiny Softshell",
       "scientific_name": "Apalone spinifera",
       "species_type": "wild",
@@ -1255,7 +1255,7 @@
       "frequent": false
     },
     {
-      "species_id": 116,
+      "species_id": 115,
       "common_name": "Mojave Desert Tortoise",
       "scientific_name": "Gopherus agassizii",
       "species_type": "wild",
@@ -1266,7 +1266,7 @@
       "frequent": false
     },
     {
-      "species_id": 117,
+      "species_id": 116,
       "common_name": "Chukar Partridge",
       "scientific_name": "Alectoris chukar",
       "species_type": "wild",
@@ -1277,13 +1277,24 @@
       "frequent": false
     },
     {
-      "species_id": 118,
+      "species_id": 117,
       "common_name": "Gray Partridge",
       "scientific_name": "Perdix perdix",
       "species_type": "wild",
       "species_class": "birds",
       "species_order": "upland birds",
       "family": "partridge",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 118,
+      "common_name": "Gunnison Sage-grouse",
+      "scientific_name": "Centrocercus minimus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "upland birds",
+      "family": "grouse",
       "rare": false,
       "frequent": false
     },
@@ -1300,17 +1311,6 @@
     },
     {
       "species_id": 120,
-      "common_name": "Gunnison Sage-grouse",
-      "scientific_name": "Centrocercus minimus",
-      "species_type": "wild",
-      "species_class": "birds",
-      "species_order": "upland birds",
-      "family": "grouse",
-      "rare": false,
-      "frequent": false
-    },
-    {
-      "species_id": 122,
       "common_name": "Ruffed Grouse",
       "scientific_name": "Bonasa umbellus",
       "species_type": "wild",
@@ -1321,7 +1321,7 @@
       "frequent": false
     },
     {
-      "species_id": 123,
+      "species_id": 121,
       "common_name": "Columbian Sharp-tailed Grouse",
       "scientific_name": "Tympanuchus phasianellus",
       "species_type": "wild",
@@ -1332,7 +1332,7 @@
       "frequent": false
     },
     {
-      "species_id": 124,
+      "species_id": 122,
       "common_name": "California Quail",
       "scientific_name": "Callipepla californica",
       "species_type": "wild",
@@ -1343,7 +1343,7 @@
       "frequent": false
     },
     {
-      "species_id": 125,
+      "species_id": 123,
       "common_name": "Gambel's Quail",
       "scientific_name": "Callipepla gambelii",
       "species_type": "wild",
@@ -1354,7 +1354,7 @@
       "frequent": false
     },
     {
-      "species_id": 126,
+      "species_id": 124,
       "common_name": "Scaled Quail",
       "scientific_name": "Callipepla squamata",
       "species_type": "wild",
@@ -1365,7 +1365,7 @@
       "frequent": false
     },
     {
-      "species_id": 127,
+      "species_id": 125,
       "common_name": "White-tailed Ptarmigans",
       "scientific_name": "Lagopus leucura",
       "species_type": "wild",
@@ -1376,7 +1376,7 @@
       "frequent": false
     },
     {
-      "species_id": 128,
+      "species_id": 126,
       "common_name": "Ring-necked Pheasant",
       "scientific_name": "Phasianus colchicus",
       "species_type": "wild",
@@ -1387,7 +1387,7 @@
       "frequent": false
     },
     {
-      "species_id": 129,
+      "species_id": 127,
       "common_name": "Turkey Vulture",
       "scientific_name": "Cathartes aura",
       "species_type": "wild",
@@ -1398,7 +1398,7 @@
       "frequent": false
     },
     {
-      "species_id": 130,
+      "species_id": 128,
       "common_name": "California Condor",
       "scientific_name": "Gymnogyps californianus",
       "species_type": "wild",
