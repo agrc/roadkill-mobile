@@ -2,7 +2,7 @@
 set -e
 
 RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-ENV_FILE="../.env.$RELEASE_BRANCH"
+ENV_FILE=".env.$RELEASE_BRANCH"
 echo "getting environment variables from $ENV_FILE"
 set -o allexport
 source $ENV_FILE
@@ -10,14 +10,14 @@ set +o allexport
 
 echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH"
 
-./removeArtifacts.sh
+./scripts/removeArtifacts.sh
 
 echo "building ios and android apps concurrently"
-eas build --platform all --profile $RELEASE_BRANCH
+eas build --platform all --profile $RELEASE_BRANCH --non-interactive
+
+./scripts/downloadArtifacts.sh
 
 # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
-./downloadArtifacts.sh
-
 echo "uploading to testflight"
 fastlane pilot upload -u stdavis@utah.gov
 
