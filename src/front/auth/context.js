@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../services/config';
@@ -11,7 +11,6 @@ import { updateConstants } from '../services/constants';
 import { useAsyncError, useSecureState } from '../services/utilities';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
-import useGoogleProviderForStandalone from './providers/google-standalone';
 import useUtahIDProvider from './providers/utahid';
 
 export const STATUS = {
@@ -38,7 +37,7 @@ export function AuthContextProvider({ children, onReady }) {
   const [userType, setUserType] = useSecureState(config.USER_TYPE_KEY);
   const [status, setStatus] = React.useState(STATUS.idle);
   const facebookProvider = useFacebookProvider();
-  const googleProvider = __DEV__ || Platform.OS === 'ios' ? useGoogleProvider() : useGoogleProviderForStandalone();
+  const googleProvider = useGoogleProvider();
   const utahidProvider = useUtahIDProvider();
   // provider should have the following shape:
   // {
