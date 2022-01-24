@@ -1,6 +1,6 @@
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 // got this idea from: https://forums.expo.dev/t/how-to-setstate-from-within-taskmanager/26630/5?u=agrc
 function BackgroundLocationService() {
@@ -20,17 +20,29 @@ export default new BackgroundLocationService();
 
 export async function verifyPermissions() {
   console.log('verifyPermissions');
-  const result = await Location.requestBackgroundPermissionsAsync();
 
-  if (!result.granted) {
-    Alert.alert('Error', 'Background location permissions are required to record vehicle routes.', [
-      { text: 'OK', onPress: () => Linking.openSettings() },
-    ]);
+  const existingPermissions = await Location.getBackgroundPermissionsAsync();
+  console.log('existingPermissions', existingPermissions);
 
-    return false;
+  if (!existingPermissions.granted) {
+    if (Platform.OS === 'android') {
+      Alert.alert(
+        'Please grant permissions',
+        'Background location permissions are required to record vehicle routes.',
+        [{ text: 'OK' }]
+      );
+    }
+
+    const result = await Location.requestBackgroundPermissionsAsync();
+    console.log('result', result);
+
+    if (!result.granted) {
+      return false;
+    }
   }
 
   const enabled = await Location.hasServicesEnabledAsync();
+  console.log('enabled', enabled);
 
   if (!enabled) {
     Alert.alert('Error', 'Location services are required to record vehicle routes.', [
