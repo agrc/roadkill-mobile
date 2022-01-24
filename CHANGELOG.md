@@ -1,3 +1,27 @@
+# [v3.0.0-522](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-520...v3.0.0-522) (2022-01-24)
+
+
+### Bug Fixes
+
+* **back:** fix facebook login ([29ee5f1](https://github.com/agrc/roadkill-mobile/commit/29ee5f18fb6827617483bf23d06a0e452564298d))
+* **back:** increase payload size limits ([ad59226](https://github.com/agrc/roadkill-mobile/commit/ad59226dfbd729799f985e8a891dafd738db1b07))
+* fix bug causing issues with app switching and location ([08880b8](https://github.com/agrc/roadkill-mobile/commit/08880b8eb71839b628168e98f3b30f39e13fee69))
+* **front:** fix new image capture on android ([5155e70](https://github.com/agrc/roadkill-mobile/commit/5155e7088d5ef75a3a13e5f07e1b6af9da358949)), closes [/github.com/expo/expo/issues/15119#issuecomment-1000268968](https://github.com//github.com/expo/expo/issues/15119/issues/issuecomment-1000268968)
+* **front:** remove get location on app state change ([d15be7b](https://github.com/agrc/roadkill-mobile/commit/d15be7b53797e1031ca7ed903853d5b34f13a68a))
+* **front:** update map button colors to be closer to latest mockups ([da2d5f7](https://github.com/agrc/roadkill-mobile/commit/da2d5f7df5ec450a7fd1022107b704b6418f5288))
+* make crosshair icon show more reliably ([353b834](https://github.com/agrc/roadkill-mobile/commit/353b834dcd25760516958c9148fee3f4d74f6bda)), closes [#117](https://github.com/agrc/roadkill-mobile/issues/117)
+
+
+### Features
+
+* backup vehicle tracking to local storage ([6856cdb](https://github.com/agrc/roadkill-mobile/commit/6856cdb1e001728e611c4c59899ffddcaedf66c7)), closes [#31](https://github.com/agrc/roadkill-mobile/issues/31)
+* **front:** pause route tracking if longer than 12 hours ([3717186](https://github.com/agrc/roadkill-mobile/commit/3717186a6a6589b57a9084e85305ab410b0966ca)), closes [#31](https://github.com/agrc/roadkill-mobile/issues/31)
+* **front:** upgrade to Hermes JS engine ([7cf37a4](https://github.com/agrc/roadkill-mobile/commit/7cf37a49f313ccaebb5e753fa5a1f620689962fa))
+* record pickups as part of vehicle route ([0634cd2](https://github.com/agrc/roadkill-mobile/commit/0634cd2dec0d39bb02003174e68dc5039bba9402)), closes [#31](https://github.com/agrc/roadkill-mobile/issues/31)
+* submit routes and associated pickups ([4b68f79](https://github.com/agrc/roadkill-mobile/commit/4b68f7985bee388fcf7ba80ac2e97875fcd38a07)), closes [#31](https://github.com/agrc/roadkill-mobile/issues/31)
+
+
+
 # [v3.0.0-520](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-515...v3.0.0-520) (2021-12-09)
 
 
