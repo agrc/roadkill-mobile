@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 const bundleId = 'gov.dts.ugrc.utahwvcr';
 
-const buildNumber = 522;
+const buildNumber = 523;
 
 export default {
   name: 'WVC Reporter',
