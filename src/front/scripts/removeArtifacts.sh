@@ -5,3 +5,4 @@ echo "cleaning up old artifacts"
 rm -f -- *.gz
 rm -f -- *.apk
 rm -f -- *.aab
+rm -f -- *.ipa
