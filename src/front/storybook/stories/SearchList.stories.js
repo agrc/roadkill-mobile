@@ -1,10 +1,10 @@
 import { storiesOf } from '@storybook/react-native';
 import { Text } from '@ui-kitten/components';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import SearchList from '../../components/reports/SearchList';
 import RootView from '../../components/RootView';
-import constants from '../../services/constants.json';
+import { getConstants } from '../../services/constants.js';
 
 const emptyObject = {
   species_id: null,
@@ -16,17 +16,37 @@ const emptyObject = {
   family: null,
 };
 
+const useConstants = () => {
+  const [constants, setConstants] = useState(null);
+  useEffect(() => {
+    const init = async () => {
+      const constants = await getConstants();
+      setConstants(constants);
+    };
+
+    init();
+  }, []);
+
+  return constants;
+};
+
 const ItemsAsObjects = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(emptyObject);
+    const constants = useConstants();
+    const [items, setItems] = React.useState(null);
 
-    const items = constants.species.slice(0, 18);
+    React.useEffect(() => {
+      if (constants) {
+        setItems(constants.species.slice(0, 18));
+      }
+    }, [constants]);
 
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
           <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          <SearchList value={value} onChange={setValue} items={items} placeholder="items as objects" />
+          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="items as objects" /> : null}
         </ScrollView>
       </RootView>
     );
@@ -37,13 +57,20 @@ const ManyObjectItems = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(emptyObject);
 
-    const items = constants.species;
+    const constants = useConstants();
+    const [items, setItems] = React.useState(null);
+
+    React.useEffect(() => {
+      if (constants) {
+        setItems(constants.species);
+      }
+    }, [constants]);
 
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
           <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          <SearchList value={value} onChange={setValue} items={items} placeholder="many objects" />
+          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="many objects" /> : null}
         </ScrollView>
       </RootView>
     );
@@ -54,13 +81,21 @@ const ManyStringItems = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(null);
 
-    const items = [...new Set(constants.species.map((item) => item.family))].sort();
+    const constants = useConstants();
+    const [items, setItems] = React.useState(null);
+
+    React.useEffect(() => {
+      if (constants) {
+        setItems([...new Set(constants.species.map((item) => item.family))].sort());
+        setItems(constants.species);
+      }
+    }, [constants]);
 
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
           <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          <SearchList value={value} onChange={setValue} items={items} placeholder="many strings" />
+          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="many strings" /> : null}
         </ScrollView>
       </RootView>
     );
