@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
 import * as Sentry from 'sentry-expo';
-import bundledConstants from './constants.json';
 
 const KEY = '@roadkill_constants';
 export async function updateConstants(constants) {
@@ -21,7 +22,13 @@ export async function getConstants() {
       return JSON.parse(constants);
     } else {
       // fallback to bundled data
-      return bundledConstants;
+      const asset = Asset.fromModule(require('./constants.json.lazy'));
+
+      await asset.downloadAsync();
+
+      const json = await FileSystem.readAsStringAsync(asset.localUri);
+
+      return JSON.parse(json);
     }
   } catch (error) {
     Sentry.Native.captureException(error);

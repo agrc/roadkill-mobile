@@ -20,7 +20,7 @@ const db = knex({
 
 const constants = await getConstants(db);
 
-const jsonFilePath = resolve(`${__dirname}/../services/constants.json`);
+const jsonFilePath = resolve(`${__dirname}/../services/constants.json.lazy`);
 
 fs.writeFileSync(jsonFilePath, JSON.stringify(constants, null, 2));
 
