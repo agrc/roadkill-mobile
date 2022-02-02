@@ -13,5 +13,6 @@ defaultConfig.transformer.getTransformOptions = async () => ({
 });
 defaultConfig.resolver.extraNodeModules.common = commonDir;
 defaultConfig.watchFolders.push(commonDir);
+defaultConfig.resolver.assetExts.push('lazy');
 
 module.exports = defaultConfig;
