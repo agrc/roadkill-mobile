@@ -68,16 +68,6 @@ export default {
       },
     },
   },
-  // this is only to enable logEvent calls during development in Expo Go
-  // ref: https://docs.expo.io/versions/latest/sdk/firebase-analytics/#expo-go-limitations--configuration
-  web: {
-    config: {
-      firebase: {
-        apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID ?? '',
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID ?? 'G-XXXXXXXXXX',
-      },
-    },
-  },
   hooks: {
     postPublish: [
       {
