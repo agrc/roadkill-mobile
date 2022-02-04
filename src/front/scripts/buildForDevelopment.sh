@@ -18,11 +18,13 @@ cp *.apk ./dev-clients
 
 echo "opening on ios simulator"
 tar -xf ./dev-clients/*.gz
+open -a simulator
 xcrun simctl install booted ./WVCReporter.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr
 rm -rf ./WVCReporter.app
 
-echo "opening on android simulator"
+echo "opening on android emulator"
+emulator -avd $(emulator -list-avds)
 adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
