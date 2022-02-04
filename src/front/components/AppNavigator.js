@@ -173,6 +173,7 @@ const AppNavigator = () => {
   const navigationRef = React.useRef(null);
   const routeNameRef = React.useRef(null);
   const { authInfo } = useAuth();
+  const [analyticsIsReady, setAnalyticsIsReady] = React.useState(false);
 
   React.useEffect(() => {
     const initAnalytics = async () => {
@@ -193,6 +194,8 @@ const AppNavigator = () => {
       if (__DEV__) {
         Analytics.setDebugModeEnabled(true);
       }
+
+      setAnalyticsIsReady(true);
     };
 
     initAnalytics();
@@ -204,7 +207,7 @@ const AppNavigator = () => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
-    if (previousRouteName !== currentRouteName) {
+    if (previousRouteName !== currentRouteName && analyticsIsReady) {
       await Analytics.logEvent('screen_view', { screen_name: currentRouteName });
     }
 
