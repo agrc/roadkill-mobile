@@ -24,7 +24,7 @@ xcrun simctl launch booted gov.dts.ugrc.utahwvcr
 rm -rf ./WVCReporter.app
 
 echo "opening on android emulator"
-emulator -avd $(emulator -list-avds)
+emulator -avd $(emulator -list-avds) || true
 adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
