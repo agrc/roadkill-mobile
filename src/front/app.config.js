@@ -73,7 +73,7 @@ export default {
       {
         file: 'sentry-expo/upload-sourcemaps',
         config: {
-          organization: 'utah-agrc',
+          organization: 'utah-ugrc',
           project: 'roadkill',
           authToken: process.env.SENTRY_AUTH_TOKEN,
         },
