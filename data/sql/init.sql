@@ -80,6 +80,18 @@ CREATE TABLE species
   frequent boolean NOT NULL DEFAULT false
 );
 
+-- routes
+DROP TABLE IF EXISTS routes CASCADE;
+CREATE TABLE routes
+(
+  route_id serial PRIMARY KEY,
+  user_id integer NOT NULL REFERENCES users (id),
+  geog geography(LINESTRING, 4326) NOT NULL,
+  start_time timestamptz NOT NULL CHECK (start_time <= CURRENT_TIMESTAMP + interval '1 minute'),
+  end_time timestamptz NOT NULL CHECK (end_time <= CURRENT_TIMESTAMP + interval '1 minute'),
+  submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute')
+);
+
 -- reports
 DROP TABLE IF EXISTS photos CASCADE;
 CREATE TABLE photos
@@ -133,18 +145,6 @@ CREATE TABLE pickup_reports
   report_id integer NOT NULL REFERENCES report_infos (report_id),
   pickup_date timestamptz NOT NULL CHECK (pickup_date <= CURRENT_TIMESTAMP + interval '1 minute'),
   route_id integer REFERENCES routes (route_id)
-);
-
--- routes
-DROP TABLE IF EXISTS routes CASCADE;
-CREATE TABLE routes
-(
-  route_id serial PRIMARY KEY,
-  user_id integer NOT NULL REFERENCES users (id),
-  geog geography(LINESTRING, 4326) NOT NULL,
-  start_time timestamptz NOT NULL CHECK (start_time <= CURRENT_TIMESTAMP + interval '1 minute'),
-  end_time timestamptz NOT NULL CHECK (end_time <= CURRENT_TIMESTAMP + interval '1 minute'),
-  submit_date timestamptz NOT NULL CHECK (submit_date <= CURRENT_TIMESTAMP + interval '1 minute')
 );
 
 
