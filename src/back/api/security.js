@@ -125,7 +125,10 @@ export async function authenticate(request, response, next) {
       response.locals.user = userResponse.body;
 
       // facebook returns `id`, utahid and google return `sub`
-      const appUser = await getAppUser(userResponse.body.sub || userResponse.body.id, authProvider);
+      const authId = userResponse.body.sub || userResponse.body.id;
+      response.locals.user.authId = authId;
+
+      const appUser = await getAppUser(authId, authProvider);
       if (appUser) {
         response.locals.user.appUser = appUser;
       }
