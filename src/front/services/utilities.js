@@ -23,7 +23,12 @@ export function useSecureState(key) {
 
   React.useEffect(() => {
     const init = async () => {
-      const value = await SecureStorage.getItemAsync(key);
+      let value = null;
+      try {
+        value = await SecureStorage.getItemAsync(key);
+      } catch (error) {
+        console.error('error secure state get', key, error);
+      }
 
       try {
         setInternalState(JSON.parse(value));
