@@ -46,7 +46,7 @@ export function getNewPickupHandler(upload, createPickup) {
 
 export function getGetAllHandler(getAllReports) {
   return async function getAllHandler(request, response) {
-    const reports = await getAllReports(response.locals.user.sub, response.locals.authProvider);
+    const reports = await getAllReports(response.locals.user.authId, response.locals.authProvider);
 
     return response.status(200).json({
       reports,
