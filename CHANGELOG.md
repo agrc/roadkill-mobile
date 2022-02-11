@@ -1,3 +1,19 @@
+# [v3.0.0-524](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-522...v3.0.0-524) (2022-02-11)
+
+
+### Bug Fixes
+
+* **back:** handle facebook id vs sub ([1d4ccec](https://github.com/agrc/roadkill-mobile/commit/1d4ccec4d563134e6593c181cfb02ea710c42ab1))
+* **data:** create routes table before it is referenced ([fe56d18](https://github.com/agrc/roadkill-mobile/commit/fe56d1850019845314e14d7982add24abd340768))
+* **front:** add background location to permissions ([b6457ed](https://github.com/agrc/roadkill-mobile/commit/b6457ed407a53d91e134ce1d5c4442ad07dae931))
+* **front:** better accuracy and remove deferred updates ([35055ff](https://github.com/agrc/roadkill-mobile/commit/35055ff98d68cd9e0a170a40fb814ff291e42689))
+* **front:** fix analytics crash on sims ([abcc05d](https://github.com/agrc/roadkill-mobile/commit/abcc05d9369de2a4d0e902f9cd24f7f250d1e56b))
+* **front:** fix org name in sentry ([6ea4acc](https://github.com/agrc/roadkill-mobile/commit/6ea4acc5add3e505fc44416d6f9f5797e88d3625))
+* **front:** fix utahid oauth flow on android ([972d6da](https://github.com/agrc/roadkill-mobile/commit/972d6da553e227b7c4786685a0f71723e0ecfa3e))
+* **front:** handle issues with reading secure storage on android ([6b23dfe](https://github.com/agrc/roadkill-mobile/commit/6b23dfe6dca0247d72172a2e73c802fe37037df5))
+* **front:** lazy load constants json ([b43b69c](https://github.com/agrc/roadkill-mobile/commit/b43b69c4f221fd0fc2f21ee5f6b6fea8bc2af35c))
+
+
 # [v3.0.0-523](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-520...v3.0.0-522) (2022-01-24)
 
 
