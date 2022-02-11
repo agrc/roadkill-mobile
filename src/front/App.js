@@ -17,6 +17,7 @@ import { default as theme } from './custom-theme.json';
 import { default as mapping } from './mapping.json';
 import packs from './services/icons';
 
+console.log('starting up...');
 const queryClient = new QueryClient();
 
 Sentry.init({

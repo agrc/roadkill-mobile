@@ -8,9 +8,7 @@ export default {
   name: 'WVC Reporter',
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
-  // this needs to be different from the bundleId, otherwise android presents two options for redirect
-  // Ref: https://forums.expo.dev/t/app-appears-twice-on-open-with-list-after-google-auth/55659/6?u=agrc
-  scheme: bundleId.split('.').pop(),
+  scheme: bundleId,
   facebookScheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
   facebookAppId: process.env.FACEBOOK_OAUTH_CLIENT_ID,
   facebookDisplayName: 'Utah WVC Reporter',
