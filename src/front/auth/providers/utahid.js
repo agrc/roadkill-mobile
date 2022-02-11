@@ -4,12 +4,7 @@ import ky from 'ky';
 import config from '../../services/config';
 import { isTokenExpired, useAsyncError, useSecureRef } from '../../services/utilities';
 
-let redirectUri = makeRedirectUri({ scheme: config.SCHEME });
-if (__DEV__) {
-  // expo adds this because it is a web server and needs to know that this is a deep link
-  redirectUri += '/--/';
-}
-redirectUri += config.OAUTH_REDIRECT_SCREEN;
+const redirectUri = makeRedirectUri({ scheme: config.SCHEME }) + config.OAUTH_REDIRECT_SCREEN;
 console.log('redirectUri', redirectUri);
 
 // ref: https://login.dts.utah.gov/sso/oauth2/.well-known/openid-configuration
@@ -39,6 +34,7 @@ export default function useUtahIDProvider() {
 
     try {
       const response = await promptAsync({ showInRecents: true });
+      console.log('response', response);
 
       if (response?.type === 'success') {
         const tokenResponse = await exchangeCodeForToken(response.params.code);
