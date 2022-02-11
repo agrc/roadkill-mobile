@@ -30,7 +30,7 @@ I use [Flipper](https://fbflipper.com/) with a custom Expo development client as
 | staging    | 3.0.0   | TestFlight/Google Alpha | staging-v3      | 44.0.6    |
 | dev        | 3.0.0   | n/a                     | dev-v3          | 44.0.6    |
 
-Release channels are based on the major number (e.g. `production-v3`). If you need to change something that requires a new app build (e.g. changes to `app.config.js` or SDK upgrade), bump the major version of the app to keep it on a new release channel thus preventing conflicts with older app builds. [src/front/getReleaseChannel.sh](src/front/getReleaseChannel.sh) returns the appropriate version number.
+Release channels are based on the major number (e.g. `production-v3`). If you need to change something that requires a new app build (e.g. changes to `app.config.js` or SDK upgrade), bump the major version of the app to keep it on a new release channel thus preventing conflicts with older app builds. [src/front/scripts/getReleaseChannel.sh](src/front/scripts/getReleaseChannel.sh) returns the appropriate version number.
 
 ### Environment Variables
 
@@ -63,11 +63,11 @@ These values are managed in three places: `.env.*` files in your local project, 
 
 Do one of the following from `src/front`:
 
-1. `./deployNewAppBuild.sh` if a new app build is needed.
+1. `./scripts/deployNewAppBuild.sh` if a new app build is needed.
    1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/4699387731848346247/releases/11/prepare)
    1. Apple: Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
 1. Push an OTA update:
-   - `./deployOTAUpdate.sh` to publish a new over-the-air update.
+   - `./scripts/deployOTAUpdate.sh` to publish a new over-the-air update.
    - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
 
 ### Pushing a New App Build to Production
