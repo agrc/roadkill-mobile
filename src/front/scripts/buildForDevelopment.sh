@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Building simulator builds"
+echo "make sure that simulators are running..."
+open -a simulator
+emulator -avd $(emulator -list-avds) || true
 
 ./scripts/removeArtifacts.sh
 
@@ -16,15 +18,13 @@ cp *.gz ./dev-clients
 rm -f -- ./dev-clients/*.apk
 cp *.apk ./dev-clients
 
-echo "opening on ios simulator"
+echo "installing on ios simulator"
 tar -xf ./dev-clients/*.gz
-open -a simulator
 xcrun simctl install booted ./WVCReporter.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr
 rm -rf ./WVCReporter.app
 
-echo "opening on android emulator"
-emulator -avd $(emulator -list-avds) || true
+echo "installing on android emulator"
 adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr 1
 
