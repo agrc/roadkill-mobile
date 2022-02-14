@@ -261,7 +261,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   const queryClient = useQueryClient();
   const mutation = useMutation(submitRoute, {
     onSuccess: () => {
-      queryClient.invalidateQueries(config.QUERY_KEYS.reports);
+      queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
 
       Alert.alert('Success!', 'Your route has been submitted successfully.');

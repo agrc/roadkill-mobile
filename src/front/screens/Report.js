@@ -172,7 +172,7 @@ const Report = ({
   const queryClient = useQueryClient();
   const mutation = useMutation(submitReport, {
     onSuccess: () => {
-      queryClient.invalidateQueries(config.QUERY_KEYS.reports);
+      queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
     },
     onError: (error) => {

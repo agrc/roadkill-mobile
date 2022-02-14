@@ -20,6 +20,7 @@ import MyReportsScreen from '../screens/MyReports';
 import NewUserScreen from '../screens/NewUser';
 import ProfileScreen from '../screens/Profile';
 import ReportInfoScreen from '../screens/ReportInfo';
+import RouteInfoScreen from '../screens/RouteInfo';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { PADDING } from '../services/styles';
@@ -148,6 +149,7 @@ const ReportsNavigator = () => {
         options={{ headerLeft: CloseButton, headerRight: () => getHeaderIcon('list') }}
       />
       <Screen name="Report Info" component={ReportInfoScreen} options={{ headerRight: () => getHeaderIcon('info') }} />
+      <Screen name="Route Info" component={RouteInfoScreen} options={{ headerRight: () => getHeaderIcon('info') }} />
     </Navigator>
   );
 };
