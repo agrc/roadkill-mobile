@@ -48,7 +48,7 @@ export default {
   SHOW_STORYBOOK: __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
   UNKNOWN: 'unknown',
   QUERY_KEYS: {
-    reports: 'reports',
+    submissions: 'submissions',
     profile: 'profile',
   },
   API_REQUEST_TIMEOUT: 20000,

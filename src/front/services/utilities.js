@@ -185,6 +185,32 @@ export function pointStringToCoordinates(string) {
   return { longitude: parseFloat(longitude), latitude: parseFloat(latitude) };
 }
 
+const lineStringRegex = /\((.*)\)/;
+export function lineStringToCoordinates(string) {
+  const match = lineStringRegex.exec(string);
+
+  return match[1].split(',').map((coord) => pointStringToCoordinates(coord));
+}
+
+const extentStringRegex = /\(\((.*)\)\)/;
+export function extentStringToRegion(string) {
+  const match = extentStringRegex.exec(string);
+
+  const coords = match[1].split(',').map((coord) => pointStringToCoordinates(coord));
+
+  const minx = coords[0].longitude;
+  const maxx = coords[2].longitude;
+  const miny = coords[0].latitude;
+  const maxy = coords[2].latitude;
+
+  return {
+    latitude: (miny + maxy) / parseFloat(2),
+    longitude: (minx + maxx) / parseFloat(2),
+    latitudeDelta: maxy - miny,
+    longitudeDelta: maxx - minx,
+  };
+}
+
 export function dateToString(date) {
   return date ? new Date(date).toLocaleString() : null;
 }

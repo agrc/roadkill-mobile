@@ -11,15 +11,17 @@ import Multer from 'multer';
 import winston from 'winston';
 import { getGetIDImageHandler } from './api/id_images.js';
 import { getGetPhotoHandler } from './api/photos.js';
-import { getGetAllHandler, getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
-import { getNewRouteHandler } from './api/routes.js';
+import { getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
+import { getGetRouteHandler, getNewRouteHandler } from './api/routes.js';
 import { authenticate, getToken, logout } from './api/security.js';
+import { getGetAllHandler } from './api/submissions.js';
 import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
 import { getIDImage } from './services/id_images.js';
 import { getPhoto, upload } from './services/photos.js';
-import { createPickup, createReport, getAllReports, getReport } from './services/report_management.js';
-import { createRoute } from './services/route_management.js';
+import { createPickup, createReport, getReport } from './services/report_management.js';
+import { createRoute, getRoute } from './services/route_management.js';
+import { getMySubmissions } from './services/submissions.js';
 import {
   approveUser,
   getProfile,
@@ -161,7 +163,7 @@ app.post(
 );
 
 // data retrieval
-app.get('/reports/reports', handleAsyncErrors(authenticate), handleAsyncErrors(getGetAllHandler(getAllReports)));
+app.get('/submissions', handleAsyncErrors(authenticate), handleAsyncErrors(getGetAllHandler(getMySubmissions)));
 app.get(
   '/reports/report/:reportId',
   handleAsyncErrors(authenticate),
@@ -172,6 +174,7 @@ app.get(
   handleAsyncErrors(authenticate),
   handleAsyncErrors(getGetPhotoHandler(true, getPhoto))
 );
+app.get('/routes/route/:routeId', handleAsyncErrors(authenticate), handleAsyncErrors(getGetRouteHandler(getRoute)));
 
 // I don't see any reason to secure this endpoint and am worried that it will just slow it down
 app.get('/reports/id_image/:key/:pixelRatio', handleAsyncErrors(getGetIDImageHandler(getIDImage)));

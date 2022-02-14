@@ -1,7 +1,9 @@
 import {
+  extentStringToRegion,
   getReleaseChannelBranch,
   isTokenExpired,
   lineCoordinatesToString,
+  lineStringToCoordinates,
   pointCoordinatesToString,
   pointStringToCoordinates,
   wrapAsyncWithDelay,
@@ -121,5 +123,33 @@ describe('lineCoordinatesToString', () => {
     ];
 
     expect(lineCoordinatesToString(line)).toBe('-1 2, -3 4');
+  });
+});
+
+describe('lineStringToCoordinates', () => {
+  it('returns the appropriate data', () => {
+    const lineString = 'LINESTRING(-1 2,-3 4)';
+
+    const result = lineStringToCoordinates(lineString);
+
+    expect(result.length).toBe(2);
+    expect(result[0]).toEqual({ longitude: -1, latitude: 2 });
+  });
+});
+
+describe('extentStringToRegion', () => {
+  it('returns the appropriate data', () => {
+    const minx = -5;
+    const maxx = -2;
+    const miny = 1;
+    const maxy = 3;
+    const extentString = `POLYGON((${minx} ${miny},${minx} ${maxy},${maxx} ${maxy},${maxx} ${miny},${minx} ${miny}))`;
+
+    const result = extentStringToRegion(extentString);
+
+    expect(result.latitude).toBe(2);
+    expect(result.longitude).toBe(-3.5);
+    expect(result.latitudeDelta).toBe(2);
+    expect(result.longitudeDelta).toBe(3);
   });
 });
