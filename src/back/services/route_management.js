@@ -1,5 +1,5 @@
 import { db } from './clients.js';
-import { lineCoordStringToWKT } from './utilities.js';
+import { lineCoordStringToWKT, pointGeographyToCoordinates } from './utilities.js';
 
 export async function createRoute({ user_id, geog, start_time, end_time, submit_date }) {
   const routeInsertResult = await db('routes').insert(
@@ -14,4 +14,41 @@ export async function createRoute({ user_id, geog, start_time, end_time, submit_
   );
 
   return routeInsertResult[0];
+}
+
+export async function getRoute(routeId, userId) {
+  const route = await db('routes as r')
+    .select(
+      'r.route_id',
+      // simplify with a tolerance of 100 meters
+      db.raw('ST_asText(ST_Transform(ST_Simplify(ST_Transform(r.geog::geometry, 26912), 50), 4326)) as geog'),
+      db.raw('ST_asText(ST_Envelope(r.geog::geometry)) as extent'),
+      db.raw('ST_Length(geog) as distance'),
+      'r.start_time',
+      'r.end_time',
+      'r.submit_date'
+    )
+    .where({ 'r.route_id': routeId, 'r.user_id': userId })
+    .first();
+
+  const pickups = await db('report_infos as r')
+    .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
+    .select(
+      'r.report_id',
+      'r.photo_id',
+      'r.submit_date',
+      'r.common_name',
+      db.raw(pointGeographyToCoordinates('animal_location'))
+    )
+    .orderBy('r.submit_date', 'desc')
+    .limit(100)
+    .where({
+      'r.user_id': userId,
+      'pick.route_id': routeId,
+    });
+
+  return {
+    ...route,
+    pickups,
+  };
 }

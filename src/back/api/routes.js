@@ -14,3 +14,17 @@ export function getNewRouteHandler(createRoute) {
     });
   };
 }
+
+export function getGetRouteHandler(getRoute) {
+  return async function getRouteHandler(request, response) {
+    const route = await getRoute(request.params.routeId, response.locals.user.appUser.id);
+
+    if (route) {
+      return response.status(200).json({
+        route,
+      });
+    }
+
+    return response.status(404).send(`no route found for id: ${request.params.routeId}`);
+  };
+}

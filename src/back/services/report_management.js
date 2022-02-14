@@ -91,18 +91,6 @@ export async function createPickup({
   });
 }
 
-export async function getAllReports(auth_id, auth_provider) {
-  return await db('report_infos as r')
-    .join('users', 'users.id', 'r.user_id')
-    .select('r.report_id', 'r.photo_id', 'r.submit_date', 'r.common_name')
-    .orderBy('r.submit_date', 'desc')
-    .limit(100)
-    .where({
-      'users.auth_id': auth_id,
-      'users.auth_provider': auth_provider,
-    });
-}
-
 export async function getReport(reportId) {
   return await db('report_infos as r')
     .leftJoin('photos as p', 'p.id', 'r.photo_id')
