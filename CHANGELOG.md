@@ -1,3 +1,19 @@
+# [v3.0.0-525](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-524...v3.0.0-525) (2022-02-15)
+
+
+### Bug Fixes
+
+* **front:** fix spinner layout on android ([c82c8fa](https://github.com/agrc/roadkill-mobile/commit/c82c8fa9ea40dfe7ddd288e61feaf1f036e7a57c)), closes [#156](https://github.com/agrc/roadkill-mobile/issues/156)
+* **front:** make background location dialog more compliant for google play ([1e5783a](https://github.com/agrc/roadkill-mobile/commit/1e5783abdd9ca25c19ce70c86385f2f4d737eefb)), closes [#157](https://github.com/agrc/roadkill-mobile/issues/157)
+
+
+### Features
+
+* add routes to My Reports screen ([81b7c90](https://github.com/agrc/roadkill-mobile/commit/81b7c902861286e9e84c8b2a62697af92d69b529)), closes [#154](https://github.com/agrc/roadkill-mobile/issues/154)
+* query PSAPs for live animal phone number ([e9c55fa](https://github.com/agrc/roadkill-mobile/commit/e9c55fa7ccbe8ab5a304a95c6b92eff73c08da02)), closes [#107](https://github.com/agrc/roadkill-mobile/issues/107)
+
+
+
 # [v3.0.0-524](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-522...v3.0.0-524) (2022-02-11)
 
 
