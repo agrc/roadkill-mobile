@@ -3,14 +3,25 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Autolink from 'react-native-autolink';
-import config from '../../services/config';
 import { getIcon } from '../../services/icons';
+import { getAssistancePrompt } from '../../services/location';
 import useStyles from '../../services/styles';
 
 function Location({ onSetLocation }) {
-  const callText = `If you encounter a live animal that needs assistance, please call ${config.LIVE_ANIMAL_PHONE}.`;
   const commonStyles = useStyles();
   const theme = useTheme();
+  const [assistancePrompt, setAssistancePrompt] = React.useState(null);
+
+  React.useEffect(() => {
+    const init = async () => {
+      const prompt = await getAssistancePrompt();
+      setAssistancePrompt(prompt);
+    };
+
+    if (!assistancePrompt) {
+      init();
+    }
+  }, []);
 
   return (
     <View>
@@ -27,9 +38,11 @@ function Location({ onSetLocation }) {
       >
         Set Location
       </Button>
-      <Text appearance="hint" style={styles.note}>
-        <Autolink phone text={callText} />
-      </Text>
+      {assistancePrompt ? (
+        <Text appearance="hint" style={styles.note}>
+          <Autolink phone text={assistancePrompt} />
+        </Text>
+      ) : null}
     </View>
   );
 }
