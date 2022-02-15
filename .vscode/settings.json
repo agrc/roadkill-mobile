@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "accesstoken",
     "api",
     "autolinker",
     "cloudsql",
@@ -14,6 +15,8 @@
     "immer",
     "inblow",
     "key",
+    "knex",
+    "knexfile",
     "LINESTRING",
     "lsof",
     "maxx",

@@ -43,7 +43,6 @@ runs:
 
     - name: 🚀 Deploy to Cloud Run
       uses: google-github-actions/deploy-cloudrun@v0.7.0
-      working-directory: src
       with:
         service: ${{ env.SERVICE_NAME }}
         image: ${{ steps.variables.outputs.image }}:latest
