@@ -52,7 +52,8 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
@@ -65,8 +66,6 @@ jobs:
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
-        with:
-          environment: Staging
 
   deploy-prod:
     name: Build and Deploy to Production
@@ -78,7 +77,8 @@ jobs:
 
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
@@ -91,5 +91,3 @@ jobs:
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
-        with:
-          environment: Production

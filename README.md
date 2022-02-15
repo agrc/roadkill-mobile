@@ -38,10 +38,10 @@ These values are managed in three places: `.env.*` files in your local project, 
 
 ### One-time Setup
 
-1. Create the following repo secrets in GitHub:
-   - `PROJECT_ID_PROD` / `PROJECT_ID_STAGING`
-   - `SERVICE_ACCOUNT_KEY_PROD` / `SERVICE_ACCOUNT_KEY_STAGING`
-     - Service account keys for Cloud Run deployment (this account is in the terraform configs for this project and the encoded key is output as `service_account.txt`)
+1. Create the following repo secrets in GitHub for each environment:
+   - `PROJECT_ID`
+   - `IDENTITY_PROVIDER` & `SERVICE_ACCOUNT_EMAIL`
+     - Commands for creating these are exported by terraform.
    - `EXPO_USERNAME` / `EXPO_PASSWORD`
    - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets for the back end. Do the same thing for the front end only the secrets go in Expo EAS.
      - base64 encode the google service file contents (e.g. `base64 -i GoogleService-Info.plist`)
@@ -114,6 +114,8 @@ iOS: [Trip Simulator](https://github.com/billylo1/set-simulator-location-trip-si
 ## Database
 
 [Initial Database Design Diagram](https://lucid.app/lucidchart/invitations/accept/inv_f10797af-5cd4-49d3-a527-c5c72f39cb45?viewport_loc=-171%2C-103%2C2586%2C1780%2C0_0) - This has been replaced by [data/sql/init.sql](data/sql/init.sql) as the single source of truth for the design.
+
+Database migrations are managed via [knex](https://knexjs.org/#Migrations) from the `./data` folder. Run `knex migrate:make <migration-name>` to create a new one.
 
 ## Identification Images
 
