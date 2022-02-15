@@ -1,0 +1,52 @@
+name: Perform Database Migrations
+description: Perform database migrations if necessary.
+inputs:
+  environment:
+    description: environment
+    required: true
+  project_id:
+    description: the gcp project id
+    required: true
+  identity_provider:
+    description: gcp federation identity provider
+    required: true
+  service_account_email:
+    description: gcp service account email
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - id: auth
+      name: 🗝️ Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0.4.4
+      with:
+        create_credentials_file: true
+        token_format: access_token
+        workload_identity_provider: ${{ inputs.identity_provider }}
+        service_account: ${{ inputs.service_account_email }}
+
+    - name: Initialize Cloud SQL Auth Proxy
+      shell: bash
+      run: |
+        wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+        chmod +x cloud_sql_proxy
+        ./cloud_sql_proxy -instances=${{ inputs.project_id }}:us-central1:app=tcp:5432 -credential_file=${{ steps.auth.credentials_file_path }} &
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version-file: data/.node-version
+
+    - name: Install npm dependencies
+      shell: bash
+      working-directory: data
+      run: |
+        npm ci
+        npm install -g knex
+
+    - name: Run knex migrations
+      shell: bash
+      working-directory: data
+      run: |
+        knex migrate:latest --env ${{ inputs.environment }}

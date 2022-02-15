@@ -7,6 +7,9 @@ on:
       - '.github/workflows/back.yml'
       - '.github/actions/back/**'
       - 'src/common/**'
+      - 'data/migrations/**'
+      - 'data/knexfile.js'
+      - 'data/package*.json'
 
 env:
   SERVICE_NAME: api
@@ -14,6 +17,10 @@ env:
 defaults:
   run:
     working-directory: src/back
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   test:
@@ -44,7 +51,7 @@ jobs:
           npm run test:ci
 
   deploy-staging:
-    name: Build and Deploy to Staging
+    name: Migrate DB, Build, and Deploy to Staging
     runs-on: ubuntu-latest
     needs: test
     environment:
@@ -58,17 +65,26 @@ jobs:
       API: ${{ secrets.API }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: DB Migrations
+        uses: ./.github/actions/back/db-migrations
+        with:
+          environment: Staging
+          project_id: ${{ secrets.PROJECT_ID }}
+          identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+
       - name: Deploy
         uses: ./.github/actions/back/deploy
 
   deploy-prod:
-    name: Build and Deploy to Production
+    name: Migration DB, Build, and Deploy to Production
     runs-on: ubuntu-latest
     needs: test
     environment:
@@ -83,11 +99,20 @@ jobs:
       API: ${{ secrets.API }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: DB Migrations
+        uses: ./.github/actions/back/db-migrations
+        with:
+          environment: Staging
+          project_id: ${{ secrets.PROJECT_ID }}
+          identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
