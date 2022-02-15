@@ -1,31 +1,31 @@
 name: Build and Deploy Back
 description: Build and deploy express app to Cloud Run.
-inputs:
-  environment:
-    description: environment
-    required: true
 
 runs:
   using: composite
   steps:
-    - name: Get Variables
+    - name: 🔨 Get Variables
       id: variables
       shell: bash
       run: echo "::set-output name=image::gcr.io/$PROJECT_ID/$SERVICE_NAME"
 
-    - name: Setup GCloud
-      uses: google-github-actions/setup-gcloud@master
+    - id: auth
+      name: 🗝️ Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0.4.4
       with:
-        service_account_key: ${{ env.SERVICE_ACCOUNT_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
+        create_credentials_file: true
+        token_format: access_token
+        workload_identity_provider: ${{ env.IDENTITY_PROVIDER }}
+        service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
 
-    - name: Authenticate GCloud
-      shell: bash
-      working-directory: src/back
-      run: |-
-        gcloud --quiet auth configure-docker
+    - name: 🐳 Setup docker
+      uses: docker/login-action@v1
+      with:
+        registry: gcr.io
+        username: oauth2accesstoken
+        password: ${{ steps.auth.outputs.access_token }}
 
-    - name: Build Image
+    - name: 📦 Build image
       shell: bash
       working-directory: src
       run: |-
@@ -35,25 +35,24 @@ runs:
           -f ./back/Dockerfile \
           .
 
-    - name: Publish Image
+    - name: 📤 Publish image
       shell: bash
       working-directory: src
       run: |-
         docker push "${{ steps.variables.outputs.image }}" -a
 
-    - name: Deploy to GCP
-      shell: bash
+    - name: 🚀 Deploy to Cloud Run
+      uses: google-github-actions/deploy-cloudrun@v0.7.0
       working-directory: src
-      run: |-
-        gcloud run deploy "$SERVICE_NAME" \
-          --quiet \
-          --platform "managed" \
-          --region "us-central1" \
-          --image "${{ steps.variables.outputs.image }}:latest" \
-          --update-env-vars "ADMIN_EMAIL=$ADMIN_EMAIL" \
-          --update-env-vars "API=$API" \
-          --update-env-vars "DATABASE_HOST=$DATABASE_HOST" \
-          --update-env-vars "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
-          --update-env-vars "ENVIRONMENT=$ENVIRONMENT" \
-          --update-env-vars "SENDGRID_API_KEY=$SENDGRID_API_KEY" \
-          --update-env-vars "PROJECT_ID=$PROJECT_ID"
+      with:
+        service: ${{ env.SERVICE_NAME }}
+        image: ${{ steps.variables.outputs.image }}:latest
+        region: "us-central1"
+        env_vars: |
+          ADMIN_EMAIL=${{ env.ADMIN_EMAIL }}
+          API=${{ env.API }}
+          DATABASE_HOST=${{ env.DATABASE_HOST }}
+          DATABASE_PASSWORD=${{ env.DATABASE_PASSWORD }}
+          ENVIRONMENT=${{ env.ENVIRONMENT }}
+          SENDGRID_API_KEY=${{ env.SENDGRID_API_KEY }}
+          PROJECT_ID=${{ env.PROJECT_ID }}
