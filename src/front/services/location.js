@@ -1,5 +1,7 @@
 import * as Location from 'expo-location';
+import ky from 'ky';
 import React from 'react';
+import config from './config';
 
 export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
@@ -105,4 +107,37 @@ export function useFollowUser(mapViewRef) {
   };
 
   return { followUser, stopFollowUser, isFollowing: !!subscription };
+}
+
+export async function getAssistancePrompt() {
+  const currentLocation = await Location.getLastKnownPositionAsync();
+
+  let prompt = 'If you encounter a live animal please contact your local law enforcement.';
+  try {
+    const response = await ky(`${config.URLS.PSAP_FEATURE_SERVICE}/query`, {
+      searchParams: {
+        f: 'json',
+        outFields: 'DsplayName,PHONE_NUMBER',
+        geometryType: 'esriGeometryPoint',
+        geometry: JSON.stringify({
+          x: currentLocation.coords.longitude,
+          y: currentLocation.coords.latitude,
+          spatialReference: {
+            wkid: 4326,
+          },
+        }),
+        returnGeometry: false,
+      },
+    }).json();
+
+    if (response.features?.length) {
+      const attributes = response.features[0].attributes;
+
+      prompt = `If you encounter a live animal that needs assistance, please call ${attributes.DsplayName} at ${attributes.PHONE_NUMBER}.`;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
+  return prompt;
 }

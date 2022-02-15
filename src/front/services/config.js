@@ -34,6 +34,8 @@ export default {
   USER_TYPE_KEY: 'USER_TYPE',
   URLS: {
     LITE: 'https://discover.agrc.utah.gov/login/path/alabama-anvil-picnic-sunset/tiles/lite_basemap/{z}/{x}/{y}.jpg',
+    PSAP_FEATURE_SERVICE:
+      'https://services1.arcgis.com/99lidPhWCzftIe9K/arcgis/rest/services/UtahPSAP_Boundaries/FeatureServer/0',
   },
   SUPPORT_EMAIL: 'wvc-dnr-dwr-notify@utah.gov',
   RELEASE_BRANCHES: {
@@ -42,7 +44,6 @@ export default {
     dev: 'dev',
   },
   SPINNER_DELAY: 250,
-  LIVE_ANIMAL_PHONE: '(111) 111-1111',
   MAX_ZOOM_LEVEL: 18,
   IMAGE_COMPRESSION_QUALITY: 0.25, // 1 is max quality
   SHOW_STORYBOOK: __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
