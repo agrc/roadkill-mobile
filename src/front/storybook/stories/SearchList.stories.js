@@ -118,8 +118,47 @@ const ItemsAsStrings = () => {
   });
 };
 
+const OrganizationItems = () => {
+  return React.createElement(() => {
+    const [value, setValue] = React.useState({ id: null, name: null });
+
+    const constants = useConstants();
+    const [items, setItems] = React.useState(null);
+
+    React.useEffect(() => {
+      if (constants) {
+        setItems(constants.organizations);
+      }
+    }, [constants]);
+
+    return (
+      <RootView>
+        <ScrollView style={{ paddingHorizontal: 25 }}>
+          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
+          <Text category="label" appearance="hint">
+            Organization
+          </Text>
+          {items ? (
+            <SearchList
+              value={value}
+              onChange={setValue}
+              items={items}
+              placeholder="organization"
+              itemToString={(item) => item?.name}
+              itemToKey={(item) => item?.id}
+              displayPhotos={false}
+              forceModal={true}
+            />
+          ) : null}
+        </ScrollView>
+      </RootView>
+    );
+  });
+};
+
 storiesOf('SearchList', module)
   .add('items as objects', ItemsAsObjects)
   .add('items as strings', ItemsAsStrings)
   .add('many object items', ManyObjectItems)
-  .add('many string items', ManyStringItems);
+  .add('many string items', ManyStringItems)
+  .add('organization items', OrganizationItems);

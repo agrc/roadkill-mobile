@@ -136,7 +136,6 @@ app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser))
 app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
 
 app.get('/user/profile', handleAsyncErrors(authenticate), handleAsyncErrors(getGetProfile(getProfile)));
-// TODO: add validation after we get legit organizations implemented
 app.post('/user/profile/update', handleAsyncErrors(authenticate), handleAsyncErrors(getUpdateProfile(updateProfile)));
 // app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
 
