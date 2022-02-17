@@ -1,3 +1,4 @@
+import commonConfig from 'common/config.js';
 import { randomUUID } from 'crypto';
 import yup from 'yup';
 import { db, firestore, mail } from './clients.js';
@@ -17,12 +18,12 @@ export const registerSchema = yup.object().shape({
     .shape({
       name: yup.string().required(),
       org_type: yup.string().required(),
+      id: yup.number().required(),
     })
     .nullable(),
   user: yup
     .object()
     .shape({
-      organization_id: yup.number(),
       role: yup.string().required(),
       auth_provider: yup.string().required(),
       auth_id: yup.string().required(),
@@ -48,15 +49,29 @@ export async function isExistingUser({ auth_provider, auth_id }) {
   return rows.length > 0;
 }
 
+async function ensureOrganization(organization, transaction) {
+  let orgId = organization ? organization.id : null;
+  if (organization && organization.id === commonConfig.otherOrg.id) {
+    const orgInsertResult = await transaction('organizations').insert(
+      {
+        name: organization.name,
+        org_type: organization.org_type,
+      },
+      'id'
+    );
+    orgId = orgInsertResult[0];
+  }
+
+  return orgId;
+}
+
 export async function registerUser(organization, user) {
   let approved = null;
   await db.transaction(async (transaction) => {
     const now = new Date();
 
-    let orgInsertResult;
-    if (organization) {
-      orgInsertResult = await transaction('organizations').insert(organization, 'id');
-    }
+    const orgId = await ensureOrganization(organization, transaction);
+
     let approved_date = null;
     if (user.role === ROLES.public) {
       approved = true;
@@ -67,7 +82,7 @@ export async function registerUser(organization, user) {
       ...user,
       registered_date: now,
       last_logged_in: now,
-      organization_id: organization ? orgInsertResult[0] : null,
+      organization_id: orgId,
       approved,
       approved_date,
     });
@@ -204,7 +219,8 @@ export async function getProfile(userId) {
       'u.role',
       'u.approved',
       'u.registered_date',
-      { organization: 'o.name' }
+      { organization_name: 'o.name' },
+      'u.organization_id'
     )
     .where({ 'u.id': userId })
     .first();
@@ -217,14 +233,18 @@ export async function getProfile(userId) {
   };
 }
 
-export async function updateProfile(userId, profile, organizationId) {
-  const { phone, organization } = profile;
+export async function updateProfile(userId, profile) {
+  const { phone, organization_id, organization_name, organization_type } = profile;
 
-  await db('users').where({ id: userId }).update({
-    phone,
-  });
+  await db.transaction(async (transaction) => {
+    const orgId = await ensureOrganization(
+      { id: organization_id, name: organization_name, org_type: organization_type },
+      transaction
+    );
 
-  await db('organizations').where({ id: organizationId }).update({
-    name: organization,
+    await transaction('users').where({ id: userId }).update({
+      organization_id: orgId,
+      phone,
+    });
   });
 }
