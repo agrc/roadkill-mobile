@@ -76,7 +76,7 @@ export function getReject(rejectUser) {
 }
 
 export function getGetProfile(getProfile) {
-  return async function getProfileHandler(request, response) {
+  return async function getProfileHandler(_, response) {
     let profileData;
     try {
       profileData = await getProfile(response.locals.user.appUser.id);
@@ -91,7 +91,7 @@ export function getGetProfile(getProfile) {
 export function getUpdateProfile(updateProfile) {
   return async function updateProfileHandler(request, response) {
     try {
-      await updateProfile(response.locals.user.appUser.id, request.body, response.locals.user.appUser.organization_id);
+      await updateProfile(response.locals.user.appUser.id, request.body);
     } catch (error) {
       return response.status(500).send(error.message);
     }

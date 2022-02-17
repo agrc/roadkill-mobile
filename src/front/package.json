@@ -65,6 +65,7 @@
     "firebase": "^9.6.5",
     "formik": "^2.2.9",
     "immer": "^9.0.6",
+    "indefinite": "^2.4.1",
     "jwt-decode": "^3.1.2",
     "ky": "^0.28.6",
     "lodash": "^4.17.21",

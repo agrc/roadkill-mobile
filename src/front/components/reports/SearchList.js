@@ -1,5 +1,6 @@
 import { Card, Divider, Input, List, ListItem, Modal, Text, useTheme } from '@ui-kitten/components';
 import commonConfig from 'common/config';
+import a from 'indefinite';
 import propTypes from 'prop-types';
 import React from 'react';
 import {
@@ -22,32 +23,37 @@ const COMMON = 'common_name';
 const ID = 'species_id';
 const SCIENTIFIC = 'scientific_name';
 
-function itemPropOrString(item, field) {
-  if (item === null || item === undefined) {
-    return null;
-  }
+function itemPropOrString(field) {
+  return (item) => {
+    if (item === null || item === undefined) {
+      return null;
+    }
 
-  if (typeof item === 'string') {
-    return item;
-  }
+    if (typeof item === 'string') {
+      return item;
+    }
 
-  return item[field];
+    return item[field];
+  };
 }
 
 const pixelRatio = PixelRatio.get();
 const fallbackImage = require('../../assets/id-image-fallback.png');
 
-function MyListItem({ item, onPress, selected }) {
+function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayPhoto = true }) {
   const theme = useTheme();
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
   };
   const style = selected ? selectedStyle : {};
-  const title = itemPropOrString(item, COMMON);
-  const description = itemPropOrString(item, SCIENTIFIC);
+  const title = itemToString(item);
+  const description = itemPropOrString(SCIENTIFIC)(item);
+  if (!description) {
+    style.paddingVertical = PADDING;
+  }
 
   const [imageSource, setImageSource] = React.useState({
-    uri: `${config.API}/reports/id_image/${itemPropOrString(item, ID)}/${pixelRatio}`,
+    uri: `${config.API}/reports/id_image/${itemToKey(item)}/${pixelRatio}`,
     width: commonConfig.searchListImageSize,
     height: commonConfig.searchListImageSize,
     scale: pixelRatio,
@@ -58,16 +64,18 @@ function MyListItem({ item, onPress, selected }) {
 
   return (
     <ListItem
-      accessoryLeft={() => (
-        <FastImage
-          style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
-          source={imageSource}
-          onError={switchToFallbackImage}
-        />
-      )}
+      accessoryLeft={() =>
+        displayPhoto ? (
+          <FastImage
+            style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
+            source={imageSource}
+            onError={switchToFallbackImage}
+          />
+        ) : null
+      }
       title={title}
       description={
-        title !== description
+        description && title !== description
           ? ({ style }) => (
               <Text category="c1" style={[style, { fontStyle: 'italic' }]}>
                 {description}
@@ -85,12 +93,26 @@ MyListItem.propTypes = {
   item: propTypes.oneOfType([propTypes.string, propTypes.object]).isRequired,
   onPress: propTypes.func.isRequired,
   selected: propTypes.bool.isRequired,
+  itemToString: propTypes.func.isRequired,
+  itemToKey: propTypes.func.isRequired,
+  displayPhoto: propTypes.bool,
 };
 
 // eslint-disable-next-line no-func-assign
 MyListItem = React.memo(MyListItem);
 
-export default function SearchList({ value, onChange, placeholder, items, style }) {
+export default function SearchList({
+  value,
+  onChange,
+  placeholder,
+  items,
+  style,
+  itemToString = itemPropOrString(COMMON),
+  itemToKey = itemPropOrString(ID),
+  displayPhotos = true,
+  forceModal = false,
+  clearable = true,
+}) {
   // items could be species objects or strings
   const [filteredItems, setFilteredItems] = React.useState([]);
   const [inputValue, setInputValue] = React.useState('');
@@ -107,7 +129,7 @@ export default function SearchList({ value, onChange, placeholder, items, style 
     return (item) => {
       if (text === null) return false;
 
-      return itemPropOrString(item, COMMON).toLowerCase().includes(text.toLowerCase());
+      return itemToString(item).toLowerCase().includes(text.toLowerCase());
     };
   };
 
@@ -118,7 +140,7 @@ export default function SearchList({ value, onChange, placeholder, items, style 
   const onChangeText = (text) => {
     setInputValue(text);
     let filteredItems = items.filter(getFilter(text));
-    if (filteredItems.length === 1 && itemPropOrString(filteredItems[0], COMMON) === text) {
+    if (filteredItems.length === 1 && itemToString(filteredItems[0]) === text) {
       setFilteredItems([]);
     } else {
       setFilteredItems(filteredItems);
@@ -128,7 +150,7 @@ export default function SearchList({ value, onChange, placeholder, items, style 
   const onSelectItem = (item) => {
     onChange(item);
 
-    setInputValue(itemPropOrString(item, COMMON));
+    setInputValue(itemToString(item));
     setFilteredItems([]);
     setShowModal(false);
   };
@@ -190,14 +212,14 @@ export default function SearchList({ value, onChange, placeholder, items, style 
 
   return (
     <View style={style}>
-      {items.length > MIN_NUM_FOR_POPUP ? (
+      {items.length > MIN_NUM_FOR_POPUP || forceModal ? (
         <>
           <Card onPress={onValuePress}>
             <View style={styles.innerValueContainer}>
               <Text style={valueStyle}>
-                {typeof value === 'string' || value?.species_id
-                  ? itemPropOrString(value, COMMON)
-                  : `search by ${placeholder}`}
+                {typeof value === 'string' || itemToKey(value)
+                  ? itemToString(value)
+                  : `select ${a(placeholder.toLowerCase())}`}
               </Text>
               <ArrowIcon />
             </View>
@@ -211,7 +233,7 @@ export default function SearchList({ value, onChange, placeholder, items, style 
             <SafeAreaView style={{ flex: 1 }}>
               <View style={styles.container}>
                 <Input
-                  accessoryRight={renderClearIcon}
+                  accessoryRight={clearable ? renderClearIcon : null}
                   value={inputValue}
                   placeholder={placeholder}
                   onChangeText={onChangeText}
@@ -222,10 +244,13 @@ export default function SearchList({ value, onChange, placeholder, items, style 
                   ItemSeparatorComponent={Divider}
                   renderItem={({ item }) => (
                     <MyListItem
-                      key={itemPropOrString(item, ID)}
+                      key={itemToKey(item)}
                       item={item}
                       onPress={() => onSelectItem(item)}
-                      selected={itemPropOrString(item, ID) === itemPropOrString(value, ID)}
+                      selected={itemToKey(item) === itemToKey(value)}
+                      itemToString={itemToString}
+                      itemToKey={itemToKey}
+                      displayPhoto={displayPhotos}
                     />
                   )}
                   keyboardShouldPersistTaps="always"
@@ -237,11 +262,14 @@ export default function SearchList({ value, onChange, placeholder, items, style 
         </>
       ) : (
         items.map((item) => (
-          <View key={itemPropOrString(item, ID)}>
+          <View key={itemToKey(item)}>
             <MyListItem
               item={item}
               onPress={() => onSelectItem(item)}
-              selected={itemPropOrString(item, ID) === itemPropOrString(value, ID)}
+              selected={itemToKey(item) === itemToKey(value)}
+              itemToString={itemToString}
+              itemToKey={itemToKey}
+              displayPhoto={displayPhotos}
             />
             <Divider />
           </View>
@@ -282,4 +310,9 @@ SearchList.propTypes = {
   placeholder: propTypes.string,
   items: propTypes.array.isRequired,
   style: propTypes.object,
+  itemToString: propTypes.func,
+  itemToKey: propTypes.func,
+  displayPhotos: propTypes.bool,
+  forceModal: propTypes.bool,
+  clearable: propTypes.bool,
 };
