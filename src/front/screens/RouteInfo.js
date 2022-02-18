@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Card, Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
-import { PixelRatio, Platform, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { PixelRatio, Platform, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
 import { useQuery } from 'react-query';
 import Map from '../components/Map';
@@ -96,10 +96,10 @@ export function RouteInfo({ data }) {
       <ValueContainer label="Pickups" value={data.pickups.length} />
       <Divider />
       {data.pickups.map((pickup) => (
-        <>
-          <ReportListItem item={pickup} key={pickup.report_id} />
+        <View key={pickup.report_id}>
+          <ReportListItem item={pickup} />
           <Divider />
-        </>
+        </View>
       ))}
     </SafeAreaView>
   );
