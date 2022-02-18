@@ -1,13 +1,12 @@
 import Constants from 'expo-constants';
+import * as Device from 'expo-device';
 
 let API = process.env.API;
-// localhost/10.0.2.2 only work for emulators running on the same machine as the dev server
-// how to handle separate devices? ngrok? localtunnel? deploy to gcp dev?
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
-  if (!Constants.isDevice && Constants.platform.android) {
+  if (!Device.isDevice && Constants.platform.android) {
     // API = API.replace('localhost', '10.0.3.2'); // genymotion emulator
     API = API.replace('localhost', '10.0.2.2'); // android studio emulator
-  } else if (Constants.isDevice) {
+  } else if (Device.isDevice) {
     API = API.replace('localhost', Constants.manifest.debuggerHost.split(':').shift());
   }
 }
