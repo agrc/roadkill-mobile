@@ -110,7 +110,11 @@ export function useFollowUser(mapViewRef) {
 }
 
 export async function getAssistancePrompt() {
-  const currentLocation = await Location.getLastKnownPositionAsync();
+  let currentLocation = await Location.getLastKnownPositionAsync();
+
+  if (!currentLocation) {
+    currentLocation = await getLocation();
+  }
 
   let prompt = 'If you encounter a live animal please contact your local law enforcement.';
   try {
