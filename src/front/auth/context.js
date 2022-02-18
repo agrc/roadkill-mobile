@@ -1,3 +1,4 @@
+import commonConfig from 'common/config';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import ky from 'ky';
@@ -107,6 +108,7 @@ export function AuthContextProvider({ children, onReady }) {
           },
           headers: {
             Authorization: token,
+            [commonConfig.versionHeaderName]: commonConfig.apiVersion,
           },
           timeout,
         })
@@ -141,6 +143,7 @@ export function AuthContextProvider({ children, onReady }) {
         json: userData,
         headers: {
           Authorization: token,
+          [commonConfig.versionHeaderName]: commonConfig.apiVersion,
         },
         timeout,
       })
@@ -164,6 +167,7 @@ export function AuthContextProvider({ children, onReady }) {
             const response = await ky.post(`${config.API}/user/logout`, {
               headers: {
                 Authorization: await getBearerToken(),
+                [commonConfig.versionHeaderName]: commonConfig.apiVersion,
               },
               timeout,
             });
