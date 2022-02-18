@@ -53,6 +53,7 @@ These values are managed in three places: `.env.*` files in your local project, 
 
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Optionally bump version number in [src/front/app.config.js](src/front/app.config.js) and [package.json](package.json).
+1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
 1. Bump build number in [src/front/app.config.js](src/front/app.config.js).
 1. Update `version` in [changelog_context.json](changelog_context.json) to match new build number.
 1. From root: `npm run changelog`
