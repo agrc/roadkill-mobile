@@ -17,7 +17,7 @@ import { authenticate, getToken, logout } from './api/security.js';
 import { getGetAllHandler } from './api/submissions.js';
 import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
-import getVersionFromHeader from './api/versioning.js';
+import getVersionFromHeader, { switchByRequestVersion } from './api/versioning.js';
 import { getIDImage } from './services/id_images.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getReport } from './services/report_management.js';
@@ -26,13 +26,17 @@ import { getMySubmissions } from './services/submissions.js';
 import {
   approveUser,
   getProfile,
+  getProfile_0_0_0,
   getUser,
   isExistingUser,
   loginSchema,
   registerSchema,
+  registerSchema_0_0_0,
   registerUser,
+  registerUser_0_0_0,
   rejectUser,
   updateProfile,
+  updateProfile_0_0_0,
   updateUser,
 } from './services/user_management.js';
 
@@ -126,8 +130,12 @@ app.post('/user/token', handleAsyncErrors(getToken));
 app.post(
   '/user/register',
   handleAsyncErrors(authenticate),
-  validate(registerSchema),
-  handleAsyncErrors(getRegister(isExistingUser, registerUser, getUser))
+  switchByRequestVersion('1.0.0', validate(registerSchema_0_0_0), validate(registerSchema)),
+  switchByRequestVersion(
+    '1.0.0',
+    handleAsyncErrors(getRegister(isExistingUser, registerUser_0_0_0, getUser)),
+    handleAsyncErrors(getRegister(isExistingUser, registerUser, getUser))
+  )
 );
 app.post(
   '/user/login',
@@ -139,8 +147,24 @@ app.post('/user/logout', handleAsyncErrors(logout));
 app.get('/user/approval/:guid/:role', handleAsyncErrors(getApprove(approveUser)));
 app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
 
-app.get('/user/profile', handleAsyncErrors(authenticate), handleAsyncErrors(getGetProfile(getProfile)));
-app.post('/user/profile/update', handleAsyncErrors(authenticate), handleAsyncErrors(getUpdateProfile(updateProfile)));
+app.get(
+  '/user/profile',
+  handleAsyncErrors(authenticate),
+  switchByRequestVersion(
+    '1.0.0',
+    handleAsyncErrors(getGetProfile(getProfile_0_0_0)),
+    handleAsyncErrors(getGetProfile(getProfile))
+  )
+);
+app.post(
+  '/user/profile/update',
+  handleAsyncErrors(authenticate),
+  switchByRequestVersion(
+    '1.0.0',
+    handleAsyncErrors(getUpdateProfile(updateProfile_0_0_0)),
+    handleAsyncErrors(getUpdateProfile(updateProfile))
+  )
+);
 // app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
 
 // data submission
