@@ -115,7 +115,10 @@ export function ReportInfo({ data }) {
             <Image
               source={{
                 uri: `${config.API}/photos/thumb/${data.photo_id}`,
-                headers: { Authorization: data.bearerToken },
+                headers: {
+                  Authorization: data.bearerToken,
+                  [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+                },
               }}
               style={[commonStyles.image, styles.thumbnail]}
             />

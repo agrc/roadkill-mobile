@@ -17,6 +17,7 @@ import { authenticate, getToken, logout } from './api/security.js';
 import { getGetAllHandler } from './api/submissions.js';
 import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
 import validate from './api/validation.js';
+import getVersionFromHeader from './api/versioning.js';
 import { getIDImage } from './services/id_images.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getReport } from './services/report_management.js';
@@ -51,6 +52,7 @@ app.use(
   })
 );
 
+// accept files
 const multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
@@ -60,6 +62,8 @@ const multer = Multer({
 
 // security best practices
 app.use(helmet());
+
+app.use(getVersionFromHeader);
 
 app.use(cors());
 

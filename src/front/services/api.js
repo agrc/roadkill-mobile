@@ -1,3 +1,4 @@
+import commonConfig from 'common/config';
 import ky from 'ky';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
@@ -10,6 +11,7 @@ export function useAPI() {
     const options = {
       headers: {
         Authorization: await getBearerToken(),
+        [commonConfig.versionHeaderName]: commonConfig.apiVersion,
       },
       timeout: config.API_REQUEST_TIMEOUT, // give cloud run time to spin up especially in dev project
       method,
