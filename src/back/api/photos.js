@@ -1,6 +1,7 @@
 import commonConfig from 'common/config.js';
 import sharp from 'sharp';
 
+const resizer = sharp().resize(commonConfig.reportPhotoThumbnailSize, commonConfig.reportPhotoThumbnailSize).png();
 export function getGetPhotoHandler(thumb, getPhoto) {
   return async function getPhotoHandler(request, response) {
     const { photoId } = request.params;
@@ -9,12 +10,12 @@ export function getGetPhotoHandler(thumb, getPhoto) {
     if (file) {
       const [metadata] = await file.getMetadata();
       response.set('Cache-Control', `public, max-age=${60 * 60 * 6}`); // 6 hours
-      const stream = file.createReadStream({
+      let stream = file.createReadStream({
         validation: process.env.ENVIRONMENT === 'development' ? false : 'crc32c',
       });
 
       if (thumb) {
-        stream.pipe(sharp().resize(commonConfig.reportPhotoThumbnailSize, commonConfig.reportPhotoThumbnailSize).png());
+        stream = stream.pipe(resizer);
         response.type('image/png');
       } else {
         response.type(metadata.contentType);
