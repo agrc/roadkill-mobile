@@ -60,13 +60,13 @@ jobs:
     env:
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       ENVIRONMENT: 'staging'
       IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      MIN_INSTANCES: 0
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       WEBSITE: ${{ secrets.WEBSITE }}
 
@@ -98,11 +98,10 @@ jobs:
       API: ${{ secrets.API }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       ENVIRONMENT: production
       IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      MIN_INSTANCES: 1
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       WEBSITE: ${{ secrets.WEBSITE }}
 
@@ -120,3 +119,12 @@ jobs:
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Create domain mappings
+        run: |-
+          gcloud beta run domain-mappings create
+            --service=${{ env.SERVICE_NAME }}
+            --domain=roadkill.ugrc.utah.gov

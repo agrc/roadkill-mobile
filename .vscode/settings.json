@@ -12,6 +12,7 @@
     "formik",
     "formurlencoded",
     "genymotion",
+    "gserviceaccount",
     "IDFA",
     "immer",
     "inblow",
