@@ -1,10 +1,13 @@
 import commonConfig from 'common/config.js';
 import sharp from 'sharp';
 
-const resizer = sharp().resize(commonConfig.reportPhotoThumbnailSize, commonConfig.reportPhotoThumbnailSize).png();
 export function getGetPhotoHandler(thumb, getPhoto) {
   return async function getPhotoHandler(request, response) {
     const { photoId } = request.params;
+    if (isNaN(parseInt(photoId, 10))) {
+      return response.status(400).send('photoId must be an integer');
+    }
+
     const file = await getPhoto(photoId);
 
     if (file) {
@@ -15,6 +18,9 @@ export function getGetPhotoHandler(thumb, getPhoto) {
       });
 
       if (thumb) {
+        const resizer = sharp()
+          .resize(commonConfig.reportPhotoThumbnailSize, commonConfig.reportPhotoThumbnailSize)
+          .png();
         stream = stream.pipe(resizer);
         response.type('image/png');
       } else {
