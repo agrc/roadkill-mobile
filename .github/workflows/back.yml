@@ -58,15 +58,16 @@ jobs:
       name: Staging
     if: github.ref == 'refs/heads/staging'
     env:
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
+      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
+      ENVIRONMENT: 'staging'
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
     steps:
       - name: Checkout
@@ -92,15 +93,16 @@ jobs:
     if: github.ref == 'refs/heads/production'
 
     env:
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
+      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
+      ENVIRONMENT: production
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
     steps:
       - name: Checkout
