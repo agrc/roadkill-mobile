@@ -19,6 +19,7 @@ import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateP
 import validate from './api/validation.js';
 import getVersionFromHeader, { switchByRequestVersion } from './api/versioning.js';
 import { getIDImage } from './services/id_images.js';
+import sendReportNotification from './services/notifications.js';
 import { getPhoto, upload } from './services/photos.js';
 import { createPickup, createReport, getReport } from './services/report_management.js';
 import { createRoute, getRoute } from './services/route_management.js';
@@ -173,7 +174,7 @@ app.post(
   handleAsyncErrors(authenticate),
   multer.single('photo'),
   validate(reportSchema.omit(['photo'])),
-  handleAsyncErrors(getNewReportHandler(upload, createReport))
+  handleAsyncErrors(getNewReportHandler(upload, createReport, sendReportNotification))
 );
 app.post(
   '/reports/pickup',
@@ -196,12 +197,11 @@ app.get(
   handleAsyncErrors(authenticate),
   handleAsyncErrors(getGetReportHandler(getReport))
 );
-app.get(
-  '/photos/thumb/:photoId',
-  handleAsyncErrors(authenticate),
-  handleAsyncErrors(getGetPhotoHandler(true, getPhoto))
-);
 app.get('/routes/route/:routeId', handleAsyncErrors(authenticate), handleAsyncErrors(getGetRouteHandler(getRoute)));
+
+// these endpoints are unsecured to support report notification emails
+app.get('/photos/thumb/:photoId', handleAsyncErrors(getGetPhotoHandler(true, getPhoto)));
+app.get('/photos/:photoId', handleAsyncErrors(getGetPhotoHandler(false, getPhoto)));
 
 // I don't see any reason to secure this endpoint and am worried that it will just slow it down
 app.get('/reports/id_image/:key/:pixelRatio', handleAsyncErrors(getGetIDImageHandler(getIDImage)));

@@ -1,0 +1,82 @@
+name: Website - Test, Build, and Deploy to GCP
+
+on:
+  push:
+    paths:
+      - 'src/website/**'
+      - '.github/workflows/website.yml'
+      - '.github/actions/website/**'
+      - 'src/common/**'
+
+env:
+  SERVICE_NAME: website
+
+defaults:
+  run:
+    working-directory: src/website
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: src/website/.node-version
+      - run: |
+          npm ci
+          cd ../common && npm ci
+
+      - name: Test
+        run: |
+          npm run lint
+
+  deploy-staging:
+    name: Build, and Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: test
+    environment:
+      name: Staging
+    if: github.ref == 'refs/heads/staging'
+    env:
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      QUAD_WORD: ${{ secrets.QUAD_WORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: ./.github/actions/website/deploy
+
+  deploy-prod:
+    name: Build, and Deploy to Production
+    runs-on: ubuntu-latest
+    needs: test
+    environment:
+      name: Production
+    if: github.ref == 'refs/heads/production'
+
+    env:
+      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      QUAD_WORD: ${{ secrets.QUAD_WORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: ./.github/actions/website/deploy

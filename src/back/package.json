@@ -18,7 +18,7 @@
     "@google-cloud/firestore": "^4.14.1",
     "@google-cloud/logging-winston": "^4.1.0",
     "@google-cloud/storage": "^5.14.2",
-    "@sendgrid/mail": "^7.4.5",
+    "@sendgrid/mail": "^7.6.1",
     "common": "file:../common",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
