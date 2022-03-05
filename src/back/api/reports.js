@@ -1,4 +1,4 @@
-export function getNewReportHandler(upload, createReport) {
+export function getNewReportHandler(upload, createReport, sendReportNotification) {
   return async function create(request, response) {
     const user_id = response.locals.user.appUser.id;
 
@@ -12,6 +12,8 @@ export function getNewReportHandler(upload, createReport) {
       bucket_path,
       user_id,
     });
+
+    sendReportNotification(reportId);
 
     return response.status(201).json({
       report_id: reportId,

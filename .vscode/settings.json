@@ -3,6 +3,7 @@
     "accesstoken",
     "api",
     "autolinker",
+    "cloudrun",
     "cloudsql",
     "crosshairs",
     "Dsplay",
@@ -37,6 +38,7 @@
     "sendgrid",
     "signin",
     "SRID",
+    "tailwindcss",
     "tappable",
     "Unsubmitted",
     "upsert",
@@ -45,5 +47,6 @@
     "wvcr",
     "xargs"
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "eslint.workingDirectories": ["src/back", "src/common", "src/front", "src/website"],
 }
