@@ -68,6 +68,7 @@ jobs:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      WEBSITE: ${{ secrets.WEBSITE }}
 
     steps:
       - name: Checkout
@@ -103,6 +104,7 @@ jobs:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      WEBSITE: ${{ secrets.WEBSITE }}
 
     steps:
       - name: Checkout

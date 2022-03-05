@@ -165,14 +165,17 @@ export async function sendApprovalEmail(user, organization) {
   const email = {
     to: process.env.ADMIN_EMAIL,
     from: 'noreply@utah.gov',
-    templateId: 'd-021d5c287a1d4295a7ade35724bd2994',
+    templateId: 'd-021d5c287a1d4295a7ade35724bd2994', // roadkill-new-user
     dynamicTemplateData: data,
-    trackingSettings: {
+  };
+
+  if (process.env.ENVIRONMENT === 'development') {
+    mail.trackingSettings = {
       clickTracking: {
         enable: false,
       },
-    },
-  };
+    };
+  }
 
   try {
     await mail.send(email);
