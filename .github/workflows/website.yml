@@ -10,6 +10,7 @@ on:
 
 env:
   SERVICE_NAME: website
+  IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
 
 defaults:
   run:
@@ -48,7 +49,6 @@ jobs:
       name: Staging
     if: github.ref == 'refs/heads/staging'
     env:
-      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       QUAD_WORD: ${{ secrets.QUAD_WORD }}
@@ -69,7 +69,6 @@ jobs:
     if: github.ref == 'refs/heads/production'
 
     env:
-      IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       QUAD_WORD: ${{ secrets.QUAD_WORD }}
