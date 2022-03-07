@@ -47,5 +47,9 @@ runs:
         service: ${{ env.SERVICE_NAME }}
         image: ${{ steps.variables.outputs.image }}:latest
         region: us-central1
+        flags: |
+          --service-account=cloud-run-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+          --min-instances=0
+          --allow-unauthenticated
         env_vars: |
           QUAD_WORD=${{ env.QUAD_WORD }}
