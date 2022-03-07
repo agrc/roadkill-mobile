@@ -60,6 +60,7 @@ jobs:
     env:
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
+      CLOUDSQL_INSTANCE: ${{ secrets.CLOUDSQL_INSTANCE }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       ENVIRONMENT: 'staging'
@@ -80,6 +81,7 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
@@ -95,6 +97,7 @@ jobs:
     env:
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
+      CLOUDSQL_INSTANCE: ${{ secrets.CLOUDSQL_INSTANCE }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       ENVIRONMENT: production
@@ -111,10 +114,11 @@ jobs:
       - name: DB Migrations
         uses: ./.github/actions/back/db-migrations
         with:
-          environment: Staging
+          environment: Production
           project_id: ${{ secrets.PROJECT_ID }}
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
 
       - name: Deploy
         uses: ./.github/actions/back/deploy
