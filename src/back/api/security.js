@@ -1,11 +1,12 @@
 import got from 'got';
+import getSecret from '../services/secrets.js';
 import { deleteUser, getUser, setUser } from '../services/user_cache.js';
 import { getUser as getAppUser } from '../services/user_management.js';
 
 export async function getToken(request, response) {
   const accessTokenName = 'authorization_code';
   const grantTypes = [accessTokenName, 'refresh_token'];
-  if (request.body.client_id !== process.env.CLIENT_ID) {
+  if (request.body.client_id !== getSecret('client-id')) {
     return response.status(400).send('invalid client_id');
   } else if (!grantTypes.includes(request.body.grant_type)) {
     return response.status(400).json({
