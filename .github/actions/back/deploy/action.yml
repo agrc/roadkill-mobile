@@ -25,21 +25,21 @@ runs:
         username: oauth2accesstoken
         password: ${{ steps.auth.outputs.access_token }}
 
-    - name: 📦 Build image
+    - name: ✂️ Set short commit hash
       shell: bash
-      working-directory: src
-      run: |-
-        docker build \
-          -t "${{ steps.variables.outputs.image }}:$GITHUB_SHA" \
-          -t "${{ steps.variables.outputs.image }}:latest" \
-          -f ./back/Dockerfile \
-          .
+      run: |
+        echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
-    - name: 📤 Publish image
-      shell: bash
-      working-directory: src
-      run: |-
-        docker push "${{ steps.variables.outputs.image }}" -a
+    - name: 📦 Build and push image
+      uses: docker/build-push-action@v2
+      with:
+        file: ./src/back/Dockerfile
+        builder: ${{ steps.builder.outputs.name }}
+        tags: ${{ steps.variables.outputs.image }}:${{ env.SHORT_SHA }},${{ steps.variables.outputs.image }}:latest
+        context: ./src
+        push: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
     - name: 🚀 Deploy to Cloud Run
       uses: google-github-actions/deploy-cloudrun@v0
@@ -48,18 +48,19 @@ runs:
         image: ${{ steps.variables.outputs.image }}:latest
         region: us-central1
         flags: |
-          --service-account=cloud-run@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+          --service-account=cloud-run-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
           --max-instances=10
           --min-instances=${{ env.MIN_INSTANCES }}
           --set-cloudsql-instances=app
           --allow-unauthenticated
-        env_vars: |
-          ADMIN_EMAIL=${{ env.ADMIN_EMAIL }}
-          API=${{ env.API }}
-          CLIENT_ID=${{ env.CLIENT_ID }}
-          DATABASE_HOST=${{ env.DATABASE_HOST }}
-          DATABASE_PASSWORD=${{ env.DATABASE_PASSWORD }}
-          ENVIRONMENT=${{ env.ENVIRONMENT }}
-          SENDGRID_API_KEY=${{ env.SENDGRID_API_KEY }}
-          PROJECT_ID=${{ env.PROJECT_ID }}
+        env_vars: >
+          ADMIN_EMAIL=${{ env.ADMIN_EMAIL }},
+          API=${{ env.API }},
+          DATABASE_HOST=${{ env.DATABASE_HOST }},
+          ENVIRONMENT=${{ env.ENVIRONMENT }},
+          PROJECT_ID=${{ env.PROJECT_ID }},
           WEBSITE=${{ env.WEBSITE }}
+        secrets: >
+          /secrets/client_id/value=client-id:latest,
+          /secrets/database_password/value=database-password:latest,
+          /secrets/sendgrid_api_key/value=sendgrid-api-key:latest

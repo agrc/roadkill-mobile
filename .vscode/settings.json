@@ -3,6 +3,7 @@
     "accesstoken",
     "api",
     "autolinker",
+    "Buildx",
     "cloudrun",
     "cloudsql",
     "crosshairs",

@@ -60,13 +60,12 @@ jobs:
     env:
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       API: ${{ secrets.API }}
-      CLIENT_ID: ${{ secrets.CLIENT_ID }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       ENVIRONMENT: 'staging'
       IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       MIN_INSTANCES: 0
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       WEBSITE: ${{ secrets.WEBSITE }}
 
@@ -100,8 +99,8 @@ jobs:
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       ENVIRONMENT: production
       IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       MIN_INSTANCES: 1
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
       WEBSITE: ${{ secrets.WEBSITE }}
 
