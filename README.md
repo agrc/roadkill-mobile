@@ -36,6 +36,10 @@ Release channels are based on the major number (e.g. `production-v3`). If you ne
 
 These values are managed in three places: `.env.*` files in your local project, [GitHub Actions Secrets](https://github.com/agrc/roadkill-mobile/settings/secrets/actions) (for back end deployments), and [Expo EAS Secrets](https://expo.dev/accounts/agrc/projects/wildlife-vehicle-collision-reporter/secrets).
 
+### Cloud Run Secrets
+
+These values are managed in GCP Secrets Manager. After running the terraform, make sure to populate versions for the secrets that it creates. Also create corresponding secret files in `src/back/secrets/` for local development.
+
 ### One-time Setup
 
 1. Create the following repo secrets in GitHub for each environment:
