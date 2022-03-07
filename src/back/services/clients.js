@@ -2,15 +2,16 @@ import { Firestore } from '@google-cloud/firestore';
 import { Storage } from '@google-cloud/storage';
 import sgMail from '@sendgrid/mail';
 import knex from 'knex';
+import getSecret from './secrets.js';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(getSecret('sendgrid-api-key'));
 
 export const db = knex({
   client: 'pg',
   connection: {
     host: process.env.DATABASE_HOST,
     user: 'api',
-    password: process.env.DATABASE_PASSWORD,
+    password: getSecret('database-password'),
     database: 'app',
   },
 });

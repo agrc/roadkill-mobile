@@ -56,10 +56,11 @@ runs:
         env_vars: |
           ADMIN_EMAIL=${{ env.ADMIN_EMAIL }}
           API=${{ env.API }}
-          CLIENT_ID=${{ env.CLIENT_ID }}
           DATABASE_HOST=${{ env.DATABASE_HOST }}
-          DATABASE_PASSWORD=${{ env.DATABASE_PASSWORD }}
           ENVIRONMENT=${{ env.ENVIRONMENT }}
-          SENDGRID_API_KEY=${{ env.SENDGRID_API_KEY }}
           PROJECT_ID=${{ env.PROJECT_ID }}
           WEBSITE=${{ env.WEBSITE }}
+        secrets: |
+          /secrets/client-id=client-id:latest
+          /secrets/database-password=database-password:latest
+          /secrets/sendgrid-api-key=sendgrid-api-key:latest
