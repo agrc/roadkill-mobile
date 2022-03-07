@@ -48,7 +48,7 @@ runs:
         image: ${{ steps.variables.outputs.image }}:latest
         region: us-central1
         flags: |
-          --service-account=cloud-run@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+          --service-account=cloud-run-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
           --max-instances=10
           --min-instances=${{ env.MIN_INSTANCES }}
           --set-cloudsql-instances=app
