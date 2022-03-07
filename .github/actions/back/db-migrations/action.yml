@@ -13,6 +13,9 @@ inputs:
   service_account_email:
     description: gcp service account email
     required: true
+  cloudsql_instance:
+    description: cloud sql instance name
+    required: true
 
 runs:
   using: composite
@@ -31,7 +34,7 @@ runs:
       run: |
         wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
         chmod +x cloud_sql_proxy
-        ./cloud_sql_proxy -instances=${{ inputs.project_id }}:us-central1:app=tcp:5432 -credential_file=${{ steps.auth.credentials_file_path }} &
+        ./cloud_sql_proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 -credential_file=${{ steps.auth.credentials_file_path }} &
 
     - name: Setup Node.js
       uses: actions/setup-node@v2

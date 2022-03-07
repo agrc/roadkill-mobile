@@ -55,7 +55,7 @@ runs:
           --service-account=cloud-run-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
           --max-instances=10
           --min-instances=${{ env.MIN_INSTANCES }}
-          --set-cloudsql-instances=app
+          --set-cloudsql-instances=${{ env.CLOUDSQL_INSTANCE }}
           --allow-unauthenticated
         env_vars: >
           ADMIN_EMAIL=${{ env.ADMIN_EMAIL }},
