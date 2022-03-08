@@ -93,10 +93,6 @@ After testing in dev client...
 
 Because app builds initiate from both the developer's machine (new native builds) and GitHub Actions (over-the-air updates), secrets need to be managed in both places. `.env.sample` should be duplicated and populated to `.env`, `.env.staging`, `.env.production`. Corresponding secrets are also stored in environments in the GitHub repository.
 
-### Social OAuth Providers
-
-Note that google oauth is done exclusively through the prod GCP project for all app environments since there's no real need to differentiate between environments.
-
 ### Test User Links
 
 Android Devices (Internal Testing): https://play.google.com/apps/internaltest/4699387731848346247
