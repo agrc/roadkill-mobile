@@ -25,24 +25,24 @@ export async function verifyPermissions() {
   console.log('existingPermissions', existingPermissions);
 
   if (!existingPermissions.granted) {
-    if (Platform.OS === 'android') {
-      await new Promise((resolve) => {
-        let buttons = [{ text: 'OK', onPress: resolve }];
-        if (!existingPermissions.canAskAgain) {
-          buttons.push({ text: 'Go To Settings', onPress: () => Linking.openSettings() });
-        }
-        Alert.alert(
-          'Background Location Permissions',
-          [
-            'WVC Reporter collects location data to enable the tracking of vehicle routes even when the app is closed or',
-            'not in use. Data is only collected when a tracking session is active. Data submitted to the server is only',
-            'used for billing purposes and is not shared with any third parties.',
-            'Please select the **Allow all the time** option in the location settings dialog',
-          ].join(' '),
-          buttons
-        );
-      });
-    }
+    await new Promise((resolve) => {
+      let buttons = [{ text: 'OK', onPress: resolve }];
+      if (!existingPermissions.canAskAgain) {
+        buttons.push({ text: 'Go To Settings', onPress: () => Linking.openSettings() });
+      }
+      Alert.alert(
+        'Background Location Permissions',
+        [
+          'WVC Reporter collects location data to enable the tracking of vehicle routes even when the app is closed or',
+          'not in use. Data is only collected when a tracking session is active. Data submitted to the server is only',
+          'used for billing purposes and is not shared with any third parties.',
+          `Please select the **${
+            Platform.OS === 'android' ? 'Allow all the time' : 'Always'
+          }** option in the location settings dialog`,
+        ].join(' '),
+        buttons
+      );
+    });
 
     const result = await Location.requestBackgroundPermissionsAsync();
 
