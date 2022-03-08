@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16
 
 WORKDIR /usr/src/common
 COPY ./common/package*.json ./
@@ -10,6 +10,7 @@ COPY ./website/package*.json ./
 RUN npm i
 COPY ./website .
 RUN npm run build
+RUN npm prune --production
 
 EXPOSE 3000
 
