@@ -64,7 +64,7 @@ jobs:
       CLOUDSQL_INSTANCE: ${{ secrets.CLOUDSQL_INSTANCE }}
       DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      ENVIRONMENT: 'staging'
+      ENVIRONMENT: staging
       MIN_INSTANCES: 0
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
