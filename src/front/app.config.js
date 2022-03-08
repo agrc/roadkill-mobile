@@ -64,7 +64,10 @@ export default {
     versionCode: buildNumber,
     softwareKeyboardLayoutMode: 'pan',
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage:
+        process.env.ENVIRONMENT === 'production'
+          ? './assets/adaptive-icon.png'
+          : `./assets/adaptive-icon_${process.env.ENVIRONMENT}.png`,
       backgroundColor: '#FFFFFF',
     },
     permissions: [
