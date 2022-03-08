@@ -1,3 +1,33 @@
+# [v3.0.0-526](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-525...v3.0.0-526) (2022-03-08)
+
+
+### Bug Fixes
+
+* **back:** fix sql instance name format and make secret ([d8e2ada](https://github.com/agrc/roadkill-mobile/commit/d8e2ada39dcf5c67b69427546ba2e298ade1b1a4))
+* **back:** fix thumb endpoint resizing ([0b348f2](https://github.com/agrc/roadkill-mobile/commit/0b348f2125b979b210f5413c19946896185a5bd0))
+* **back:** handle bad photo ids ([5b8185e](https://github.com/agrc/roadkill-mobile/commit/5b8185e09ae4555778d5e78061a15295aba3b8d7))
+* **back:** move secrets from env vars to gcp secret manager ([9eec165](https://github.com/agrc/roadkill-mobile/commit/9eec165255d2a66ea334c076c51e4874b357e865))
+* **back:** sort and add environment var ([8fd7867](https://github.com/agrc/roadkill-mobile/commit/8fd78670dd428befe25f2663ef4a6365f7e45ca4)), closes [#119](https://github.com/agrc/roadkill-mobile/issues/119)
+* fix prod dns ([3fb827f](https://github.com/agrc/roadkill-mobile/commit/3fb827f17113a6ae7f314eb47388de66174b9cb3))
+* **front:** add dev and staging oauth client ids ([ca74e3e](https://github.com/agrc/roadkill-mobile/commit/ca74e3e5b1e939f3dfcb02d18bc1351f3ed9b622))
+* **front:** add dev-specific app name ([d225465](https://github.com/agrc/roadkill-mobile/commit/d225465034f756a7657c15b02b332598b8299859))
+* **front:** add missing dev env var ([7f87ea9](https://github.com/agrc/roadkill-mobile/commit/7f87ea948841234271258dd4834851ae097578a2)), closes [#152](https://github.com/agrc/roadkill-mobile/issues/152)
+* **front:** create android icons for staging and development ([b08a0f4](https://github.com/agrc/roadkill-mobile/commit/b08a0f4b199e7367eb31a128f1f6270b0d2d88e4)), closes [#152](https://github.com/agrc/roadkill-mobile/issues/152)
+* **front:** handle psap query when no recent location is available ([533659c](https://github.com/agrc/roadkill-mobile/commit/533659c0937ce6af67858790c989f0518ab599cf))
+* **front:** move key to containing view to get rid of react warning ([ab16e86](https://github.com/agrc/roadkill-mobile/commit/ab16e86af45a429b002c2e064c0edbce30f5063a))
+* **front:** pop background permissions warning on both ios and android ([b58ee7d](https://github.com/agrc/roadkill-mobile/commit/b58ee7db04210de723b689f4a6177a992a1cbdc9)), closes [#169](https://github.com/agrc/roadkill-mobile/issues/169)
+* **website:** run normal npm i ([787cfd3](https://github.com/agrc/roadkill-mobile/commit/787cfd3393b7b7fe87f721caf892a5d92f1445d2))
+
+
+### Features
+
+* add notifications for public reports ([1e9d355](https://github.com/agrc/roadkill-mobile/commit/1e9d35599dde139ae2582ce8e1ad636ec5da0dd3)), closes [#35](https://github.com/agrc/roadkill-mobile/issues/35)
+* add organization drop downs ([09c7dab](https://github.com/agrc/roadkill-mobile/commit/09c7dab4cfd599f25d75647fa6b70967aa71aec3)), closes [#80](https://github.com/agrc/roadkill-mobile/issues/80)
+* **back:** implement database migrations ([6879273](https://github.com/agrc/roadkill-mobile/commit/6879273c3d9d03c88dcaa05a457d5ed8a10edd18)), closes [#68](https://github.com/agrc/roadkill-mobile/issues/68)
+* **front:** create dev and staging apps ([c624de2](https://github.com/agrc/roadkill-mobile/commit/c624de29c0e117ad710af32a0880d0adab13d294)), closes [#152](https://github.com/agrc/roadkill-mobile/issues/152)
+
+
+
 # [v3.0.0-525](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-524...v3.0.0-525) (2022-02-15)
 
 
