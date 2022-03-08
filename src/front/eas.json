@@ -22,6 +22,9 @@
       "releaseChannel": "default",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "ENVIRONMENT": "development"
       }
     },
     "simulator-dev": {
@@ -34,6 +37,9 @@
       },
       "ios": {
         "simulator": true
+      },
+      "env": {
+        "ENVIRONMENT": "development"
       }
     },
     "staging": {
@@ -42,6 +48,9 @@
       "releaseChannel": "staging-v3",
       "android": {
         "buildType": "app-bundle"
+      },
+      "env": {
+        "ENVIRONMENT": "staging"
       }
     },
     "production": {
@@ -50,6 +59,9 @@
       "releaseChannel": "production-v3",
       "android": {
         "buildType": "app-bundle"
+      },
+      "env": {
+        "ENVIRONMENT": "production"
       }
     }
   }
