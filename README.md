@@ -38,7 +38,7 @@ These values are managed in three places: `.env.*` files in your local project, 
 
 ### Cloud Run Secrets
 
-These values are managed in GCP Secrets Manager. After running the terraform, make sure to populate versions for the secrets that it creates. Also create corresponding secret files in `src/back/secrets/` for local development.
+These values are managed in GCP Secrets Manager. After running the terraform, make sure to populate versions for the secrets that it creates. Also create corresponding secret files in `src/back/secrets/<secret_name>/value` for local development.
 
 ### One-time Setup
 
