@@ -1411,69 +1411,14 @@
   ],
   "organizations": [
     {
-      "id": 1,
-      "name": "UGRC",
-      "org_type": "agency"
-    },
-    {
-      "id": 2,
-      "name": "UDWR",
-      "org_type": "agency"
-    },
-    {
       "id": 3,
       "name": "EcoLife",
       "org_type": "contractor"
     },
     {
-      "id": 4,
-      "name": "Ugrc",
-      "org_type": "agency"
-    },
-    {
-      "id": 5,
+      "id": 6,
       "name": "Allstar Advantage Services",
       "org_type": "contractor"
-    },
-    {
-      "id": 6,
-      "name": "Bill Frandsen",
-      "org_type": "contractor"
-    },
-    {
-      "id": 7,
-      "name": "Brigham Young University",
-      "org_type": "agency"
-    },
-    {
-      "id": 8,
-      "name": "Christensen Catfish",
-      "org_type": "contractor"
-    },
-    {
-      "id": 9,
-      "name": "EcoLife",
-      "org_type": "contractor"
-    },
-    {
-      "id": 10,
-      "name": "Epix Enterprises",
-      "org_type": "contractor"
-    },
-    {
-      "id": 11,
-      "name": "Roxanne Randall",
-      "org_type": "contractor"
-    },
-    {
-      "id": 12,
-      "name": "Superiorgov Services",
-      "org_type": "contractor"
-    },
-    {
-      "id": 13,
-      "name": "Utah Department of Transportation",
-      "org_type": "agency"
     },
     {
       "id": 14,
@@ -1481,7 +1426,47 @@
       "org_type": "agency"
     },
     {
+      "id": 11,
+      "name": "Utah Department of Transportation",
+      "org_type": "agency"
+    },
+    {
+      "id": 4,
+      "name": "Utah Geospatial Resource Center",
+      "org_type": "agency"
+    },
+    {
+      "id": 7,
+      "name": "Bill Frandsen",
+      "org_type": "contractor"
+    },
+    {
+      "id": 8,
+      "name": "Brigham Young University",
+      "org_type": "agency"
+    },
+    {
+      "id": 10,
+      "name": "Christensen Catfish",
+      "org_type": "contractor"
+    },
+    {
+      "id": 12,
+      "name": "Epix Enterprises",
+      "org_type": "contractor"
+    },
+    {
+      "id": 13,
+      "name": "Roxanne Randall",
+      "org_type": "contractor"
+    },
+    {
       "id": 15,
+      "name": "Superiorgov Services",
+      "org_type": "contractor"
+    },
+    {
+      "id": 16,
       "name": "Utah State University",
       "org_type": "agency"
     }
