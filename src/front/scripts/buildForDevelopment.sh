@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "make sure that simulators are running..."
-open -a simulator
-emulator -avd $(emulator -list-avds) || true
+echo "remember to make sure that simulators are running..."
 
 ./scripts/removeArtifacts.sh
 
