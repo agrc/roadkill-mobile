@@ -5,5 +5,4 @@ npm-debug.*
 !.env.test
 *-debug.log
 firebase-export*
-secrets/*
-!secrets/.keep
+secrets/*/value
