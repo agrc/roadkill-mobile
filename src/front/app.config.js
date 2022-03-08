@@ -1,23 +1,38 @@
 import 'dotenv/config';
 
-const bundleId = 'gov.dts.ugrc.utahwvcr';
+const baseBundleId = 'gov.dts.ugrc.utahwvcr';
+const bundleIds = {
+  development: `${baseBundleId}.dev`,
+  staging: `${baseBundleId}.staging`,
+  production: baseBundleId,
+};
+const bundleId = bundleIds[process.env.ENVIRONMENT];
+const names = {
+  development: 'WVC Reporter (Dev)',
+  staging: 'WVC Reporter (Staging)',
+  production: 'WVC Reporter',
+};
+const name = names[process.env.ENVIRONMENT];
 
 const buildNumber = 525;
 
 export default {
-  name: 'WVC Reporter',
+  name,
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
   scheme: bundleId,
   facebookScheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
   facebookAppId: process.env.FACEBOOK_OAUTH_CLIENT_ID,
-  facebookDisplayName: 'Utah WVC Reporter',
+  facebookDisplayName: `Utah ${name}`,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.0',
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: process.env.ENVIRONMENT === 'production' ? './assets/icon.png' : `./assets/icon_${process.env.ENVIRONMENT}.png`,
   splash: {
-    image: './assets/splash.png',
+    image:
+      process.env.ENVIRONMENT === 'production'
+        ? './assets/splash.png'
+        : `./assets/splash_${process.env.ENVIRONMENT}.png`,
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
