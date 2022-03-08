@@ -20,13 +20,13 @@ cp *.apk ./dev-clients
 
 echo "installing on ios simulator"
 tar -xf ./dev-clients/*.gz
-xcrun simctl install booted ./WVCReporter.app
-xcrun simctl launch booted gov.dts.ugrc.utahwvcr
-rm -rf ./WVCReporter.app
+xcrun simctl install booted ./WVCReporterDev.app
+xcrun simctl launch booted gov.dts.ugrc.utahwvcr.dev
+rm -rf ./WVCReporterDev.app
 
 echo "installing on android emulator"
 adb install ./dev-clients/*.apk
-adb shell monkey -p gov.dts.ugrc.utahwvcr 1
+adb shell monkey -p gov.dts.ugrc.utahwvcr.dev 1
 
 echo "building ios and android apps for local device development"
 eas build --platform all --profile development --non-interactive
