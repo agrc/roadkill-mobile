@@ -13,8 +13,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
-import { default as theme } from './custom-theme.json';
-import { default as mapping } from './mapping.json';
+import theme from './custom-theme.json';
+import mapping from './mapping.json';
 import packs from './services/icons';
 
 console.log('starting up...');
