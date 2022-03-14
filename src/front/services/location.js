@@ -110,13 +110,19 @@ export function useFollowUser(mapViewRef) {
 }
 
 export async function getAssistancePrompt() {
+  const existingPermissions = await Location.getForegroundPermissionsAsync();
+
+  let prompt = 'If you encounter a live animal please contact your local law enforcement.';
+  if (!existingPermissions.granted) {
+    return prompt;
+  }
+
   let currentLocation = await Location.getLastKnownPositionAsync();
 
   if (!currentLocation) {
     currentLocation = await getLocation();
   }
 
-  let prompt = 'If you encounter a live animal please contact your local law enforcement.';
   try {
     const response = await ky(`${config.URLS.PSAP_FEATURE_SERVICE}/query`, {
       searchParams: {
