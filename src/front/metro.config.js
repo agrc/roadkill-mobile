@@ -5,12 +5,6 @@ const defaultConfig = getDefaultConfig(__dirname);
 const path = require('path');
 const commonDir = path.resolve(__dirname + '/../common');
 
-defaultConfig.transformer.getTransformOptions = async () => ({
-  transform: {
-    experimentalImportSupport: false,
-    inlineRequires: false,
-  },
-});
 defaultConfig.resolver.extraNodeModules.common = commonDir;
 defaultConfig.watchFolders.push(commonDir);
 defaultConfig.resolver.assetExts.push('lazy');
