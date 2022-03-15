@@ -37,7 +37,7 @@ describe('PhotoCapture', () => {
         DateTimeOriginal: '2018:12:01 12:00:00',
       };
       const date = new Date();
-      const expected = `2018-12-01T${12 + date.getTimezoneOffset() / 60}:00:00.000Z`;
+      const expected = `2018-12-01T${13 + date.getTimezoneOffset() / 60}:00:00.000Z`;
 
       expect(getDateFromExif(exif)).toEqual(expected);
     });
