@@ -247,8 +247,8 @@ export default function MainScreen() {
     }
   };
 
-  const onRegionChange = (_, event) => {
-    if (isFollowing && event.isGesture) {
+  const onPanDrag = () => {
+    if (isFollowing) {
       stopFollowUser();
     }
   };
@@ -289,7 +289,7 @@ export default function MainScreen() {
         <>
           <Map
             initialRegion={locationToRegion(initialLocation)}
-            onRegionChange={onRegionChange}
+            onPanDrag={onPanDrag}
             mapPadding={
               reportState.showReport
                 ? Platform.select({
