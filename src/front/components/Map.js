@@ -1,6 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
-import MapView, { PROVIDER_GOOGLE, UrlTile } from 'react-native-maps';
+import { Platform } from 'react-native';
+import MapView, { MAP_TYPES, UrlTile } from 'react-native-maps';
 import config from '../services/config';
 
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
@@ -16,11 +17,10 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
   return (
     <MapView
       loadingEnabled={true}
-      mapType="none"
+      mapType={Platform.select({ android: 'none', ios: MAP_TYPES.STANDARD })}
       maxZoomLevel={18}
       minZoomLevel={5}
       pitchEnabled={false}
-      provider={PROVIDER_GOOGLE}
       ref={innerRef}
       rotateEnabled={false}
       showsMyLocationButton={false}
@@ -29,9 +29,12 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
     >
       {children}
       <UrlTile
-        doubleTileSize={true}
+        doubleTileSize={Platform.select({ android: true, ios: false })}
         minimumZ={3}
         shouldReplaceMapContent={true}
+        // ios doubles the tile sizes despite setting doubleTileSize to false
+        // this setting is to help resize them so that the labels aren't tiny
+        tileSize={Platform.select({ android: 256, ios: 384 })}
         urlTemplate={config.URLS.LITE}
         zIndex={-5}
       />
