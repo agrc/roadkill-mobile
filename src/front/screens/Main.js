@@ -160,11 +160,6 @@ export default function MainScreen() {
   const setMarker = async () => {
     const points = { ...crosshairCoordinates };
 
-    if (Platform.OS === 'android') {
-      points.y = points.y * ZOOM_FACTOR;
-      points.x = points.x * ZOOM_FACTOR;
-    }
-
     const coordinates = await mapView.current.coordinateForPoint(points);
 
     setCarcassCoordinates(coordinates);
@@ -266,22 +261,9 @@ export default function MainScreen() {
   };
 
   const { height, width } = useWindowDimensions();
-  const ZOOM_FACTOR = 1.3;
   const mapSizeStyle = {
-    ...Platform.select({
-      ios: {
-        height,
-        width,
-      },
-      android: {
-        // the cache tiles look super-pixelated on android, this is a hack to help them look better
-        height: height * ZOOM_FACTOR,
-        width: width * ZOOM_FACTOR,
-        marginTop: -(height * ZOOM_FACTOR - height) / 2,
-        marginLeft: -(width * ZOOM_FACTOR - width) / 2,
-        transform: [{ scale: 1 / ZOOM_FACTOR }],
-      },
-    }),
+    height,
+    width,
   };
 
   const CrosshairIcon = getIcon({
@@ -292,16 +274,10 @@ export default function MainScreen() {
   });
 
   const crosshairCoordinates = mapDimensions.current
-    ? Platform.select({
-        ios: {
-          y: (mapDimensions.current.height - reportHeight) / 2,
-          x: mapDimensions.current.width / 2,
-        },
-        android: {
-          y: (mapDimensions.current.height - reportHeight) / 2 / ZOOM_FACTOR,
-          x: mapDimensions.current.width / 2 / ZOOM_FACTOR,
-        },
-      })
+    ? {
+        y: (mapDimensions.current.height - reportHeight) / 2,
+        x: mapDimensions.current.width / 2,
+      }
     : null;
   const VehicleIcon = getIcon({ pack: 'material', name: 'drive-eta', size: 36, color: theme['color-basic-900'] });
   const showTrackingMarker =
