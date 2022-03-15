@@ -83,7 +83,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-maps": "0.29.4",
     "react-native-pressable-opacity": "^1.0.8",
-    "react-native-reanimated": "~2.3.1",
+    "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
