@@ -24,11 +24,13 @@ I use [Flipper](https://fbflipper.com/) with a custom Expo development client as
 
 ### Release Pipeline
 
-| branch     | version | deployed                | release-channel | expo version |
-|------------|---------|-------------------------|-----------------|-----------|
-| production | 3.0.0   | App Stores              | production-v3   | n/a       |
-| staging    | 3.0.0   | TestFlight/Google Alpha | staging-v3      | 44.0.6    |
-| dev        | 3.0.0   | n/a                     | dev-v3          | 44.0.6    |
+| branch     | version | deployed                                                                                                                                                                                                                                                                         | release-channel | expo version |
+|------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-----|
+| production | 3.0.0   | App Stores                                                                                                                                                                                                                                                                       | production-v3   | n/a |
+| staging    | 3.0.0   | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging-v3      | 44.0.6 |
+| dev        | 3.0.0   | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon                                                                                                                                                                                         | dev-v3          | 44.0.6 |
+
+These three environments are three separate bundle IDs (see `src/front/app.config.js`) and can all be installed on the same device simultaneously.
 
 Release channels are based on the major number (e.g. `production-v3`). If you need to change something that requires a new app build (e.g. changes to `app.config.js` or SDK upgrade), bump the major version of the app to keep it on a new release channel thus preventing conflicts with older app builds. [src/front/scripts/getReleaseChannel.sh](src/front/scripts/getReleaseChannel.sh) returns the appropriate version number.
 
@@ -70,7 +72,7 @@ Do one of the following from `src/front`:
 
 1. `./scripts/deployNewAppBuild.sh` if a new app build is needed.
    1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/4699387731848346247/releases/11/prepare)
-   1. Apple: Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
+   1. Apple: Promote release to *"External Testers"*. Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
 1. Push an OTA update:
    - `./scripts/deployOTAUpdate.sh` to publish a new over-the-air update.
    - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
@@ -95,9 +97,9 @@ Because app builds initiate from both the developer's machine (new native builds
 
 ### Test User Links
 
-Android Devices (Internal Testing): https://play.google.com/apps/internaltest/4699387731848346247
+Android Devices (Internal Testing): [Production](https://play.google.com/apps/internaltest/4699387731848346247) | [Staging](https://play.google.com/apps/internaltest/4701504858394647093)
 
-iOS Devices (TestFlight): https://testflight.apple.com/join/66Vul6Jz
+iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](#TODO)
 
 Facebook: Until the app is approved in the Google Play or App Store, we can only test with this test account:
 
