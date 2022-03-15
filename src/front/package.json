@@ -81,7 +81,7 @@
     "react-native-gesture-handler": "~2.1.0",
     "react-native-get-random-values": "~1.7.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
-    "react-native-maps": "0.29.4",
+    "react-native-maps": "^0.30.1",
     "react-native-pressable-opacity": "^1.0.8",
     "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "3.3.2",
