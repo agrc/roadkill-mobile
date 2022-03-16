@@ -18,17 +18,17 @@ echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH
 
 ./scripts/removeArtifacts.sh $PLATFORM
 
-echo "building $PLATFORM platform(s) concurrently"
+echo "building $PLATFORM platform(s)"
 eas build --platform $PLATFORM --profile $RELEASE_BRANCH --non-interactive
 
 ./scripts/downloadArtifacts.sh $PLATFORM
 
-if [ "$PLATFORM" == "all" or "$PLATFORM" == "ios" ]; then
+if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
   echo "uploading to testflight"
   fastlane pilot upload -u stdavis@utah.gov
 fi
 
-if [ "$PLATFORM" == "all" or "$PLATFORM" == "android" ]; then
+if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "android" ]; then
   echo "*** don't forget to upload the android package to the Google Play Console at https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/bundle-explorer"
 fi
