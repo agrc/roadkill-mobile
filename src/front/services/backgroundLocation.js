@@ -33,7 +33,7 @@ export async function verifyPermissions() {
       Alert.alert(
         'Background Location Permissions',
         [
-          'WVC Reporter collects location data to enable the tracking of vehicle routes even when the app is closed or',
+          'This app collects location data to enable the tracking of vehicle routes even when the app is closed or',
           'not in use. Data is only collected when a tracking session is active. Data submitted to the server is only',
           'used for billing purposes and is not shared with any third parties.',
           `Please select the **${
