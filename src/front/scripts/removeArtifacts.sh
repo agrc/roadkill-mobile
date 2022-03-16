@@ -8,12 +8,12 @@ else
 fi
 
 echo "cleaning up old artifacts"
-if [ "$PLATFORM" == "all" or "$PLATFORM" == "ios" ]; then
+if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   rm -f -- *.gz
   rm -f -- *.ipa
 fi
 
-if [ "$PLATFORM" == "all" or "$PLATFORM" == "android" ]; then
+if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "android" ]; then
   rm -f -- *.apk
   rm -f -- *.aab
 fi
