@@ -66,3 +66,12 @@ export function getIcon({ pack, name, size = null, color = null, style = null })
 
   return HydratedIcon;
 }
+
+export function getArrowIcon(theme) {
+  return getIcon({
+    pack: 'eva',
+    name: 'arrow-forward',
+    color: theme['color-basic-800'],
+    size: 24,
+  });
+}

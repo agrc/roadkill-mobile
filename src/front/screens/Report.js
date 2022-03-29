@@ -14,6 +14,7 @@ import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { ACCURACY, getLocation } from '../services/location';
+import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
 import { pointCoordinatesToString } from '../services/utilities';
 
@@ -116,6 +117,7 @@ const Report = ({
   const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
+  const { isConnected, cacheReport } = useOfflineCache();
 
   const { post } = useAPI();
 
@@ -148,11 +150,28 @@ const Report = ({
       return;
     }
 
+    if (!isConnected) {
+      await cacheReport(submitValues);
+
+      onClose(true);
+
+      return;
+    }
+
     // this FormData class is NOT the same class as in the browser
     // ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
     const formData = getFormData(submitValues);
 
-    const responseJson = await post(`reports/${reportType}`, formData, true);
+    let responseJson;
+    try {
+      responseJson = await post(`reports/${reportType}`, formData, true);
+    } catch (error) {
+      await cacheReport(submitValues, error);
+
+      onClose(true);
+
+      return;
+    }
 
     console.log('responseJson.report_id', responseJson.report_id);
 
@@ -176,7 +195,7 @@ const Report = ({
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
     },
     onError: (error) => {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', error);
     },
   });
 

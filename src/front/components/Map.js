@@ -1,18 +1,9 @@
-import * as FileSystem from 'expo-file-system';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Platform } from 'react-native';
 import MapView, { MAP_TYPES, UrlTile } from 'react-native-maps';
 import config from '../services/config';
-
-const tileCacheDirectory = `${FileSystem.cacheDirectory}tiles`;
-FileSystem.getInfoAsync(tileCacheDirectory, { size: true }).then((info) => {
-  console.log('tileCacheDirectory info', info);
-  if (!info.exists) {
-    console.log('creating tileCacheDirectory');
-    FileSystem.makeDirectoryAsync(tileCacheDirectory);
-  }
-});
+import { tileCacheDirectory } from '../services/offline';
 
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
   if (isStatic) {

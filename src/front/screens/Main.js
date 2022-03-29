@@ -17,6 +17,7 @@ import backgroundLocationService, { verifyPermissions } from '../services/backgr
 import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { getLocation, locationToRegion, useFollowUser } from '../services/location';
+import { useOfflineCache } from '../services/offline';
 import { pointStringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
 import Report, { REPORT_TYPES } from './Report';
 
@@ -48,7 +49,7 @@ export default function MainScreen() {
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
   // eslint-disable-next-line no-unused-vars
-  const [hasUnsubmittedReports, setHasUnsubmittedReports] = React.useState(false);
+  const { hasUnsubmittedData } = useOfflineCache();
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
@@ -370,7 +371,7 @@ export default function MainScreen() {
             iconPack="material-community"
             iconName="folder-account"
             onPress={navigation.openDrawer}
-            showAlert={hasUnsubmittedReports}
+            showAlert={hasUnsubmittedData}
           />
         </View>
         <View>
