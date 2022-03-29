@@ -1,29 +1,41 @@
-import { useTheme } from '@ui-kitten/components';
+import { Text, useTheme } from '@ui-kitten/components';
+import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { getIcon } from '../services/icons';
 
-export default function AlertIcon() {
+export default function AlertIcon({ number }) {
   const theme = useTheme();
 
-  const Icon = getIcon({
-    pack: 'font-awesome',
-    name: 'circle',
-    size: 12,
-    color: theme['color-success-700'],
-  });
+  const style = {
+    backgroundColor: theme['color-success-800'],
+  };
 
   return (
-    <View style={styles.alertIcon}>
-      <Icon />
+    <View style={[styles.container, style]}>
+      <Text category="label" style={styles.textStyle}>
+        {number}
+      </Text>
     </View>
   );
 }
+AlertIcon.propTypes = {
+  number: propTypes.number,
+};
 
 const styles = StyleSheet.create({
-  alertIcon: {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
     top: 0,
     right: 0,
+    borderRadius: 5000,
+    minWidth: 15,
+  },
+  // eslint-disable-next-line react-native/no-color-literals
+  textStyle: {
+    color: 'white',
+    paddingHorizontal: 3,
   },
 });
