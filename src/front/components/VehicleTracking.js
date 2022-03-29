@@ -13,6 +13,7 @@ import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
 import { lineCoordinatesToString } from '../services/utilities';
 import Spinner from './Spinner';
@@ -230,6 +231,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   };
   const [spinnerMessage, setSpinnerMessage] = React.useState('');
 
+  const { isConnected, cacheRoute, cacheReport } = useOfflineCache();
   const submitRoute = async () => {
     const submitValues = {
       start_time: state.start,
@@ -238,23 +240,51 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
       submit_date: new Date().toISOString(),
     };
 
+    if (!isConnected) {
+      await cacheRoute(submitValues, state.pickups);
+
+      dispatch({ type: 'RESET' });
+
+      return;
+    }
+
     setSpinnerMessage('submitting route...');
 
-    const responseJson = await post('routes/route', submitValues);
+    let responseJson;
+    try {
+      responseJson = await post('routes/route', submitValues);
+    } catch (error) {
+      await cacheRoute(submitValues, state.pickups, error);
 
+      dispatch({ type: 'RESET' });
+
+      return;
+    }
+
+    const submitErrors = [];
     for (let index = 0; index < state.pickups.length; index++) {
       const pickup = state.pickups[index];
+      pickup.route_id = responseJson.route_id;
 
       setSpinnerMessage(`submitting pickup ${index + 1} of ${state.pickups.length}...`);
 
-      await post(
-        'reports/pickup',
-        getFormData({
-          ...pickup,
-          route_id: responseJson.route_id,
-        }),
-        true
+      try {
+        await post('reports/pickup', getFormData(pickup), true);
+      } catch (error) {
+        await cacheReport(pickup, error);
+        submitErrors.push(error);
+      }
+    }
+
+    if (submitErrors.length) {
+      Alert.alert(
+        'Error',
+        `Your route has been submitted successfully, but there were errors submitting your pickups. They have been cached on your device for later submission. \n\n${submitErrors
+          .map((error) => error.message)
+          .join('\n')}`
       );
+    } else {
+      Alert.alert('Success!', 'Your route has been submitted successfully.');
     }
   };
 
@@ -263,8 +293,6 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     onSuccess: () => {
       queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
-
-      Alert.alert('Success!', 'Your route has been submitted successfully.');
 
       dispatch({ type: 'RESET' });
     },
