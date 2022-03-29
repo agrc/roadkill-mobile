@@ -1,3 +1,4 @@
+import './CachedData.stories';
 import './Location.stories';
 import './MapButton.stories';
 import './PhotoCapture.stories';

@@ -99,6 +99,7 @@ export default {
   plugins: [
     'sentry-expo',
     'expo-community-flipper',
+    'expo-notifications',
     [
       'expo-image-picker',
       {

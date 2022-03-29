@@ -23,8 +23,10 @@ import ReportInfoScreen from '../screens/ReportInfo';
 import RouteInfoScreen from '../screens/RouteInfo';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import { useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
 import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from '../services/utilities';
+import AlertIcon from './AlertIcon';
 
 const { Navigator, Screen } = createStackNavigator();
 const prefix = Linking.createURL('/');
@@ -45,28 +47,30 @@ const AuthNavigator = () => {
   );
 };
 
-const DrawerIcon = (props) => {
+const DrawerIcon = ({ name, showAlert = false }) => {
   const theme = useTheme();
   const iconSize = 30;
 
   const Icon = getIcon({
     pack: 'eva',
-    name: props.name,
+    name: name,
     size: iconSize,
     color: theme['color-basic-700'],
   });
 
   return (
-    <View style={{ paddingRight: PADDING }}>
+    <View>
       <Icon />
+      {showAlert ? <AlertIcon /> : null}
     </View>
   );
 };
 DrawerIcon.propTypes = {
   name: propTypes.string.isRequired,
+  showAlert: propTypes.bool,
 };
 
-const getDrawContent = ({ navigation, state, logOut }) => {
+const getDrawContent = ({ navigation, state, logOut, hasUnsubmittedData }) => {
   let openStorybook;
   if (config.SHOW_STORYBOOK) {
     openStorybook = () => navigation.navigate('Storybook');
@@ -94,7 +98,10 @@ const getDrawContent = ({ navigation, state, logOut }) => {
     <SafeAreaView>
       <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
         <DrawerItem title="Main" style={{ display: 'none' }} />
-        <DrawerItem title="My Reports" accessoryLeft={() => <DrawerIcon name="list" />} />
+        <DrawerItem
+          title="My Reports"
+          accessoryLeft={() => <DrawerIcon name="list" showAlert={hasUnsubmittedData} />}
+        />
         <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
         <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
         <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
@@ -157,15 +164,16 @@ const ReportsNavigator = () => {
 const MainNavigator = () => {
   const { Navigator, Screen } = createDrawerNavigator();
   const { logOut } = useAuth();
+  const { hasUnsubmittedData } = useOfflineCache();
 
   return (
     <Navigator
-      drawerContent={(args) => getDrawContent({ ...args, logOut })}
+      drawerContent={(args) => getDrawContent({ ...args, logOut, hasUnsubmittedData })}
       screenOptions={{ swipeEnabled: false, headerLeft: CloseButton }}
     >
       <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
       <Screen name="Reports Navigator" component={ReportsNavigator} options={{ headerShown: false }} />
-      <Screen name="Profile" component={ProfileScreen} options={{ headerRight: () => getHeaderIcon('person') }} />
+      <Screen name="Profile" component={ProfileScreen} />
       {config.SHOW_STORYBOOK ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
     </Navigator>
   );

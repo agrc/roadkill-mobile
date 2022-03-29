@@ -16,6 +16,7 @@ import AppNavigator from './components/AppNavigator';
 import theme from './custom-theme.json';
 import mapping from './mapping.json';
 import packs from './services/icons';
+import { OfflineCacheContextProvider } from './services/offline';
 
 console.log('starting up...');
 const queryClient = new QueryClient();
@@ -71,7 +72,9 @@ export default function App() {
           <AuthContextProvider onReady={() => setAuthIsReady(true)}>
             {authIsReady ? (
               <View onLayout={onReady} style={{ flex: 1 }}>
-                <AppNavigator />
+                <OfflineCacheContextProvider>
+                  <AppNavigator />
+                </OfflineCacheContextProvider>
               </View>
             ) : (
               <Text>Loading...</Text>

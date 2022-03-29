@@ -3,11 +3,11 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
+import AlertIcon from './AlertIcon';
 
 const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color, children, status = 'basic' }) => {
   const theme = useTheme();
   const buttonSize = 30;
-  const alertSize = 12;
 
   if (!color) {
     color = ['basic', 'success'].includes(status) ? theme['color-basic-800'] : 'white';
@@ -21,23 +21,12 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, co
       size: iconSize || buttonSize,
     });
 
-    const AlertIcon = getIcon({
-      pack: 'font-awesome',
-      name: 'circle',
-      size: alertSize,
-      color: theme['color-warning-500'],
-    });
-
     const size = { height: buttonSize, width: buttonSize };
 
     return (
       <View style={[styles.container, children ? null : size]}>
         <Icon />
-        {showAlert ? (
-          <View style={styles.alertIcon}>
-            <AlertIcon />
-          </View>
-        ) : null}
+        {showAlert ? <AlertIcon /> : null}
         {children ? (
           <Text category="h5" style={{ color }}>
             {` ${children}`}
@@ -80,11 +69,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  alertIcon: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
   },
 });
 
