@@ -3,10 +3,12 @@ import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
 import { getArrowIcon } from '../services/icons';
+import useStyles from '../services/styles';
 
 export function ReportListItem({ item }) {
   const navigation = useNavigation();
   const theme = useTheme();
+  const commonStyles = useStyles();
 
   return (
     <ListItem
@@ -15,7 +17,7 @@ export function ReportListItem({ item }) {
       description={`${new Date(item.submit_date).toLocaleString()}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() => navigation.navigate('Report Info', { reportId: item.report_id })}
-      style={item.offlineStorageId ? { backgroundColor: theme['color-warning-100'] } : {}}
+      style={item.offlineStorageId ? commonStyles.offlineItem : null}
     />
   );
 }
