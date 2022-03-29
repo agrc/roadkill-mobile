@@ -47,7 +47,7 @@ const AuthNavigator = () => {
   );
 };
 
-const DrawerIcon = ({ name, showAlert = false }) => {
+const DrawerIcon = ({ name, alertNumber }) => {
   const theme = useTheme();
   const iconSize = 30;
 
@@ -61,16 +61,16 @@ const DrawerIcon = ({ name, showAlert = false }) => {
   return (
     <View>
       <Icon />
-      {showAlert ? <AlertIcon /> : null}
+      {alertNumber ? <AlertIcon number={alertNumber} /> : null}
     </View>
   );
 };
 DrawerIcon.propTypes = {
   name: propTypes.string.isRequired,
-  showAlert: propTypes.bool,
+  alertNumber: propTypes.number,
 };
 
-const getDrawContent = ({ navigation, state, logOut, hasUnsubmittedData }) => {
+const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
   let openStorybook;
   if (config.SHOW_STORYBOOK) {
     openStorybook = () => navigation.navigate('Storybook');
@@ -100,7 +100,7 @@ const getDrawContent = ({ navigation, state, logOut, hasUnsubmittedData }) => {
         <DrawerItem title="Main" style={{ display: 'none' }} />
         <DrawerItem
           title="My Reports"
-          accessoryLeft={() => <DrawerIcon name="list" showAlert={hasUnsubmittedData} />}
+          accessoryLeft={() => <DrawerIcon name="list" alertNumber={cachedSubmissionIds.length || null} />}
         />
         <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
         <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
@@ -128,7 +128,6 @@ const CloseButton = () => {
     </TouchableOpacity>
   );
 };
-const getHeaderIcon = (name) => <DrawerIcon name={name} style={{ marginRight: 10 }} />;
 const BackButton = () => {
   const navigation = useNavigation();
   const theme = useTheme();
@@ -160,11 +159,11 @@ const ReportsNavigator = () => {
 const MainNavigator = () => {
   const { Navigator, Screen } = createDrawerNavigator();
   const { logOut } = useAuth();
-  const { hasUnsubmittedData } = useOfflineCache();
+  const { cachedSubmissionIds } = useOfflineCache();
 
   return (
     <Navigator
-      drawerContent={(args) => getDrawContent({ ...args, logOut, hasUnsubmittedData })}
+      drawerContent={(args) => getDrawContent({ ...args, logOut, cachedSubmissionIds })}
       screenOptions={{ swipeEnabled: false, headerLeft: CloseButton }}
     >
       <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />

@@ -38,8 +38,6 @@ export function OfflineCacheContextProvider({ children }) {
   const { isConnected } = useNetInfo();
   const [cachedSubmissionIds, setCachedSubmissionIds] = React.useState([]);
 
-  const hasUnsubmittedData = cachedSubmissionIds && cachedSubmissionIds.length > 0;
-
   React.useEffect(() => {
     const giddyUp = async () => {
       const folderNames = await FileSystem.readDirectoryAsync(offlineDataStorageDirectory);
@@ -108,7 +106,7 @@ export function OfflineCacheContextProvider({ children }) {
   };
 
   return (
-    <OfflineCacheContext.Provider value={{ isConnected, cacheReport, hasUnsubmittedData, cachedSubmissionIds }}>
+    <OfflineCacheContext.Provider value={{ isConnected, cacheReport, cachedSubmissionIds }}>
       {children}
     </OfflineCacheContext.Provider>
   );

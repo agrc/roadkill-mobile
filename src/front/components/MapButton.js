@@ -5,7 +5,17 @@ import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 import AlertIcon from './AlertIcon';
 
-const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, color, children, status = 'basic' }) => {
+const MapButton = ({
+  iconPack,
+  iconName,
+  onPress,
+  style,
+  alertNumber,
+  iconSize,
+  color,
+  children,
+  status = 'basic',
+}) => {
   const theme = useTheme();
   const buttonSize = 30;
 
@@ -26,7 +36,7 @@ const MapButton = ({ iconPack, iconName, onPress, style, showAlert, iconSize, co
     return (
       <View style={[styles.container, children ? null : size]}>
         <Icon />
-        {showAlert ? <AlertIcon /> : null}
+        {alertNumber ? <AlertIcon number={alertNumber} /> : null}
         {children ? (
           <Text category="h5" style={{ color }}>
             {` ${children}`}
@@ -57,7 +67,7 @@ MapButton.propTypes = {
   iconName: propTypes.string.isRequired,
   onPress: propTypes.func.isRequired,
   style: propTypes.object,
-  showAlert: propTypes.bool,
+  alertNumber: propTypes.number,
   iconSize: propTypes.number,
   color: propTypes.string,
   children: propTypes.string,
