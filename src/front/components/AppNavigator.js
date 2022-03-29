@@ -150,13 +150,9 @@ const ReportsNavigator = () => {
 
   return (
     <Navigator screenOptions={{ headerLeft: BackButton }}>
-      <Screen
-        name="My Reports"
-        component={MyReportsScreen}
-        options={{ headerLeft: CloseButton, headerRight: () => getHeaderIcon('list') }}
-      />
-      <Screen name="Report Info" component={ReportInfoScreen} options={{ headerRight: () => getHeaderIcon('info') }} />
-      <Screen name="Route Info" component={RouteInfoScreen} options={{ headerRight: () => getHeaderIcon('info') }} />
+      <Screen name="My Reports" component={MyReportsScreen} options={{ headerLeft: CloseButton }} />
+      <Screen name="Report Info" component={ReportInfoScreen} />
+      <Screen name="Route Info" component={RouteInfoScreen} />
     </Navigator>
   );
 };
