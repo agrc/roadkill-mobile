@@ -49,7 +49,7 @@ export default function MainScreen() {
   const mapView = React.useRef(null);
   const { authInfo } = useAuth();
   // eslint-disable-next-line no-unused-vars
-  const { hasUnsubmittedData } = useOfflineCache();
+  const { cachedSubmissionIds } = useOfflineCache();
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
   const [reportHeight, setReportHeight] = React.useState(0);
@@ -371,7 +371,7 @@ export default function MainScreen() {
             iconPack="material-community"
             iconName="folder-account"
             onPress={navigation.openDrawer}
-            showAlert={hasUnsubmittedData}
+            alertNumber={cachedSubmissionIds.length || null}
           />
         </View>
         <View>

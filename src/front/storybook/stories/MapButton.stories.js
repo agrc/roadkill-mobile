@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
+import { boolean, number } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -71,7 +71,13 @@ storiesOf('MapButton', module)
         iconPack="material-community"
         iconName="menu"
         onPress={() => console.log('pressed')}
-        showAlert={boolean('showAlert', true)}
+        alertNumber={number('alertNumber_1', 5)}
+      />
+      <MapButton
+        iconPack="material-community"
+        iconName="menu"
+        onPress={() => console.log('pressed')}
+        alertNumber={number('alertNumber_2', 26)}
       />
     </Container>
   ));
