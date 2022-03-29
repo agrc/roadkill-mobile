@@ -20,7 +20,7 @@ export default function CachedData({ data }) {
       <Divider />
       {data.map((item) => (
         <View key={item.offlineStorageId}>
-          {item.animal_location ? <ReportListItem item={item} /> : <RouteListItem item={item} />}
+          {item.animal_location ? <ReportListItem item={item} /> : <RouteListItem item={item.route} />}
           <Divider />
         </View>
       ))}

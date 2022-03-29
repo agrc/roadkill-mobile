@@ -42,7 +42,8 @@ export function OfflineCacheContextProvider({ children }) {
     const giddyUp = async () => {
       const folderNames = await FileSystem.readDirectoryAsync(offlineDataStorageDirectory);
 
-      setCachedSubmissionIds(folderNames);
+      // filter out any weird stuff like .DS_Store
+      setCachedSubmissionIds(folderNames.filter((folderName) => folderName.match(/^\d+$/)));
     };
 
     giddyUp();
@@ -72,30 +73,24 @@ export function OfflineCacheContextProvider({ children }) {
     updateBadgeCount();
   }, [cachedSubmissionIds]);
 
-  const cacheReport = async function (submitValues, error) {
-    const id = new Date().getTime();
-    const reportDirectory = `${offlineDataStorageDirectory}/${id}`;
-    await FileSystem.makeDirectoryAsync(reportDirectory);
-
-    submitValues.offlineStorageId = id;
-
+  const movePhoto = async function (photo, directory) {
     // copy photo to documentDirectory so that it doesn't get auto-deleted by the OS
     // ImagePicker puts it in the cacheDirectory
-    if (submitValues.photo) {
-      const { uri } = submitValues.photo;
+    if (photo) {
+      const { uri } = photo;
       const fileName = uri.split('/').pop();
-      const newUri = `${reportDirectory}/${fileName}`;
+      const newUri = `${directory}/${fileName}`;
       await FileSystem.moveAsync({
         from: uri,
         to: newUri,
       });
-      submitValues.photo.uri = newUri;
+      photo.uri = newUri;
     }
 
-    await FileSystem.writeAsStringAsync(`${reportDirectory}/${dataFileName}`, JSON.stringify(submitValues));
+    return photo;
+  };
 
-    setCachedSubmissionIds((existing) => [...existing, id]);
-
+  const showAlert = async function (error) {
     await new Promise((resolve) => {
       Alert.alert(
         'Offline Report',
@@ -105,8 +100,45 @@ export function OfflineCacheContextProvider({ children }) {
     });
   };
 
+  const cacheReport = async function (submitValues, error) {
+    const id = new Date().getTime();
+    const reportDirectory = `${offlineDataStorageDirectory}/${id}`;
+    await FileSystem.makeDirectoryAsync(reportDirectory);
+
+    submitValues.offlineStorageId = id;
+
+    submitValues.photo = await movePhoto(submitValues.photo, reportDirectory);
+
+    await FileSystem.writeAsStringAsync(`${reportDirectory}/${dataFileName}`, JSON.stringify(submitValues));
+
+    setCachedSubmissionIds((existing) => [...existing, id]);
+
+    await showAlert(error);
+  };
+
+  const cacheRoute = async function (submitValues, pickups, error) {
+    const id = new Date().getTime();
+    const routeDirectory = `${offlineDataStorageDirectory}/${id}`;
+    await FileSystem.makeDirectoryAsync(routeDirectory);
+
+    submitValues.offlineStorageId = id;
+
+    for (let i = 0; i < pickups.length; i++) {
+      pickups[i].photo = movePhoto(pickups[i].photo, routeDirectory);
+    }
+
+    await FileSystem.writeAsStringAsync(
+      `${routeDirectory}/${dataFileName}`,
+      JSON.stringify({ route: submitValues, pickups })
+    );
+
+    setCachedSubmissionIds((existing) => [...existing, id]);
+
+    await showAlert(error);
+  };
+
   return (
-    <OfflineCacheContext.Provider value={{ isConnected, cacheReport, cachedSubmissionIds }}>
+    <OfflineCacheContext.Provider value={{ isConnected, cacheReport, cacheRoute, cachedSubmissionIds }}>
       {children}
     </OfflineCacheContext.Provider>
   );

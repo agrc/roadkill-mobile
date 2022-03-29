@@ -18,6 +18,9 @@ export default function useStyles() {
       borderWidth: 1,
       borderColor: theme['color-basic-400'],
     },
+    offlineItem: {
+      backgroundColor: theme['color-warning-100'],
+    },
   });
 
   return commonStyles;
