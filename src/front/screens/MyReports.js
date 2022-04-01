@@ -3,8 +3,8 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useQuery } from 'react-query';
 import CachedData from '../components/CachedData';
-import { ReportListItem } from '../components/ReportListItem';
-import { RouteListItem } from '../components/RouteListItem';
+import ReportListItem from '../components/ReportListItem';
+import RouteListItem from '../components/RouteListItem';
 import Spinner from '../components/Spinner';
 import { useAPI } from '../services/api';
 import config from '../services/config';
@@ -23,10 +23,10 @@ export default function MyReportsScreen() {
 
   React.useEffect(() => {
     const getSubmissionData = async () => {
-      const promises = cachedSubmissionIds.map(getOfflineSubmission);
+      const promises = cachedSubmissionIds.map((id) => getOfflineSubmission(id));
       const newSubmissions = await Promise.all(promises);
 
-      setOfflineSubmissions(newSubmissions);
+      setOfflineSubmissions(newSubmissions.filter((submission) => submission));
     };
 
     if (cachedSubmissionIds.length) {
@@ -44,7 +44,7 @@ export default function MyReportsScreen() {
         <CachedData data={offlineSubmissions} />
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>There was an error retrieving your submissions from the server!</Text>
+            <Text>There was an error retrieving your previously submitted data from the server!</Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}

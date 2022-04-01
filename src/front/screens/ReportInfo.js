@@ -13,6 +13,7 @@ import ValueContainer from '../components/ValueContainer';
 import { useAPI } from '../services/api';
 import config from '../services/config';
 import { coordsToLocation } from '../services/location';
+import { getOfflineSubmission } from '../services/offline';
 import useStyles, { PADDING } from '../services/styles';
 import { booleanToYesNo, dateToString } from '../services/utilities';
 
@@ -21,18 +22,26 @@ const isPickupReport = (report) => {
 };
 
 export default function ReportInfoScreen() {
-  const { reportId } = useRoute().params;
+  const { reportId, offlineStorageId, offlineRouteId, offlineIndex } = useRoute().params;
+  console.log('offlineRouteId', offlineRouteId);
+  // offlineRouteId & offlineIndex are only populated for reports associated with offline routes
   const navigation = useNavigation();
   const { get } = useAPI();
 
   const { getBearerToken } = useAuth();
   const getReportData = async () => {
-    const responseJson = await get(`reports/report/${reportId}`);
+    if (reportId) {
+      const responseJson = await get(`reports/report/${reportId}`);
 
-    return {
-      ...responseJson.report,
-      bearerToken: await getBearerToken(),
-    };
+      return {
+        ...responseJson.report,
+        bearerToken: await getBearerToken(),
+      };
+    } else {
+      const offlineSubmission = await getOfflineSubmission(offlineStorageId || offlineRouteId, offlineIndex);
+
+      return offlineSubmission;
+    }
   };
   const { data, isLoading, isError, error } = useQuery(`report-${reportId}`, getReportData);
 
@@ -60,9 +69,48 @@ export default function ReportInfoScreen() {
   );
 }
 
+function Photo({ photo_id, offlinePhoto, date, bearerToken }) {
+  const commonStyles = useStyles();
+
+  if (!photo_id && !offlinePhoto) {
+    return null;
+  }
+
+  const uri = photo_id ? `${config.API}/photos/thumb/${photo_id}` : offlinePhoto.uri;
+
+  return (
+    <>
+      <View style={styles.photoContainer}>
+        <View style={{ marginLeft: -PADDING, flex: 1 }}>
+          <ValueContainer label="Photo ID" value={photo_id || '(unsubmitted)'} divider={false} />
+          <ValueContainer label="Photo Date" value={dateToString(date)} divider={false} />
+        </View>
+        <Image
+          source={{
+            uri,
+            headers: {
+              Authorization: bearerToken,
+              [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+            },
+          }}
+          style={[commonStyles.image, styles.thumbnail]}
+        />
+      </View>
+      <Divider />
+    </>
+  );
+}
+Photo.propTypes = {
+  photo_id: propTypes.number,
+  offlinePhoto: propTypes.shape({
+    uri: propTypes.string,
+  }),
+  date: propTypes.string,
+  bearerToken: propTypes.string,
+};
+
 export function ReportInfo({ data }) {
   const mapRef = React.useRef(null);
-  const commonStyles = useStyles();
 
   if (!data) {
     return null;
@@ -81,7 +129,7 @@ export function ReportInfo({ data }) {
         <Marker coordinate={animalCoords} />
       </Map>
       <Divider />
-      <ValueContainer label="Report ID" value={data.report_id} />
+      <ValueContainer label="Report ID" value={data.report_id || '(unsubmitted)'} />
       <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
       <Divider />
       <ValueContainer label="Common Name" value={data.common_name} />
@@ -105,27 +153,7 @@ export function ReportInfo({ data }) {
       )}
       <Divider />
       <ValueContainer label="Comments" value={data.comments} />
-      {data.photo_id ? (
-        <>
-          <View style={styles.photoContainer}>
-            <View style={{ marginLeft: -PADDING, flex: 1 }}>
-              <ValueContainer label="Photo ID" value={data.photo_id} divider={false} />
-              <ValueContainer label="Photo Date" value={dateToString(data.photo_date)} divider={false} />
-            </View>
-            <Image
-              source={{
-                uri: `${config.API}/photos/thumb/${data.photo_id}`,
-                headers: {
-                  Authorization: data.bearerToken,
-                  [commonConfig.versionHeaderName]: commonConfig.apiVersion,
-                },
-              }}
-              style={[commonStyles.image, styles.thumbnail]}
-            />
-          </View>
-          <Divider />
-        </>
-      ) : null}
+      <Photo photo_id={data.photo_id} offlinePhoto={data.photo} date={data.photo_date} bearerToken={data.bearerToken} />
     </SafeAreaView>
   );
 }

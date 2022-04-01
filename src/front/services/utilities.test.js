@@ -1,9 +1,11 @@
 import {
+  coordinatesToRegion,
   extentStringToRegion,
   getReleaseChannelBranch,
   isTokenExpired,
   lineCoordinatesToString,
   lineStringToCoordinates,
+  offlineLineStringToCoordinates,
   pointCoordinatesToString,
   pointStringToCoordinates,
   wrapAsyncWithDelay,
@@ -137,6 +139,17 @@ describe('lineStringToCoordinates', () => {
   });
 });
 
+describe('offlineLineStringToCoordinates', () => {
+  it('returns the appropriate data', () => {
+    const lineString = '-1 2, -3 4';
+
+    const result = offlineLineStringToCoordinates(lineString);
+
+    expect(result.length).toBe(2);
+    expect(result[0]).toEqual({ longitude: -1, latitude: 2 });
+  });
+});
+
 describe('extentStringToRegion', () => {
   it('returns the appropriate data', () => {
     const minx = -5;
@@ -151,5 +164,31 @@ describe('extentStringToRegion', () => {
     expect(result.longitude).toBe(-3.5);
     expect(result.latitudeDelta).toBe(2);
     expect(result.longitudeDelta).toBe(3);
+  });
+});
+
+describe('coordinatesToRegion', () => {
+  it('returns the appropriate data', () => {
+    const coordinates = [
+      {
+        longitude: -114,
+        latitude: 35.5,
+      },
+      {
+        longitude: -111,
+        latitude: 40,
+      },
+      {
+        longitude: -110,
+        latitude: 41,
+      },
+    ];
+
+    const result = coordinatesToRegion(coordinates);
+
+    expect(result.latitude).toBe(38.25);
+    expect(result.longitude).toBe(-112);
+    expect(result.latitudeDelta).toBe(5.5);
+    expect(result.longitudeDelta).toBe(4);
   });
 });

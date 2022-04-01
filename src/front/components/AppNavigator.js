@@ -151,7 +151,7 @@ const ReportsNavigator = () => {
     <Navigator screenOptions={{ headerLeft: BackButton }}>
       <Screen name="My Reports" component={MyReportsScreen} options={{ headerLeft: CloseButton }} />
       <Screen name="Report Info" component={ReportInfoScreen} />
-      <Screen name="Route Info" component={RouteInfoScreen} />
+      <Screen name="Route Info" component={RouteInfoScreen} options={{ title: 'Route Info' }} />
     </Navigator>
   );
 };

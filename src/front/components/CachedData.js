@@ -4,8 +4,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 import { PADDING } from '../services/styles';
-import { ReportListItem } from './ReportListItem';
-import { RouteListItem } from './RouteListItem';
+import ReportListItem from './ReportListItem';
+import RouteListItem from './RouteListItem';
 
 export default function CachedData({ data }) {
   if (data.length === 0) {
@@ -20,7 +20,7 @@ export default function CachedData({ data }) {
       <Divider />
       {data.map((item) => (
         <View key={item.offlineStorageId}>
-          {item.animal_location ? <ReportListItem item={item} /> : <RouteListItem item={item.route} />}
+          {item.animal_location ? <ReportListItem item={item} /> : <RouteListItem item={item} />}
           <Divider />
         </View>
       ))}
