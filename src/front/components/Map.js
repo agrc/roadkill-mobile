@@ -28,7 +28,6 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       toolbarEnabled={false}
       {...mapViewProps}
     >
-      {children}
       <UrlTile
         doubleTileSize={Platform.select({ android: true, ios: false })}
         minimumZ={3}
@@ -41,6 +40,7 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
         urlTemplate={config.URLS.LITE}
         zIndex={-5}
       />
+      {children}
     </MapView>
   );
 }
