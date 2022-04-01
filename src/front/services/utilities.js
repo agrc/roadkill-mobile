@@ -192,6 +192,19 @@ export function lineStringToCoordinates(string) {
   return match[1].split(',').map((coord) => pointStringToCoordinates(coord));
 }
 
+export function offlineLineStringToCoordinates(lineString) {
+  return lineString.split(',').map((coord) => pointStringToCoordinates(coord.trim()));
+}
+
+function extentToRegion(minx, maxx, miny, maxy) {
+  return {
+    latitude: (miny + maxy) / parseFloat(2),
+    longitude: (minx + maxx) / parseFloat(2),
+    latitudeDelta: maxy - miny,
+    longitudeDelta: maxx - minx,
+  };
+}
+
 const extentStringRegex = /\(\((.*)\)\)/;
 export function extentStringToRegion(string) {
   const match = extentStringRegex.exec(string);
@@ -203,12 +216,28 @@ export function extentStringToRegion(string) {
   const miny = coords[0].latitude;
   const maxy = coords[2].latitude;
 
-  return {
-    latitude: (miny + maxy) / parseFloat(2),
-    longitude: (minx + maxx) / parseFloat(2),
-    latitudeDelta: maxy - miny,
-    longitudeDelta: maxx - minx,
-  };
+  return extentToRegion(minx, maxx, miny, maxy);
+}
+
+export function coordinatesToRegion(coordinates) {
+  let minx, maxx, miny, maxy;
+
+  coordinates.forEach((coord) => {
+    if (!minx || coord.longitude < minx) {
+      minx = coord.longitude;
+    }
+    if (!maxx || coord.longitude > maxx) {
+      maxx = coord.longitude;
+    }
+    if (!miny || coord.latitude < miny) {
+      miny = coord.latitude;
+    }
+    if (!maxy || coord.latitude > maxy) {
+      maxy = coord.latitude;
+    }
+  });
+
+  return extentToRegion(minx, maxx, miny, maxy);
 }
 
 export function dateToString(date) {

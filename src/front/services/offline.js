@@ -4,6 +4,7 @@ import * as Notifications from 'expo-notifications';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
+import * as Sentry from 'sentry-expo';
 
 // make sure that tiles cache directory is created
 export const tileCacheDirectory = FileSystem.cacheDirectory + 'tiles';
@@ -28,10 +29,23 @@ ensureDirectory(offlineDataStorageDirectory);
 
 const OfflineCacheContext = React.createContext();
 
-export async function getOfflineSubmission(id) {
-  const json = await FileSystem.readAsStringAsync(`${offlineDataStorageDirectory}/${id}/${dataFileName}`);
+export async function getOfflineSubmission(id, pickupIndex) {
+  try {
+    const json = await FileSystem.readAsStringAsync(`${offlineDataStorageDirectory}/${id}/${dataFileName}`);
 
-  return JSON.parse(json);
+    if (pickupIndex) {
+      return JSON.parse(json).pickups[pickupIndex];
+    }
+
+    return JSON.parse(json);
+  } catch (error) {
+    console.log(
+      `Error attempting to read offline submission with id: ${id} (pickupIndex: ${pickupIndex}): \n\n ${error}`
+    );
+    Sentry.Native.captureException(error);
+
+    return null;
+  }
 }
 
 export function OfflineCacheContextProvider({ children }) {
@@ -124,12 +138,12 @@ export function OfflineCacheContextProvider({ children }) {
     submitValues.offlineStorageId = id;
 
     for (let i = 0; i < pickups.length; i++) {
-      pickups[i].photo = movePhoto(pickups[i].photo, routeDirectory);
+      pickups[i].photo = await movePhoto(pickups[i].photo, routeDirectory);
     }
 
     await FileSystem.writeAsStringAsync(
       `${routeDirectory}/${dataFileName}`,
-      JSON.stringify({ route: submitValues, pickups })
+      JSON.stringify({ ...submitValues, pickups })
     );
 
     setCachedSubmissionIds((existing) => [...existing, id]);

@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { Card, Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -6,33 +6,37 @@ import { PixelRatio, Platform, SafeAreaView, ScrollView, StyleSheet, View } from
 import { Marker, Polyline } from 'react-native-maps';
 import { useQuery } from 'react-query';
 import Map from '../components/Map';
+import ReportListItem from '../components/ReportListItem';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { useAPI } from '../services/api';
 import { coordsToLocation } from '../services/location';
+import { getOfflineSubmission } from '../services/offline';
 import { PADDING } from '../services/styles';
-import { dateToString, extentStringToRegion, lineStringToCoordinates } from '../services/utilities';
-import { ReportListItem } from './MyReports';
+import {
+  coordinatesToRegion,
+  dateToString,
+  extentStringToRegion,
+  lineStringToCoordinates,
+  offlineLineStringToCoordinates,
+} from '../services/utilities';
 
 export default function RouteInfoScreen() {
-  const { routeId } = useRoute().params;
-  const navigation = useNavigation();
+  const { routeId, offlineStorageId } = useRoute().params;
   const { get } = useAPI();
 
   const getRouteData = async () => {
-    const responseJson = await get(`routes/route/${routeId}`);
+    if (routeId) {
+      const responseJson = await get(`routes/route/${routeId}`);
 
-    return responseJson.route;
+      return responseJson.route;
+    } else {
+      const offlineSubmission = await getOfflineSubmission(offlineStorageId);
+
+      return offlineSubmission;
+    }
   };
   const { data, isLoading, isError, error } = useQuery(`route-${routeId}`, getRouteData);
-
-  React.useEffect(() => {
-    if (data) {
-      navigation.setOptions({
-        title: `Route Info`,
-      });
-    }
-  }, [data]);
 
   return (
     <Layout style={styles.container}>
@@ -58,7 +62,9 @@ export function RouteInfo({ data }) {
     return null;
   }
 
-  const routeCoordinates = lineStringToCoordinates(data.geog);
+  const routeCoordinates = data.route_id
+    ? lineStringToCoordinates(data.geog)
+    : offlineLineStringToCoordinates(data.geog);
   const theme = useTheme();
   const mapPadding = PADDING * 3;
   const iosEdgePadding = { top: mapPadding, right: mapPadding, bottom: mapPadding, left: mapPadding };
@@ -78,26 +84,28 @@ export function RouteInfo({ data }) {
         innerRef={mapRef}
         style={styles.map}
         isStatic={true}
-        initialRegion={extentStringToRegion(data.extent)}
+        initialRegion={data.extent ? extentStringToRegion(data.extent) : coordinatesToRegion(routeCoordinates)}
         // this doesn't seem to be working in android...
         mapPadding={edgePadding}
       >
-        {data.pickups.map((pickup) => (
-          <Marker coordinate={coordsToLocation(pickup.animal_location)} key={pickup.report_id} />
+        {data.pickups.map((pickup, index) => (
+          <Marker coordinate={coordsToLocation(pickup.animal_location)} key={pickup.report_id || index} />
         ))}
-        <Polyline coordinates={routeCoordinates} strokeWidth={5} strokeColor={theme['color-info-500']} zIndex={1} />
+        {routeCoordinates ? (
+          <Polyline coordinates={routeCoordinates} strokeWidth={5} strokeColor={theme['color-info-500']} zIndex={5} />
+        ) : null}
       </Map>
       <Divider />
-      <ValueContainer label="Route ID" value={data.report_id} />
+      <ValueContainer label="Route ID" value={data.route_id || '(unsubmitted)'} />
       <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
       <ValueContainer label="Start" value={dateToString(data.start_time)} />
       <ValueContainer label="End" value={dateToString(data.end_time)} />
       <ValueContainer label="Distance" value={`${(data.distance / METERS_IN_MILES).toFixed(2)} miles`} />
       <ValueContainer label="Pickups" value={data.pickups.length} />
       <Divider />
-      {data.pickups.map((pickup) => (
-        <View key={pickup.report_id}>
-          <ReportListItem item={pickup} />
+      {data.pickups.map((pickup, index) => (
+        <View key={pickup.report_id || index}>
+          <ReportListItem item={pickup} offlineRouteId={data.offlineStorageId} offlineIndex={index} />
           <Divider />
         </View>
       ))}
