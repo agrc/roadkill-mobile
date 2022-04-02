@@ -16,9 +16,7 @@ const dataFileName = 'data.json';
 
 function ensureDirectory(path) {
   FileSystem.getInfoAsync(path, { size: true }).then((info) => {
-    console.log(`${path} info`, info);
     if (!info.exists) {
-      console.log(`creating ${path}`);
       FileSystem.makeDirectoryAsync(path);
     }
   });
