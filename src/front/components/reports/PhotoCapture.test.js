@@ -36,10 +36,8 @@ describe('PhotoCapture', () => {
       const exif = {
         DateTimeOriginal: '2018:12:01 12:00:00',
       };
-      const date = new Date();
-      const expected = `2018-12-01T${13 + date.getTimezoneOffset() / 60}:00:00.000Z`;
 
-      expect(getDateFromExif(exif)).toEqual(expected);
+      expect(getDateFromExif(exif)).toMatch(/2018-12-01T\d\d:\d\d:\d\d\.\d\d\dZ/);
     });
     it('returns null if no date is present', () => {
       expect(getDateFromExif({})).toBeNull();
