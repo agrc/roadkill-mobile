@@ -89,18 +89,6 @@ export function getSubmitValues(values) {
   return output;
 }
 
-export function getFormData(submitValues) {
-  const formData = new FormData();
-
-  for (let key in submitValues) {
-    const value = submitValues[key];
-
-    formData.append(key, value);
-  }
-
-  return formData;
-}
-
 const Report = ({
   show,
   reportType,
@@ -119,7 +107,7 @@ const Report = ({
   const [showMain, setShowMain] = React.useState(false);
   const { isConnected, cacheReport } = useOfflineCache();
 
-  const { post } = useAPI();
+  const { postReport } = useAPI();
 
   const submitReport = async (values) => {
     console.log('submitReport');
@@ -158,13 +146,9 @@ const Report = ({
       return;
     }
 
-    // this FormData class is NOT the same class as in the browser
-    // ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
-    const formData = getFormData(submitValues);
-
     let responseJson;
     try {
-      responseJson = await post(`reports/${reportType}`, formData, true);
+      responseJson = await postReport(submitValues, reportType);
     } catch (error) {
       await cacheReport(submitValues, error);
 
