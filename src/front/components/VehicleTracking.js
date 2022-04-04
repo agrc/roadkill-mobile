@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
-import { getFormData } from '../screens/Report';
+import { REPORT_TYPES } from '../screens/Report';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
@@ -203,7 +203,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     ]);
   };
 
-  const { post } = useAPI();
+  const { postReport, postRoute } = useAPI();
   const completeRoute = async () => {
     console.log('completeRoute');
 
@@ -252,7 +252,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
 
     let responseJson;
     try {
-      responseJson = await post('routes/route', submitValues);
+      responseJson = await postRoute(submitValues);
     } catch (error) {
       await cacheRoute(submitValues, state.pickups, error);
 
@@ -269,7 +269,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
       setSpinnerMessage(`submitting pickup ${index + 1} of ${state.pickups.length}...`);
 
       try {
-        await post('reports/pickup', getFormData(pickup), true);
+        await postReport(pickup, REPORT_TYPES.pickup);
       } catch (error) {
         await cacheReport(pickup, error);
         submitErrors.push(error);
