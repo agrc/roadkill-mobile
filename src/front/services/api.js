@@ -4,6 +4,20 @@ import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import config from '../services/config';
 
+// this FormData class is NOT the same class as in the browser
+// ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
+export function getFormData(submitValues) {
+  const formData = new FormData();
+
+  for (let key in submitValues) {
+    const value = submitValues[key];
+
+    formData.append(key, value);
+  }
+
+  return formData;
+}
+
 export function useAPI() {
   const { getBearerToken } = useAuth();
 
@@ -40,7 +54,6 @@ export function useAPI() {
   }
 
   async function post(route, data, isFormData = false) {
-    // TODO: cache data for later submission if request fails
     return await makeRequest('POST', route, data, isFormData);
   }
 
@@ -48,5 +61,15 @@ export function useAPI() {
     return await makeRequest('GET', route, data);
   }
 
-  return { post, get };
+  async function postReport(submitValues, reportType) {
+    const formData = getFormData(submitValues);
+
+    return await post(`reports/${reportType}`, formData, true);
+  }
+
+  async function postRoute(submitValues) {
+    return await post('routes/route', submitValues, false);
+  }
+
+  return { post, get, postReport, postRoute };
 }

@@ -1,10 +1,16 @@
 import { useNetInfo } from '@react-native-community/netinfo';
 import * as FileSystem from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
+import lodash from 'lodash';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
+import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
+import { REPORT_TYPES } from '../screens/Report';
+import { isPickupReport } from '../screens/ReportInfo';
+import { useAPI } from './api';
+import config from './config';
 
 // make sure that tiles cache directory is created
 export const tileCacheDirectory = FileSystem.cacheDirectory + 'tiles';
@@ -37,7 +43,7 @@ export async function getOfflineSubmission(id, pickupIndex) {
 
     return JSON.parse(json);
   } catch (error) {
-    console.log(
+    console.error(
       `Error attempting to read offline submission with id: ${id} (pickupIndex: ${pickupIndex}): \n\n ${error}`
     );
     Sentry.Native.captureException(error);
@@ -46,9 +52,19 @@ export async function getOfflineSubmission(id, pickupIndex) {
   }
 }
 
+async function deleteOfflineSubmission(id) {
+  try {
+    await FileSystem.deleteAsync(`${offlineDataStorageDirectory}/${id}`);
+  } catch (error) {
+    console.error(`Error attempting to delete offline submission with id: ${id}: \n\n ${error}`);
+    Sentry.Native.captureException(error);
+  }
+}
+
 export function OfflineCacheContextProvider({ children }) {
-  const { isConnected } = useNetInfo();
+  const { isInternetReachable } = useNetInfo();
   const [cachedSubmissionIds, setCachedSubmissionIds] = React.useState([]);
+  const { postReport, postRoute } = useAPI();
 
   React.useEffect(() => {
     const giddyUp = async () => {
@@ -60,6 +76,63 @@ export function OfflineCacheContextProvider({ children }) {
 
     giddyUp();
   }, []);
+
+  const submit = async function () {
+    console.log('submitting offline submissions...');
+    const failedSubmissionIds = [];
+    let lastError;
+    for (let i = 0; i < cachedSubmissionIds.length; i++) {
+      try {
+        console.log(`submitting: ${cachedSubmissionIds[i]}`);
+        const submission = await getOfflineSubmission(cachedSubmissionIds[i]);
+        delete submission.offlineStorageId;
+        if (submission.animal_location) {
+          // report
+          if (isPickupReport(submission)) {
+            await postReport(submission, REPORT_TYPES.pickup);
+          } else {
+            await postReport(submission, REPORT_TYPES.report);
+          }
+        } else {
+          // route
+          const routeResponse = await postRoute(lodash.omit(submission, ['pickups']));
+
+          for (let j = 0; j < submission.pickups.length; j++) {
+            const pickup = submission.pickups[j];
+            delete pickup.offlineStorageId;
+            pickup.route_id = routeResponse.route_id;
+
+            await postReport(pickup, REPORT_TYPES.pickup);
+          }
+        }
+
+        await deleteOfflineSubmission(cachedSubmissionIds[i]);
+      } catch (error) {
+        failedSubmissionIds.push(cachedSubmissionIds[i]);
+        Sentry.Native.captureException(error);
+        console.error(error);
+        lastError = error.message;
+      }
+    }
+
+    setCachedSubmissionIds(failedSubmissionIds);
+
+    return lastError;
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(submit, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
+      queryClient.invalidateQueries(config.QUERY_KEYS.profile);
+    },
+  });
+
+  React.useEffect(() => {
+    if (isInternetReachable && cachedSubmissionIds.length > 0 && !mutation.isLoading) {
+      mutation.mutate();
+    }
+  }, [isInternetReachable]);
 
   React.useEffect(() => {
     const updateBadgeCount = async () => {
@@ -149,8 +222,19 @@ export function OfflineCacheContextProvider({ children }) {
     await showAlert(error);
   };
 
+  console.log('isInternetReachable', isInternetReachable);
+
   return (
-    <OfflineCacheContext.Provider value={{ isConnected, cacheReport, cacheRoute, cachedSubmissionIds }}>
+    <OfflineCacheContext.Provider
+      value={{
+        isConnected: isInternetReachable,
+        cacheReport,
+        cacheRoute,
+        cachedSubmissionIds,
+        submitOfflineSubmissions: mutation.mutate.bind(mutation),
+        isSubmitting: mutation.isLoading,
+      }}
+    >
       {children}
     </OfflineCacheContext.Provider>
   );

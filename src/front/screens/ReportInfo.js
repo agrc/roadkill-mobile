@@ -17,8 +17,8 @@ import { getOfflineSubmission } from '../services/offline';
 import useStyles, { PADDING } from '../services/styles';
 import { booleanToYesNo, dateToString } from '../services/utilities';
 
-const isPickupReport = (report) => {
-  return report.pickup_date !== null;
+export const isPickupReport = (report) => {
+  return report.pickup_date !== undefined;
 };
 
 export default function ReportInfoScreen() {
