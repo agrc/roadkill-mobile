@@ -12,7 +12,7 @@ import { isPickupReport } from '../screens/ReportInfo';
 import { useAPI } from './api';
 import config from './config';
 
-// make sure that tiles cache directory is created
+// tiles are put into the cache directory to allow the OS to clean them up if the device gets low on space
 export const tileCacheDirectory = FileSystem.cacheDirectory + 'tiles';
 const offlineDataStorageDirectory = FileSystem.documentDirectory + 'offlineData';
 const offlineMessage = 'No connection to the internet was detected.';
