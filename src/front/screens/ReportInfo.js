@@ -124,7 +124,8 @@ export function ReportInfo({ data }) {
         style={styles.map}
         isStatic={true}
         innerRef={mapRef}
-        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0, altitude: -1 }}
+        // zoom is for Google Maps and altitude is for Apple Maps
+        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0, altitude: 2500 }}
       >
         <Marker coordinate={animalCoords} />
       </Map>
