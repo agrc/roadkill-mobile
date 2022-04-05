@@ -24,10 +24,6 @@ const COMMON_ANIMATION_PROPS = {
   useNativeDriver: false,
   duration: 250,
 };
-export const REPORT_TYPES = {
-  report: 'report',
-  pickup: 'pickup',
-};
 const commonInitialValues = {
   photo: null,
   photo_location: null,
@@ -121,7 +117,7 @@ const Report = ({
     submitValues.submit_location = pointCoordinatesToString(currentLocation.coords);
 
     // if there is a route being collected and this is a pickup report, then cache the data on the device for later submission
-    if (vehicleTrackingState.isTracking && reportType === REPORT_TYPES.pickup) {
+    if (vehicleTrackingState.isTracking && reportType === config.REPORT_TYPES.pickup) {
       vehicleTrackingDispatch({ type: 'ADD_PICKUP', payload: submitValues });
 
       Alert.alert(
@@ -258,7 +254,7 @@ const Report = ({
   // set up form
   const reportFormikRef = React.useRef(null);
   const pickupFormikRef = React.useRef(null);
-  const formikRef = reportType === REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
+  const formikRef = reportType === config.REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
 
   React.useEffect(() => {
     if (show) {
@@ -299,7 +295,7 @@ const Report = ({
             // to prevent them from being remounted when they are hidden
           }
           <View style={showMain ? null : styles.hidden}>
-            {reportType === REPORT_TYPES.report ? (
+            {reportType === config.REPORT_TYPES.report ? (
               // report form
               <Form
                 formikRef={reportFormikRef}
@@ -371,7 +367,7 @@ const Report = ({
 };
 
 Report.propTypes = {
-  reportType: propTypes.oneOf([REPORT_TYPES.report, REPORT_TYPES.pickup]).isRequired,
+  reportType: propTypes.oneOf([config.REPORT_TYPES.report, config.REPORT_TYPES.pickup]).isRequired,
   show: propTypes.bool.isRequired,
   hideReport: propTypes.func.isRequired,
   setHeight: propTypes.func.isRequired,

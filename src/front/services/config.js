@@ -53,4 +53,8 @@ export default {
   },
   API_REQUEST_TIMEOUT: 20000,
   MAX_TRACKING_TIME: 1000 * 60 * 60 * 12, // 12 hours
+  REPORT_TYPES: {
+    report: 'report',
+    pickup: 'pickup',
+  },
 };

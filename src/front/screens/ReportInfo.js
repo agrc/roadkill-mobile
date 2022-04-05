@@ -15,11 +15,7 @@ import config from '../services/config';
 import { coordsToLocation } from '../services/location';
 import { getOfflineSubmission } from '../services/offline';
 import useStyles, { PADDING } from '../services/styles';
-import { booleanToYesNo, dateToString } from '../services/utilities';
-
-export const isPickupReport = (report) => {
-  return report.pickup_date !== undefined;
-};
+import { booleanToYesNo, dateToString, isPickupReport } from '../services/utilities';
 
 export default function ReportInfoScreen() {
   const { reportId, offlineStorageId, offlineRouteId, offlineIndex } = useRoute().params;

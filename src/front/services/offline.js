@@ -7,10 +7,9 @@ import React from 'react';
 import { Alert, Platform } from 'react-native';
 import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
-import { REPORT_TYPES } from '../screens/Report';
-import { isPickupReport } from '../screens/ReportInfo';
 import { useAPI } from './api';
 import config from './config';
+import { isPickupReport } from './utilities';
 
 // tiles are put into the cache directory to allow the OS to clean them up if the device gets low on space
 export const tileCacheDirectory = FileSystem.cacheDirectory + 'tiles';
@@ -89,9 +88,9 @@ export function OfflineCacheContextProvider({ children }) {
         if (submission.animal_location) {
           // report
           if (isPickupReport(submission)) {
-            await postReport(submission, REPORT_TYPES.pickup);
+            await postReport(submission, config.REPORT_TYPES.pickup);
           } else {
-            await postReport(submission, REPORT_TYPES.report);
+            await postReport(submission, config.REPORT_TYPES.report);
           }
         } else {
           // route
@@ -102,7 +101,7 @@ export function OfflineCacheContextProvider({ children }) {
             delete pickup.offlineStorageId;
             pickup.route_id = routeResponse.route_id;
 
-            await postReport(pickup, REPORT_TYPES.pickup);
+            await postReport(pickup, config.REPORT_TYPES.pickup);
           }
         }
 

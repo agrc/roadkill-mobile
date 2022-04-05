@@ -19,10 +19,10 @@ import { getIcon } from '../services/icons';
 import { getLocation, locationToRegion, useFollowUser } from '../services/location';
 import { useOfflineCache } from '../services/offline';
 import { pointStringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
-import Report, { REPORT_TYPES } from './Report';
+import Report from './Report';
 
 const initialReportState = {
-  reportType: REPORT_TYPES.report,
+  reportType: config.REPORT_TYPES.report,
   showReport: false,
 };
 
@@ -186,16 +186,16 @@ export default function MainScreen() {
     };
 
     if (authInfo.user.role === config.USER_TYPES.public) {
-      displayReport(REPORT_TYPES.report);
+      displayReport(config.REPORT_TYPES.report);
     } else if (authInfo.user.role === config.USER_TYPES.agency || authInfo.user.role === config.USER_TYPES.admin) {
       Alert.alert('I would like to...', null, [
         {
           text: 'Report and pick up a carcass',
-          onPress: () => displayReport(REPORT_TYPES.pickup),
+          onPress: () => displayReport(config.REPORT_TYPES.pickup),
         },
         {
           text: 'Report a carcass',
-          onPress: () => displayReport(REPORT_TYPES.report),
+          onPress: () => displayReport(config.REPORT_TYPES.report),
         },
       ]);
     } else {
@@ -210,7 +210,7 @@ export default function MainScreen() {
               onPress: () => {
                 startRoute();
 
-                displayReport(REPORT_TYPES.pickup);
+                displayReport(config.REPORT_TYPES.pickup);
               },
             },
             {
@@ -232,7 +232,7 @@ export default function MainScreen() {
               onPress: () => {
                 resumeRoute();
 
-                displayReport(REPORT_TYPES.pickup);
+                displayReport(config.REPORT_TYPES.pickup);
               },
             },
             {
@@ -244,7 +244,7 @@ export default function MainScreen() {
         return;
       }
 
-      displayReport(REPORT_TYPES.pickup);
+      displayReport(config.REPORT_TYPES.pickup);
     }
   };
 
