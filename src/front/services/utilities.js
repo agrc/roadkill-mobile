@@ -245,3 +245,7 @@ export function dateToString(date) {
 }
 
 export const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');
+
+export const isPickupReport = (report) => {
+  return report.pickup_date !== undefined;
+};
