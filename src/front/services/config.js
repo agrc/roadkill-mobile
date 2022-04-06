@@ -44,14 +44,14 @@ export default {
   },
   SPINNER_DELAY: 250,
   MAX_ZOOM_LEVEL: 18,
-  IMAGE_COMPRESSION_QUALITY: 0.25, // 1 is max quality
+  IMAGE_COMPRESSION_QUALITY: 0.1, // 1 is max quality
   SHOW_STORYBOOK: __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
   UNKNOWN: 'unknown',
   QUERY_KEYS: {
     submissions: 'submissions',
     profile: 'profile',
   },
-  API_REQUEST_TIMEOUT: 20000,
+  API_REQUEST_TIMEOUT: 1000 * 60 * 5, // 5 minutes (this is the default timeout for cloud run)
   MAX_TRACKING_TIME: 1000 * 60 * 60 * 12, // 12 hours
   REPORT_TYPES: {
     report: 'report',
