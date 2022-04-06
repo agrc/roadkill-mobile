@@ -1,6 +1,8 @@
 import commonConfig from 'common/config.js';
 import { randomUUID } from 'crypto';
+import humanizeDuration from 'humanize-duration';
 import yup from 'yup';
+import config from '../config.js';
 import { db, firestore, mail } from './clients.js';
 
 const ROLES = {
@@ -9,8 +11,9 @@ const ROLES = {
   public: 'reporter',
   admin: 'admin',
 };
+const NO_REPLY_EMAIL = 'noreply@utah.gov';
 
-export const ARCHIVED_USER = 'ARCHIVED_USER';
+export const EXPIRED_APPROVAL = 'EXPIRED_APPROVAL';
 
 // TODO: clean up after 0.0.0 is gone
 export const registerSchema_0_0_0 = yup.object().shape({
@@ -151,8 +154,12 @@ const APPROVAL_DOC_TYPE = 'approvals';
 export async function sendApprovalEmail(user, organization) {
   const guid = randomUUID();
 
+  const approvalExpiration = Date.now() + config.APPROVAL_EXPIRATION_PERIOD;
   const document = firestore.doc(`${APPROVAL_DOC_TYPE}/${guid}`);
-  await document.set(user);
+  await document.set({
+    ...user,
+    approvalExpiration,
+  });
 
   const data = {
     user,
@@ -164,8 +171,37 @@ export async function sendApprovalEmail(user, organization) {
 
   const email = {
     to: process.env.ADMIN_EMAIL,
-    from: 'noreply@utah.gov',
+    from: NO_REPLY_EMAIL,
     templateId: 'd-021d5c287a1d4295a7ade35724bd2994', // roadkill-new-user
+    dynamicTemplateData: data,
+  };
+
+  if (process.env.ENVIRONMENT === 'development') {
+    mail.trackingSettings = {
+      clickTracking: {
+        enable: false,
+      },
+    };
+  }
+
+  try {
+    await mail.send(email);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function sendApproveRejectNotificationEmail(user, rejected) {
+  const data = {
+    user,
+    rejected,
+    environment: process.env.ENVIRONMENT,
+  };
+
+  const email = {
+    to: process.env.ADMIN_EMAIL,
+    from: NO_REPLY_EMAIL,
+    templateId: 'd-ae24b5a55c9e461298a1bfc14e0b383e',
     dynamicTemplateData: data,
   };
 
@@ -198,20 +234,14 @@ async function getUserFromGUID(guid) {
   return snapshot.data();
 }
 
-async function archiveUserByGUID(guid) {
-  const document = firestore.doc(`${APPROVAL_DOC_TYPE}/${guid}`);
-
-  await document.update({
-    archived: true,
-  });
-}
-
-export function checkArchived(user) {
-  if (user?.archived) {
+export function checkExpiration(user) {
+  if (!user.approvalExpiration || user.approvalExpiration < Date.now()) {
     const error = new Error(
-      `${user.first_name} ${user.last_name} (${user.email}) has already been approved or rejected by an admin!`
+      `It has been more than ${humanizeDuration(config.APPROVAL_EXPIRATION_PERIOD)} since ${user.first_name} ${
+        user.last_name
+      } (${user.email}) registered. Their approval has expired. Approval will need to be done in the database directly.`
     );
-    error.code = ARCHIVED_USER;
+    error.code = EXPIRED_APPROVAL;
 
     throw error;
   }
@@ -221,7 +251,7 @@ export async function approveUser(guid, role) {
   const user = await getUserFromGUID(guid);
   const userInfo = `${user.first_name} ${user.last_name} (${user.email})`;
 
-  checkArchived(user);
+  checkExpiration(user);
 
   await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
     role,
@@ -229,7 +259,7 @@ export async function approveUser(guid, role) {
     approved: true,
   });
 
-  await archiveUserByGUID(guid);
+  await sendApproveRejectNotificationEmail({ ...user, role }, false);
 
   return `${userInfo} has been approved as: ${role}`;
 }
@@ -237,14 +267,14 @@ export async function approveUser(guid, role) {
 export async function rejectUser(guid) {
   const user = await getUserFromGUID(guid);
 
-  checkArchived(user);
+  checkExpiration(user);
 
   await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
     approved_date: new Date(),
     approved: false,
   });
 
-  await archiveUserByGUID(guid);
+  await sendApproveRejectNotificationEmail(user, true);
 
   return `${user.first_name} ${user.last_name} (${user.email}) has been rejected`;
 }
