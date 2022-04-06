@@ -1,4 +1,4 @@
-import { approveUser, ARCHIVED_USER, checkArchived } from './user_management.js';
+import { approveUser, checkExpiration, EXPIRED_APPROVAL } from './user_management.js';
 
 describe('approveUser', () => {
   it('throws an error if there is no matching guid in firestore', async () => {
@@ -8,21 +8,18 @@ describe('approveUser', () => {
   });
 });
 
-describe('checkArchived', () => {
-  it('completes successfully if no archived prop', () => {
+describe('checkExpiration', () => {
+  it('completes successfully date is not expired', () => {
     expect(() => {
-      checkArchived({});
-    }).not.toThrow();
-    expect(() => {
-      checkArchived({ archived: false });
+      checkExpiration({ approvalExpiration: new Date().getTime() + 1000000 });
     }).not.toThrow();
   });
-  it('throws if archived is true', () => {
+  it('throws if date is expired', () => {
     try {
-      checkArchived({ archived: true });
+      checkExpiration({ approvalExpiration: 1648063677965 }); // Wed Mar 23 2022
     } catch (error) {
-      expect(error.message).toMatch(/already/);
-      expect(error.code).toBe(ARCHIVED_USER);
+      expect(error.message).toMatch(/more than/);
+      expect(error.code).toBe(EXPIRED_APPROVAL);
     }
   });
 });

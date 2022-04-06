@@ -1,6 +1,6 @@
 import lt from 'semver/functions/lt.js';
 import { db } from '../services/clients.js';
-import { ARCHIVED_USER } from '../services/user_management.js';
+import { EXPIRED_APPROVAL } from '../services/user_management.js';
 
 export function getRegister(isExistingUser, registerUser, getUser) {
   return async function register(request, response) {
@@ -46,7 +46,7 @@ export function getApprove(approveUser) {
     } catch (error) {
       if (error.code === 'INVALID_GUID') {
         return response.status(401).send(error.message);
-      } else if (error.code === ARCHIVED_USER) {
+      } else if (error.code === EXPIRED_APPROVAL) {
         return response.status(403).send(error.message);
       } else {
         return response.status(500).send(error.message);
