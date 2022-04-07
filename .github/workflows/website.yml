@@ -51,7 +51,7 @@ jobs:
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      QUAD_WORD: ${{ secrets.QUAD_WORD }}
+      WEBSITE_QUAD_WORD: ${{ secrets.WEBSITE_QUAD_WORD }}
 
     steps:
       - name: Checkout
@@ -71,7 +71,7 @@ jobs:
     env:
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
       SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      QUAD_WORD: ${{ secrets.QUAD_WORD }}
+      WEBSITE_QUAD_WORD: ${{ secrets.WEBSITE_QUAD_WORD }}
 
     steps:
       - name: Checkout
