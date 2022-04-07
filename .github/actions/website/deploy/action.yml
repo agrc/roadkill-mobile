@@ -56,4 +56,4 @@ runs:
           --min-instances=0
           --allow-unauthenticated
         env_vars: >
-          QUAD_WORD=${{ env.QUAD_WORD }}
+          WEBSITE_QUAD_WORD=${{ env.WEBSITE_QUAD_WORD }}

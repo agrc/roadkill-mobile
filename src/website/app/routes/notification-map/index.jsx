@@ -21,7 +21,7 @@ export function links() {
 
 export async function loader() {
   return {
-    quadWord: process.env.QUAD_WORD,
+    quadWord: process.env.WEBSITE_QUAD_WORD,
   };
 }
 
