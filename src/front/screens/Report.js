@@ -278,7 +278,7 @@ const Report = ({
     containerStyle.borderTopRightRadius = RADIUS;
   }
 
-  return (
+  return show ? (
     <Animated.View
       // The reason why I'm doing maxHeight rather than height is because we can't find the
       // height of the animated view until it's displayed. A fixed height would not be flexible
@@ -363,7 +363,7 @@ const Report = ({
       </KeyboardAwareScrollView>
       <Spinner show={mutation.isLoading} />
     </Animated.View>
-  );
+  ) : null;
 };
 
 Report.propTypes = {
