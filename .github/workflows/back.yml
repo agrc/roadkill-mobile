@@ -124,9 +124,3 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
-
-      - name: Create domain mappings
-        run: |-
-          gcloud beta run domain-mappings create
-            --service=${{ env.SERVICE_NAME }}
-            --domain=wildlifecollisions.utah.gov
