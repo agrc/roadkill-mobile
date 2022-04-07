@@ -109,3 +109,15 @@ export function getUpdateProfile(updateProfile) {
     return response.status(200).json({ success: true });
   };
 }
+
+export function getDeleteUser(deleteUser) {
+  return async function deleteUserHandler(_, response) {
+    try {
+      await deleteUser(response.locals.user.appUser.id);
+    } catch (error) {
+      return response.status(500).send(error.message);
+    }
+
+    return response.status(200).json({ success: true });
+  };
+}

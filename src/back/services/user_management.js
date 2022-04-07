@@ -264,6 +264,17 @@ export async function approveUser(guid, role) {
   return `${userInfo} has been approved as: ${role}`;
 }
 
+export async function deleteUser(userId) {
+  await db('users').where({ id: userId }).update({
+    organization_id: null,
+    auth_id: 'deleted',
+    email: 'deleted',
+    first_name: 'deleted',
+    last_name: 'deleted',
+    phone: 'deleted',
+  });
+}
+
 export async function rejectUser(guid) {
   const user = await getUserFromGUID(guid);
 

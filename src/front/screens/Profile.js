@@ -21,7 +21,7 @@ import { booleanToYesNo, dateToString } from '../services/utilities';
 // TODO: A lot of this code could be shared with NewUser.js
 export default function ProfileScreen() {
   const [organizationsLookup, setOrganizationsLookup] = React.useState([]);
-  const { userType } = useAuth();
+  const { userType, logOut } = useAuth();
 
   React.useEffect(() => {
     const init = async () => {
@@ -35,7 +35,7 @@ export default function ProfileScreen() {
     init();
   }, []);
 
-  const { get, post } = useAPI();
+  const { get, post, deleteAccount } = useAPI();
 
   const getProfileData = async () => {
     const responseJson = await get('user/profile');
@@ -50,7 +50,7 @@ export default function ProfileScreen() {
 
   const formikRef = useRef();
   const queryClient = useQueryClient();
-  const mutation = useMutation(updateProfileData, {
+  const updateMutation = useMutation(updateProfileData, {
     onSuccess: () => {
       Alert.alert('Success', 'Profile updated successfully!');
 
@@ -66,6 +66,35 @@ export default function ProfileScreen() {
       Alert.alert('Error', 'Error updating profile!');
     },
   });
+
+  const deleteAccountMutation = useMutation(deleteAccount, {
+    onSuccess: () => {
+      Alert.alert('Success', 'Your account has successfully deleted!');
+
+      logOut(true);
+    },
+    onError: (error) => {
+      Sentry.Native.captureEvent(error);
+
+      Alert.alert('Error', 'There was an error deleting your account!');
+    },
+  });
+
+  const handleDeleteAccountButton = () => {
+    Alert.alert(
+      'Are you sure?',
+      'Deleting your account will delete all of your personal information and prevent you from submitting data in the future.',
+      [
+        {
+          text: 'Yes, delete my account',
+          onPress: () => deleteAccountMutation.mutate(),
+        },
+        {
+          text: 'Never mind, keep my account',
+        },
+      ]
+    );
+  };
 
   const shape = {
     phone: yup.string().phone('US').required(),
@@ -104,7 +133,7 @@ export default function ProfileScreen() {
                   organization_type: userType,
                 }}
                 onSubmit={(values) => {
-                  mutation.mutate(values);
+                  updateMutation.mutate(values);
                 }}
                 validationSchema={schema}
               >
@@ -174,7 +203,7 @@ export default function ProfileScreen() {
                     <Button
                       style={styles.button}
                       onPress={handleSubmit}
-                      disabled={!dirty || !isValid || mutation.isLoading}
+                      disabled={!dirty || !isValid || updateMutation.isLoading}
                     >
                       Update
                     </Button>
@@ -201,6 +230,20 @@ export default function ProfileScreen() {
             <ValueContainer label="Role" value={data.role} />
             <ValueContainer label="Sign-in Provider" value={data.auth_provider} />
             <ValueContainer label="Total Reports Submitted" value={data.reports_submitted} />
+
+            <View style={styles.deleteButtonContainer}>
+              <Text category="h5" style={{ marginBottom: PADDING }}>
+                Danger Zone
+              </Text>
+              <Button
+                style={styles.button}
+                onPress={handleDeleteAccountButton}
+                status="danger"
+                disabled={deleteAccountMutation.isLoading}
+              >
+                Delete Account
+              </Button>
+            </View>
           </>
         ) : null}
       </ScrollView>
@@ -219,5 +262,9 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: PADDING / 2,
+  },
+  deleteButtonContainer: {
+    padding: PADDING,
+    paddingTop: PADDING * 2,
   },
 });
