@@ -15,7 +15,15 @@ import { getGetReportHandler, getNewPickupHandler, getNewReportHandler } from '.
 import { getGetRouteHandler, getNewRouteHandler } from './api/routes.js';
 import { authenticate, getToken, logout } from './api/security.js';
 import { getGetAllHandler } from './api/submissions.js';
-import { getApprove, getGetProfile, getLogin, getRegister, getReject, getUpdateProfile } from './api/user.js';
+import {
+  getApprove,
+  getDeleteUser,
+  getGetProfile,
+  getLogin,
+  getRegister,
+  getReject,
+  getUpdateProfile,
+} from './api/user.js';
 import validate from './api/validation.js';
 import getVersionFromHeader, { switchByRequestVersion } from './api/versioning.js';
 import { getIDImage } from './services/id_images.js';
@@ -26,6 +34,7 @@ import { createRoute, getRoute } from './services/route_management.js';
 import { getMySubmissions } from './services/submissions.js';
 import {
   approveUser,
+  deleteUser,
   getProfile,
   getProfile_0_0_0,
   getUser,
@@ -166,7 +175,7 @@ app.post(
     handleAsyncErrors(getUpdateProfile(updateProfile))
   )
 );
-// app.delete('/user/delete/:email/:auth_provider', handleAsyncErrors(del)); // TODO for facebook delete requirements
+app.delete('/user/delete', handleAsyncErrors(authenticate), handleAsyncErrors(getDeleteUser(deleteUser)));
 
 // data submission
 app.post(

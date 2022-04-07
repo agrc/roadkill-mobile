@@ -71,5 +71,9 @@ export function useAPI() {
     return await post('routes/route', submitValues, false);
   }
 
-  return { post, get, postReport, postRoute };
+  async function deleteAccount() {
+    return await makeRequest('DELETE', 'user/delete', null);
+  }
+
+  return { post, get, postReport, postRoute, deleteAccount };
 }
