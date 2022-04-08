@@ -51,7 +51,7 @@ export default function MyReportsScreen() {
         {data ? (
           data.length ? (
             data.map((item) => (
-              <View key={item.report_id || item.route_id}>
+              <View key={item.report_id ? `report_${item.report_id}` : `route_${item.route_id}`}>
                 {item.report_id ? <ReportListItem item={item} /> : <RouteListItem item={item} />}
                 <Divider />
               </View>
