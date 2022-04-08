@@ -13,6 +13,18 @@ const ROLES = {
 };
 const NO_REPLY_EMAIL = 'noreply@utah.gov';
 
+function getTrackingSettings() {
+  if (process.env.ENVIRONMENT === 'development') {
+    return {
+      clickTracking: {
+        enable: false,
+      },
+    };
+  }
+
+  return null;
+}
+
 export const EXPIRED_APPROVAL = 'EXPIRED_APPROVAL';
 
 // TODO: clean up after 0.0.0 is gone
@@ -174,15 +186,8 @@ export async function sendApprovalEmail(user, organization) {
     from: NO_REPLY_EMAIL,
     templateId: 'd-021d5c287a1d4295a7ade35724bd2994', // roadkill-new-user
     dynamicTemplateData: data,
+    trackingSettings: getTrackingSettings(),
   };
-
-  if (process.env.ENVIRONMENT === 'development') {
-    mail.trackingSettings = {
-      clickTracking: {
-        enable: false,
-      },
-    };
-  }
 
   try {
     await mail.send(email);
