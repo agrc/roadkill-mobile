@@ -221,8 +221,6 @@ export function OfflineCacheContextProvider({ children }) {
     await showAlert(error);
   };
 
-  console.log('isInternetReachable', isInternetReachable);
-
   return (
     <OfflineCacheContext.Provider
       value={{
