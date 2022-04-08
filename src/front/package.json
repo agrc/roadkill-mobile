@@ -5,7 +5,7 @@
     "eas-build-pre-install": "bash ./scripts/eas-build-pre-install.sh",
     "eject": "expo eject",
     "lint": "eslint .",
-    "start": "env-cmd -f .env expo start --dev-client",
+    "start": "expo start --dev-client",
     "test": "env-cmd -f .env.test jest --watch --coverage=false --changedSince=origin/main",
     "test:debug": "env-cmd -f .env.test jest -o --watch --coverage=false",
     "test:final": "npm run lint && env-cmd -f .env.test jest",
