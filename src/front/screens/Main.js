@@ -298,7 +298,7 @@ export default function MainScreen() {
                       bottom: reportHeight + 15,
                     },
                     android: {
-                      bottom: reportHeight,
+                      bottom: reportHeight || 0,
                     },
                   })
                 : null
