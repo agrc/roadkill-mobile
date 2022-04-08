@@ -196,7 +196,7 @@ export async function sendApprovalEmail(user, organization) {
   }
 }
 
-async function sendApproveRejectNotificationEmail(user, rejected) {
+async function sendApproveRejectAdminNotificationEmail(user, rejected) {
   const data = {
     user,
     rejected,
@@ -208,15 +208,26 @@ async function sendApproveRejectNotificationEmail(user, rejected) {
     from: NO_REPLY_EMAIL,
     templateId: 'd-ae24b5a55c9e461298a1bfc14e0b383e',
     dynamicTemplateData: data,
+    trackingSettings: getTrackingSettings(),
   };
 
-  if (process.env.ENVIRONMENT === 'development') {
-    mail.trackingSettings = {
-      clickTracking: {
-        enable: false,
-      },
-    };
+  try {
+    await mail.send(email);
+  } catch (error) {
+    console.error(error);
   }
+}
+
+async function sendApproveRejectUserNotificationEmail(user, rejected) {
+  const approveMessage = `Congratulations, you have been approved as ${user.role} in the Wildlife-Vehicle Collision Reporter app.`;
+  const rejectMessage = `Unfortunately, your registration for the Wildlife-Vehicle Collision Reporter app has been declined. You may send an email to ${process.env.ADMIN_EMAIL} if you believe that this was a mistake.`;
+  const email = {
+    to: user.email,
+    from: NO_REPLY_EMAIL,
+    subject: rejected ? 'Your WVCR registration request was denied' : 'Your WVCR registration request was approved',
+    text: rejected ? rejectMessage : approveMessage,
+    trackingSettings: getTrackingSettings(),
+  };
 
   try {
     await mail.send(email);
@@ -264,7 +275,8 @@ export async function approveUser(guid, role) {
     approved: true,
   });
 
-  await sendApproveRejectNotificationEmail({ ...user, role }, false);
+  await sendApproveRejectAdminNotificationEmail({ ...user, role }, false);
+  await sendApproveRejectUserNotificationEmail({ ...user, role }, false);
 
   return `${userInfo} has been approved as: ${role}`;
 }
@@ -290,7 +302,8 @@ export async function rejectUser(guid) {
     approved: false,
   });
 
-  await sendApproveRejectNotificationEmail(user, true);
+  await sendApproveRejectAdminNotificationEmail(user, true);
+  await sendApproveRejectUserNotificationEmail(user, true);
 
   return `${user.first_name} ${user.last_name} (${user.email}) has been rejected`;
 }
