@@ -19,7 +19,6 @@ import { booleanToYesNo, dateToString, isPickupReport } from '../services/utilit
 
 export default function ReportInfoScreen() {
   const { reportId, offlineStorageId, offlineRouteId, offlineIndex } = useRoute().params;
-  console.log('offlineRouteId', offlineRouteId);
   // offlineRouteId & offlineIndex are only populated for reports associated with offline routes
   const navigation = useNavigation();
   const { get } = useAPI();
