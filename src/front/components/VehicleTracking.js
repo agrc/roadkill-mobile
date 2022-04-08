@@ -260,8 +260,8 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
 
     const submitErrors = [];
     for (let index = 0; index < state.pickups.length; index++) {
-      const pickup = state.pickups[index];
-      pickup.route_id = responseJson.route_id;
+      // create a new object since we are adding a prop
+      const pickup = { ...state.pickups[index], route_id: responseJson.route_id };
 
       setSpinnerMessage(`submitting pickup ${index + 1} of ${state.pickups.length}...`);
 
