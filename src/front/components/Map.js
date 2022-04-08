@@ -29,14 +29,12 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       {...mapViewProps}
     >
       <UrlTile
-        doubleTileSize={Platform.select({ android: true, ios: false })}
+        doubleTileSize={true}
         minimumZ={3}
         shouldReplaceMapContent={true}
         tileCachePath={tileCacheDirectory}
         tileCacheMaxAge={60 * 60 * 24 * 7}
-        // ios doubles the tile sizes despite setting doubleTileSize to false
-        // this setting is to help resize them so that the labels aren't tiny
-        tileSize={Platform.select({ android: 256, ios: 384 })}
+        tileSize={384}
         urlTemplate={config.URLS.LITE}
         zIndex={-5}
       />
