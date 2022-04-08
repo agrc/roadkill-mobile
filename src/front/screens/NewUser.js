@@ -3,8 +3,9 @@ import { Button, Input, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation } from 'react-query';
+import * as Sentry from 'sentry-expo';
 import * as yup from 'yup';
 import 'yup-phone';
 import useAuth from '../auth/context';
@@ -20,7 +21,21 @@ export default function NewUserScreen() {
   const { logOut, userType, authInfo, registerUser } = useAuth();
   const navigation = useNavigation();
   const organizationIsRequired = userType !== config.USER_TYPES.public;
-  const registerMutation = useMutation('register', registerUser);
+  const registerMutation = useMutation(registerUser, {
+    onSuccess: () => {
+      if (userType !== config.USER_TYPES.public) {
+        Alert.alert(
+          'Success',
+          'Thank you for registering! Your registration has been sent to system administrators for approval. You will get an email once your account has been approved. Please note that you may still collect and submit data before your account is approved.'
+        );
+      }
+    },
+    onError: (error) => {
+      Sentry.Native.captureException(error);
+
+      Alert.alert('Error', 'Error submitting registration. Please try again later.');
+    },
+  });
   const [organizationsLookup, setOrganizationsLookup] = React.useState([]);
 
   React.useEffect(() => {
