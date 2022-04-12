@@ -51,7 +51,6 @@ export default function MainScreen() {
   // eslint-disable-next-line no-unused-vars
   const { cachedSubmissionIds } = useOfflineCache();
   const theme = useTheme();
-  const mapDimensions = React.useRef(null);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
   const [reportState, dispatchReportState] = useImmerReducer(reportReducer, initialReportState);
   const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
@@ -273,12 +272,20 @@ export default function MainScreen() {
     color: theme['color-basic-900'],
   });
 
-  const crosshairCoordinates = mapDimensions.current
-    ? {
-        y: mapDimensions.current.height / 2 + Platform.select({ ios: 8, android: -1 }),
-        x: mapDimensions.current.width / 2,
-      }
-    : null;
+  const [crosshairCoordinates, setCrosshairCoordinates] = React.useState(null);
+  React.useEffect(() => {
+    const giddyUp = async () => {
+      const camera = await mapView.current.getCamera();
+      const newCoords = await mapView.current.pointForCoordinate(camera.center);
+      setCrosshairCoordinates(newCoords);
+    };
+
+    if (reportState.showReport) {
+      giddyUp();
+    } else {
+      setCrosshairCoordinates(null);
+    }
+  }, [reportState.showReport]);
   const VehicleIcon = getIcon({ pack: 'material', name: 'drive-eta', size: 36, color: theme['color-basic-900'] });
   const showTrackingMarker =
     vehicleTrackingState.isTracking && !vehicleTrackingState.isPaused && vehicleTrackingState.routeCoordinates.length;
@@ -290,10 +297,6 @@ export default function MainScreen() {
           <Map
             initialRegion={locationToRegion(initialLocation)}
             onPanDrag={onPanDrag}
-            onLayout={(event) => {
-              const { width, height } = event.nativeEvent.layout;
-              mapDimensions.current = { width, height };
-            }}
             innerRef={mapView}
             style={[styles.map, mapSizeStyle]}
             showsUserLocation={!showTrackingMarker}
@@ -342,7 +345,7 @@ export default function MainScreen() {
             ) : null}
             {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} tappable={false} /> : null}
           </Map>
-          {reportState.showReport ? (
+          {crosshairCoordinates ? (
             <View
               pointerEvents="none"
               style={[styles.crosshairContainer, { top: crosshairCoordinates.y, left: crosshairCoordinates.x }]}
