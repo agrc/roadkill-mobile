@@ -18,7 +18,7 @@ export default {
   USER_TYPES: {
     public: 'reporter',
     contractor: 'contractor',
-    agencyEmployee: 'agency',
+    agency: 'agency',
     admin: 'admin',
   },
   PROVIDER_NAMES: {
