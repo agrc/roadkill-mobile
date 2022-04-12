@@ -4,6 +4,7 @@ import humanizeDuration from 'humanize-duration';
 import yup from 'yup';
 import config from '../config.js';
 import { db, firestore, mail } from './clients.js';
+import { getTrackingSettings } from './utilities.js';
 
 const ROLES = {
   agency: 'agency',
@@ -12,18 +13,6 @@ const ROLES = {
   admin: 'admin',
 };
 const NO_REPLY_EMAIL = 'noreply@utah.gov';
-
-function getTrackingSettings() {
-  if (process.env.ENVIRONMENT === 'development') {
-    return {
-      clickTracking: {
-        enable: false,
-      },
-    };
-  }
-
-  return null;
-}
 
 export const EXPIRED_APPROVAL = 'EXPIRED_APPROVAL';
 

@@ -13,3 +13,15 @@ export function lineCoordStringToWKT(coordsString) {
 
   return `SRID=4326;LINESTRING(${coordsString})`;
 }
+
+export function getTrackingSettings() {
+  if (process.env.ENVIRONMENT === 'development') {
+    return {
+      clickTracking: {
+        enable: false,
+      },
+    };
+  }
+
+  return undefined; // null breaks sendgrid code
+}
