@@ -1,3 +1,44 @@
+# [v3.0.0-529](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-526...v3.0.0-529) (2022-04-12)
+
+
+### Bug Fixes
+
+* **front:** add spoof scheme to jest tests ([a25a15d](https://github.com/agrc/roadkill-mobile/commit/a25a15d47074468b03e873963fdec5690c5b1413))
+* **front:** fix bug preventing pickups from being associated with routes ([f8eb2e7](https://github.com/agrc/roadkill-mobile/commit/f8eb2e75b7710306d210c1b068bd17351c24451a))
+* **front:** fix circular dependency ([98a8cd8](https://github.com/agrc/roadkill-mobile/commit/98a8cd8b8d869d07194de335e5f9c412b6f5ec40))
+* **front:** fix hidden route polylines ([da51dbb](https://github.com/agrc/roadkill-mobile/commit/da51dbbf05d2fa7ae96df3b1b961239a7d39d074))
+* **front:** fix mappadding bug on android ([fad5584](https://github.com/agrc/roadkill-mobile/commit/fad558421ba0d94c3d35d735f8d346ab54d99732))
+* **front:** fix tests ([1b008a5](https://github.com/agrc/roadkill-mobile/commit/1b008a5ec7d5a869416ee98121844efcd9e74eca))
+* **front:** fix zoom in on open report on ios ([f01ab18](https://github.com/agrc/roadkill-mobile/commit/f01ab18eaf49712f6d7feca7d96efb63f4b1cded))
+* **front:** get crosshair point coords directly from map component ([f59604c](https://github.com/agrc/roadkill-mobile/commit/f59604cb19d8c59c6094e3881a7d91df41568525))
+* **front:** get rid of android scale hack and replace with new layer param ([843f4d4](https://github.com/agrc/roadkill-mobile/commit/843f4d494c433e19a2aeac90ce58b8063b2e9a01))
+* **front:** handle first assistance prompt before granting permissions ([41359b9](https://github.com/agrc/roadkill-mobile/commit/41359b9da0b941e28017e318f5607c9dc1cd4444))
+* **front:** lower image quality and increase api request timeout ([3d92008](https://github.com/agrc/roadkill-mobile/commit/3d9200869ec94e08aa5ecb723624b78479de041b)), closes [#170](https://github.com/agrc/roadkill-mobile/issues/170)
+* **front:** prevent duplicate list item key entries ([7e9da1a](https://github.com/agrc/roadkill-mobile/commit/7e9da1a72c5dcd5b3910519767baaace2b1acd16))
+* **front:** query psap on new report opened ([dcc9053](https://github.com/agrc/roadkill-mobile/commit/dcc9053c3059f2d99f6eaa038f2a63549fddccbf)), closes [#165](https://github.com/agrc/roadkill-mobile/issues/165)
+* **front:** remove un-pressable icons ([cf708ba](https://github.com/agrc/roadkill-mobile/commit/cf708babd5c36a2e9703a016774e4a4184fe5a8a)), closes [#155](https://github.com/agrc/roadkill-mobile/issues/155)
+* **front:** set better zoom for static maps on iOS ([33bb369](https://github.com/agrc/roadkill-mobile/commit/33bb3695d408b9f1e7e329b65e7191e35206cd86))
+* **front:** simplify crosshair placement ([47b91a8](https://github.com/agrc/roadkill-mobile/commit/47b91a80cfb003173349a772f83cf0b937d75311))
+* **front:** standardize map tile resampling ([4572601](https://github.com/agrc/roadkill-mobile/commit/4572601e797205f5dc50e3592d1cd22738b0631d))
+* **front:** update background permissions disclosure ([561f83a](https://github.com/agrc/roadkill-mobile/commit/561f83a89ec24cad0f42cf62a6a78eca9b0a7114))
+* separate quad words between app and website ([a587013](https://github.com/agrc/roadkill-mobile/commit/a587013135989a16e384b5d8e41dc6ccd2a43189))
+
+
+### Features
+
+* **back:** finish implementing registration notification system ([f3b9bb8](https://github.com/agrc/roadkill-mobile/commit/f3b9bb82d1d7bed9e50457ac5481846cd63bceaa)), closes [#82](https://github.com/agrc/roadkill-mobile/issues/82)
+* **back:** send user approve/reject notification emails ([1e01d9e](https://github.com/agrc/roadkill-mobile/commit/1e01d9ef83f8c12b5b03a0143cea77eae9ef7417)), closes [#173](https://github.com/agrc/roadkill-mobile/issues/173)
+* **front:** add number of in-app offline notifications ([9bcc102](https://github.com/agrc/roadkill-mobile/commit/9bcc102d68d97471f40f7d3a6458eb8b6f639a22)), closes [#79](https://github.com/agrc/roadkill-mobile/issues/79)
+* **front:** cache visited map tiles for offline use ([72075a8](https://github.com/agrc/roadkill-mobile/commit/72075a855dd3ea2dc8117c22248828670ffda6df)), closes [#29](https://github.com/agrc/roadkill-mobile/issues/29)
+* **front:** display offline route submissions ([f1f3b10](https://github.com/agrc/roadkill-mobile/commit/f1f3b10ed8152ded276f365c2de8c9974094f2f0)), closes [#28](https://github.com/agrc/roadkill-mobile/issues/28)
+* **front:** show registration message to non-public users ([d26f3c2](https://github.com/agrc/roadkill-mobile/commit/d26f3c27925b745308bd252ce595dd2437be59dc)), closes [#174](https://github.com/agrc/roadkill-mobile/issues/174)
+* **front:** store reports offline if no network is available ([47920a5](https://github.com/agrc/roadkill-mobile/commit/47920a55523bfebe8b235e7b3528841347064370))
+* **front:** store routes offline ([a8f542e](https://github.com/agrc/roadkill-mobile/commit/a8f542ee965d349e5ece0d682161be4f8b014af0)), closes [#28](https://github.com/agrc/roadkill-mobile/issues/28)
+* **front:** submit offline reports manually or automatically ([f4226ae](https://github.com/agrc/roadkill-mobile/commit/f4226ae4d7bc5e515a89801cbd9e96529cc9a0d6)), closes [#28](https://github.com/agrc/roadkill-mobile/issues/28)
+* implement delete account function ([cfcf12b](https://github.com/agrc/roadkill-mobile/commit/cfcf12be64a6222e95e858deb0683f40c531223e)), closes [#115](https://github.com/agrc/roadkill-mobile/issues/115)
+
+
+
 # [v3.0.0-526](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-525...v3.0.0-526) (2022-03-08)
 
 

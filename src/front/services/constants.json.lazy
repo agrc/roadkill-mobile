@@ -364,17 +364,6 @@
       "frequent": false
     },
     {
-      "species_id": 34,
-      "common_name": "Northerthern Raccoon",
-      "scientific_name": "Procyon lotor",
-      "species_type": "wild",
-      "species_class": "mammals",
-      "species_order": "carnivores",
-      "family": "raccoons",
-      "rare": false,
-      "frequent": true
-    },
-    {
       "species_id": 35,
       "common_name": "Ringtail ",
       "scientific_name": "Bassariscus astutus",
@@ -1407,6 +1396,17 @@
       "family": "vultures",
       "rare": false,
       "frequent": false
+    },
+    {
+      "species_id": 34,
+      "common_name": "Northern Raccoon",
+      "scientific_name": "Procyon lotor",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "carnivores",
+      "family": "raccoons",
+      "rare": false,
+      "frequent": true
     }
   ],
   "organizations": [
@@ -1468,6 +1468,21 @@
     {
       "id": 16,
       "name": "Utah State University",
+      "org_type": "agency"
+    },
+    {
+      "id": 18,
+      "name": "UGRC",
+      "org_type": "agency"
+    },
+    {
+      "id": 19,
+      "name": "UGRC",
+      "org_type": "agency"
+    },
+    {
+      "id": 20,
+      "name": "THE ugrc",
       "org_type": "agency"
     }
   ]
