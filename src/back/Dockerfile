@@ -15,4 +15,4 @@ COPY ./back .
 EXPOSE 3000
 
 WORKDIR /usr/src/back
-CMD [ "node", "server.js" ]
+CMD [ "node", "--trace-warnings", "server.js" ]
