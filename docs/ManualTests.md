@@ -1,8 +1,6 @@
 # Manual Tests to perform before release on both iOS and Android
 
-## Setup
-
-1. Run `buildForSimulators.sh` which will build apps, install them and open them on both simulators.
+## Facebook Test Credentials
 
 email: `open_vboxopy_user@tfbnw.net`  
 password: `tester`
@@ -25,11 +23,13 @@ password: `tester`
 
 ## New User
 
-| set up                        | action                                  | assertion |
-|-------------------------------|-----------------------------------------|-----|
-|                               | log in with unregistered user           | navigates to new user screen, name and email are populated |
-| log in with unregistered user | press "Cancel"                          | navigates back to log in screen |
-| log in with unregistered user | input phone number and press "Register" | navigates to main screen and an email is sent to admins (for non-public users) |
+| set up                                    | action                                  | assertion |
+|-------------------------------------------|-----------------------------------------|-----|
+|                                           | log in with unregistered user           | navigates to new user screen, name and email are populated |
+| log in with unregistered user             | press "Cancel"                          | navigates back to log in screen |
+| log in with unregistered, non-public user | input phone number and press "Register" | navigates to main screen and an email is sent to admins |
+|                                           | approve user from admin email           | verify that email was sent to user |
+|                                           | reject user from admin email            | verify that email was sent to user |
 
 ## Main
 
@@ -68,7 +68,7 @@ Setup: open the report and select a location
 |                                     | click on date picker           | controls are shown and future dates are greyed out |
 |                                     | submit report with no photo    | success dialog should show and report should be reset and closed |
 |                                     | submit report with photo       | success dialog should show and report should be reset and closed |
-| login with both google and facebook | submit report                  | success dialog |
+| login with both google and facebook | submit report                  | success dialog, verify that notification email was sent |
 
 ### Contractor Role
 
@@ -155,14 +155,24 @@ Setup: Main menu -> My Reports -> Tap on a report
 |        | tap on a report without a valid photo | the photo controls are not displayed |
 |        |                                       | map is zoomed to the animal location associated with the report |
 
+### Route Info
+
+Setup: Main menu -> My Reports -> Tap on a route
+
+| set up                      | action          | assertion                    |
+|-----------------------------|-----------------|------------------------------|
+|                             | tap on a route  | the map is shown with the polyline and pickup pins, pickups are listed at the bottom |
+| tap on a route with pickups | tap on a pickup | pickup report shows the appropriate data |
+
 ### My Profile
 
 Setup: Main menu -> My Profile
 
-| set up | action                             | assertion                      |
-|--------|------------------------------------|--------------------------------|
-|        |                                    | verify that all of the info looks correct |
-|        | change phone number and hit update | go away from screen and then back into it and verify that the phone change was persisted |
+| set up | action                                               | assertion    |
+|--------|------------------------------------------------------|--------------|
+|        |                                                      | verify that all of the info looks correct |
+|        | change phone number and organization then tap update | go away from screen and then back into it and verify that the phone change was persisted |
+|        | tap on "Delete Account" button                       | the user is logged out and the user PID is wiped from the `users` table |
 
 ### Routes
 
