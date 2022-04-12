@@ -15,13 +15,9 @@ export function lineCoordStringToWKT(coordsString) {
 }
 
 export function getTrackingSettings() {
-  if (process.env.ENVIRONMENT === 'development') {
-    return {
-      clickTracking: {
-        enable: false,
-      },
-    };
-  }
-
-  return undefined; // null breaks sendgrid code
+  return {
+    clickTracking: {
+      enable: false,
+    },
+  };
 }
