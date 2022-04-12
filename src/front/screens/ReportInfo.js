@@ -139,12 +139,12 @@ export function ReportInfo({ data }) {
       <ValueContainer label="Age Class" value={data.age_class} />
       {isPickupReport(data) ? (
         // pickup report
-        <ValueContainer label="Pickup Date" value={dateToString(data.pickup_date)} />
+        <ValueContainer label="Pickup Date" value={dateToString(data.pickup_date, false)} />
       ) : (
         // public report
         <>
           <ValueContainer label="Repeat Submission" value={booleanToYesNo(data.repeat_submission)} />
-          <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date)} />
+          <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date, false)} />
         </>
       )}
       <Divider />
