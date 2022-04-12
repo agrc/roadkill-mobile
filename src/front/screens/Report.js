@@ -89,7 +89,6 @@ const Report = ({
   show,
   reportType,
   hideReport,
-  setHeight,
   setMarker,
   carcassCoordinates,
   vehicleTrackingDispatch,
@@ -98,7 +97,6 @@ const Report = ({
   const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
-  const locationViewHeight = React.useRef(null);
   const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
   const { isConnected, cacheReport } = useOfflineCache();
@@ -186,9 +184,7 @@ const Report = ({
         // I'm hoping that 50% of window height is good for the smaller devices...
         toValue: windowDimensions.height * 0.5,
         ...COMMON_ANIMATION_PROPS,
-      }).start(() => {
-        setHeight(locationViewHeight.current);
-      });
+      }).start();
     } else {
       Animated.timing(animatedMaxHeight.current, {
         toValue: 0,
@@ -284,7 +280,6 @@ const Report = ({
       // height of the animated view until it's displayed. A fixed height would not be flexible
       // enough for different screen sizes.
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
-      onLayout={(event) => (locationViewHeight.current = event.nativeEvent.layout.height)}
     >
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
         <View style={styles.body}>
@@ -370,7 +365,6 @@ Report.propTypes = {
   reportType: propTypes.oneOf([config.REPORT_TYPES.report, config.REPORT_TYPES.pickup]).isRequired,
   show: propTypes.bool.isRequired,
   hideReport: propTypes.func.isRequired,
-  setHeight: propTypes.func.isRequired,
   setMarker: propTypes.func.isRequired,
   carcassCoordinates: propTypes.object,
   vehicleTrackingDispatch: propTypes.func.isRequired,

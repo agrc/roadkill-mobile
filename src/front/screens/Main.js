@@ -52,7 +52,6 @@ export default function MainScreen() {
   const { cachedSubmissionIds } = useOfflineCache();
   const theme = useTheme();
   const mapDimensions = React.useRef(null);
-  const [reportHeight, setReportHeight] = React.useState(0);
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
   const [reportState, dispatchReportState] = useImmerReducer(reportReducer, initialReportState);
   const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
@@ -276,7 +275,7 @@ export default function MainScreen() {
 
   const crosshairCoordinates = mapDimensions.current
     ? {
-        y: (mapDimensions.current.height - reportHeight) / 2,
+        y: mapDimensions.current.height / 2 + Platform.select({ ios: 10, android: -1 }),
         x: mapDimensions.current.width / 2,
       }
     : null;
@@ -291,18 +290,6 @@ export default function MainScreen() {
           <Map
             initialRegion={locationToRegion(initialLocation)}
             onPanDrag={onPanDrag}
-            mapPadding={
-              reportState.showReport
-                ? Platform.select({
-                    ios: {
-                      bottom: reportHeight + 15,
-                    },
-                    android: {
-                      bottom: reportHeight || 0,
-                    },
-                  })
-                : null
-            }
             onLayout={(event) => {
               const { width, height } = event.nativeEvent.layout;
               mapDimensions.current = { width, height };
@@ -414,7 +401,6 @@ export default function MainScreen() {
         show={reportState.showReport}
         reportType={reportState.reportType}
         hideReport={hideAddReport}
-        setHeight={setReportHeight}
         setMarker={setMarker}
         carcassCoordinates={carcassCoordinates}
         vehicleTrackingDispatch={vehicleTrackingDispatch}
