@@ -240,12 +240,16 @@ export function coordinatesToRegion(coordinates) {
   return extentToRegion(minx, maxx, miny, maxy);
 }
 
-export function dateToString(date) {
-  return date ? new Date(date).toLocaleString() : null;
+export function dateToString(date, showTime = true) {
+  if (showTime) {
+    return date ? new Date(date).toLocaleString() : null;
+  }
+
+  return date ? new Date(date).toLocaleDateString() : null;
 }
 
 export const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');
 
 export const isPickupReport = (report) => {
-  return report.pickup_date !== undefined;
+  return !!report.pickup_date;
 };
