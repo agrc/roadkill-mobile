@@ -1,3 +1,14 @@
+# [v3.0.0-530](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-529...v3.0.0-530) (2022-04-12)
+
+
+### Bug Fixes
+
+* **back:** disable click tracking for all emails in all envs ([9e613f3](https://github.com/agrc/roadkill-mobile/commit/9e613f33b9d5a8738b3690b44f11e5df6d88dc12))
+* **back:** fix incorrect clickTracking setting in non-dev ([9011c69](https://github.com/agrc/roadkill-mobile/commit/9011c69cacbad97d07f31a9e7c7a3054e175334b))
+* **front:** fix bug causing agency users to see contractor new report vehicle tracking alert ([105fab7](https://github.com/agrc/roadkill-mobile/commit/105fab79d056216eb5e8061ec28753aa19c87159))
+
+
+
 # [v3.0.0-529](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-526...v3.0.0-529) (2022-04-12)
 
 
