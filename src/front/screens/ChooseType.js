@@ -138,7 +138,7 @@ export default function ChooseTypeScreen({ navigation }) {
           <Option type={config.USER_TYPES.contractor} onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}>
             State contractor
           </Option>
-          <Option type={config.USER_TYPES.agencyEmployee} onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}>
+          <Option type={config.USER_TYPES.agency} onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}>
             State agency employee
           </Option>
           {config.SHOW_STORYBOOK ? <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button> : null}
