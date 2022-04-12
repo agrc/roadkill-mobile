@@ -1,5 +1,5 @@
 import { db, mail } from './clients.js';
-import { pointGeographyToCoordinates } from './utilities.js';
+import { getTrackingSettings, pointGeographyToCoordinates } from './utilities.js';
 
 export default async function sendReportNotification(report_id) {
   const report_info = await db('report_infos')
@@ -50,15 +50,8 @@ export default async function sendReportNotification(report_id) {
     from: 'noreply@utah.gov',
     templateId: 'd-6fc7e07fdbe14f05ac67b728f6f8bf0f', // roadkill-report-notification
     dynamicTemplateData: notificationData,
+    trackingSettings: getTrackingSettings(),
   };
-
-  if (process.env.ENVIRONMENT === 'development') {
-    mailData.trackingSettings = {
-      clickTracking: {
-        enable: false,
-      },
-    };
-  }
 
   try {
     await mail.send(mailData);
