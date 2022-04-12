@@ -173,7 +173,7 @@ export default function MainScreen() {
       });
 
       const zoom = async () => {
-        await followUser(config.MAX_ZOOM_LEVEL);
+        await followUser(true);
       };
 
       if (Platform.OS === 'android') {
@@ -275,7 +275,7 @@ export default function MainScreen() {
 
   const crosshairCoordinates = mapDimensions.current
     ? {
-        y: mapDimensions.current.height / 2 + Platform.select({ ios: 10, android: -1 }),
+        y: mapDimensions.current.height / 2 + Platform.select({ ios: 8, android: -1 }),
         x: mapDimensions.current.width / 2,
       }
     : null;
