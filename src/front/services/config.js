@@ -43,7 +43,8 @@ export default {
     dev: 'dev',
   },
   SPINNER_DELAY: 250,
-  MAX_ZOOM_LEVEL: 18,
+  MAX_ZOOM_LEVEL: 18, // google maps
+  MIN_ALTITUDE: 650, // apple maps
   IMAGE_COMPRESSION_QUALITY: 0.1, // 1 is max quality
   SHOW_STORYBOOK: __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
   UNKNOWN: 'unknown',

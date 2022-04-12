@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
 import ky from 'ky';
 import React from 'react';
+import { Platform } from 'react-native';
 import config from './config';
 
 export const ACCURACY = Location.Accuracy;
@@ -56,7 +57,7 @@ export function useFollowUser(mapViewRef) {
     };
   }, []);
 
-  const zoomTo = (location, zoom) => {
+  const zoomTo = (location, zoomIn) => {
     const camera = {
       center: {
         latitude: location.coords.latitude,
@@ -64,8 +65,12 @@ export function useFollowUser(mapViewRef) {
       },
     };
 
-    if (zoom) {
-      camera.zoom = zoom;
+    if (zoomIn) {
+      if (Platform.OS === 'android') {
+        camera.zoom = config.MAX_ZOOM_LEVEL;
+      } else {
+        camera.altitude = config.MIN_ALTITUDE;
+      }
     }
 
     if (mapViewRef.current) {
@@ -73,17 +78,17 @@ export function useFollowUser(mapViewRef) {
     }
   };
 
-  const getCallback = (zoom) => {
+  const getCallback = (zoomIn) => {
     return (location) => {
       lastUserLocation.current = location;
 
-      zoomTo(location, zoom);
+      zoomTo(location, zoomIn);
     };
   };
 
-  const followUser = async (zoom) => {
+  const followUser = async (zoomIn) => {
     if (lastUserLocation.current) {
-      zoomTo(lastUserLocation.current, zoom);
+      zoomTo(lastUserLocation.current, zoomIn);
     }
 
     if (subscription) return;
@@ -93,7 +98,7 @@ export function useFollowUser(mapViewRef) {
         accuracy: Location.Accuracy.Highest,
         distanceInterval: 1, // in meters
       },
-      getCallback(zoom)
+      getCallback(zoomIn)
     );
 
     setSubscription(sub);

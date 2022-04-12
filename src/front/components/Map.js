@@ -19,7 +19,8 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
     <MapView
       loadingEnabled={true}
       mapType={Platform.select({ android: 'none', ios: MAP_TYPES.STANDARD })}
-      maxZoomLevel={18}
+      maxZoomLevel={config.MAX_ZOOM_LEVEL}
+      maxAltitude={config.MAX_ALTITUDE}
       minZoomLevel={5}
       pitchEnabled={false}
       ref={innerRef}
