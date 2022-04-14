@@ -187,3 +187,15 @@ Setup: log in as contractor or agency
 | active tracking             | tap on "Report" button, fill out and submit | prompt shows that report was saved and will be submitted later with route |
 | active tracking, open modal | tap on "Cancel Route"                       | are you sure prompt is displayed and acts appropriately |
 | active tracking, open modal | tap on "Finish and Submit Route"            | spinner is displayed and route/pickups are submitted and tracking state is stopped and reset |
+
+### Offline
+
+Setup: turn on airplane mode
+
+| set up                   | action                                                                  | assertion |
+|--------------------------|-------------------------------------------------------------------------|-----|
+|                          | submit a report                                                         | offline alert is shown, alert bubble is shown on drawer toggle button on main screen, alert bubble is shown on app icon |
+| submit an offline report | go to my reports page                                                   | cached report should show up and be viewable |
+|                          | submit a route with some pickups                                        | offline alert is shown, alert bubble is shown on drawer toggle button on main screen, alert bubble is shown on app icon |
+| submit some offline data | turn off airplane mode                                                  | offline data is submitted automatically |
+|                          | browser around the map in a place that you visited when you were online | map tiles are loaded from the cache |
