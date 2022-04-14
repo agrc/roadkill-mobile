@@ -2,6 +2,7 @@ import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useQuery } from 'react-query';
+import * as Sentry from 'sentry-expo';
 import CachedData from '../components/CachedData';
 import ReportListItem from '../components/ReportListItem';
 import RouteListItem from '../components/RouteListItem';
@@ -13,12 +14,23 @@ import { PADDING } from '../services/styles';
 
 export default function MyReportsScreen() {
   const { get } = useAPI();
+  const { cachedSubmissionIds, isConnected } = useOfflineCache();
   const getSubmissions = async () => {
-    const responseJson = await get('submissions');
-    return responseJson.submissions;
+    try {
+      if (isConnected) {
+        const responseJson = await get('submissions');
+
+        return responseJson.submissions;
+      }
+
+      return null;
+    } catch (error) {
+      Sentry.Native.captureException(error);
+
+      return null;
+    }
   };
 
-  const { cachedSubmissionIds } = useOfflineCache();
   const [offlineSubmissions, setOfflineSubmissions] = React.useState([]);
 
   React.useEffect(() => {
@@ -42,6 +54,11 @@ export default function MyReportsScreen() {
     <Layout style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ paddingBottom: PADDING * 2 }}>
         <CachedData data={offlineSubmissions} />
+        {!isConnected ? (
+          <View style={{ margin: PADDING }}>
+            <Text>Only cached reports will show up when you are offline.</Text>
+          </View>
+        ) : null}
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
             <Text>There was an error retrieving your previously submitted data from the server!</Text>
