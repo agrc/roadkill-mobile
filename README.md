@@ -99,7 +99,7 @@ Because app builds initiate from both the developer's machine (new native builds
 
 Android Devices (Internal Testing): [Production](https://play.google.com/apps/internaltest/4699387731848346247) | [Staging](https://play.google.com/apps/internaltest/4701504858394647093)
 
-iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](#TODO)
+iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](https://testflight.apple.com/join/EbfHsLjq)
 
 Facebook: Until the app is approved in the Google Play or App Store, we can only test with this test account:
 
