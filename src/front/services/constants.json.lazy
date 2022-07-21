@@ -1504,6 +1504,21 @@
       "id": 24,
       "name": "Ugrc",
       "org_type": "agency"
+    },
+    {
+      "id": 26,
+      "name": "Test Org",
+      "org_type": "contractor"
+    },
+    {
+      "id": 27,
+      "name": "DWR",
+      "org_type": "agency"
+    },
+    {
+      "id": 28,
+      "name": "DWR",
+      "org_type": "contractor"
     }
   ]
 }
