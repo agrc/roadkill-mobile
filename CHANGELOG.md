@@ -1,3 +1,12 @@
+# [v3.0.0-531](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-530...v3.0.0-531) (2022-07-21)
+
+
+### Bug Fixes
+
+* **front:** handle attempt to load reports while offline ([5ded138](https://github.com/agrc/roadkill-mobile/commit/5ded13815223b8b27dcf1822db36eb2ac783b67c))
+
+
+
 # [v3.0.0-530](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-529...v3.0.0-530) (2022-04-12)
 
 
