@@ -34,6 +34,7 @@
     "oauthredirect",
     "Odocoileus",
     "openid",
+    "packagejson",
     "postgis",
     "POSTGRES",
     "pressable",
@@ -55,5 +56,10 @@
     "xargs"
   ],
   "editor.formatOnSave": true,
-  "eslint.workingDirectories": ["src/back", "src/common", "src/front", "src/website"],
+  "eslint.workingDirectories": [
+    "src/back",
+    "src/common",
+    "src/front",
+    "src/website"
+  ],
 }
