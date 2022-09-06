@@ -1,9 +1,12 @@
 {
   "name": "wildlife-vehicle-collision-reporter-api",
   "version": "1.0.0",
+  "private": true,
   "description": "API for Utah Wildlife-Vehicle Collision Reporter mobile app.",
-  "main": "server.js",
+  "license": "MIT",
+  "author": "Scott Davis <stdavis@utah.gov>",
   "type": "module",
+  "main": "server.js",
   "scripts": {
     "lint": "eslint .",
     "run-tests:ci": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest",
@@ -12,8 +15,9 @@
     "test": "env-cmd -f .env.test node --experimental-vm-modules node_modules/.bin/jest --watch",
     "test:ci": "firebase emulators:exec --import=../../data/emulator-data --export-on-exit --only firestore,storage \"npm run run-tests:ci\""
   },
-  "author": "Scott Davis <stdavis@utah.gov>",
-  "license": "MIT",
+  "jest": {
+    "transform": {}
+  },
   "dependencies": {
     "@google-cloud/firestore": "^4.14.1",
     "@google-cloud/logging-winston": "^4.1.0",
@@ -48,13 +52,10 @@
     "jest": "^27.0.6",
     "msw": "^0.28.2",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1",
-    "prettier-plugin-organize-imports": "^2.2.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^2.3.4",
+    "prettier-plugin-packagejson": "^2.2.18",
     "supertest": "^6.1.6",
     "typescript": "^4.3.5"
-  },
-  "private": true,
-  "jest": {
-    "transform": {}
   }
 }
