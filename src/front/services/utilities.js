@@ -253,3 +253,19 @@ export const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');
 export const isPickupReport = (report) => {
   return !!report.pickup_date;
 };
+
+export function getSubmitValues(values) {
+  const output = {};
+
+  for (let key in values) {
+    const value = values[key];
+
+    if (value instanceof Date) {
+      output[key] = value.toISOString();
+    } else if (value !== null && value !== undefined) {
+      output[key] = value;
+    }
+  }
+
+  return output;
+}
