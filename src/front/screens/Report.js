@@ -16,7 +16,7 @@ import { getIcon } from '../services/icons';
 import { ACCURACY, getLocation } from '../services/location';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
-import { pointCoordinatesToString } from '../services/utilities';
+import { getSubmitValues, pointCoordinatesToString } from '../services/utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -68,22 +68,6 @@ const formSchemas = {
   pickup: yup.object().shape(formShapes.pickup),
 };
 const localDateService = new NativeDateService('en', { format: 'MM/DD/YYYY' });
-
-export function getSubmitValues(values) {
-  const output = {};
-
-  for (let key in values) {
-    const value = values[key];
-
-    if (value instanceof Date) {
-      output[key] = value.toISOString();
-    } else if (value !== null && value !== undefined) {
-      output[key] = value;
-    }
-  }
-
-  return output;
-}
 
 const Report = ({
   show,
