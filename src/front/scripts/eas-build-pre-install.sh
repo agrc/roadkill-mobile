@@ -49,6 +49,7 @@ echo "exporting env vars required at runtime to .env file"
 echo "API=$API" >> .env
 echo "CLIENT_ID=$CLIENT_ID" >> .env
 echo "FACEBOOK_OAUTH_CLIENT_ID=$FACEBOOK_OAUTH_CLIENT_ID" >> .env
+echo "FACEBOOK_OAUTH_CLIENT_TOKEN=$FACEBOOK_OAUTH_CLIENT_TOKEN" >> .env
 echo "GOOGLE_OAUTH_CLIENT_ID_IOS=$GOOGLE_OAUTH_CLIENT_ID_IOS" >> .env
 echo "GOOGLE_OAUTH_CLIENT_ID_ANDROID=$GOOGLE_OAUTH_CLIENT_ID_ANDROID" >> .env
 echo "APP_QUAD_WORD=$APP_QUAD_WORD" >> .env

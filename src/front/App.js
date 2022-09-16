@@ -9,6 +9,7 @@ import { connectToDevTools } from 'react-devtools-core';
 import { LogBox, View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
+import { enableLatestRenderer } from 'react-native-maps';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { AuthContextProvider } from './auth/context';
@@ -17,6 +18,9 @@ import theme from './custom-theme.json';
 import mapping from './mapping.json';
 import packs from './services/icons';
 import { OfflineCacheContextProvider } from './services/offline';
+
+// https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#using-the-new-google-maps-renderer
+enableLatestRenderer();
 
 console.log('starting up...');
 const queryClient = new QueryClient();

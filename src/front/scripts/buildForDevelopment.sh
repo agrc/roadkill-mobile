@@ -29,4 +29,4 @@ adb shell monkey -p gov.dts.ugrc.utahwvcr.dev 1
 echo "building ios and android apps for local device development"
 eas build --platform all --profile development --non-interactive
 
-./scripts/downloadArtifacts.sh
+echo "open the previously printed URLs on your development devices to install the new builds"
