@@ -1,4 +1,5 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const baseBundleId = 'gov.dts.ugrc.utahwvcr';
 const bundleIds = {
@@ -14,16 +15,13 @@ const names = {
 };
 const name = names[process.env.ENVIRONMENT];
 
-const buildNumber = 531;
+const buildNumber = 532;
 
 export default {
   name,
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
   scheme: bundleId,
-  facebookScheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
-  facebookAppId: process.env.FACEBOOK_OAUTH_CLIENT_ID,
-  facebookDisplayName: `Utah ${name}`,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.0',
   orientation: 'portrait',
@@ -107,5 +105,30 @@ export default {
         cameraPermission: 'The app accesses your camera to allow you to capture and submit a photo of the animal.',
       },
     ],
+    [
+      'react-native-fbsdk-next',
+      {
+        appID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
+        clientToken: process.env.FACEBOOK_OAUTH_CLIENT_TOKEN,
+        displayName: `Utah ${name}`,
+        advertiserIDCollectionEnabled: false,
+        autoLogAppEventsEnabled: false,
+      },
+    ],
+    [
+      'expo-build-properties',
+      {
+        ios: {
+          // required for react-native-maps, expo default for sdk 46 is 12.0
+          // ref: https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#enabling-google-maps
+          deploymentTarget: '13.0',
+        },
+      },
+    ],
   ],
+  extra: {
+    eas: {
+      projectId: '648c99de-696c-4704-8723-7f8838dc6896',
+    },
+  },
 };
