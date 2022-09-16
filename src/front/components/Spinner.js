@@ -1,6 +1,5 @@
 import { Spinner as KittenSpinner, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import useStyles, { PADDING } from '../services/styles';
 

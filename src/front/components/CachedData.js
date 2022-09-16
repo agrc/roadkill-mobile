@@ -1,6 +1,5 @@
 import { Button, Divider } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';

@@ -1,6 +1,5 @@
 import { Button, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 import AlertIcon from './AlertIcon';
