@@ -6,7 +6,6 @@ import Constants from 'expo-constants';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
-import * as Updates from 'expo-updates';
 import propTypes from 'prop-types';
 import React from 'react';
 import { View } from 'react-native';
@@ -14,6 +13,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { v4 as uuid } from 'uuid';
 import useAuth from '../auth/context';
+import AboutScreen from '../screens/About';
 import ChooseTypeScreen from '../screens/ChooseType';
 import MainScreen from '../screens/Main';
 import MyReportsScreen from '../screens/MyReports';
@@ -25,7 +25,7 @@ import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
-import { forceUpdate, getReleaseChannelBranch, sendEmailToSupport } from '../services/utilities';
+import { sendEmailToSupport } from '../services/utilities';
 import AlertIcon from './AlertIcon';
 
 const { Navigator, Screen } = createStackNavigator();
@@ -76,9 +76,8 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
     openStorybook = () => navigation.navigate('Storybook');
   }
   const actions = {
-    4: sendEmailToSupport,
-    5: logOut,
-    6: forceUpdate,
+    5: sendEmailToSupport,
+    6: logOut,
     7: openStorybook,
   };
   const onSelect = (index) => {
@@ -89,11 +88,6 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
     navigation.navigate(state.routeNames[index.row]);
   };
 
-  let versionTitle = `App version: ${Constants.manifest.version} (${Constants.manifest?.ios?.buildNumber})`;
-  if (getReleaseChannelBranch(Updates.releaseChannel) !== config.RELEASE_BRANCHES.production) {
-    versionTitle += ` - ${__DEV__ ? 'dev' : Updates.releaseChannel}`;
-  }
-
   return (
     <SafeAreaView>
       <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
@@ -103,9 +97,9 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
           accessoryLeft={() => <DrawerIcon name="list" alertNumber={cachedSubmissionIds.length || null} />}
         />
         <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
+        <DrawerItem title="About" accessoryLeft={() => <DrawerIcon name="info" />} />
         <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
         <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
-        <DrawerItem title={versionTitle} accessoryLeft={() => <DrawerIcon name="info" />} />
         {config.SHOW_STORYBOOK ? <DrawerItem title="Storybook" /> : null}
       </Drawer>
     </SafeAreaView>
@@ -169,6 +163,7 @@ const MainNavigator = () => {
       <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
       <Screen name="Reports Navigator" component={ReportsNavigator} options={{ headerShown: false }} />
       <Screen name="Profile" component={ProfileScreen} />
+      <Screen name="About" component={AboutScreen} />
       {config.SHOW_STORYBOOK ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
     </Navigator>
   );

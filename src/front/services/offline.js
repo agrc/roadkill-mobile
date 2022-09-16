@@ -1,7 +1,18 @@
 import { useNetInfo } from '@react-native-community/netinfo';
-import * as FileSystem from 'expo-file-system';
+import {
+  cacheDirectory,
+  deleteAsync,
+  documentDirectory,
+  getInfoAsync,
+  makeDirectoryAsync,
+  moveAsync,
+  readAsStringAsync,
+  readDirectoryAsync,
+  writeAsStringAsync,
+} from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import lodash from 'lodash';
+import prettyBytes from 'pretty-bytes';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
@@ -12,17 +23,17 @@ import config from './config';
 import { isPickupReport } from './utilities';
 
 // tiles are put into the cache directory to allow the OS to clean them up if the device gets low on space
-export const tileCacheDirectory = FileSystem.cacheDirectory + 'tiles';
-const offlineDataStorageDirectory = FileSystem.documentDirectory + 'offlineData';
+export const tileCacheDirectory = cacheDirectory + 'tiles';
+const offlineDataStorageDirectory = documentDirectory + 'offlineData';
 const offlineMessage = 'No connection to the internet was detected.';
 const errorMessage = 'An error occurred while trying to upload your report:';
 const commonMessage = 'You report has been saved to the your device for later submission.';
 const dataFileName = 'data.json';
 
 function ensureDirectory(path) {
-  FileSystem.getInfoAsync(path, { size: true }).then((info) => {
+  return getInfoAsync(path, { size: true }).then((info) => {
     if (!info.exists) {
-      FileSystem.makeDirectoryAsync(path);
+      makeDirectoryAsync(path);
     }
   });
 }
@@ -30,11 +41,21 @@ function ensureDirectory(path) {
 ensureDirectory(tileCacheDirectory);
 ensureDirectory(offlineDataStorageDirectory);
 
+export async function getBaseMapCacheSize() {
+  const { size } = await getInfoAsync(tileCacheDirectory);
+
+  return prettyBytes(size);
+}
+export async function clearBaseMapCache() {
+  await deleteAsync(tileCacheDirectory);
+  await ensureDirectory(tileCacheDirectory);
+}
+
 const OfflineCacheContext = React.createContext();
 
 export async function getOfflineSubmission(id, pickupIndex) {
   try {
-    const json = await FileSystem.readAsStringAsync(`${offlineDataStorageDirectory}/${id}/${dataFileName}`);
+    const json = await readAsStringAsync(`${offlineDataStorageDirectory}/${id}/${dataFileName}`);
 
     if (pickupIndex) {
       return JSON.parse(json).pickups[pickupIndex];
@@ -53,7 +74,7 @@ export async function getOfflineSubmission(id, pickupIndex) {
 
 async function deleteOfflineSubmission(id) {
   try {
-    await FileSystem.deleteAsync(`${offlineDataStorageDirectory}/${id}`);
+    await deleteAsync(`${offlineDataStorageDirectory}/${id}`);
   } catch (error) {
     console.error(`Error attempting to delete offline submission with id: ${id}: \n\n ${error}`);
     Sentry.Native.captureException(error);
@@ -67,7 +88,7 @@ export function OfflineCacheContextProvider({ children }) {
 
   React.useEffect(() => {
     const giddyUp = async () => {
-      const folderNames = await FileSystem.readDirectoryAsync(offlineDataStorageDirectory);
+      const folderNames = await readDirectoryAsync(offlineDataStorageDirectory);
 
       // filter out any weird stuff like .DS_Store
       setCachedSubmissionIds(folderNames.filter((folderName) => folderName.match(/^\d+$/)));
@@ -164,7 +185,7 @@ export function OfflineCacheContextProvider({ children }) {
       const { uri } = photo;
       const fileName = uri.split('/').pop();
       const newUri = `${directory}/${fileName}`;
-      await FileSystem.moveAsync({
+      await moveAsync({
         from: uri,
         to: newUri,
       });
@@ -187,13 +208,13 @@ export function OfflineCacheContextProvider({ children }) {
   const cacheReport = async function (submitValues, error) {
     const id = new Date().getTime();
     const reportDirectory = `${offlineDataStorageDirectory}/${id}`;
-    await FileSystem.makeDirectoryAsync(reportDirectory);
+    await makeDirectoryAsync(reportDirectory);
 
     submitValues.offlineStorageId = id;
 
     submitValues.photo = await movePhoto(submitValues.photo, reportDirectory);
 
-    await FileSystem.writeAsStringAsync(`${reportDirectory}/${dataFileName}`, JSON.stringify(submitValues));
+    await writeAsStringAsync(`${reportDirectory}/${dataFileName}`, JSON.stringify(submitValues));
 
     setCachedSubmissionIds((existing) => [...existing, id]);
 
@@ -203,7 +224,7 @@ export function OfflineCacheContextProvider({ children }) {
   const cacheRoute = async function (submitValues, pickups, error) {
     const id = new Date().getTime();
     const routeDirectory = `${offlineDataStorageDirectory}/${id}`;
-    await FileSystem.makeDirectoryAsync(routeDirectory);
+    await makeDirectoryAsync(routeDirectory);
 
     submitValues.offlineStorageId = id;
 
@@ -211,10 +232,7 @@ export function OfflineCacheContextProvider({ children }) {
       pickups[i].photo = await movePhoto(pickups[i].photo, routeDirectory);
     }
 
-    await FileSystem.writeAsStringAsync(
-      `${routeDirectory}/${dataFileName}`,
-      JSON.stringify({ ...submitValues, pickups })
-    );
+    await writeAsStringAsync(`${routeDirectory}/${dataFileName}`, JSON.stringify({ ...submitValues, pickups }));
 
     setCachedSubmissionIds((existing) => [...existing, id]);
 
