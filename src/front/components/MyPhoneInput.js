@@ -1,6 +1,6 @@
 import { Input } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React, { forwardRef, useCallback } from 'react';
+import { forwardRef, useCallback } from 'react';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 const InnerPhoneInput = forwardRef(({ onChangeText, value, ...props }, ref) => {

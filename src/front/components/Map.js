@@ -1,5 +1,4 @@
 import propTypes from 'prop-types';
-import React from 'react';
 import { Platform } from 'react-native';
 import MapView, { MAP_TYPES, UrlTile } from 'react-native-maps';
 import config from '../services/config';
