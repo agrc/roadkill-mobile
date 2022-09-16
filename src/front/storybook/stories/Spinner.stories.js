@@ -1,6 +1,5 @@
 import { boolean } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
-import React from 'react';
 import Spinner from '../../components/Spinner';
 
 storiesOf('Spinner', module)

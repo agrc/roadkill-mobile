@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React from 'react';
 import { getArrowIcon } from '../services/icons';
 import useStyles from '../services/styles';
 

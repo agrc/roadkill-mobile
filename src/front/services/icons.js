@@ -1,7 +1,6 @@
 import { FontAwesome, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Icon } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import React from 'react';
 import { StyleSheet } from 'react-native';
 
 function createIconsMap(Icons) {

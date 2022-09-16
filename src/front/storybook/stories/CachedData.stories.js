@@ -1,5 +1,4 @@
 import { storiesOf } from '@storybook/react-native';
-import React from 'react';
 import CachedData from '../../components/CachedData';
 
 const data = [
