@@ -16,30 +16,6 @@ const NO_REPLY_EMAIL = 'noreply@utah.gov';
 
 export const EXPIRED_APPROVAL = 'EXPIRED_APPROVAL';
 
-// TODO: clean up after 0.0.0 is gone
-export const registerSchema_0_0_0 = yup.object().shape({
-  organization: yup
-    .object()
-    .shape({
-      name: yup.string().required(),
-      org_type: yup.string().required(),
-    })
-    .nullable(),
-  user: yup
-    .object()
-    .shape({
-      organization_id: yup.number(),
-      role: yup.string().required(),
-      auth_provider: yup.string().required(),
-      auth_id: yup.string().required(),
-      email: yup.string().email().required(),
-      first_name: yup.string().required(),
-      last_name: yup.string().required(),
-      phone: yup.string().required(),
-    })
-    .required(),
-});
-
 export const registerSchema = yup.object().shape({
   organization: yup
     .object()
@@ -91,36 +67,6 @@ async function ensureOrganization(organization, transaction) {
   }
 
   return orgId;
-}
-
-export async function registerUser_0_0_0(organization, user) {
-  let approved = null;
-  await db.transaction(async (transaction) => {
-    const now = new Date();
-
-    let orgInsertResult;
-    if (organization) {
-      orgInsertResult = await transaction('organizations').insert(organization, 'id');
-    }
-    let approved_date = null;
-    if (user.role === ROLES.public) {
-      approved = true;
-      approved_date = now;
-    }
-
-    await transaction('users').insert({
-      ...user,
-      registered_date: now,
-      last_logged_in: now,
-      organization_id: organization ? orgInsertResult[0] : null,
-      approved,
-      approved_date,
-    });
-  });
-
-  if (!approved) {
-    sendApprovalEmail(user, organization);
-  }
 }
 
 export async function registerUser(organization, user) {
@@ -312,32 +258,6 @@ export async function getUser(auth_id, auth_provider) {
   return rows[0];
 }
 
-// TODO: clean up after 0.0.0
-export async function getProfile_0_0_0(userId) {
-  const profileData = await db('users as u')
-    .leftJoin('organizations as o', 'u.organization_id', 'o.id')
-    .columns(
-      'u.auth_provider',
-      'u.email',
-      'u.first_name',
-      'u.last_name',
-      'u.phone',
-      'u.role',
-      'u.approved',
-      'u.registered_date',
-      { organization: 'o.name' }
-    )
-    .where({ 'u.id': userId })
-    .first();
-
-  const reportsSubmitted = await db('report_infos').count('report_id').where({ user_id: userId });
-
-  return {
-    ...profileData,
-    reports_submitted: reportsSubmitted[0].count,
-  };
-}
-
 export async function getProfile(userId) {
   const profileData = await db('users as u')
     .leftJoin('organizations as o', 'u.organization_id', 'o.id')
@@ -362,19 +282,6 @@ export async function getProfile(userId) {
     ...profileData,
     reports_submitted: reportsSubmitted[0].count,
   };
-}
-
-// TODO: clean up after 0.0.0
-export async function updateProfile_0_0_0(userId, profile, organizationId) {
-  const { phone, organization } = profile;
-
-  await db('users').where({ id: userId }).update({
-    phone,
-  });
-
-  await db('organizations').where({ id: organizationId }).update({
-    name: organization,
-  });
 }
 
 export async function updateProfile(userId, profile) {
