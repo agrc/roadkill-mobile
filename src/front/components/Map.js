@@ -35,7 +35,7 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
         tileCachePath={tileCacheDirectory}
         tileCacheMaxAge={60 * 60 * 24 * 7}
         tileSize={384}
-        urlTemplate={config.URLS.LITE}
+        urlTemplate={config.URLS.HYBRID}
         zIndex={-5}
       />
       {children}

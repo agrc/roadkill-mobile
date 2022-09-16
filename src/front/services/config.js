@@ -32,7 +32,7 @@ export default {
   USER_STORE_KEY: 'USER_INFO',
   USER_TYPE_KEY: 'USER_TYPE',
   URLS: {
-    LITE: `https://discover.agrc.utah.gov/login/path/${process.env.APP_QUAD_WORD}/tiles/lite_basemap/{z}/{x}/{y}.jpg`,
+    HYBRID: `https://discover.agrc.utah.gov/login/path/${process.env.APP_QUAD_WORD}/tiles/hybrid_basemap/{z}/{x}/{y}.jpg`,
     PSAP_FEATURE_SERVICE:
       'https://services1.arcgis.com/99lidPhWCzftIe9K/arcgis/rest/services/UtahPSAP_Boundaries/FeatureServer/0',
   },
