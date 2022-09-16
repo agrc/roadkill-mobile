@@ -105,7 +105,7 @@ Android Devices (Internal Testing): [Production](https://play.google.com/apps/in
 
 iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](https://testflight.apple.com/join/EbfHsLjq)
 
-Facebook: Until the app is approved in the Google Play or App Store, we can only test with this test account:
+Facebook Test Account:
 
 email: `open_vboxopy_user@tfbnw.net`  
 password: `tester`
