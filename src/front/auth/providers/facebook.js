@@ -1,8 +1,10 @@
-import * as Facebook from 'expo-facebook';
 import ky from 'ky';
 import React from 'react';
+import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
 import config from '../../services/config';
 import { useAsyncError } from '../../services/utilities';
+
+Settings.initializeSDK();
 
 export const isAuthenticationExpired = (auth) => {
   return new Date(auth.expirationDate) < Date.now();
@@ -10,28 +12,30 @@ export const isAuthenticationExpired = (auth) => {
 
 export default function useFacebookProvider() {
   const authentication = React.useRef(null);
-  React.useEffect(() => {
-    Facebook.initializeAsync({
-      appId: process.env.FACEBOOK_OAUTH_CLIENT_ID,
-    });
-  }, []);
-
   const throwAsyncError = useAsyncError();
+
+  const refreshToken = async () => {
+    console.log('refreshing token');
+    const accessToken = await AccessToken.getCurrentAccessToken();
+
+    if (!accessToken.accessToken) {
+      throwAsyncError(new Error('Missing access token'));
+    }
+
+    authentication.current = {
+      token: accessToken.accessToken.toString(),
+      expirationDate: accessToken.expirationTime,
+    };
+  };
+
   const getAuthentication = async () => {
+    console.log('getting authentication');
     try {
-      const { type, token, expirationDate } = await Facebook.logInWithReadPermissionsAsync();
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      console.log('login result', result);
 
-      if (type === 'success') {
-        authentication.current = {
-          token,
-          expirationDate,
-        };
-
-        return authentication.current;
-      } else if (['cancel', 'dismiss'].indexOf(type) > -1) {
-        return null;
-      } else {
-        throwAsyncError(new Error(`type: ${type};`));
+      if (result.isCancelled) {
+        throwAsyncError(new Error('User cancelled the login process'));
       }
     } catch (error) {
       throwAsyncError(error);
@@ -39,17 +43,17 @@ export default function useFacebookProvider() {
   };
 
   const logIn = async () => {
-    const auth = await getAuthentication();
-
-    if (!auth?.token) {
-      return null;
-    }
+    await getAuthentication();
+    await refreshToken();
 
     let user;
     try {
+      // using user = await Profile.getCurrentProfile(); doesn't return an email on Android for some reason
+      // so we have to use the graph api for now
+      // ref: https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
       user = await ky('https://graph.facebook.com/me', {
         searchParams: {
-          access_token: auth.token,
+          access_token: authentication.current.token,
           fields: 'id,first_name,last_name,name,email',
         },
       }).json();
@@ -67,10 +71,8 @@ export default function useFacebookProvider() {
   };
 
   const logOut = async () => {
-    authentication.current = null;
-
     try {
-      await Facebook.logOutAsync();
+      LoginManager.logOut();
     } catch (error) {
       throwAsyncError(error);
     }
@@ -79,17 +81,11 @@ export default function useFacebookProvider() {
   const getBearerToken = async () => {
     const prefix = `${config.PROVIDER_NAMES.facebook}: Bearer `;
 
-    if (hasValidToken()) {
-      return prefix + authentication.current.token;
+    if (!hasValidToken()) {
+      await refreshToken();
     }
 
-    const auth = await getAuthentication();
-
-    if (auth.token) {
-      return prefix + auth.token;
-    } else {
-      throwAsyncError(new Error('No access token'));
-    }
+    return prefix + authentication.current.token;
   };
 
   const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);

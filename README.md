@@ -26,9 +26,9 @@ I use [Flipper](https://fbflipper.com/) with a custom Expo development client as
 
 | branch     | version | deployed                                                                                                                                                                                                                                                                         | release-channel | expo version |
 |------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-----|
-| production | 3.0.0   | App Stores                                                                                                                                                                                                                                                                       | production-v3   | n/a |
-| staging    | 3.0.0   | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging-v3      | 44.0.6 |
-| dev        | 3.0.0   | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon                                                                                                                                                                                         | dev-v3          | 44.0.6 |
+| production | 3.0.0   | App Stores                                                                                                                                                                                                                                                                       | production-v3   | 46.0.0 |
+| staging    | 3.0.0   | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging-v3      | 46.0.0 |
+| dev        | 3.0.0   | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon                                                                                                                                                                                         | dev-v3          | 46.0.0 |
 
 These three environments are three separate bundle IDs (see `src/front/app.config.js`) and can all be installed on the same device simultaneously.
 
@@ -76,6 +76,10 @@ Do one of the following from `src/front`:
 1. Push an OTA update:
    - `./scripts/deployOTAUpdate.sh` to publish a new over-the-air update.
    - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
+
+### Custom Expo Dev Client
+
+This app uses a [custom Expo Dev](https://docs.expo.dev/development/getting-started/) rather than the old Expo Go app. This means that anytime you install or upgrade a library with native code, you need to create new builds by running `./scripts/buildForDevelopment.sh`.
 
 ### Pushing a New App Build to Production
 

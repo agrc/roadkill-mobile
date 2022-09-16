@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 0.46.0"
+    "version": ">= 2.1.0"
   },
   "build": {
     "base": {
@@ -13,6 +13,9 @@
       "env": {
         "GOOGLE_SERVICES_ANDROID": "google-services.json",
         "GOOGLE_SERVICES_IOS": "GoogleService-Info.plist"
+      },
+      "cache": {
+        "key": "clear-for-google-maps"
       }
     },
     "development": {

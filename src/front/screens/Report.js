@@ -112,6 +112,7 @@ const Report = ({
     submitValues.animal_location = pointCoordinatesToString(carcassCoordinates);
     submitValues.submit_date = new Date().toISOString();
     const currentLocation = await getLocation(ACCURACY.Highest);
+    console.log('got location');
     submitValues.submit_location = pointCoordinatesToString(currentLocation.coords);
 
     // if there is a route being collected and this is a pickup report, then cache the data on the device for later submission
