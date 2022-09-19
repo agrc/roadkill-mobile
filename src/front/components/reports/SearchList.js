@@ -140,11 +140,7 @@ export default function SearchList({
   const onChangeText = (text) => {
     setInputValue(text);
     let filteredItems = items.filter(getFilter(text));
-    if (filteredItems.length === 1 && itemToString(filteredItems[0]) === text) {
-      setFilteredItems([]);
-    } else {
-      setFilteredItems(filteredItems);
-    }
+    setFilteredItems(filteredItems);
   };
 
   const onSelectItem = (item) => {
