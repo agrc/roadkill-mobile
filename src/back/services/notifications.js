@@ -26,6 +26,7 @@ export default async function sendReportNotification(report_id) {
     report: {
       ...report_info,
       submit_date: toMDTString(report_info.submit_date),
+      animal_location: toPointObject(report_info.animal_location),
       ...public_report,
       discovery_date: toMDTString(public_report.discovery_date),
     },
@@ -76,4 +77,10 @@ async function getEmailsForLocation(location) {
 
 function toMDTString(date) {
   return date.toLocaleString(undefined, { timeZone: 'America/Denver' });
+}
+
+function toPointObject(coordinateString) {
+  const [longitude, latitude] = coordinateString.split(' ');
+
+  return { longitude, latitude };
 }
