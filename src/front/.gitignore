@@ -18,6 +18,7 @@ web-build/
 *.apk
 *.gz
 !dev-clients/*
+*.app
 
 google-services*.json
 GoogleService-Info*.plist
