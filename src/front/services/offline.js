@@ -127,6 +127,8 @@ export function OfflineCacheContextProvider({ children }) {
         }
 
         await deleteOfflineSubmission(cachedSubmissionIds[i]);
+
+        Alert.alert('Offline Submission', 'Your offline data was successfully submitted.');
       } catch (error) {
         failedSubmissionIds.push(cachedSubmissionIds[i]);
         Sentry.Native.captureException(error);
