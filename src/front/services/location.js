@@ -9,7 +9,7 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   let location;
   // work around for: https://github.com/expo/expo/issues/14248
   try {
-    console.log('getting current position');
+    console.log('getting current position', accuracy);
     location = await Location.getCurrentPositionAsync({
       accuracy,
     });
