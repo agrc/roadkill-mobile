@@ -212,6 +212,12 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   };
 
   const confirmCompleteRoute = () => {
+    if (state.routeCoordinates.length < 2) {
+      Alert.alert('You must have tracked at least two positions to submit a route!');
+
+      return;
+    }
+
     Alert.alert(
       'Submit Route',
       `Are you sure that you want to stop tracking and submit this route with ${state.pickups.length} pickups?`,
