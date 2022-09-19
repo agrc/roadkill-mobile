@@ -53,7 +53,7 @@ function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayP
   }
 
   const [imageSource, setImageSource] = React.useState({
-    uri: `${config.API}/reports/id_image/${itemToKey(item)}/${pixelRatio}`,
+    uri: `${config.API}/reports/id_image/${itemToKey(item).toString().replace('/', '_')}/${pixelRatio}`,
     width: commonConfig.searchListImageSize,
     height: commonConfig.searchListImageSize,
     scale: pixelRatio,

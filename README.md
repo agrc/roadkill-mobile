@@ -133,6 +133,6 @@ The file name should match a distinct value from one of the following columns in
 - `species_id`
 - `species_class`
 - `species_order`
-- `species_families`
+- `family`
 
 If a matching file in the bucket is not found, a blank gray fallback image is returned.
