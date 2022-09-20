@@ -113,7 +113,9 @@ export async function authenticate(request, response, next) {
         headers: {
           Authorization: authToken,
         },
-        retry: 5,
+        retry: {
+          limit: 5,
+        },
         throwHttpErrors: false,
       });
     } catch (error) {
