@@ -1407,6 +1407,61 @@
       "family": "raccoons",
       "rare": false,
       "frequent": true
+    },
+    {
+      "species_id": 129,
+      "common_name": "Canada Goose",
+      "scientific_name": "Branta canadensis",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 130,
+      "common_name": "Mallard",
+      "scientific_name": "Anas platyrhynchos",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 131,
+      "common_name": "Yellow-bellied Marmot",
+      "scientific_name": "Marmota flaviventris",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "rodents",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 132,
+      "common_name": "Golden Eagle",
+      "scientific_name": "Aquila chrysaetos",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 133,
+      "common_name": "Red-tailed Hawk",
+      "scientific_name": "Buteo jamicensis",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
     }
   ],
   "organizations": [
