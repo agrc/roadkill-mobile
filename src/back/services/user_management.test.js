@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { approveUser, checkExpiration, EXPIRED_APPROVAL } from './user_management.js';
 
 describe('approveUser', () => {

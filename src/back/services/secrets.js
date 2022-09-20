@@ -11,7 +11,7 @@ const testSecrets = {
 const basePath =
   process.env.ENVIRONMENT === 'development' ? `${dirname(fileURLToPath(import.meta.url))}/../secrets` : '/secrets';
 
-const secrets = process.env.JEST_WORKER_ID ? testSecrets : {};
+const secrets = process.env.VITEST ? testSecrets : {};
 
 export default function getSecret(secretName) {
   if (!secrets[secretName]) {
