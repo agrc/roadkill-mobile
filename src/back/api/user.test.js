@@ -1,5 +1,5 @@
-import { jest } from '@jest/globals';
 import request from 'supertest';
+import { describe, expect, it, vi } from 'vitest';
 import app from '../app';
 import { getLogin } from './user';
 
@@ -22,17 +22,17 @@ describe('login', () => {
       first_name: 'Test',
       last_name: 'User',
     };
-    const getUser = jest.fn().mockReturnValue(new Promise((resolve) => resolve({ id: userId })));
-    const updateUser = jest.fn().mockReturnValue(new Promise((resolve) => resolve()));
-    const getConstants = jest.fn().mockReturnValue(new Promise((resolve) => resolve({})));
+    const getUser = vi.fn().mockReturnValue(new Promise((resolve) => resolve({ id: userId })));
+    const updateUser = vi.fn().mockReturnValue(new Promise((resolve) => resolve()));
+    const getConstants = vi.fn().mockReturnValue(new Promise((resolve) => resolve({})));
 
     const requestMock = {
       body,
     };
     const getResponseMock = () => {
       const response = {};
-      response.status = jest.fn().mockReturnValue(response);
-      response.json = jest.fn();
+      response.status = vi.fn().mockReturnValue(response);
+      response.json = vi.fn();
 
       return response;
     };
