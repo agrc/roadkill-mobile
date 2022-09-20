@@ -1,3 +1,23 @@
+# [v3.0.0-533](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-531...v3.0.0-533) (2022-09-20)
+
+
+### Bug Fixes
+
+* **back:** return animal coords in object form for email notifications ([9069976](https://github.com/agrc/roadkill-mobile/commit/906997625a64c8105e5b607db2d4b6d58295be61)), closes [#183](https://github.com/agrc/roadkill-mobile/issues/183)
+* **front:** fix bug causing full name searches to fail ([cc38bda](https://github.com/agrc/roadkill-mobile/commit/cc38bdadf3d99181c4e255883c600efbcedcc492)), closes [#182](https://github.com/agrc/roadkill-mobile/issues/182)
+* **front:** handle "/"s in identification image names ([fec0047](https://github.com/agrc/roadkill-mobile/commit/fec00479e634d8cdca6958ddb5f6a645ed801196)), closes [#179](https://github.com/agrc/roadkill-mobile/issues/179)
+* **front:** prevent empty tracking route submissions ([eadb1ff](https://github.com/agrc/roadkill-mobile/commit/eadb1ff6ac29446f64042b62e4a6e25e2239dd93)), closes [#189](https://github.com/agrc/roadkill-mobile/issues/189)
+* **front:** switch to hybrid basemap ([05c19c4](https://github.com/agrc/roadkill-mobile/commit/05c19c4f4b2e98ef917c4737750e162e5150d0f4)), closes [#122](https://github.com/agrc/roadkill-mobile/issues/122)
+* link to Google Maps rather than internal map for notification emails, closes [#183](https://github.com/agrc/roadkill-mobile/issues/183)
+
+
+### Features
+
+* **front:** Add about screen ([7a84bde](https://github.com/agrc/roadkill-mobile/commit/7a84bdecd888d0eb850917b5c272c1e26a446b63)), closes [#92](https://github.com/agrc/roadkill-mobile/issues/92)
+* **front:** add confirmation dialog after offline data submission ([0e0cb29](https://github.com/agrc/roadkill-mobile/commit/0e0cb2971be07f4e23cd4428178d8fcaa7f70524)), closes [#181](https://github.com/agrc/roadkill-mobile/issues/181)
+
+
+
 # [v3.0.0-531](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-530...v3.0.0-531) (2022-07-21)
 
 

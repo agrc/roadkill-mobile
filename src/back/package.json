@@ -1,6 +1,6 @@
 {
   "name": "wildlife-vehicle-collision-reporter-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "API for Utah Wildlife-Vehicle Collision Reporter mobile app.",
   "license": "MIT",
