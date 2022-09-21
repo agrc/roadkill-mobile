@@ -46,6 +46,7 @@ else
 fi
 
 echo "exporting env vars required at runtime to .env file"
+rm -f .env
 echo "API=$API" >> .env
 echo "CLIENT_ID=$CLIENT_ID" >> .env
 echo "FACEBOOK_OAUTH_CLIENT_ID=$FACEBOOK_OAUTH_CLIENT_ID" >> .env
