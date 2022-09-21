@@ -70,8 +70,11 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 Do one of the following from `src/front`:
 
 1. `./scripts/deployNewAppBuild.sh` if a new app build is needed.
-   1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app/4972434106866476517/tracks/4699387731848346247/releases/11/prepare)
-   1. Apple: Promote release to *"External Testers"*. Click the "notify testers" link next to the newly uploaded build in [TestFlight](https://appstoreconnect.apple.com/apps/1566659475/testflight/ios).
+   1. Android: [Create new internal testing release](https://play.google.com/console/u/1/developers/6377537875100906890/app-list) in the appropriate version of the app.
+   1. Apple: Promote release to *"External Testers"*. Click the "notify testers" link next to the newly uploaded build in the appropriate version of the app in [TestFlight](https://appstoreconnect.apple.com/apps).
+
+or
+
 1. Push an OTA update:
    - `./scripts/deployOTAUpdate.sh` to publish a new over-the-air update.
    - This could break things if you have changed something that requires a new app build to be pushed through the app store (e.g. changes to [src/front/app.config.js](src/front/app.config.js)). If this is the case, bump the major app version number so that a new release channel is created.
