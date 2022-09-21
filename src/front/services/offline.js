@@ -44,7 +44,7 @@ ensureDirectory(offlineDataStorageDirectory);
 export async function getBaseMapCacheSize() {
   const { size } = await getInfoAsync(tileCacheDirectory);
 
-  return prettyBytes(size);
+  return prettyBytes(size || 0);
 }
 export async function clearBaseMapCache() {
   await deleteAsync(tileCacheDirectory);
