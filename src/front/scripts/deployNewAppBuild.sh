@@ -26,7 +26,7 @@ eas build --platform $PLATFORM --profile $RELEASE_BRANCH --non-interactive
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
   echo "uploading to testflight"
-  fastlane pilot upload -u stdavis@utah.gov
+  fastlane pilot upload -u stdavis@utah.gov --notify_external_testers false
 fi
 
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "android" ]; then
