@@ -85,8 +85,12 @@ export default function MainScreen() {
     });
 
     await Location.startLocationUpdatesAsync(backgroundLocationService.taskName, {
+      accuracy: Location.Accuracy.BestForNavigation,
       activityType: Location.ActivityType.AutomotiveNavigation,
-      accuracy: Location.Accuracy.High,
+      foregroundService: {
+        notificationTitle: 'Vehicle Tracking',
+        notificationBody: 'Tracking your vehicle',
+      },
       showsBackgroundLocationIndicator: true,
     });
   };
