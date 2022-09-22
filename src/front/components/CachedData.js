@@ -1,6 +1,6 @@
 import { Button, Divider } from '@ui-kitten/components';
 import propTypes from 'prop-types';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
@@ -15,11 +15,7 @@ export default function CachedData({ data }) {
   const { submitOfflineSubmissions, isSubmitting, isConnected } = useOfflineCache();
 
   const submit = async () => {
-    const errorMessage = await submitOfflineSubmissions();
-
-    if (errorMessage) {
-      Alert.alert('Submission Error', errorMessage);
-    }
+    await submitOfflineSubmissions();
   };
 
   return (
