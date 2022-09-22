@@ -98,6 +98,12 @@ export function OfflineCacheContextProvider({ children }) {
   }, []);
 
   const submit = async function () {
+    if (mutation.isLoading) {
+      console.warn('already submitting, skipping');
+
+      return;
+    }
+
     console.log('submitting offline submissions...');
     const failedSubmissionIds = [];
     let lastError;
