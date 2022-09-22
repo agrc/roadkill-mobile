@@ -51,9 +51,13 @@ echo "API=$API" >> .env
 echo "CLIENT_ID=$CLIENT_ID" >> .env
 echo "FACEBOOK_OAUTH_CLIENT_ID=$FACEBOOK_OAUTH_CLIENT_ID" >> .env
 echo "FACEBOOK_OAUTH_CLIENT_TOKEN=$FACEBOOK_OAUTH_CLIENT_TOKEN" >> .env
+echo "GOOGLE_MAPS_API_KEY_ANDROID=$GOOGLE_MAPS_API_KEY_ANDROID" >> .env
+echo "GOOGLE_MAPS_API_KEY_IOS=$GOOGLE_MAPS_API_KEY_IOS" >> .env
 echo "GOOGLE_OAUTH_CLIENT_ID_IOS=$GOOGLE_OAUTH_CLIENT_ID_IOS" >> .env
 echo "GOOGLE_OAUTH_CLIENT_ID_ANDROID=$GOOGLE_OAUTH_CLIENT_ID_ANDROID" >> .env
 echo "APP_QUAD_WORD=$APP_QUAD_WORD" >> .env
+echo ".env file contents:\n\n"
+cat .env
 
 echo "installing npm deps for the common package"
 cd ../common
