@@ -21,13 +21,13 @@ export function getFormData(submitValues) {
 export function useAPI() {
   const { getBearerToken } = useAuth();
 
-  async function makeRequest(method, route, data, isFormData = false) {
+  async function makeRequest(method, route, data, isFormData = false, timeout = config.API_REQUEST_TIMEOUT) {
     const options = {
       headers: {
         Authorization: await getBearerToken(),
         [commonConfig.versionHeaderName]: commonConfig.apiVersion,
       },
-      timeout: config.API_REQUEST_TIMEOUT, // give cloud run time to spin up especially in dev project
+      timeout,
       method,
     };
     if (data) {
@@ -53,8 +53,8 @@ export function useAPI() {
     }
   }
 
-  async function post(route, data, isFormData = false) {
-    return await makeRequest('POST', route, data, isFormData);
+  async function post(route, data, isFormData = false, timeout) {
+    return await makeRequest('POST', route, data, isFormData, timeout);
   }
 
   async function get(route, data) {
@@ -64,11 +64,11 @@ export function useAPI() {
   async function postReport(submitValues, reportType) {
     const formData = getFormData(submitValues);
 
-    return await post(`reports/${reportType}`, formData, true);
+    return await post(`reports/${reportType}`, formData, true, 1000 * 60);
   }
 
   async function postRoute(submitValues) {
-    return await post('routes/route', submitValues, false);
+    return await post('routes/route', submitValues, false, 1000 * 60 * 5);
   }
 
   async function deleteAccount() {

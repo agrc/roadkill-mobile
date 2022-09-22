@@ -52,7 +52,7 @@ export default {
     submissions: 'submissions',
     profile: 'profile',
   },
-  API_REQUEST_TIMEOUT: 1000 * 60 * 5, // 5 minutes (this is the default timeout for cloud run)
+  API_REQUEST_TIMEOUT: 1000 * 30, // 30 seconds
   MAX_TRACKING_TIME: 1000 * 60 * 60 * 12, // 12 hours
   REPORT_TYPES: {
     report: 'report',
