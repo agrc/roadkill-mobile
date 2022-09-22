@@ -50,15 +50,17 @@ export default function ReportInfoScreen() {
 
   return (
     <Layout style={styles.container}>
-      <ScrollView style={styles.container}>
-        {isError ? (
-          <Card status="danger" style={styles.errorCard}>
-            <Text>There was an error retrieving your report from the server!</Text>
-            <Text>{error?.message}</Text>
-          </Card>
-        ) : null}
-        <ReportInfo data={data} />
-      </ScrollView>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.container}>
+          {isError ? (
+            <Card status="danger" style={styles.errorCard}>
+              <Text>There was an error retrieving your report from the server!</Text>
+              <Text>{error?.message}</Text>
+            </Card>
+          ) : null}
+          <ReportInfo data={data} />
+        </ScrollView>
+      </SafeAreaView>
       <Spinner show={isLoading} message={'Loading report details...'} />
     </Layout>
   );
@@ -114,7 +116,7 @@ export function ReportInfo({ data }) {
   const animalCoords = coordsToLocation(data.animal_location);
 
   return (
-    <SafeAreaView>
+    <>
       <Map
         style={styles.map}
         isStatic={true}
@@ -150,7 +152,7 @@ export function ReportInfo({ data }) {
       <Divider />
       <ValueContainer label="Comments" value={data.comments} />
       <Photo photo_id={data.photo_id} offlinePhoto={data.photo} date={data.photo_date} bearerToken={data.bearerToken} />
-    </SafeAreaView>
+    </>
   );
 }
 ReportInfo.propTypes = {
