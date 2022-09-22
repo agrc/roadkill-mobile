@@ -76,6 +76,20 @@ Setup: open the report and select a location
 |--------|-----------------|---------------------|
 |        | tap plus button | pickup report shows |
 
+### Routes
+
+Setup: log in as contractor or agency
+
+| set up                      | action                                      | assertion |
+|-----------------------------|---------------------------------------------|-----|
+|                             | tap on "Track" button                       | button turns green and vehicle icon shows on map with track displaying, and polygon begins to display |
+| active tracking             | tap on "track" button                       | modal shows up with buttons and current state |
+| active tracking, open modal | tap on pause                                | "Track" button and route polyline turn red and modal closes |
+| paused tracking             | tap on "Track" button                       | tracking is resumed |
+| active tracking             | tap on "Report" button, fill out and submit | prompt shows that report was saved and will be submitted later with route |
+| active tracking, open modal | tap on "Cancel Route"                       | are you sure prompt is displayed and acts appropriately |
+| active tracking, open modal | tap on "Finish and Submit Route"            | spinner is displayed and route/pickups are submitted and tracking state is stopped and reset |
+
 ### Agency/Admin Role
 
 | set up | action          | assertion                            |
@@ -174,28 +188,14 @@ Setup: Main menu -> My Profile
 |        | change phone number and organization then tap update | go away from screen and then back into it and verify that the phone change was persisted |
 |        | tap on "Delete Account" button                       | the user is logged out and the user PID is wiped from the `users` table |
 
-### Routes
-
-Setup: log in as contractor or agency
-
-| set up                      | action                                      | assertion |
-|-----------------------------|---------------------------------------------|-----|
-|                             | tap on "Track" button                       | button turns green and vehicle icon shows on map with track displaying, and polygon begins to display |
-| active tracking             | tap on "track" button                       | modal shows up with buttons and current state |
-| active tracking, open modal | tap on pause                                | "Track" button and route polyline turn red and modal closes |
-| paused tracking             | tap on "Track" button                       | tracking is resumed |
-| active tracking             | tap on "Report" button, fill out and submit | prompt shows that report was saved and will be submitted later with route |
-| active tracking, open modal | tap on "Cancel Route"                       | are you sure prompt is displayed and acts appropriately |
-| active tracking, open modal | tap on "Finish and Submit Route"            | spinner is displayed and route/pickups are submitted and tracking state is stopped and reset |
-
 ### Offline
 
 Setup: turn on airplane mode
 
 | set up                   | action                                                                  | assertion |
 |--------------------------|-------------------------------------------------------------------------|-----|
+|                          | browser around the map in a place that you visited when you were online | map tiles are loaded from the cache |
 |                          | submit a report                                                         | offline alert is shown, alert bubble is shown on drawer toggle button on main screen, alert bubble is shown on app icon |
 | submit an offline report | go to my reports page                                                   | cached report should show up and be viewable |
 |                          | submit a route with some pickups                                        | offline alert is shown, alert bubble is shown on drawer toggle button on main screen, alert bubble is shown on app icon |
 | submit some offline data | turn off airplane mode                                                  | offline data is submitted automatically |
-|                          | browser around the map in a place that you visited when you were online | map tiles are loaded from the cache |
