@@ -18,13 +18,17 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
     <MapView
       loadingEnabled={true}
       mapType={Platform.select({ android: 'none', ios: MAP_TYPES.STANDARD })}
-      maxZoomLevel={config.MAX_ZOOM_LEVEL}
       maxAltitude={config.MAX_ALTITUDE}
+      maxZoomLevel={config.MAX_ZOOM_LEVEL}
       minZoomLevel={5}
       pitchEnabled={false}
       ref={innerRef}
       rotateEnabled={false}
+      showsBuildings={false}
+      showsCompass={false}
       showsMyLocationButton={false}
+      showsPointsOfInterest={false}
+      showsScale={false}
       toolbarEnabled={false}
       {...mapViewProps}
     >
