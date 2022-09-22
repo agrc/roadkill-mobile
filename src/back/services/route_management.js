@@ -13,7 +13,7 @@ export async function createRoute({ user_id, geog, start_time, end_time, submit_
     'route_id'
   );
 
-  return routeInsertResult[0];
+  return routeInsertResult[0].route_id;
 }
 
 export async function getRoute(routeId, userId) {
