@@ -63,7 +63,7 @@ async function ensureOrganization(organization, transaction) {
       },
       'id'
     );
-    orgId = orgInsertResult[0];
+    orgId = orgInsertResult[0].id;
   }
 
   return orgId;

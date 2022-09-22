@@ -31,12 +31,12 @@ export async function createReport({
         user_id: user_id,
         animal_location: pointCoordStringToWKT(animal_location),
         submit_location: pointCoordStringToWKT(submit_location),
-        photo_id: photoInsertResult ? photoInsertResult[0] : null,
+        photo_id: photoInsertResult ? photoInsertResult[0].id : null,
       },
       'report_id'
     );
 
-    const reportId = infosInsertResult[0];
+    const reportId = infosInsertResult[0].report_id;
 
     await transaction('public_reports').insert({
       report_id: reportId,
@@ -74,12 +74,12 @@ export async function createPickup({
         user_id: user_id,
         animal_location: pointCoordStringToWKT(animal_location),
         submit_location: pointCoordStringToWKT(submit_location),
-        photo_id: photoInsertResult[0],
+        photo_id: photoInsertResult[0].id,
       },
       'report_id'
     );
 
-    const reportId = infosInsertResult[0];
+    const reportId = infosInsertResult[0].report_id;
 
     await transaction('pickup_reports').insert({
       report_id: reportId,
