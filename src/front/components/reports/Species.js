@@ -334,7 +334,11 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
                 onChange={(value) => dispatch({ type: 'SET_FAMILY', payload: value })}
                 items={dedupe(
                   state.constants.species
-                    .filter((item) => item.species_class.toLowerCase() === state.value.species_class?.toLowerCase())
+                    .filter(
+                      (item) =>
+                        item.species_class.toLowerCase() === state.value.species_class?.toLowerCase() &&
+                        item.family !== config.UNKNOWN
+                    )
                     .map((item) => item.family)
                 )
                   .sort()
