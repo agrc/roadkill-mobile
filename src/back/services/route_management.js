@@ -21,7 +21,10 @@ export async function getRoute(routeId, userId) {
     .select(
       'r.route_id',
       // simplify with a tolerance of 100 meters
-      db.raw('ST_asText(ST_Transform(ST_Simplify(ST_Transform(r.geog::geometry, 26912), 50), 4326)) as geog'),
+      // if simplify yields null, return the raw geography
+      db.raw(
+        'coalesce (ST_asText(ST_Transform(ST_Simplify(ST_Transform(r.geog::geometry, 26912), 50), 4326)), ST_asText(r.geog)) as geog'
+      ),
       // using a tiny expand to guarantee that we always get a polygon
       // for points and vertical lines,ST_Envelope will return a point or line
       db.raw('ST_asText(ST_Envelope(ST_Expand(r.geog::geometry, 0.0000001))) as extent'),
