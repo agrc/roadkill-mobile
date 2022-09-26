@@ -194,14 +194,18 @@ export function OfflineCacheContextProvider({ children }) {
     // copy photo to documentDirectory so that it doesn't get auto-deleted by the OS
     // ImagePicker puts it in the cacheDirectory
     if (photo) {
-      const { uri } = photo;
-      const fileName = uri.split('/').pop();
+      const fileName = photo.uri.split('/').pop();
       const newUri = `${directory}/${fileName}`;
       await moveAsync({
-        from: uri,
+        from: photo.uri,
         to: newUri,
       });
-      photo.uri = newUri;
+
+      // being very careful to create a new object
+      // built apps were having troubles with the photo uri update
+      const newPhoto = { ...photo, uri: newUri };
+
+      return newPhoto;
     }
 
     return photo;
@@ -240,11 +244,19 @@ export function OfflineCacheContextProvider({ children }) {
 
     submitValues.offlineStorageId = id;
 
+    // being very careful to create new objects and array
+    // built apps were having troubles with the photo uri update
+    const newPickups = [];
     for (let i = 0; i < pickups.length; i++) {
-      pickups[i].photo = await movePhoto(pickups[i].photo, routeDirectory);
+      const photo = await movePhoto(pickups[i].photo, routeDirectory);
+
+      newPickups.push({ ...pickups[i], photo });
     }
 
-    await writeAsStringAsync(`${routeDirectory}/${dataFileName}`, JSON.stringify({ ...submitValues, pickups }));
+    await writeAsStringAsync(
+      `${routeDirectory}/${dataFileName}`,
+      JSON.stringify({ ...submitValues, pickups: newPickups })
+    );
 
     setCachedSubmissionIds((existing) => [...existing, id]);
 
