@@ -9,13 +9,13 @@ const bundleIds = {
 };
 const bundleId = bundleIds[process.env.ENVIRONMENT];
 const names = {
-  development: 'WVC Reporter (Dev)',
-  staging: 'WVC Reporter (Staging)',
+  development: 'WVC (Dev)',
+  staging: 'WVC (Staging)',
   production: 'WVC Reporter',
 };
 const name = names[process.env.ENVIRONMENT];
 
-const buildNumber = 538;
+const buildNumber = 544;
 
 export default {
   name,
