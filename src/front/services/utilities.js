@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 import * as MailComposer from 'expo-mail-composer';
@@ -236,10 +238,10 @@ export function coordinatesToRegion(coordinates) {
 
 export function dateToString(date, showTime = true) {
   if (showTime) {
-    return date ? new Date(date).toLocaleString() : null;
+    return date ? format(new Date(date), "MMM d, yyyy 'at' h:m:s bb") : null;
   }
 
-  return date ? new Date(date).toLocaleDateString() : null;
+  return date ? format(new Date(date), 'MMM d, yyyy') : null;
 }
 
 export const booleanToYesNo = (bool) => (bool ? 'yes' : 'no');

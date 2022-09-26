@@ -3,6 +3,7 @@ import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { getArrowIcon } from '../services/icons';
 import useStyles from '../services/styles';
+import { dateToString } from '../services/utilities';
 
 export default function ReportListItem({ item, offlineRouteId, offlineIndex }) {
   const navigation = useNavigation();
@@ -12,7 +13,7 @@ export default function ReportListItem({ item, offlineRouteId, offlineIndex }) {
   return (
     <ListItem
       title={`${item.common_name}${!item.report_id ? ' (unsubmitted)' : ''}`}
-      description={`${new Date(item.submit_date).toLocaleString()}`}
+      description={`${dateToString(item.submit_date)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>
         navigation.navigate('Report Info', {
