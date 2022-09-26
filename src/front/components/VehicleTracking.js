@@ -14,7 +14,7 @@ import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
-import { lineCoordinatesToString } from '../services/utilities';
+import { dateToString, lineCoordinatesToString } from '../services/utilities';
 import Spinner from './Spinner';
 
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
@@ -333,7 +333,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
         style={styles.modal}
       >
         <Card disabled={true} header={getHeader('Route')} style={styles.modal}>
-          <Text>Start: {state.start?.toLocaleString()}</Text>
+          <Text>Start: {state.start ? dateToString(state.start) : null}</Text>
           <Text>Status: {state.status}</Text>
           <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
           <Text>Pickups: {state.pickups?.length}</Text>

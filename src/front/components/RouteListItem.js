@@ -3,6 +3,7 @@ import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { getArrowIcon } from '../services/icons';
 import useStyles from '../services/styles';
+import { dateToString } from '../services/utilities';
 
 export default function RouteListItem({ item }) {
   const theme = useTheme();
@@ -12,7 +13,7 @@ export default function RouteListItem({ item }) {
   return (
     <ListItem
       title={`Route ${item.route_id || '(unsubmitted)'}`}
-      description={`${new Date(item.start_time).toLocaleString()}`}
+      description={`${dateToString(item.start_time)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>
         navigation.navigate('Route Info', { routeId: item.route_id, offlineStorageId: item.offlineStorageId })
