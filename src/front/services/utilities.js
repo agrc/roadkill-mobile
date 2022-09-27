@@ -238,7 +238,7 @@ export function coordinatesToRegion(coordinates) {
 
 export function dateToString(date, showTime = true) {
   if (showTime) {
-    return date ? format(new Date(date), "MMM d, yyyy 'at' h:m:s bb") : null;
+    return date ? format(new Date(date), "MMM d, yyyy 'at' h:mm:ss aa") : null;
   }
 
   return date ? format(new Date(date), 'MMM d, yyyy') : null;
