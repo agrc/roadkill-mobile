@@ -41,9 +41,9 @@ export default function AppInfoScreen() {
     <Layout style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.paragraph} category="p1">
-          The Utah Wildlife-Vehicle Collision Reporter all (WVCR) is a smartphone-based system for reporting animals
+          The Utah Wildlife-Vehicle Collision Reporter app (WVCR) is a smartphone-based system for reporting animals
           that have been involved in vehicle collisions. Data collected from this app will allow UDWR and UDOT to reduce
-          wildlife-vehicle collisions make highways safer for drivers and wildlife.
+          wildlife-vehicle collisions and make highways safer for drivers and wildlife.
         </Text>
         <Text category="h5" style={styles.header}>
           App
