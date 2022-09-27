@@ -18,7 +18,7 @@ export default function useFacebookProvider() {
     console.log('refreshing token');
     const accessToken = await AccessToken.getCurrentAccessToken();
 
-    if (!accessToken.accessToken) {
+    if (!accessToken?.accessToken) {
       throwAsyncError(new Error('Missing access token'));
     }
 
