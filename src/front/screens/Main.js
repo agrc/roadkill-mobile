@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import { pick } from 'lodash';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
 import { useImmerReducer } from 'use-immer';
 import useAuth from '../auth/context';
@@ -169,22 +169,13 @@ export default function MainScreen() {
   };
 
   const showAddReport = () => {
-    const displayReport = (newReportType) => {
+    const displayReport = async (newReportType) => {
+      await followUser(true);
+
       dispatchReportState({
         type: 'show',
         meta: newReportType,
       });
-
-      const zoom = async () => {
-        await followUser(true);
-      };
-
-      if (Platform.OS === 'android') {
-        // give map padding time to catch up
-        setTimeout(zoom, 350);
-      } else {
-        zoom();
-      }
     };
 
     if (authInfo.user.role === config.USER_TYPES.public) {
