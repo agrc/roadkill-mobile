@@ -15,7 +15,7 @@
         "GOOGLE_SERVICES_IOS": "GoogleService-Info.plist"
       },
       "cache": {
-        "key": "clear-for-google-maps"
+        "key": "clear-1"
       }
     },
     "development": {
