@@ -103,7 +103,7 @@ Because app builds initiate from both the developer's machine (new native builds
 
 ### Test User Links
 
-Android Devices (Internal Testing): [Production](https://play.google.com/apps/internaltest/4699387731848346247) | [Staging](https://play.google.com/apps/internaltest/4701504858394647093)
+Android Devices (Internal Testing): [Production](https://play.google.com/apps/internaltest/4699387731848346247) | [Staging](https://play.google.com/apps/internaltest/4701504858394647093). Accounts need to be added to the "Wildlife-Vehicle Collisions" tester group before they can join the test.
 
 iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](https://testflight.apple.com/join/EbfHsLjq)
 
