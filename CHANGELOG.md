@@ -1,11 +1,14 @@
-# [v3.0.0-544](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-531...v3.0.0-544) (2022-09-26)
+# [v3.0.0-546](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-531...v3.0.0-546) (2022-09-28)
 
 
 ### Bug Fixes
 
+* **back:** fix got syntax for retries ([ba0c143](https://github.com/agrc/roadkill-mobile/commit/ba0c1435ede83f447e232af0222123860f1fe92e))
 * **back:** handle routes with very small extents ([f6d1ba0](https://github.com/agrc/roadkill-mobile/commit/f6d1ba0f835b8fad590ca68c6d1a0e33280e1ca7))
 * **back:** handle very small routes ([aff43b6](https://github.com/agrc/roadkill-mobile/commit/aff43b6bacc97742f3294b21ffac71a9733550fd))
-* **back:** add google maps link to notification emails ([9069976](https://github.com/agrc/roadkill-mobile/commit/906997625a64c8105e5b607db2d4b6d58295be61)), closes [#183](https://github.com/agrc/roadkill-mobile/issues/183)
+* **back:** return animal coords in object form for email notifications ([9069976](https://github.com/agrc/roadkill-mobile/commit/906997625a64c8105e5b607db2d4b6d58295be61)), closes [#183](https://github.com/agrc/roadkill-mobile/issues/183)
+* **back:** update knex syntax after upgrade ([e21584d](https://github.com/agrc/roadkill-mobile/commit/e21584de357bb7dfe575aa3484b997c220c1f9c2))
+* **front:** add missing expo-random dependency ([f9ad708](https://github.com/agrc/roadkill-mobile/commit/f9ad70827fa003cc1dba5826f74369b481f93582))
 * **front:** better success/error messages when submitting offline data ([f54b851](https://github.com/agrc/roadkill-mobile/commit/f54b8518d31e0c67e869300a0f2cea9c5859a4d4))
 * **front:** fix bug causing full name searches to fail ([cc38bda](https://github.com/agrc/roadkill-mobile/commit/cc38bdadf3d99181c4e255883c600efbcedcc492)), closes [#182](https://github.com/agrc/roadkill-mobile/issues/182)
 * **front:** fix bug preventing offline routes with pickups with photos from being submitted ([2099de2](https://github.com/agrc/roadkill-mobile/commit/2099de23d32f1d8634bfadf7b44dd04e3de04ae2)), closes [#185](https://github.com/agrc/roadkill-mobile/issues/185)
@@ -14,17 +17,18 @@
 * **front:** handle empty cache size ([1c2ba86](https://github.com/agrc/roadkill-mobile/commit/1c2ba867882a8609651edf8b4cc14dcda375ae9e))
 * **front:** incorrect time zone for dates ([f9a725c](https://github.com/agrc/roadkill-mobile/commit/f9a725cf4b8cbe4ef44c208ebf6156674b21d546)), closes [#193](https://github.com/agrc/roadkill-mobile/issues/193)
 * **front:** more reasonable vehicle tracking params ([b889091](https://github.com/agrc/roadkill-mobile/commit/b88909144d631c8ed2e2721347418bea54c2cdc7))
+* **front:** more reliable crosshair location for new reports ([a4f871f](https://github.com/agrc/roadkill-mobile/commit/a4f871fd588151c2d2a8ea9477ad6b6a2dab089d))
 * **front:** prevent empty tracking route submissions ([eadb1ff](https://github.com/agrc/roadkill-mobile/commit/eadb1ff6ac29446f64042b62e4a6e25e2239dd93)), closes [#189](https://github.com/agrc/roadkill-mobile/issues/189)
 * **front:** remove duplicate unknown family options ([a41f17c](https://github.com/agrc/roadkill-mobile/commit/a41f17c7e7e126911d7c8c11ddc9ea4a1562ab01)), closes [#192](https://github.com/agrc/roadkill-mobile/issues/192)
 * **front:** switch to hybrid basemap ([05c19c4](https://github.com/agrc/roadkill-mobile/commit/05c19c4f4b2e98ef917c4737750e162e5150d0f4)), closes [#122](https://github.com/agrc/roadkill-mobile/issues/122)
 * **front:** try to prevent duplicate offline submissions ([43f259c](https://github.com/agrc/roadkill-mobile/commit/43f259c97a43a4589b44a0b67eeb3e796b7a4fb4)), closes [#185](https://github.com/agrc/roadkill-mobile/issues/185)
+* **front:** tweak time formatting to be more common ([e109f12](https://github.com/agrc/roadkill-mobile/commit/e109f12905984d05147ea8c3ca11a0c0c14770c4))
 
 
 ### Features
 
 * **front:** Add about screen ([7a84bde](https://github.com/agrc/roadkill-mobile/commit/7a84bdecd888d0eb850917b5c272c1e26a446b63)), closes [#92](https://github.com/agrc/roadkill-mobile/issues/92)
 * **front:** add confirmation dialog after offline data submission ([0e0cb29](https://github.com/agrc/roadkill-mobile/commit/0e0cb2971be07f4e23cd4428178d8fcaa7f70524)), closes [#181](https://github.com/agrc/roadkill-mobile/issues/181)
-* **front:** upgrade most third party dependencies
 
 
 
