@@ -9,6 +9,7 @@ import { Alert, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
 import { useImmerReducer } from 'use-immer';
 import useAuth from '../auth/context';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
 import RootView from '../components/RootView';
@@ -199,15 +200,16 @@ export default function MainScreen() {
           'A vehicle tracking route must be started to report a carcass.\n\nWould you like to start a route?',
           [
             {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
               text: 'Start route',
               onPress: () => {
                 startRoute();
 
                 displayReport(config.REPORT_TYPES.pickup);
               },
-            },
-            {
-              text: 'Cancel',
             },
           ]
         );
@@ -221,15 +223,16 @@ export default function MainScreen() {
           'A vehicle tracking route has been started but it is currently paused.\n\nWould you to resume?',
           [
             {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+            {
               text: 'Resume tracking',
               onPress: () => {
                 resumeRoute();
 
                 displayReport(config.REPORT_TYPES.pickup);
               },
-            },
-            {
-              text: 'Cancel',
             },
           ]
         );
@@ -287,6 +290,7 @@ export default function MainScreen() {
 
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
+      <FocusAwareStatusBar barStyle={'light-content'} />
       {initialLocation ? (
         <>
           <Map

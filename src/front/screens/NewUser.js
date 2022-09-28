@@ -163,6 +163,7 @@ export default function NewUserScreen() {
                 onPress={handleSubmit}
                 style={styles.input}
                 disabled={!dirty || !isValid || registerMutation.isLoading}
+                status="info"
               >
                 Register
               </Button>

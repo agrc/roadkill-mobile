@@ -11,7 +11,7 @@ import { useMounted } from '../../services/utilities';
 import RadioPills from './RadioPills';
 import SearchList from './SearchList';
 
-const FREQUENT = 'frequently reported';
+const FREQUENT = 'often reported';
 const COMMON = 'common name';
 const ORDER = 'order';
 const CLASS = 'class';
