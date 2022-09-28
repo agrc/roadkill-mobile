@@ -6,6 +6,7 @@ import { Alert, Animated, Keyboard, StyleSheet, useWindowDimensions, View } from
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
+import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
@@ -211,13 +212,13 @@ const Report = ({
     };
 
     if (!force && isDirty()) {
-      Alert.alert('Are you sure you want to close the report?', 'All in-progress report data will be lost.', [
+      Alert.alert('Are you sure?', 'All in-progress report data will be lost.', [
         {
           text: 'Cancel',
           style: 'cancel',
         },
         {
-          text: 'Close report',
+          text: 'Discard report',
           onPress: () => close(),
         },
       ]);
@@ -268,7 +269,7 @@ const Report = ({
     >
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
         <View style={styles.body}>
-          {!showMain ? <Location onSetLocation={onSetLocation} /> : null}
+          {!showMain ? <Location onSetLocation={onSetLocation} /> : <FocusAwareStatusBar barStyle={'dark-content'} />}
 
           {
             // the Form components are wrapped in a view and hidden via styling

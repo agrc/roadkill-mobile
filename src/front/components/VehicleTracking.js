@@ -185,12 +185,13 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   const cancelRoute = () => {
     console.log('cancelRoute');
 
-    Alert.alert("Canceled routes are deleted and can't be submitted.", 'Please confirm choice:', [
+    Alert.alert('Are you sure?', "Canceled routes are deleted and can't be submitted.", [
       {
-        text: 'Resume Route',
+        text: 'Cancel',
+        style: 'cancel',
       },
       {
-        text: 'Cancel Route',
+        text: 'Discard route',
         onPress: async () => {
           await stopTracking();
 
@@ -219,15 +220,16 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     }
 
     Alert.alert(
-      'Submit Route',
+      'Are you sure?',
       `Are you sure that you want to stop tracking and submit this route with ${state.pickups.length} pickups?`,
       [
         {
-          text: 'Yes',
-          onPress: completeRoute,
+          text: 'Cancel',
+          style: 'cancel',
         },
         {
-          text: 'Cancel',
+          text: 'Submit route',
+          onPress: completeRoute,
         },
       ]
     );

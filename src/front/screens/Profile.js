@@ -86,11 +86,12 @@ export default function ProfileScreen() {
       'Deleting your account will delete all of your personal information and prevent you from submitting data in the future.',
       [
         {
-          text: 'Yes, delete my account',
-          onPress: () => deleteAccountMutation.mutate(),
+          text: 'Cancel',
+          style: 'cancel',
         },
         {
-          text: 'Never mind, keep my account',
+          text: 'Delete my account',
+          onPress: () => deleteAccountMutation.mutate(),
         },
       ]
     );
@@ -204,6 +205,7 @@ export default function ProfileScreen() {
                       style={styles.button}
                       onPress={handleSubmit}
                       disabled={!dirty || !isValid || updateMutation.isLoading}
+                      status="info"
                     >
                       Update
                     </Button>

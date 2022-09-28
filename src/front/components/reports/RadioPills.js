@@ -1,9 +1,10 @@
-import { Button, Text } from '@ui-kitten/components';
+import { Button, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { PADDING } from '../../services/styles';
 
 export default function RadioPills({ options, value, onChange, label, style }) {
+  const theme = useTheme();
   const renderPill = (option) => {
     let optionValue;
     let optionLabel;
@@ -14,18 +15,25 @@ export default function RadioPills({ options, value, onChange, label, style }) {
       optionValue = option.value;
       optionLabel = option.label;
     }
+    const isUnknown = optionValue.toLowerCase() === 'unknown';
+    const isSelected = optionValue === value;
 
     return (
       <Button
         key={optionValue}
-        appearance={optionValue === value ? 'filled' : 'outline'}
+        appearance={isSelected ? 'filled' : 'outline'}
         onPress={() => onChange(optionValue)}
-        style={styles.pill}
-        status={optionValue.toLowerCase() === 'unknown' ? 'info' : 'primary'}
+        style={[
+          styles.pill,
+          isUnknown && isSelected
+            ? { backgroundColor: theme['color-basic-500'], borderColor: theme['color-basic-500'] }
+            : null,
+        ]}
+        status={isUnknown ? 'basic' : 'primary'}
         size="small"
       >
         {(evaProps) => (
-          <Text {...evaProps} style={[evaProps.style, styles.capitalize]}>
+          <Text {...evaProps} style={[evaProps.style, styles.capitalize, { color: theme['color-basic-800'] }]}>
             {optionLabel}
           </Text>
         )}
