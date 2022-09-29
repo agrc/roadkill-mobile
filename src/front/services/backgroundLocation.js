@@ -1,3 +1,4 @@
+import { applicationId } from 'expo-application';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import { Alert, Platform } from 'react-native';
@@ -12,7 +13,7 @@ function BackgroundLocationService() {
       subscriber = null;
     },
     notify: (location) => subscriber && subscriber(location),
-    taskName: 'wvcr-vehicle-tracking-background-task',
+    taskName: `${applicationId}-vehicle-tracking-background-task`,
   };
 }
 
