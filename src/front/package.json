@@ -46,7 +46,6 @@
     "expo-asset": "~8.6.1",
     "expo-auth-session": "~3.7.1",
     "expo-build-properties": "~0.3.0",
-    "expo-community-flipper": "^46.0.1",
     "expo-constants": "~13.2.4",
     "expo-dev-client": "~1.2.1",
     "expo-device": "~4.3.0",
@@ -126,7 +125,6 @@
     "prettier-plugin-organize-imports": "^3.1.1",
     "prettier-plugin-packagejson": "^2.2.18",
     "react-devtools-core": "^4.25.0",
-    "react-native-flipper": "^0.164.0",
     "react-test-renderer": "^18.0.0",
     "typescript": "^4.8.3"
   }
