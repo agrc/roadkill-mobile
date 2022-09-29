@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 2.1.0"
+    "version": ">= 2.1.0",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "base": {
@@ -15,7 +16,7 @@
         "GOOGLE_SERVICES_IOS": "GoogleService-Info.plist"
       },
       "cache": {
-        "key": "clear-1"
+        "key": "clear-4"
       }
     },
     "development": {
