@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint .",
     "serve": "env-cmd nodemon server.js",
-    "setup:emulator": "firebase emulators:exec --import=../../data/emulator-data --export-on-exit --only firestore,storage --ui \"npm run serve\"",
+    "setup:emulator": "firebase emulators:start --import=../../data/emulator-data --export-on-exit --only firestore,storage",
     "start": "firebase emulators:exec --import=../../data/emulator-data --only firestore,storage --ui \"npm run serve\"",
     "test": "env-cmd -f .env.test vitest",
     "test:ci": "firebase emulators:exec --only firestore,storage \"npm test\""
