@@ -11,10 +11,6 @@ on:
       - 'data/knexfile.js'
       - 'data/package*.json'
 
-env:
-  SERVICE_NAME: api
-  IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
-
 defaults:
   run:
     working-directory: src/back
@@ -23,6 +19,10 @@ permissions:
   id-token: write
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Test
@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: actions/cache@v2
         id: cache
@@ -42,7 +42,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version-file: src/back/.node-version
-      - run: |
+
+      - name: Install Dependencies
+        run: |
           npm ci
           cd ../common && npm ci
 
@@ -52,27 +54,16 @@ jobs:
           npm run test:ci
 
   deploy-staging:
-    name: Migrate DB, Build, and Deploy to Staging
+    name: Migration DB, Build, and Deploy to Staging
     runs-on: ubuntu-latest
     needs: test
     environment:
       name: Staging
-    if: github.ref == 'refs/heads/staging'
-    env:
-      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-      API: ${{ secrets.API }}
-      CLOUDSQL_INSTANCE: ${{ secrets.CLOUDSQL_INSTANCE }}
-      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
-      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      ENVIRONMENT: staging
-      MIN_INSTANCES: 0
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      WEBSITE: ${{ secrets.WEBSITE }}
+    if: github.ref_name == 'staging'
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: DB Migrations
         uses: ./.github/actions/back/db-migrations
@@ -82,9 +73,34 @@ jobs:
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
+        env:
+          DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
 
-      - name: Deploy
-        uses: ./.github/actions/back/deploy
+      - name: 🚀 Deploy
+        uses: agrc/cloud-run-docker-deploy-composite-action@feat/context-input
+        with:
+          docker-context: ./src
+          docker-file: ./src/back/Dockerfile
+          identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project-id: ${{ secrets.PROJECT_ID }}
+          service: api
+          flags: |
+            --max-instances=10
+            --min-instances=0
+            --set-cloudsql-instances=${{ secrets.CLOUDSQL_INSTANCE }}
+            --allow-unauthenticated
+          env-vars: |
+            ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+            API=${{ secrets.API }}
+            DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+            ENVIRONMENT=staging
+            PROJECT_ID=${{ secrets.PROJECT_ID }}
+            WEBSITE=${{ secrets.WEBSITE }}
+          mounted-secrets: |
+            /secrets/client_id/value=client-id:latest,
+            /secrets/database_password/value=database-password:latest,
+            /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
 
   deploy-prod:
     name: Migration DB, Build, and Deploy to Production
@@ -92,23 +108,11 @@ jobs:
     needs: test
     environment:
       name: Production
-    if: github.ref == 'refs/heads/production'
-
-    env:
-      ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
-      API: ${{ secrets.API }}
-      CLOUDSQL_INSTANCE: ${{ secrets.CLOUDSQL_INSTANCE }}
-      DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
-      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-      ENVIRONMENT: production
-      MIN_INSTANCES: 1
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      WEBSITE: ${{ secrets.WEBSITE }}
+    if: github.ref_name == 'production'
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: DB Migrations
         uses: ./.github/actions/back/db-migrations
@@ -118,9 +122,31 @@ jobs:
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
+        env:
+          DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
 
-      - name: Deploy
-        uses: ./.github/actions/back/deploy
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+      - name: 🚀 Deploy
+        uses: agrc/cloud-run-docker-deploy-composite-action@feat/context-input
+        with:
+          docker-context: ./src
+          docker-file: ./src/back/Dockerfile
+          identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project-id: ${{ secrets.PROJECT_ID }}
+          service: api
+          flags: |
+            --max-instances=10
+            --min-instances=1
+            --set-cloudsql-instances=${{ secrets.CLOUDSQL_INSTANCE }}
+            --allow-unauthenticated
+          env-vars: |
+            ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+            API=${{ secrets.API }}
+            DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+            ENVIRONMENT=production
+            PROJECT_ID=${{ secrets.PROJECT_ID }}
+            WEBSITE=${{ secrets.WEBSITE }}
+          mounted-secrets: |
+            /secrets/client_id/value=client-id:latest,
+            /secrets/database_password/value=database-password:latest,
+            /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
