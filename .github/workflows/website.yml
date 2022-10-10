@@ -8,10 +8,6 @@ on:
       - '.github/actions/website/**'
       - 'src/common/**'
 
-env:
-  SERVICE_NAME: website
-  IDENTITY_PROVIDER: ${{ secrets.IDENTITY_PROVIDER }}
-
 defaults:
   run:
     working-directory: src/website
@@ -52,17 +48,23 @@ jobs:
     environment:
       name: Staging
     if: github.ref == 'refs/heads/staging'
-    env:
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      WEBSITE_QUAD_WORD: ${{ secrets.WEBSITE_QUAD_WORD }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Deploy
-        uses: ./.github/actions/website/deploy
+      - name: 🚀 Deploy
+        uses: agrc/cloud-run-docker-deploy-composite-action@feat/context-input
+        with:
+          docker-context: ./src
+          docker-file: ./src/website/Dockerfile
+          identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project-id: ${{ secrets.PROJECT_ID }}
+          service: website
+          env-vars: |
+            WEBSITE_QUAD_WORD=${{ secrets.WEBSITE_QUAD_WORD }}
+          flags: |
+            --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
+            --min-instances=0
+            --allow-unauthenticated
 
   deploy-prod:
     name: Build, and Deploy to Production
@@ -72,14 +74,19 @@ jobs:
       name: Production
     if: github.ref == 'refs/heads/production'
 
-    env:
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-      WEBSITE_QUAD_WORD: ${{ secrets.WEBSITE_QUAD_WORD }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Deploy
-        uses: ./.github/actions/website/deploy
+      - name: 🚀 Deploy
+        uses: agrc/cloud-run-docker-deploy-composite-action@feat/context-input
+        with:
+          docker-context: ./src
+          docker-file: ./src/website/Dockerfile
+          identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project-id: ${{ secrets.PROJECT_ID }}
+          service: website
+          env-vars: |
+            WEBSITE_QUAD_WORD=${{ secrets.WEBSITE_QUAD_WORD }}
+          flags: |
+            --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
+            --min-instances=1
+            --allow-unauthenticated
