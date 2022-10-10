@@ -37,7 +37,7 @@ runs:
         ./cloud_sql_proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 -credential_file=${{ steps.auth.credentials_file_path }} &
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version-file: data/.node-version
 
