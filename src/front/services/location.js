@@ -17,7 +17,7 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
     console.log(`getCurrentPositionAsync: ${error}`);
 
     location = await Location.getLastKnownPositionAsync({
-      accuracy,
+      requiredAccuracy: accuracy,
     });
   }
 
