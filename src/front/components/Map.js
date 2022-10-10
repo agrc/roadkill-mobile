@@ -2,9 +2,10 @@ import propTypes from 'prop-types';
 import { Platform } from 'react-native';
 import MapView, { MAP_TYPES, UrlTile } from 'react-native-maps';
 import config from '../services/config';
-import { tileCacheDirectory } from '../services/offline';
+import { tileCacheDirectory, useOfflineCache } from '../services/offline';
 
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
+  const { isConnected } = useOfflineCache();
   if (isStatic) {
     mapViewProps = {
       ...mapViewProps,
@@ -35,9 +36,10 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       <UrlTile
         doubleTileSize={true}
         minimumZ={3}
+        offlineMode={!isConnected}
         shouldReplaceMapContent={true}
-        tileCachePath={tileCacheDirectory}
         tileCacheMaxAge={60 * 60 * 24 * 7}
+        tileCachePath={tileCacheDirectory}
         tileSize={384}
         urlTemplate={config.URLS.HYBRID}
         zIndex={-5}
