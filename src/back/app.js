@@ -77,7 +77,18 @@ app.use(getVersionFromHeader);
 
 app.use(cors());
 
-if (process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test') {
+if (process.env.ENVIRONMENT === 'development') {
+  app.use(
+    expressWinston.logger({
+      transports: [new winston.transports.Console()],
+      format: winston.format.cli(),
+      meta: true,
+      msg: 'HTTP {{req.method}} {{req.url}}',
+      expressFormat: true,
+      colorize: true,
+    })
+  );
+} else if (process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test') {
   app.use(
     expressWinston.logger({
       transports: [new LoggingWinston()],
