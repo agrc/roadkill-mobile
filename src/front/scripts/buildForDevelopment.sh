@@ -30,3 +30,5 @@ echo "building ios and android apps for local device development"
 eas build --platform all --profile development --non-interactive
 
 echo "open the previously printed URLs on your development devices to install the new builds"
+
+say "You're not going to believe this, but the build actually finished successfully!"
