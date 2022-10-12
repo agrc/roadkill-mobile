@@ -15,7 +15,7 @@ const names = {
 };
 const name = names[process.env.ENVIRONMENT];
 
-const buildNumber = 546;
+const buildNumber = 547;
 
 export default {
   name,
@@ -121,6 +121,12 @@ export default {
           // required for react-native-maps, expo default for sdk 46 is 12.0
           // ref: https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#enabling-google-maps
           deploymentTarget: '13.0',
+
+          // this will be needed when expo-firebase-analytics and react-native-maps are bumped
+          // it fixes firebase but breaks maps
+          // waiting on https://github.com/react-native-maps/react-native-maps/discussions/4389
+          // // https://docs.expo.dev/versions/latest/sdk/firebase-analytics/#additional-configuration-for-ios
+          // useFrameworks: 'static',
         },
       },
     ],
