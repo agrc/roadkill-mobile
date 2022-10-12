@@ -59,8 +59,6 @@ jobs:
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           project-id: ${{ secrets.PROJECT_ID }}
           service: website
-          env-vars: |
-            WEBSITE_QUAD_WORD=${{ secrets.WEBSITE_QUAD_WORD }}
           flags: |
             --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
             --min-instances=0
@@ -84,8 +82,6 @@ jobs:
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           project-id: ${{ secrets.PROJECT_ID }}
           service: website
-          env-vars: |
-            WEBSITE_QUAD_WORD=${{ secrets.WEBSITE_QUAD_WORD }}
           flags: |
             --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
             --min-instances=1
