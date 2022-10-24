@@ -1,5 +1,5 @@
 import { renderToString } from 'react-dom/server';
-import { RemixServer } from 'remix';
+import { RemixServer } from "@remix-run/react";
 
 export default function handleRequest(request, responseStatusCode, responseHeaders, remixContext) {
   const markup = renderToString(<RemixServer context={remixContext} url={request.url} />);
