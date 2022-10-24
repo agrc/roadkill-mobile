@@ -1,4 +1,4 @@
-import { Link } from 'remix';
+import { Link } from "@remix-run/react";
 
 export default function Index() {
   // navigating to this page via a link breaks the amd requires for some reason
