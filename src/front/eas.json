@@ -23,7 +23,7 @@
       "extends": "base",
       "developmentClient": true,
       "distribution": "internal",
-      "releaseChannel": "default",
+      "channel": "default",
       "android": {
         "buildType": "apk"
       },
@@ -35,7 +35,7 @@
       "extends": "base",
       "developmentClient": true,
       "distribution": "internal",
-      "releaseChannel": "default",
+      "channel": "default",
       "android": {
         "buildType": "apk"
       },
@@ -49,7 +49,7 @@
     "staging": {
       "extends": "base",
       "distribution": "store",
-      "releaseChannel": "staging-v3",
+      "channel": "staging-v3",
       "android": {
         "buildType": "app-bundle"
       },
@@ -60,7 +60,7 @@
     "production": {
       "extends": "base",
       "distribution": "store",
-      "releaseChannel": "production-v3",
+      "channel": "production-v3",
       "android": {
         "buildType": "app-bundle"
       },
