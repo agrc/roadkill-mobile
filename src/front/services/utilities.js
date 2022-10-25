@@ -118,7 +118,7 @@ export function isTokenExpired(token) {
 }
 
 export async function sendEmailToSupport() {
-  const subject = `${Constants.manifest.name} - Support`;
+  const subject = `${Constants.manifest2.extra.expoClient.name} - Support`;
 
   if (await MailComposer.isAvailableAsync()) {
     return await MailComposer.composeAsync({
@@ -154,6 +154,10 @@ export async function wrapAsyncWithDelay(action, preAction, postAction, delay) {
 }
 
 export function getReleaseChannelBranch(releaseChannel) {
+  if (!releaseChannel) {
+    return 'dev';
+  }
+
   return releaseChannel.split('-')[0];
 }
 
