@@ -2,9 +2,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
-import { fetchUpdateAsync, releaseChannel, reloadAsync } from 'expo-updates';
+import { checkForUpdateAsync, fetchUpdateAsync, releaseChannel, reloadAsync } from 'expo-updates';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import 'yup-phone';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
@@ -13,8 +13,13 @@ import { PADDING } from '../services/styles';
 import { getReleaseChannelBranch } from '../services/utilities';
 
 async function forceUpdate() {
-  await fetchUpdateAsync();
-  await reloadAsync();
+  const updateCheckResult = await checkForUpdateAsync();
+  if (updateCheckResult.isAvailable) {
+    await fetchUpdateAsync();
+    await reloadAsync();
+  } else {
+    Alert.alert('No update available', 'You are already running the latest version of the app.');
+  }
 }
 
 export default function AppInfoScreen() {

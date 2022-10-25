@@ -34,9 +34,6 @@ export default {
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
-  updates: {
-    fallbackToCacheTimeout: 0,
-  },
   assetBundlePatterns: ['**/*'],
   jsEngine: 'hermes',
   ios: {
@@ -135,5 +132,13 @@ export default {
     eas: {
       projectId: '648c99de-696c-4704-8723-7f8838dc6896',
     },
+  },
+
+  // required for eas update command
+  runtimeVersion: {
+    policy: 'sdkVersion',
+  },
+  updates: {
+    url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
 };
