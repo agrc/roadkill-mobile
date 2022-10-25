@@ -26,3 +26,5 @@ GoogleService-Info*.plist
 .DS_Store
 
 credentials.json
+
+/dist
