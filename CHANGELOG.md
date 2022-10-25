@@ -1,3 +1,13 @@
+# [v3.0.0-548](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-546...v3.0.0-548) (2022-10-25)
+
+
+### Bug Fixes
+
+* **front:** fix parameter name ([523c1e6](https://github.com/agrc/roadkill-mobile/commit/523c1e6a0e492b061155b843d09c7012a1c9b1db))
+* **front:** increase request timeout to match cloud run ([492cf16](https://github.com/agrc/roadkill-mobile/commit/492cf16161ad6d160d9fa5d900b5766c60f4f9b6))
+
+
+
 # [v3.0.0-547](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-531...v3.0.0-547) (2022-10-10)
 
 
