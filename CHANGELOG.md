@@ -1,3 +1,13 @@
+# [v3.0.0-549](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-548...v3.0.0-549) (2022-10-25)
+
+
+### Bug Fixes
+
+* **front:** update to new manifest props as a result of implementing expo updates ([3ce13f5](https://github.com/agrc/roadkill-mobile/commit/3ce13f5a8899459ac534a8c2db07d7b0aa93efc2))
+* **front:** use correct constant for release channel ([89aeee1](https://github.com/agrc/roadkill-mobile/commit/89aeee1779286ddf73f5dba6f0ae422b57641c70))
+
+
+
 # [v3.0.0-548](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-546...v3.0.0-548) (2022-10-25)
 
 
