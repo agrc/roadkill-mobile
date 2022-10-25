@@ -2,7 +2,6 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Drawer, DrawerItem, IndexPath, useTheme } from '@ui-kitten/components';
-import Constants from 'expo-constants';
 import * as Analytics from 'expo-firebase-analytics';
 import * as Linking from 'expo-linking';
 import * as SecureStorage from 'expo-secure-store';
@@ -177,7 +176,7 @@ const AppNavigator = () => {
 
   React.useEffect(() => {
     const initAnalytics = async () => {
-      if (Constants.appOwnership === 'expo') {
+      if (!__DEV__ && !process.env.JEST_WORKER_ID) {
         const key = 'CLIENT_ID';
         let id = await SecureStorage.getItemAsync(key);
 
@@ -191,9 +190,10 @@ const AppNavigator = () => {
         Analytics.setClientId(id);
       }
 
-      if (__DEV__) {
-        Analytics.setDebugModeEnabled(true);
-      }
+      // useful for debugging analytics...
+      // if (__DEV__) {
+      //   Analytics.setDebugModeEnabled(true);
+      // }
 
       setAnalyticsIsReady(true);
     };

@@ -1,20 +1,21 @@
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
+import { Platform } from 'react-native';
 
 let API = process.env.API;
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
-  if (!Device.isDevice && Constants.platform.android) {
+  if (!Device.isDevice && Platform.OS === 'android') {
     // API = API.replace('localhost', '10.0.3.2'); // genymotion emulator
     API = API.replace('localhost', '10.0.2.2'); // android studio emulator
   } else if (Device.isDevice) {
-    API = API.replace('localhost', Constants.manifest.debuggerHost.split(':').shift());
+    API = API.replace('localhost', Constants.manifest2.extra.expoClient.hostUri.split(':').shift());
   }
 }
 
 export default {
   CLIENT_ID: process.env.CLIENT_ID,
   API,
-  SCHEME: !process.env.JEST_WORKER_ID ? Constants.manifest.scheme : 'test_scheme',
+  SCHEME: !process.env.JEST_WORKER_ID ? Constants.manifest2.extra.expoClient.scheme : 'test_scheme',
   USER_TYPES: {
     public: 'reporter',
     contractor: 'contractor',
