@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
-import { checkForUpdateAsync, fetchUpdateAsync, releaseChannel, reloadAsync } from 'expo-updates';
+import { channel, checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from 'expo-updates';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import 'yup-phone';
@@ -56,7 +56,7 @@ export default function AppInfoScreen() {
         <Divider />
         <ValueContainer label="Native Application Version" value={Constants.manifest.version} />
         <ValueContainer label="Build Number" value={Constants.manifest?.ios?.buildNumber} />
-        <ValueContainer label="Release Channel" value={getReleaseChannelBranch(releaseChannel)} />
+        <ValueContainer label="Release Channel" value={getReleaseChannelBranch(channel)} />
 
         <View style={styles.buttonContainer}>
           <Button onPress={forceUpdate}>Force App Update</Button>
