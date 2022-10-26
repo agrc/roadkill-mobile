@@ -135,9 +135,7 @@ export default {
   },
 
   // required for eas update command
-  runtimeVersion: {
-    policy: 'sdkVersion',
-  },
+  runtimeVersion: '1.0.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
