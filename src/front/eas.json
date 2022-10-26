@@ -49,7 +49,7 @@
     "staging": {
       "extends": "base",
       "distribution": "store",
-      "channel": "staging-v3",
+      "channel": "staging",
       "android": {
         "buildType": "app-bundle"
       },
@@ -60,7 +60,7 @@
     "production": {
       "extends": "base",
       "distribution": "store",
-      "channel": "production-v3",
+      "channel": "production",
       "android": {
         "buildType": "app-bundle"
       },

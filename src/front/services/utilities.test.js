@@ -1,7 +1,6 @@
 import {
   coordinatesToRegion,
   extentStringToRegion,
-  getReleaseChannelBranch,
   getSubmitValues,
   isTokenExpired,
   lineCoordinatesToString,
@@ -78,12 +77,6 @@ describe('wrapAsyncWithDelay', () => {
 
     expect(pre).toHaveBeenCalled();
     expect(post).toHaveBeenCalled();
-  });
-});
-
-describe('getReleaseChannelBranch', () => {
-  it('returns the correct branch name', () => {
-    expect(getReleaseChannelBranch('production-v3.0.0')).toBe('production');
   });
 });
 
