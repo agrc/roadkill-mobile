@@ -1,3 +1,17 @@
+# [v3.0.0-554](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-549...v3.0.0-554) (2022-10-26)
+
+
+### Bug Fixes
+
+* **front:** add spinner to update app update ([a2ca517](https://github.com/agrc/roadkill-mobile/commit/a2ca517a86a8302a0d777846a4688f78ef1df1f7))
+
+
+### Features
+
+* **front:** add runtime version to about screen ([21c2ee0](https://github.com/agrc/roadkill-mobile/commit/21c2ee0124fa42814149f55974d49927c63b5b72))
+
+
+
 # [v3.0.0-549](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-548...v3.0.0-549) (2022-10-25)
 
 
