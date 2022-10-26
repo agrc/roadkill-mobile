@@ -1,3 +1,12 @@
+# [v3.0.0-555](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-554...v3.0.0-555) (2022-10-26)
+
+
+### Bug Fixes
+
+* **front:** prefer updates manifest and fall back to constants version ([bd7912c](https://github.com/agrc/roadkill-mobile/commit/bd7912c14b6c3dfa9b976c15ac03ba64a68f2107))
+
+
+
 # [v3.0.0-554](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-549...v3.0.0-554) (2022-10-26)
 
 
