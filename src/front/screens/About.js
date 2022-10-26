@@ -2,7 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
-import { channel, checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from 'expo-updates';
+import { channel, checkForUpdateAsync, fetchUpdateAsync, manifest as updatesManifest, reloadAsync } from 'expo-updates';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import 'yup-phone';
@@ -13,6 +13,10 @@ import { PADDING } from '../services/styles';
 
 const deleteCacheMessage = 'Deleting cache files...';
 const updateMessage = 'Checking for updates...';
+console.log('Constants.manifest2', JSON.stringify(Constants.manifest2, null, 2));
+console.log('manifest from Updates', JSON.stringify(updatesManifest, null, 2));
+const manifest = Object.keys(updatesManifest).length ? updatesManifest : Constants.manifest2;
+
 export default function AppInfoScreen() {
   const [loaderMessage, setLoaderMessage] = useState(null);
   const [cacheSize, setCacheSize] = useState('calculating...');
@@ -63,9 +67,9 @@ export default function AppInfoScreen() {
           App
         </Text>
         <Divider />
-        <ValueContainer label="Application Version" value={Constants.manifest2.extra.expoClient.version} />
-        <ValueContainer label="Runtime Version" value={Constants.manifest2.runtimeVersion} />
-        <ValueContainer label="Build Number" value={Constants.manifest2.extra.expoClient.ios.buildNumber} />
+        <ValueContainer label="Application Version" value={manifest.extra.expoClient.version} />
+        <ValueContainer label="Runtime Version" value={manifest.runtimeVersion} />
+        <ValueContainer label="Build Number" value={manifest.extra.expoClient.ios.buildNumber} />
         <ValueContainer label="Release Channel" value={channel || 'dev'} />
 
         <View style={styles.buttonContainer}>
