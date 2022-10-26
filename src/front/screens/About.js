@@ -10,7 +10,6 @@ import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
-import { getReleaseChannelBranch } from '../services/utilities';
 
 async function forceUpdate() {
   const updateCheckResult = await checkForUpdateAsync();
@@ -57,7 +56,7 @@ export default function AppInfoScreen() {
         <ValueContainer label="Application Version" value={Constants.manifest2.extra.expoClient.version} />
         <ValueContainer label="Runtime Version" value={Constants.manifest2.runtimeVersion} />
         <ValueContainer label="Build Number" value={Constants.manifest2.extra.expoClient.ios?.buildNumber} />
-        <ValueContainer label="Release Channel" value={getReleaseChannelBranch(channel)} />
+        <ValueContainer label="Release Channel" value={channel || 'dev'} />
 
         <View style={styles.buttonContainer}>
           <Button onPress={forceUpdate}>Force App Update</Button>

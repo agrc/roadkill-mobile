@@ -153,14 +153,6 @@ export async function wrapAsyncWithDelay(action, preAction, postAction, delay) {
   return result;
 }
 
-export function getReleaseChannelBranch(releaseChannel) {
-  if (!releaseChannel) {
-    return 'dev';
-  }
-
-  return releaseChannel.split('-')[0];
-}
-
 export function pointCoordinatesToString(coordinates) {
   if (!coordinates) {
     return null;
