@@ -11,19 +11,29 @@ import ValueContainer from '../components/ValueContainer';
 import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
 
-async function forceUpdate() {
-  const updateCheckResult = await checkForUpdateAsync();
-  if (updateCheckResult.isAvailable) {
-    await fetchUpdateAsync();
-    await reloadAsync();
-  } else {
-    Alert.alert('No update available', 'You are already running the latest version of the app.');
-  }
-}
-
+const deleteCacheMessage = 'Deleting cache files...';
+const updateMessage = 'Checking for updates...';
 export default function AppInfoScreen() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loaderMessage, setLoaderMessage] = useState(null);
   const [cacheSize, setCacheSize] = useState('calculating...');
+
+  async function forceUpdate() {
+    setLoaderMessage(updateMessage);
+
+    if (__DEV__) {
+      Alert.alert('Cannot update in development mode.');
+    } else {
+      const updateCheckResult = await checkForUpdateAsync();
+      if (updateCheckResult.isAvailable) {
+        await fetchUpdateAsync();
+        await reloadAsync();
+      } else {
+        Alert.alert('No update available', 'You are already running the latest version of the app.');
+      }
+    }
+
+    setLoaderMessage(null);
+  }
 
   useFocusEffect(() => {
     const getSize = async () => {
@@ -34,11 +44,11 @@ export default function AppInfoScreen() {
   });
 
   const handleClearCache = async () => {
-    setIsLoading(true);
+    setLoaderMessage(deleteCacheMessage);
     await clearBaseMapCache();
 
     setCacheSize(await getBaseMapCacheSize());
-    setIsLoading(false);
+    setLoaderMessage(null);
   };
 
   return (
@@ -79,7 +89,7 @@ export default function AppInfoScreen() {
           <Button onPress={handleClearCache}>Clear Cache</Button>
         </View>
       </ScrollView>
-      <Spinner show={isLoading} message={'Deleting cache files...'} />
+      <Spinner show={!!loaderMessage} message={loaderMessage} />
     </Layout>
   );
 }
