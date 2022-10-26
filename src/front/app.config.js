@@ -15,7 +15,7 @@ const names = {
 };
 const name = names[process.env.ENVIRONMENT];
 
-const buildNumber = 555;
+const buildNumber = 556;
 
 export default {
   name,

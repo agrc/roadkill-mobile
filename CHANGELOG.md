@@ -1,3 +1,18 @@
+# [v3.0.0-556](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-555...v3.0.0-556) (2022-10-26)
+
+
+### Bug Fixes
+
+* **build:** run ota update after new deploy ([3f9f72d](https://github.com/agrc/roadkill-mobile/commit/3f9f72dbe26cb4c66ef00ce2f20d04af49eaa0a6))
+* **front:** handle no preferred browser set on android ([05e82b6](https://github.com/agrc/roadkill-mobile/commit/05e82b676506cb371cb2b5cb74059feefd26a907))
+
+
+### Features
+
+* **data:** add param to cloud proxy script ([1af11e4](https://github.com/agrc/roadkill-mobile/commit/1af11e484f1fabda097fc0feba5a987fd7281332))
+
+
+
 # [v3.0.0-555](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-554...v3.0.0-555) (2022-10-26)
 
 
