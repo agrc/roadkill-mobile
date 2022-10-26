@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../services/config';
@@ -61,12 +61,24 @@ export function AuthContextProvider({ children, onReady }) {
   const throwAsyncError = useAsyncError();
 
   React.useEffect(() => {
-    // best practice to speed up browser for android
-    // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
-    WebBrowser.warmUpAsync();
+    if (Platform.OS == 'ios') {
+      return;
+    }
+
+    let browserPackage;
+    const giddyUp = async () => {
+      // best practice to speed up browser for android
+      // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
+      const tabsSupportingBrowsers = await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+      browserPackage = tabsSupportingBrowsers?.preferredBrowserPackage;
+
+      WebBrowser.warmUpAsync(browserPackage);
+    };
+
+    giddyUp();
 
     return () => {
-      WebBrowser.coolDownAsync();
+      WebBrowser.coolDownAsync(browserPackage);
     };
   }, []);
 
