@@ -54,7 +54,8 @@ export default function AppInfoScreen() {
           App
         </Text>
         <Divider />
-        <ValueContainer label="Native Application Version" value={Constants.manifest2.extra.expoClient.version} />
+        <ValueContainer label="Application Version" value={Constants.manifest2.extra.expoClient.version} />
+        <ValueContainer label="Runtime Version" value={Constants.manifest2.runtimeVersion} />
         <ValueContainer label="Build Number" value={Constants.manifest2.extra.expoClient.ios?.buildNumber} />
         <ValueContainer label="Release Channel" value={getReleaseChannelBranch(channel)} />
 
