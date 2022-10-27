@@ -13,4 +13,4 @@ set +o allexport
 
 eas update --auto
 
-say "You're not going to believe this, but the build actually finished successfully!"
+say "over-the-air update published successfully"
