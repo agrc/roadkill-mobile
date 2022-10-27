@@ -3,20 +3,12 @@ set -e
 
 echo "EAS build pre-install script for profile: $EAS_BUILD_PROFILE"
 
-if [[ $EAS_BUILD_PROFILE == "staging" ]]; then
-  export CLIENT_ID="$STAGING_CLIENT_ID"
-  export API="$STAGING_API"
-  export FIREBASE_MEASUREMENT_ID="$STAGING_FIREBASE_MEASUREMENT_ID"
-fi
-
 if [[ $EAS_BUILD_PROFILE == "production" ]]; then
-  export CLIENT_ID="$PRODUCTION_CLIENT_ID"
-  export API="$PRODUCTION_API"
-  export FIREBASE_MEASUREMENT_ID="$PRODUCTION_FIREBASE_MEASUREMENT_ID"
-fi
+  echo "using production environment variables"
 
-if [[ $EAS_BUILD_PROFILE == "production" ]]; then
-  echo "building google services files for production"
+  export CLIENT_ID=$PRODUCTION_CLIENT_ID
+  export API=$PRODUCTION_API
+  export FIREBASE_MEASUREMENT_ID=$PRODUCTION_FIREBASE_MEASUREMENT_ID
 
   echo $PRODUCTION_GOOGLE_SERVICES_ANDROID_BASE64 | base64 -d > ./google-services.json
   echo $PRODUCTION_GOOGLE_SERVICES_IOS_BASE64 | base64 -d > ./GoogleService-Info.plist
@@ -25,7 +17,11 @@ if [[ $EAS_BUILD_PROFILE == "production" ]]; then
   export GOOGLE_OAUTH_CLIENT_ID_ANDROID="$PRODUCTION_GOOGLE_OAUTH_CLIENT_ID_ANDROID"
   export GOOGLE_OAUTH_CLIENT_ID_IOS="$PRODUCTION_GOOGLE_OAUTH_CLIENT_ID_IOS"
 elif [[ $EAS_BUILD_PROFILE == "staging" ]]; then
-  echo "building google services files for staging"
+  echo "using staging environment variables"
+
+  export CLIENT_ID=$STAGING_CLIENT_ID
+  export API=$STAGING_API
+  export FIREBASE_MEASUREMENT_ID=$STAGING_FIREBASE_MEASUREMENT_ID
 
   echo $STAGING_GOOGLE_SERVICES_ANDROID_BASE64 | base64 -d > ./google-services.json
   echo $STAGING_GOOGLE_SERVICES_IOS_BASE64 | base64 -d > ./GoogleService-Info.plist
