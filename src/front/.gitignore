@@ -28,3 +28,5 @@ GoogleService-Info*.plist
 credentials.json
 
 /dist
+/android
+/ios
