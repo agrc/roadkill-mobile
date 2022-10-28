@@ -1,3 +1,12 @@
+# [v3.0.0-560](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-556...v3.0.0-560) (2022-10-28)
+
+
+### Bug Fixes
+
+* **front:** downgrade firebase dep to fix build ([620b307](https://github.com/agrc/roadkill-mobile/commit/620b3075a282743e2d160caa4b13890f7017dbe9))
+
+
+
 # [v3.0.0-556](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-555...v3.0.0-556) (2022-10-26)
 
 
