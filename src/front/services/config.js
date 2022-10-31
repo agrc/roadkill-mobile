@@ -38,11 +38,6 @@ export default {
       'https://services1.arcgis.com/99lidPhWCzftIe9K/arcgis/rest/services/UtahPSAP_Boundaries/FeatureServer/0',
   },
   SUPPORT_EMAIL: 'wvc-dnr-dwr-notify@utah.gov',
-  RELEASE_BRANCHES: {
-    production: 'production',
-    staging: 'staging',
-    dev: 'dev',
-  },
   SPINNER_DELAY: 250,
   MAX_ZOOM_LEVEL: 18, // google maps
   MIN_ALTITUDE: 650, // apple maps
