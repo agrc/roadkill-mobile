@@ -35,7 +35,9 @@ export default {
     backgroundColor: '#ffffff',
   },
   assetBundlePatterns: ['**/*'],
-  jsEngine: 'hermes',
+  // hermes was causing issues with environment variables. For some reason
+  // it was making the prod app point to the staging api
+  // jsEngine: 'hermes',
   ios: {
     bundleIdentifier: bundleId,
     googleServicesFile: process.env.GOOGLE_SERVICES_IOS,
