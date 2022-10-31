@@ -1,3 +1,12 @@
+# [v3.0.0-564](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-560...v3.0.0-564) (2022-10-31)
+
+
+### Bug Fixes
+
+* **build:** make sure to download the correct builds ([0f12285](https://github.com/agrc/roadkill-mobile/commit/0f122850a21448c0b9f0574e1c4ddf78c7fc2801))
+
+
+
 # [v3.0.0-560](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-556...v3.0.0-560) (2022-10-28)
 
 
