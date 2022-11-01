@@ -1,5 +1,7 @@
 import { Button, Text, useTheme } from '@ui-kitten/components';
 import * as ImagePicker from 'expo-image-picker';
+import { unregisterAllTasksAsync } from 'expo-task-manager';
+import { reloadAsync } from 'expo-updates';
 import mime from 'mime';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -40,6 +42,21 @@ export function getDateFromExif(exif) {
 
   return null;
 }
+
+const displayCameraActivityFailedAlert = () => {
+  Alert.alert('The app is not able to open your camera.', 'Restarting the app can solve this issue. Restart now?', [
+    {
+      text: 'Cancel',
+    },
+    {
+      text: 'Ok',
+      onPress: async () => {
+        await unregisterAllTasksAsync();
+        await reloadAsync();
+      },
+    },
+  ]);
+};
 
 export default function PhotoCapture({ isRequired, onChange, uri, style }) {
   const [showLoader, setShowLoader] = React.useState(false);
@@ -100,7 +117,11 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
     try {
       result = await ImagePicker.launchCameraAsync(photoOptions);
     } catch (error) {
-      console.log('error', error);
+      if (error.message.includes("Call to function 'ExponentImagePicker.launchCameraAsync' has been rejected")) {
+        displayCameraActivityFailedAlert();
+      } else {
+        throw error;
+      }
     }
 
     if (!result.cancelled) {
