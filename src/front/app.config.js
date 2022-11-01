@@ -1,8 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config({ debug: true });
-
-console.log('process.env.ENVIRONMENT', process.env.ENVIRONMENT);
-console.log('process.env.API', process.env.API);
+dotenv.config();
 
 const baseBundleId = 'gov.dts.ugrc.utahwvcr';
 const bundleIds = {
@@ -17,7 +14,6 @@ const names = {
   production: 'WVC Reporter',
 };
 const name = names[process.env.ENVIRONMENT];
-console.log('bundleId', bundleId);
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
 const buildNumber = 574;
