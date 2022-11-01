@@ -8,7 +8,7 @@ echo "remember to make sure that simulators are running..."
 echo "building ios and android apps for simulator development"
 eas build --platform all --profile simulator-dev --non-interactive
 
-./scripts/downloadArtifacts.sh
+./scripts/downloadArtifacts.sh all simulator-dev default
 
 echo "updating files in dev-clients folder"
 rm -f -- ./dev-clients/*.gz
