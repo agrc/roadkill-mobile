@@ -1,3 +1,16 @@
+# [v3.0.0-572](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-564...v3.0.0-572) (2022-11-01)
+
+
+### Bug Fixes
+
+* **front:** force correct scheme for redirectUri ([d6a1c73](https://github.com/agrc/roadkill-mobile/commit/d6a1c73e9d15af5ee8c91097aac4616b12443ea1))
+* **front:** remove "."s from scheme ([e3830b9](https://github.com/agrc/roadkill-mobile/commit/e3830b9203b6de8474148b77be80146ab9d127bb))
+* **front:** safer access to application information ([608e4dd](https://github.com/agrc/roadkill-mobile/commit/608e4dd74337c79a6317ec9b6e43bcc3cd980d7d))
+* **front:** try to prevent hanging position requests on android ([99a2f20](https://github.com/agrc/roadkill-mobile/commit/99a2f2022f25abcc71b7afbf4449c52bba511c0e))
+* **front:** work-around for camera bug during tracking ([5a2f323](https://github.com/agrc/roadkill-mobile/commit/5a2f323dbaf859a18c327d307b0177998e7500b7))
+
+
+
 # [v3.0.0-564](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-560...v3.0.0-564) (2022-10-31)
 
 

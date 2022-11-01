@@ -15,7 +15,8 @@ const names = {
 };
 const name = names[process.env.ENVIRONMENT];
 
-const buildNumber = 564;
+// perhaps this bump could be automated using a combo of app.config.json and this file?
+const buildNumber = 572;
 
 export default {
   name,
