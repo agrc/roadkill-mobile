@@ -21,7 +21,7 @@ export default {
   name,
   slug: 'wildlife-vehicle-collision-reporter',
   description: 'A mobile application for reporting and removing animal carcasses.',
-  scheme: bundleId,
+  scheme: bundleId.replaceAll('.', '-'),
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.0',
   orientation: 'portrait',
