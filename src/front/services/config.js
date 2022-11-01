@@ -15,7 +15,6 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
 export default {
   CLIENT_ID: process.env.CLIENT_ID,
   API,
-  SCHEME: !process.env.JEST_WORKER_ID ? Constants.manifest2.extra.expoClient.scheme : 'test_scheme',
   USER_TYPES: {
     public: 'reporter',
     contractor: 'contractor',
