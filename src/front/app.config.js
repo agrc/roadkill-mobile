@@ -38,6 +38,7 @@ export default {
   assetBundlePatterns: ['**/*'],
   // hermes was causing issues with environment variables. For some reason
   // it was making the prod app point to the staging api
+  // wait until upgrade to expo 47 to try again
   // jsEngine: 'hermes',
   ios: {
     bundleIdentifier: bundleId,
