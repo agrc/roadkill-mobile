@@ -9,6 +9,17 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   let location;
   // work around for: https://github.com/expo/expo/issues/14248
   try {
+    if (accuracy <= Location.Accuracy.Balanced) {
+      console.log('getting last known location');
+      location = await Location.getLastKnownPositionAsync({
+        maxAge: 1000 * 60 * 5, // 5 minutes
+      });
+
+      if (location) {
+        return location;
+      }
+    }
+
     console.log('getting current position', accuracy);
     location = await Location.getCurrentPositionAsync({
       accuracy,
