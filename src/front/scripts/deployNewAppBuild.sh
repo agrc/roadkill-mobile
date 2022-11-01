@@ -21,7 +21,7 @@ echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH
 echo "building $PLATFORM platform(s)"
 eas build --platform $PLATFORM --profile $RELEASE_BRANCH --non-interactive
 
-./scripts/downloadArtifacts.sh $PLATFORM
+./scripts/downloadArtifacts.sh $PLATFORM $RELEASE_BRANCH $RELEASE_BRANCH
 
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
