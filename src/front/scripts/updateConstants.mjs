@@ -1,8 +1,8 @@
-import knex from 'knex';
 import { getConstants } from 'common/constants.js';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
+import knex from 'knex';
 import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
 // __dirname is not a thing for es modules
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +15,7 @@ const db = knex({
     user: 'api',
     password: process.env.DATABASE_PASSWORD,
     database: 'app',
+    port: process.env.DATABASE_PORT,
   },
 });
 
