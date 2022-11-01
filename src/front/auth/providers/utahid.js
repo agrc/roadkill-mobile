@@ -1,10 +1,11 @@
-import { exchangeCodeAsync, makeRedirectUri, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
+import { exchangeCodeAsync, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
+import Constants from 'expo-constants';
 import jwt_decode from 'jwt-decode';
 import ky from 'ky';
 import config from '../../services/config';
 import { isTokenExpired, useAsyncError, useSecureRef } from '../../services/utilities';
 
-const redirectUri = makeRedirectUri({ scheme: config.SCHEME }) + config.OAUTH_REDIRECT_SCREEN;
+const redirectUri = `${Constants.expoConfig.scheme}://${config.OAUTH_REDIRECT_SCREEN}`;
 console.log('redirectUri', redirectUri);
 
 // ref: https://login.dts.utah.gov/sso/oauth2/.well-known/openid-configuration
