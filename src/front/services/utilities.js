@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-import Constants from 'expo-constants';
+import { applicationName } from 'expo-application';
 import * as Linking from 'expo-linking';
 import * as MailComposer from 'expo-mail-composer';
 import * as SecureStorage from 'expo-secure-store';
@@ -118,7 +118,7 @@ export function isTokenExpired(token) {
 }
 
 export async function sendEmailToSupport() {
-  const subject = `${Constants.manifest2.extra.expoClient.name} - Support`;
+  const subject = `${applicationName} - Support`;
 
   if (await MailComposer.isAvailableAsync()) {
     return await MailComposer.composeAsync({
