@@ -16,13 +16,13 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 575;
+const buildNumber = 576;
 
 export default {
   name,
   slug: 'wildlife-vehicle-collision-reporter', // changing this may result in new signing keys being generated (https://forums.expo.dev/t/changed-app-json-slug-and-android-build-keys-changed-can-i-get-them-back/9927/3)
   description: 'A mobile application for reporting and removing roadkill in Utah.',
-  scheme: bundleId.replaceAll('.', '-'),
+  scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.1',
   orientation: 'portrait',
