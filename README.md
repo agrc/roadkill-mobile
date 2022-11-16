@@ -1,4 +1,4 @@
-# Wildlife-Vehicle Collision Reporter
+# Utah Roadkill Reporter
 
 A mobile application build for DWR & UDOT for users to submit reports about roadkill.
 
@@ -88,7 +88,14 @@ This app uses a [custom Expo Dev](https://docs.expo.dev/development/getting-star
 After testing in dev client...
 
 1. From `src/front`: `./scripts/deployNewAppBuild.sh`
-1. Generate new screenshots if applicable. Note: Google Play has a limit of 8.
+1. Generate new screenshots if applicable.
+   - Apple:
+      - 5.5" - iPhone 8 Plus
+      - 6.5" - iPhone 13 Pro Max
+      - 12.9" - iPad Pro (2nd Gen)
+      - 12.9" - iPad Pro (6th Gen)
+   - Android:
+      - Use any simulator
 1. Create new version in iTunes connect and update all relevant information.
 1. Submit the apps for review in both app stores.
 

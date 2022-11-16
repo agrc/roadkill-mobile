@@ -1,8 +1,8 @@
 {
-  "name": "wildlife-vehicle-collision-reporter-api",
+  "name": "roadkill-reporter-api",
   "version": "1.0.1",
   "private": true,
-  "description": "API for Utah Wildlife-Vehicle Collision Reporter mobile app.",
+  "description": "API for Utah Roadkill Reporter mobile app.",
   "license": "MIT",
   "author": "Scott Davis <stdavis@utah.gov>",
   "type": "module",

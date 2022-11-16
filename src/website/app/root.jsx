@@ -1,8 +1,8 @@
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import styles from './tailwind.css';
 
 export function meta() {
-  return { title: 'WVC Reporter' };
+  return { title: 'Utah Roadkill Reporter' };
 }
 
 export function links() {

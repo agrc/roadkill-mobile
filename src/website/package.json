@@ -1,8 +1,8 @@
 {
-  "name": "wvc-reporter-website",
+  "name": "roadkill-reporter-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Website for the WVC Reporter",
+  "description": "Website for the Utah Roadkill Reporter",
   "license": "MIT",
   "sideEffects": false,
   "author": "Scott Davis <stdavis@utah.gov>",
