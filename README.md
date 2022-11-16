@@ -59,9 +59,10 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
+1. Determine if app version (`version` in [app.config.js](src/front/app.config.js)) needs to be bumped.
 1. Determine if `runtimeVersion` needs to be bumped (if any native code has changed).
 1. Bump build number in [src/front/app.config.js](src/front/app.config.js).
-1. Update `version` in [changelog_context.json](changelog_context.json) to match new build number.
+1. Update `version` in [changelog_context.json](changelog_context.json) to match new version and build number.
 1. From root: `npm run changelog`
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
