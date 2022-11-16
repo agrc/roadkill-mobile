@@ -18,9 +18,9 @@ cp *.apk ./dev-clients
 
 echo "installing on ios simulator"
 tar -xf ./dev-clients/*.gz
-xcrun simctl install booted ./WVCDev.app
+xcrun simctl install booted ./UtahRoadkillDev.app
 xcrun simctl launch booted gov.dts.ugrc.utahwvcr.dev
-rm -rf ./WVCDev.app
+rm -rf ./UtahRoadkillDev.app
 
 echo "installing on android emulator"
 adb install ./dev-clients/*.apk

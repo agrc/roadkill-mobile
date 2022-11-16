@@ -7,8 +7,8 @@
    preserveAspectRatio="xMidYMid meet"
    id="svg7073"
    sodipodi:docname="splash.svg"
-   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
-   inkscape:export-filename="/Users/stdavis/Documents/Projects/roadkill-mobile-rewrite/src/front/assets/splash.png"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
+   inkscape:export-filename="splash.png"
    inkscape:export-xdpi="72"
    inkscape:export-ydpi="72"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -28,13 +28,15 @@
      showgrid="false"
      inkscape:zoom="0.23569114"
      inkscape:cx="606.72624"
-     inkscape:cy="1852"
+     inkscape:cy="1856.2429"
      inkscape:window-width="1653"
      inkscape:window-height="1213"
      inkscape:window-x="257"
-     inkscape:window-y="131"
+     inkscape:window-y="103"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg7073" />
+     inkscape:current-layer="svg7073"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <defs
      id="defs7053">
     <style
@@ -47,11 +49,11 @@
      id="text7071"><tspan
        x="238.4"
        y="1459.65"
-       id="tspan7065">Utah Wildlife-Vehicle </tspan><tspan
+       id="tspan7065">Utah Roadkill</tspan><tspan
        x="238.4"
        dy="1em"
        id="tspan7067">​</tspan><tspan
-       id="tspan7069">Collision Reporter</tspan></text>
+       id="tspan7069">Reporter</tspan></text>
   <g
      id="g6969"
      transform="matrix(1.2556939,0,0,1.2556939,306.10188,419.06862)">

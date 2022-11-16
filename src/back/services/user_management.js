@@ -154,12 +154,14 @@ async function sendApproveRejectAdminNotificationEmail(user, rejected) {
 }
 
 async function sendApproveRejectUserNotificationEmail(user, rejected) {
-  const approveMessage = `Congratulations, you have been approved as ${user.role} in the Wildlife-Vehicle Collision Reporter app.`;
-  const rejectMessage = `Unfortunately, your registration for the Wildlife-Vehicle Collision Reporter app has been declined. You may send an email to ${process.env.ADMIN_EMAIL} if you believe that this was a mistake.`;
+  const approveMessage = `Congratulations, you have been approved as ${user.role} in the Utah Roadkill Reporter app.`;
+  const rejectMessage = `Unfortunately, your registration for the Utah Roadkill Reporter app has been declined. You may send an email to ${process.env.ADMIN_EMAIL} if you believe that this was a mistake.`;
   const email = {
     to: user.email,
     from: NO_REPLY_EMAIL,
-    subject: rejected ? 'Your WVCR registration request was denied' : 'Your WVCR registration request was approved',
+    subject: rejected
+      ? 'Your Utah Roadkill Reporter registration request was denied'
+      : 'Your Utah Roadkill Reporter registration request was approved',
     text: rejected ? rejectMessage : approveMessage,
     trackingSettings: getTrackingSettings(),
   };

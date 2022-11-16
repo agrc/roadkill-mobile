@@ -9,9 +9,9 @@ const bundleIds = {
 };
 const bundleId = bundleIds[process.env.ENVIRONMENT];
 const names = {
-  development: 'WVC (Dev)',
-  staging: 'WVC (Staging)',
-  production: 'WVC Reporter',
+  development: 'Utah Roadkill Dev',
+  staging: 'Utah Roadkill Staging',
+  production: 'Utah Roadkill',
 };
 const name = names[process.env.ENVIRONMENT];
 
@@ -20,8 +20,8 @@ const buildNumber = 574;
 
 export default {
   name,
-  slug: 'wildlife-vehicle-collision-reporter',
-  description: 'A mobile application for reporting and removing animal carcasses.',
+  slug: 'wildlife-vehicle-collision-reporter', // changing this may result in new signing keys being generated (https://forums.expo.dev/t/changed-app-json-slug-and-android-build-keys-changed-can-i-get-them-back/9927/3)
+  description: 'A mobile application for reporting and removing roadkill in Utah.',
   scheme: bundleId.replaceAll('.', '-'),
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.0',
@@ -110,7 +110,7 @@ export default {
       {
         appID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
         clientToken: process.env.FACEBOOK_OAUTH_CLIENT_TOKEN,
-        displayName: `Utah ${name}`,
+        displayName: `${name} Reporter`,
         advertiserIDCollectionEnabled: false,
         autoLogAppEventsEnabled: false,
       },

@@ -96,7 +96,7 @@ export default function ChooseTypeScreen({ navigation }) {
     <RootView showSpinner={showSpinner}>
       <Layout style={styles.layout}>
         <Text category="h3" style={styles.center}>
-          Welcome to the Utah Wildlife-Vehicle Collision Reporter
+          Welcome to the Utah Roadkill Reporter
         </Text>
         <Text category="h3" style={styles.center}>
           I am a...
