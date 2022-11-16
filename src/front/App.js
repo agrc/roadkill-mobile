@@ -3,7 +3,6 @@ import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import * as Updates from 'expo-updates';
 import * as React from 'react';
 import { LogBox, View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
@@ -26,7 +25,7 @@ const queryClient = new QueryClient();
 
 Sentry.init({
   dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
-  environment: Updates.releaseChannel,
+  environment: process.env.ENVIRONMENT,
 });
 
 if (__DEV__) {
