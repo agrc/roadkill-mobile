@@ -136,6 +136,12 @@ export default {
     eas: {
       projectId: '648c99de-696c-4704-8723-7f8838dc6896',
     },
+    ENVIRONMENT: process.env.ENVIRONMENT,
+    GOOGLE_OAUTH_CLIENT_ID_ANDROID: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
+    GOOGLE_OAUTH_CLIENT_ID_IOS: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
+    API: process.env.API,
+    CLIENT_ID: process.env.CLIENT_ID,
+    APP_QUAD_WORD: process.env.APP_QUAD_WORD,
   },
 
   // required for eas update command

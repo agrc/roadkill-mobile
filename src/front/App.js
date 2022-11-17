@@ -1,6 +1,7 @@
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import Constants from 'expo-constants';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
@@ -25,7 +26,7 @@ const queryClient = new QueryClient();
 
 Sentry.init({
   dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
-  environment: process.env.ENVIRONMENT,
+  environment: Constants.expoConfig.extra.ENVIRONMENT,
 });
 
 if (__DEV__) {
