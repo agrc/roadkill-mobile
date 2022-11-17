@@ -7,10 +7,9 @@ echo "Publishing new app builds for release channel: $RELEASE_BRANCH"
 
 ENV_FILE="./.env.$RELEASE_BRANCH"
 echo "getting environment variables from $ENV_FILE"
-set -o allexport
-source $ENV_FILE
-set +o allexport
 
-eas update --auto
+rm -rf ./dist
+
+npx env-cmd -f $ENV_FILE eas update --auto
 
 say "over-the-air update published successfully"
