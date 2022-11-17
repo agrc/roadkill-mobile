@@ -1,3 +1,13 @@
+## [v3.0.1-581](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-578...v3.0.1-581) (2022-11-17)
+
+
+### Bug Fixes
+
+* **front:** move all app code env vars to expo extra config ([73a4946](https://github.com/agrc/roadkill-mobile/commit/73a49468ae5b0784b9206192e574afcc579d255d))
+* **front:** try to make env vars more reliable ([9447343](https://github.com/agrc/roadkill-mobile/commit/94473435812b2adb014ab8d255dd18643e8e03e1))
+
+
+
 ## [v3.0.1-578](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-575...v3.0.1-578) (2022-11-17)
 
 
