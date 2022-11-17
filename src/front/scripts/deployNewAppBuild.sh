@@ -16,6 +16,8 @@ fi
 
 echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH"
 
+rm -rf ./dist
+
 ./scripts/removeArtifacts.sh $PLATFORM
 
 echo "building $PLATFORM platform(s)"
