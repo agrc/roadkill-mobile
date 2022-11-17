@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
-let API = process.env.API;
+let API = Constants.expoConfig.extra.API;
 if (__DEV__ && !process.env.JEST_WORKER_ID) {
   if (!Device.isDevice && Platform.OS === 'android') {
     // API = API.replace('localhost', '10.0.3.2'); // genymotion emulator
@@ -13,7 +13,7 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
 }
 
 export default {
-  CLIENT_ID: process.env.CLIENT_ID,
+  CLIENT_ID: Constants.expoConfig.extra.CLIENT_ID,
   API,
   USER_TYPES: {
     public: 'reporter',
@@ -32,7 +32,7 @@ export default {
   USER_STORE_KEY: 'USER_INFO',
   USER_TYPE_KEY: 'USER_TYPE',
   URLS: {
-    HYBRID: `https://discover.agrc.utah.gov/login/path/${process.env.APP_QUAD_WORD}/tiles/hybrid_basemap/{z}/{x}/{y}.jpg`,
+    HYBRID: `https://discover.agrc.utah.gov/login/path/${Constants.expoConfig.extra.APP_QUAD_WORD}/tiles/hybrid_basemap/{z}/{x}/{y}.jpg`,
     PSAP_FEATURE_SERVICE:
       'https://services1.arcgis.com/99lidPhWCzftIe9K/arcgis/rest/services/UtahPSAP_Boundaries/FeatureServer/0',
   },

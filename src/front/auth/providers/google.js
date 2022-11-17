@@ -1,5 +1,6 @@
 import { revokeAsync } from 'expo-auth-session';
 import { discovery, useAuthRequest } from 'expo-auth-session/providers/google';
+import Constants from 'expo-constants';
 import ky from 'ky';
 import React from 'react';
 import config from '../../services/config';
@@ -17,8 +18,8 @@ export default function useGoogleProvider() {
   // eslint-disable-next-line no-unused-vars
   const [request, result, promptAsync] = useAuthRequest(
     {
-      androidClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
-      iosClientId: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
+      androidClientId: Constants.expoConfig.extra.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
+      iosClientId: Constants.expoConfig.extra.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
     },
     {
