@@ -1,3 +1,33 @@
+## [v3.0.1-578](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-575...v3.0.1-578) (2022-11-17)
+
+
+### Bug Fixes
+
+* **front:** go back to dots in scheme ([4dafbe1](https://github.com/agrc/roadkill-mobile/commit/4dafbe17a5548ffc2d7a7997d2272065a1acd9fc))
+* **website:** bump deps 🌲 ([1fbe54f](https://github.com/agrc/roadkill-mobile/commit/1fbe54f1f20b23abec1e49b5a1f36f609bb5cb41))
+
+
+### Features
+
+* **website:** simple landing page with app store links ([c0f4732](https://github.com/agrc/roadkill-mobile/commit/c0f47327660dbba5209162b843c8879126e7c2f4))
+
+
+
+## [v3.0.1-576](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-575...v3.0.1-576) (2022-11-16)
+
+
+### Bug Fixes
+
+* **front:** go back to dots in scheme ([4dafbe1](https://github.com/agrc/roadkill-mobile/commit/4dafbe17a5548ffc2d7a7997d2272065a1acd9fc))
+* **website:** bump deps 🌲 ([1fbe54f](https://github.com/agrc/roadkill-mobile/commit/1fbe54f1f20b23abec1e49b5a1f36f609bb5cb41))
+
+
+### Features
+
+* **website:** simple landing page with app store links ([c0f4732](https://github.com/agrc/roadkill-mobile/commit/c0f47327660dbba5209162b843c8879126e7c2f4))
+
+
+
 ## [v3.0.1-575](https://github.com/agrc/roadkill-mobile/compare/v3.0.0-574...v3.0.1-575) (2022-11-16)
 
 
