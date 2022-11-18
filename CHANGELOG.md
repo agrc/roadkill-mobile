@@ -1,3 +1,12 @@
+## [v3.0.1-582](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-581...v3.0.1-582) (2022-11-18)
+
+
+### Bug Fixes
+
+* **front:** remove staging from prod splash screen ([8a6331c](https://github.com/agrc/roadkill-mobile/commit/8a6331c0aeb20af258dad2d2703ed0771c24a81e))
+
+
+
 ## [v3.0.1-581](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-578...v3.0.1-581) (2022-11-17)
 
 
