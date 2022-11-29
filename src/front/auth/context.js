@@ -10,6 +10,7 @@ import * as Sentry from 'sentry-expo';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';
 import { useAsyncError, useSecureState } from '../services/utilities';
+import useAppleProvider from './providers/apple';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
 import useUtahIDProvider from './providers/utahid';
@@ -40,14 +41,16 @@ export function AuthContextProvider({ children, onReady }) {
   const facebookProvider = useFacebookProvider();
   const googleProvider = useGoogleProvider();
   const utahidProvider = useUtahIDProvider();
+  const appleProvider = useAppleProvider();
   // provider should have the following shape:
   // {
   //   logIn: resolves with oauthUser object,
   //   logOut: resolves with null,
-  //   getBearerToken: resolves with token, (utahid only)
+  //   getBearerToken: resolves with token
   // }
 
   const PROVIDER_LOOKUP = {
+    apple: appleProvider,
     facebook: facebookProvider,
     google: googleProvider,
     utahid: utahidProvider,
@@ -84,6 +87,7 @@ export function AuthContextProvider({ children, onReady }) {
 
   React.useEffect(() => {
     if (authInfo === null || authInfo) {
+      console.log('authInfo', authInfo);
       onReady();
     }
   }, [authInfo]);
@@ -93,6 +97,7 @@ export function AuthContextProvider({ children, onReady }) {
 
     try {
       const oauthUser = await PROVIDER_LOOKUP[providerName].logIn();
+      console.log('oauthUser', oauthUser);
 
       let token;
       if (oauthUser) {
@@ -174,22 +179,20 @@ export function AuthContextProvider({ children, onReady }) {
       const doLogOut = async () => {
         setStatus(STATUS.loading);
 
-        if (currentProvider.hasValidToken()) {
-          try {
-            const response = await ky.post(`${config.API}/user/logout`, {
-              headers: {
-                Authorization: await getBearerToken(),
-                [commonConfig.versionHeaderName]: commonConfig.apiVersion,
-              },
-              timeout,
-            });
+        try {
+          const response = await ky.post(`${config.API}/user/logout`, {
+            headers: {
+              Authorization: await getBearerToken(),
+              [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+            },
+            timeout,
+          });
 
-            if (response.status !== 200) {
-              console.error(`logout failed: ${response.body}`);
-            }
-          } catch (error) {
-            console.error(`logout failed: ${error.message}`);
+          if (response.status !== 200) {
+            console.error(`logout failed: ${response.body}`);
           }
+        } catch (error) {
+          console.error(`logout failed: ${error.message}`);
         }
 
         try {

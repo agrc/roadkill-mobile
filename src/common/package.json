@@ -4,7 +4,7 @@
   "description": "shared code between front and back ends",
   "license": "MIT",
   "author": "Scott Davis <stdavis@utah.gov>",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"

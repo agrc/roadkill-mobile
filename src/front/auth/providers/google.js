@@ -1,3 +1,4 @@
+import commonConfig from 'common/config';
 import { revokeAsync } from 'expo-auth-session';
 import { discovery, useAuthRequest } from 'expo-auth-session/providers/google';
 import Constants from 'expo-constants';
@@ -100,7 +101,7 @@ export default function useGoogleProvider() {
   };
 
   const getBearerToken = async () => {
-    const prefix = `${config.PROVIDER_NAMES.google}:Bearer `;
+    const prefix = `${commonConfig.authProviderNames.google}:Bearer `;
     if (hasValidToken()) {
       return prefix + authentication.current.accessToken;
     }
@@ -116,5 +117,5 @@ export default function useGoogleProvider() {
 
   const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
 
-  return { logIn, logOut, getBearerToken, hasValidToken };
+  return { logIn, logOut, getBearerToken };
 }

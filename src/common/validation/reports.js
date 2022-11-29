@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+const yup = require('yup');
 
 const location = yup.string();
 const photo = yup.object().shape({
@@ -23,7 +23,7 @@ const age_class = yup.string().nullable();
 const sex = yup.string().nullable();
 const comments = yup.string().nullable();
 
-export const report = yup.object().shape({
+exports.report = yup.object().shape({
   animal_location,
   photo: photo.nullable(),
   photo_location,
@@ -45,7 +45,7 @@ export const report = yup.object().shape({
   discovery_date: yup.date().required(),
 });
 
-export const pickup = yup.object().shape({
+exports.pickup = yup.object().shape({
   animal_location,
   photo: photo.required().typeError('A photo is required.'),
   photo_location,

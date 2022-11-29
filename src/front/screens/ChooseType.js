@@ -1,4 +1,6 @@
 import { Button, Layout, Text } from '@ui-kitten/components';
+import commonConfig from 'common/config';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
@@ -26,6 +28,16 @@ const carrotDown = getIcon({
 });
 
 export default function ChooseTypeScreen({ navigation }) {
+  const [appleSignInIsAvailable, setAppleSignInIsAvailable] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkAppleSignIn = async () => {
+      const isAvailable = await AppleAuthentication.isAvailableAsync();
+      setAppleSignInIsAvailable(isAvailable);
+    };
+    checkAppleSignIn();
+  }, []);
+
   const { setUserType } = useAuth();
   const Option = ({ children, type, onPress, accessoryLeft }) => {
     const innerOnPress = () => {
@@ -112,7 +124,7 @@ export default function ChooseTypeScreen({ navigation }) {
           </Option>
           <Collapsible collapsed={!showAuthButtons} style={styles.buttonContainer}>
             <Button
-              onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}
+              onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
               accessoryLeft={UtahIdLogoImage}
               status="basic"
               appearance="outline"
@@ -123,22 +135,31 @@ export default function ChooseTypeScreen({ navigation }) {
               Sign in with UtahID
             </Button>
             <SocialButton
-              providerName={config.PROVIDER_NAMES.google}
+              providerName={commonConfig.authProviderNames.google}
               normalImage={googleBtn}
               disabledImage={googleBtnDisabled}
               pressedImage={googleBtnPressed}
             />
             <SocialButton
-              providerName={config.PROVIDER_NAMES.facebook}
+              providerName={commonConfig.authProviderNames.facebook}
               normalImage={facebookBtn}
               disabledImage={facebookBtnDisabled}
               pressedImage={facebookBtnPressed}
             />
+            {appleSignInIsAvailable ? (
+              <AppleAuthentication.AppleAuthenticationButton
+                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                cornerRadius={5}
+                style={[styles.oauthButton, styles.appleButton]}
+                onPress={() => initLogIn(commonConfig.authProviderNames.apple)}
+              />
+            ) : null}
           </Collapsible>
-          <Option type={config.USER_TYPES.contractor} onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}>
+          <Option type={config.USER_TYPES.contractor} onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}>
             State contractor
           </Option>
-          <Option type={config.USER_TYPES.agency} onPress={() => initLogIn(config.PROVIDER_NAMES.utahid)}>
+          <Option type={config.USER_TYPES.agency} onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}>
             State agency employee
           </Option>
           {config.SHOW_STORYBOOK ? <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button> : null}
@@ -174,6 +195,10 @@ const styles = StyleSheet.create({
   },
   oauthButton: {
     marginBottom: 10,
+  },
+  appleButton: {
+    width: 250,
+    height: 55,
   },
   socialImage: {
     resizeMode: 'contain',
