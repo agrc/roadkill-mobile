@@ -118,7 +118,7 @@ export function isTokenExpired(token) {
 }
 
 export async function sendEmailToSupport() {
-  const subject = `${applicationName} - Support`;
+  const subject = `${applicationName} Reporter - Support`;
 
   if (await MailComposer.isAvailableAsync()) {
     return await MailComposer.composeAsync({
