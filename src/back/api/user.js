@@ -1,7 +1,7 @@
 import commonConfig from 'common/config.js';
 import appleSignIn from '../services/apple_sign_in.js';
 import { db } from '../services/clients.js';
-import { getCachedUser } from '../services/user_cache.js';
+import { deleteCachedUser, getCachedUser, shouldCacheUser } from '../services/user_cache.js';
 import { EXPIRED_APPROVAL } from '../services/user_management.js';
 import { getTokenFromHeader } from './security.js';
 
@@ -109,10 +109,14 @@ export function getDeleteUser(deleteUser) {
     const { token, authProvider } = getTokenFromHeader(request.headers.authorization);
 
     try {
-      const cachedUser = await getCachedUser(token, authProvider);
+      if (shouldCacheUser(authProvider)) {
+        const cachedUser = await getCachedUser(token, authProvider);
 
-      if (cachedUser?.refreshToken && authProvider === commonConfig.authProviderNames.apple) {
-        appleSignIn.revokeToken(cachedUser.refreshToken);
+        if (cachedUser?.refreshToken && authProvider === commonConfig.authProviderNames.apple) {
+          appleSignIn.revokeToken(cachedUser.refreshToken);
+        }
+
+        deleteCachedUser(token, authProvider);
       }
 
       await deleteUser(response.locals.userId);

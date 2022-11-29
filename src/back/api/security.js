@@ -8,6 +8,7 @@ import {
   getCachedAppleRefreshToken,
   getCachedUser,
   setCachedUser,
+  shouldCacheUser,
 } from '../services/user_cache.js';
 import { getUser as getAppUser } from '../services/user_management.js';
 
@@ -100,10 +101,6 @@ export async function logout(request, response) {
   }
 
   return response.status(200).send('user logged out successfully');
-}
-
-function shouldCacheUser(authProvider) {
-  return [commonConfig.authProviderNames.apple, commonConfig.authProviderNames.utahid].includes(authProvider);
 }
 
 export function getTokenFromHeader(authorization) {
