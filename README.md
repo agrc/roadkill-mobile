@@ -145,3 +145,7 @@ The file name should match a distinct value from one of the following columns in
 - `family`
 
 If a matching file in the bucket is not found, a blank gray fallback image is returned.
+
+## Authentication
+
+[Authentication Process Study](https://www.notion.so/stdavis/Roadkill-Auth-Process-Study-624f63c8bc0641da931bac2f240f1d5b)
