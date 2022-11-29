@@ -37,6 +37,7 @@
     "ondevice",
     "openid",
     "packagejson",
+    "Podfile",
     "postgis",
     "POSTGRES",
     "pressable",
