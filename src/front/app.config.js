@@ -32,10 +32,7 @@ export default {
     backgroundColor: '#ffffff',
   },
   assetBundlePatterns: ['**/*'],
-  // hermes was causing issues with environment variables. For some reason
-  // it was making the prod app point to the staging api
-  // wait until upgrade to expo 47 to try again
-  // jsEngine: 'hermes',
+  jsEngine: 'hermes',
   ios: {
     bundleIdentifier: bundleId,
     googleServicesFile: process.env.GOOGLE_SERVICES_IOS,
@@ -112,19 +109,12 @@ export default {
         autoLogAppEventsEnabled: false,
       },
     ],
+    './withReactNativeMaps',
     [
       'expo-build-properties',
       {
         ios: {
-          // required for react-native-maps, expo default for sdk 46 is 12.0
-          // ref: https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#enabling-google-maps
-          deploymentTarget: '13.0',
-
-          // this will be needed when expo-firebase-analytics (7.2+) and react-native-maps (1.3.2+) are bumped
-          // it fixes firebase but breaks maps
-          // waiting on https://github.com/react-native-maps/react-native-maps/discussions/4389
-          // // https://docs.expo.dev/versions/latest/sdk/firebase-analytics/#additional-configuration-for-ios
-          // useFrameworks: 'static',
+          useFrameworks: 'static',
         },
       },
     ],

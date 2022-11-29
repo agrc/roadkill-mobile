@@ -89,8 +89,8 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
       console.log('error', error);
     }
 
-    if (!result.cancelled) {
-      const { uri, exif } = result;
+    if (!result.canceled && result.assets.length > 0) {
+      const { uri, exif } = result.assets[0];
 
       const coordinates = pointCoordinatesToString(getCoordinatesFromExif(exif));
 
@@ -124,8 +124,8 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
       }
     }
 
-    if (!result.cancelled) {
-      const { uri, exif } = result;
+    if (!result.canceled && result.assets.length > 0) {
+      const { uri, exif } = result.assets[0];
 
       // on iOS when capturing a new image, the GPS tags are not included in the exif data.
       // might as well get them on both platforms when taking a new image
