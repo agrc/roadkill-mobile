@@ -6,6 +6,13 @@ const testSecrets = {
   'client-id': 'client-id',
   'database-password': 'blah',
   'sendgrid-api-key': 'SG.hello',
+  'apple-sign-in-props': `
+    {
+      "teamID": "test-team-id",
+      "privateKey": "-----BEGIN PRIVATE KEY-----\\nblah\\nblah\\nblah\\nblah\\n-----END PRIVATE KEY-----",
+      "keyIdentifier": "key-id"
+    }
+  `,
 };
 
 const basePath =
