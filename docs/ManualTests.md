@@ -14,12 +14,12 @@ password: `tester`
 
 ## Auth
 
-| set up              | action                                              | assertion |
-|---------------------|-----------------------------------------------------|-----|
-|                     | log in with each provider: utahid, google, facebook | navigates to new user or main screen |
-|                     | cancel oauth process                                | navigates back to login screen |
-| log in successfully | kill app and then restart                           | automatically logs in and goes to the Main screen |
-|                     | Main -> Menu -> Logout                              | presents confirmation dialog and then navigates to login screen |
+| set up              | action                                                       | assertion |
+|---------------------|--------------------------------------------------------------|-----|
+|                     | log in with each provider: utahid, google, facebook, & apple | navigates to new user or main screen |
+|                     | cancel oauth process                                         | navigates back to login screen |
+| log in successfully | kill app and then restart                                    | automatically logs in and goes to the Main screen |
+|                     | Main -> Menu -> Logout                                       | presents confirmation dialog and then navigates to login screen |
 
 ## New User
 
@@ -39,7 +39,6 @@ password: `tester`
 | tap on zoom to location         | pan the map                          | follow user location is disabled |
 |                                 |                                      | verify that drawer navigation works |
 | (doesn't work on iOS simulator) | contact                              | opens mail app with to and subject filled out |
-| log in as agency or contractor  |                                      | verify that route button is visible |
 | log in as public                |                                      | verify that route button is not visible |
 
 ## Add Report
@@ -60,15 +59,15 @@ password: `tester`
 
 Setup: open the report and select a location
 
-| set up                              | action                         | assertion |
-|-------------------------------------|--------------------------------|-------|
-|                                     | set repeat submission to "Yes" | alert is presented with cancel and continue options |
-| set repeat submission to "Yes"      | click on cancel                | report is closed |
-| set repeat submission to "Yes"      | click on continue              | report remains open |
-|                                     | click on date picker           | controls are shown and future dates are greyed out |
-|                                     | submit report with no photo    | success dialog should show and report should be reset and closed |
-|                                     | submit report with photo       | success dialog should show and report should be reset and closed |
-| login with both google and facebook | submit report                  | success dialog, verify that notification email was sent |
+| set up                               | action                         | assertion |
+|--------------------------------------|--------------------------------|------|
+|                                      | set repeat submission to "Yes" | alert is presented with cancel and continue options |
+| set repeat submission to "Yes"       | click on cancel                | report is closed |
+| set repeat submission to "Yes"       | click on continue              | report remains open |
+|                                      | click on date picker           | controls are shown and future dates are greyed out |
+|                                      | submit report with no photo    | success dialog should show and report should be reset and closed |
+|                                      | submit report with photo       | success dialog should show and report should be reset and closed |
+| login with google, facebook, & apple | submit report                  | success dialog, verify that notification email was sent |
 
 ### Contractor Role
 
