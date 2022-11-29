@@ -182,12 +182,12 @@ export async function authenticate(request, response, next) {
       // facebook returns `id`, utahid and google return `sub`
       const authId = userResponse.body.sub || userResponse.body.id;
       const user = await getAppUser(authId, authProvider);
-      if (user.id) {
+      if (user?.id) {
         response.locals.userId = user.id;
       }
 
       // don't cache until we have the user in the app database
-      if (shouldCacheUser(authProvider) && user.id) {
+      if (shouldCacheUser(authProvider) && user?.id) {
         setCachedUser(token, authProvider, user.id);
       }
 
