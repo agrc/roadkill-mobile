@@ -68,3 +68,7 @@ export async function deleteCachedUser(token, authProvider) {
 
   await document.delete();
 }
+
+export function shouldCacheUser(authProvider) {
+  return [commonConfig.authProviderNames.apple, commonConfig.authProviderNames.utahid].includes(authProvider);
+}
