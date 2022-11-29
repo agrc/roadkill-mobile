@@ -1,6 +1,6 @@
 export function getNewReportHandler(upload, createReport, sendReportNotification) {
   return async function create(request, response) {
-    const user_id = response.locals.user.appUser.id;
+    const user_id = response.locals.userId;
 
     let bucket_path = null;
     if (request.file) {
@@ -24,7 +24,7 @@ export function getNewReportHandler(upload, createReport, sendReportNotification
 
 export function getNewPickupHandler(upload, createPickup) {
   return async function create(request, response) {
-    const user_id = response.locals.user.appUser.id;
+    const user_id = response.locals.userId;
 
     if (!request.file) {
       response.status(400).json({

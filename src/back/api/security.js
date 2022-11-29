@@ -1,6 +1,14 @@
+import commonConfig from 'common/config.js';
 import got from 'got';
+import appleSignIn from '../services/apple_sign_in.js';
 import getSecret from '../services/secrets.js';
-import { deleteUser, getUser, setUser } from '../services/user_cache.js';
+import {
+  cacheAppleTokens,
+  deleteCachedUser,
+  getCachedAppleRefreshToken,
+  getCachedUser,
+  setCachedUser,
+} from '../services/user_cache.js';
 import { getUser as getAppUser } from '../services/user_management.js';
 
 export async function getToken(request, response) {
@@ -54,36 +62,64 @@ export async function getToken(request, response) {
   }
 }
 
+export async function verifyAppleTokenAndCode(request, response) {
+  const { authorizationCode, identityToken } = request.body;
+
+  const sub = await appleSignIn.verifyIdToken(identityToken);
+
+  // check for cached refresh token and use that rather than getTokens
+  let refreshToken = await getCachedAppleRefreshToken(sub);
+
+  let newIdToken;
+  if (refreshToken) {
+    newIdToken = await appleSignIn.validateRefreshToken(refreshToken);
+  } else {
+    try {
+      const tokens = await appleSignIn.getTokens(authorizationCode);
+      refreshToken = tokens.refreshToken;
+      newIdToken = tokens.identityToken;
+    } catch (error) {
+      return response.status(401).json({ error_description: error.message, error: 'invalid_request' });
+    }
+  }
+
+  await cacheAppleTokens(sub, newIdToken ?? identityToken, refreshToken);
+
+  return response.status(200).json({ identityToken: newIdToken });
+}
+
 export async function logout(request, response) {
-  const { token, isJWTToken } = getTokenFromHeader(request.headers.authorization);
+  const { token, authProvider } = getTokenFromHeader(request.headers.authorization);
 
   if (!token) {
     return response.status(401).send('empty token');
   }
 
-  if (isJWTToken) {
-    await deleteUser(token);
+  if (shouldCacheUser(authProvider)) {
+    await deleteCachedUser(token);
   }
 
   return response.status(200).send('user logged out successfully');
 }
 
-function getTokenFromHeader(authorization) {
+function shouldCacheUser(authProvider) {
+  return [commonConfig.authProviderNames.apple, commonConfig.authProviderNames.utahid].includes(authProvider);
+}
+
+export function getTokenFromHeader(authorization) {
   const [authProvider, authToken] = authorization.split(':');
 
   let token;
-  let isJWTToken;
   if (authToken) {
     token = authToken.split(' ').pop();
-    isJWTToken = authProvider === 'utahid';
   }
 
-  return { token, isJWTToken, authProvider, authToken };
+  return { token, authProvider, authToken };
 }
 
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
-    const { token, isJWTToken, authProvider, authToken } = getTokenFromHeader(request.headers.authorization);
+    const { token, authProvider, authToken } = getTokenFromHeader(request.headers.authorization);
 
     if (!token) {
       return response.status(401).send('empty token');
@@ -91,22 +127,43 @@ export async function authenticate(request, response, next) {
 
     response.locals.authProvider = authProvider;
 
-    if (isJWTToken) {
-      const cachedUser = await getUser(token);
-      if (cachedUser) {
-        response.locals.user = cachedUser;
+    if (shouldCacheUser(authProvider)) {
+      const cachedUser = await getCachedUser(token, authProvider);
+      if (cachedUser?.userId) {
+        response.locals.userId = cachedUser.userId;
 
         return next();
+      } else if (authProvider === commonConfig.authProviderNames.apple) {
+        // might be cached refresh token for apple...
+        const sub = await appleSignIn.verifyIdToken(token);
+
+        if (cachedUser?.refreshToken) {
+          await appleSignIn.validateRefreshToken(cachedUser.refreshToken);
+
+          const user = await getAppUser(sub, authProvider);
+          if (user?.id) {
+            response.locals.userId = user.id;
+          }
+
+          // don't cache until we have the user in the app database
+          if (shouldCacheUser(authProvider) && user?.id) {
+            setCachedUser(token, authProvider, user.id);
+          }
+
+          return next();
+        } else {
+          return response.status(401).send('no cached refresh token');
+        }
       }
     }
 
-    let userResponse;
     const userInfos = {
       utahid: 'https://login.dts.utah.gov/sso/oauth2/userinfo',
       google: 'https://openidconnect.googleapis.com/v1/userinfo',
       facebook: `https://graph.facebook.com/me?access_token=${token}`,
     };
 
+    let userResponse;
     try {
       userResponse = await got(userInfos[authProvider], {
         responseType: 'json',
@@ -125,23 +182,16 @@ export async function authenticate(request, response, next) {
     }
 
     if (userResponse.statusCode === 200 && userResponse.body) {
-      response.locals.user = userResponse.body;
-
       // facebook returns `id`, utahid and google return `sub`
       const authId = userResponse.body.sub || userResponse.body.id;
-      response.locals.user.authId = authId;
-
-      const appUser = await getAppUser(authId, authProvider);
-      if (appUser) {
-        response.locals.user.appUser = appUser;
+      const user = await getAppUser(authId, authProvider);
+      if (user.id) {
+        response.locals.userId = user.id;
       }
 
-      // don't cache until we have the app user in the database
-      if (isJWTToken && appUser) {
-        setUser(token, {
-          ...userResponse.body,
-          appUser,
-        });
+      // don't cache until we have the user in the app database
+      if (shouldCacheUser(authProvider) && user.id) {
+        setCachedUser(token, authProvider, user.id);
       }
 
       return next();

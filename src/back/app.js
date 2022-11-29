@@ -13,7 +13,7 @@ import { getGetIDImageHandler } from './api/id_images.js';
 import { getGetPhotoHandler } from './api/photos.js';
 import { getGetReportHandler, getNewPickupHandler, getNewReportHandler } from './api/reports.js';
 import { getGetRouteHandler, getNewRouteHandler } from './api/routes.js';
-import { authenticate, getToken, logout } from './api/security.js';
+import { authenticate, getToken, logout, verifyAppleTokenAndCode } from './api/security.js';
 import { getGetAllHandler } from './api/submissions.js';
 import {
   getApprove,
@@ -144,6 +144,7 @@ function handleAsyncErrors(callback) {
 
 // user management
 app.post('/user/token', handleAsyncErrors(getToken));
+app.post('/user/apple-token', handleAsyncErrors(verifyAppleTokenAndCode));
 app.post(
   '/user/register',
   handleAsyncErrors(authenticate),

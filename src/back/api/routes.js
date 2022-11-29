@@ -1,7 +1,7 @@
 export function getNewRouteHandler(createRoute) {
   return async function create(request, response) {
     const routeId = await createRoute({
-      user_id: response.locals.user.appUser.id,
+      user_id: response.locals.userId,
       geog: request.body.geog,
       start_time: request.body.start_time,
       end_time: request.body.end_time,
@@ -17,7 +17,7 @@ export function getNewRouteHandler(createRoute) {
 
 export function getGetRouteHandler(getRoute) {
   return async function getRouteHandler(request, response) {
-    const route = await getRoute(request.params.routeId, response.locals.user.appUser.id);
+    const route = await getRoute(request.params.routeId, response.locals.userId);
 
     if (route) {
       return response.status(200).json({

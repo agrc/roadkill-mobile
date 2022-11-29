@@ -1,7 +1,7 @@
+import commonConfig from 'common/config';
 import ky from 'ky';
 import React from 'react';
 import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
-import config from '../../services/config';
 import { useAsyncError } from '../../services/utilities';
 
 Settings.initializeSDK();
@@ -79,7 +79,7 @@ export default function useFacebookProvider() {
   };
 
   const getBearerToken = async () => {
-    const prefix = `${config.PROVIDER_NAMES.facebook}: Bearer `;
+    const prefix = `${commonConfig.authProviderNames.facebook}: Bearer `;
 
     if (!hasValidToken()) {
       await refreshToken();
@@ -90,5 +90,5 @@ export default function useFacebookProvider() {
 
   const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
 
-  return { logIn, logOut, getBearerToken, hasValidToken };
+  return { logIn, logOut, getBearerToken };
 }

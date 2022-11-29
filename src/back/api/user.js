@@ -1,5 +1,9 @@
+import commonConfig from 'common/config.js';
+import appleSignIn from '../services/apple_sign_in.js';
 import { db } from '../services/clients.js';
+import { getCachedUser } from '../services/user_cache.js';
 import { EXPIRED_APPROVAL } from '../services/user_management.js';
+import { getTokenFromHeader } from './security.js';
 
 export function getRegister(isExistingUser, registerUser, getUser) {
   return async function register(request, response) {
@@ -23,7 +27,7 @@ export function getLogin(getUser, updateUser, getConstants) {
   return async function login(request, response) {
     const user = await getUser(request.body.auth_id, request.body.auth_provider);
 
-    if (user?.id) {
+    if (user?.id && request.body.email && request.body.first_name && request.body.last_name) {
       await updateUser(request.body);
     }
 
@@ -79,7 +83,7 @@ export function getGetProfile(getProfile) {
   return async function getProfileHandler(_, response) {
     let profileData;
     try {
-      profileData = await getProfile(response.locals.user.appUser.id);
+      profileData = await getProfile(response.locals.userId);
     } catch (error) {
       return response.status(500).send(error.message);
     }
@@ -91,7 +95,7 @@ export function getGetProfile(getProfile) {
 export function getUpdateProfile(updateProfile) {
   return async function updateProfileHandler(request, response) {
     try {
-      await updateProfile(response.locals.user.appUser.id, request.body);
+      await updateProfile(response.locals.userId, request.body);
     } catch (error) {
       return response.status(500).send(error.message);
     }
@@ -101,9 +105,17 @@ export function getUpdateProfile(updateProfile) {
 }
 
 export function getDeleteUser(deleteUser) {
-  return async function deleteUserHandler(_, response) {
+  return async function deleteUserHandler(request, response) {
+    const { token, authProvider } = getTokenFromHeader(request.headers.authorization);
+
     try {
-      await deleteUser(response.locals.user.appUser.id);
+      const cachedUser = await getCachedUser(token, authProvider);
+
+      if (cachedUser?.refreshToken && authProvider === commonConfig.authProviderNames.apple) {
+        appleSignIn.revokeToken(cachedUser.refreshToken);
+      }
+
+      await deleteUser(response.locals.userId);
     } catch (error) {
       return response.status(500).send(error.message);
     }

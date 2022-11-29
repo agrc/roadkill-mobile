@@ -42,9 +42,9 @@ export const registerSchema = yup.object().shape({
 export const loginSchema = yup.object().shape({
   auth_id: yup.string().required(),
   auth_provider: yup.string().required(),
-  email: yup.string().email().required(),
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
+  email: yup.string().email().nullable(), // apple requests may not have this
+  first_name: yup.string().nullable(), // apple requests may not have this
+  last_name: yup.string().nullable(), // apple requests may not have this
 });
 
 export async function isExistingUser({ auth_provider, auth_id }) {

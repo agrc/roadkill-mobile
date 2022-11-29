@@ -1,6 +1,7 @@
 import { db } from './clients.js';
 
-export async function getMySubmissions(auth_id, auth_provider) {
+export async function getMySubmissions(user_id) {
+  console.log('user_id', user_id);
   const reports = await db('report_infos as r')
     .join('users', 'users.id', 'r.user_id')
     .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
@@ -8,8 +9,7 @@ export async function getMySubmissions(auth_id, auth_provider) {
     .orderBy('r.submit_date', 'desc')
     .limit(100)
     .where({
-      'users.auth_id': auth_id,
-      'users.auth_provider': auth_provider,
+      'users.id': user_id,
       'pick.route_id': null, // don't show pickups that are tied to a route
     });
 
@@ -19,8 +19,7 @@ export async function getMySubmissions(auth_id, auth_provider) {
     .orderBy('r.submit_date', 'desc')
     .limit(100)
     .where({
-      'users.auth_id': auth_id,
-      'users.auth_provider': auth_provider,
+      'users.id': user_id,
     });
 
   return reports.concat(routes).sort((a, b) => b.submit_date - a.submit_date);

@@ -1,6 +1,6 @@
-import * as yup from 'yup';
+const yup = require('yup');
 
-export const route = yup.object().shape({
+exports.route = yup.object().shape({
   geog: yup.string().required(),
   start_time: yup.date().required(),
   end_time: yup.date().required(),
