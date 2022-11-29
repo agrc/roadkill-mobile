@@ -269,7 +269,7 @@ const Report = ({
     >
       <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
         <View style={styles.body}>
-          {!showMain ? <Location onSetLocation={onSetLocation} /> : <FocusAwareStatusBar barStyle={'dark-content'} />}
+          {!showMain ? <Location onSetLocation={onSetLocation} /> : <FocusAwareStatusBar style={'dark'} />}
 
           {
             // the Form components are wrapped in a view and hidden via styling
