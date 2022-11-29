@@ -290,7 +290,7 @@ export default function MainScreen() {
 
   return (
     <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
-      <FocusAwareStatusBar barStyle={'light-content'} />
+      <FocusAwareStatusBar style={'light'} />
       {initialLocation ? (
         <>
           <Map
