@@ -99,7 +99,12 @@ export default function NewUserScreen() {
           {({ values, handleChange, handleBlur, handleSubmit, errors, isValid, touched, dirty, setValues }) => (
             <>
               <View style={styles.inputsContainer}>
-                <Input style={styles.input} label="Name" value={authInfo?.oauthUser.name} disabled />
+                <Input
+                  style={styles.input}
+                  label="Name"
+                  value={`${authInfo?.oauthUser.given_name} ${authInfo?.oauthUser.family_name}`}
+                  disabled
+                />
                 <Input style={styles.input} label="Email" value={authInfo?.oauthUser.email} disabled />
                 {organizationIsRequired ? (
                   <>

@@ -21,11 +21,6 @@ export default {
     agency: 'agency',
     admin: 'admin',
   },
-  PROVIDER_NAMES: {
-    google: 'google',
-    facebook: 'facebook',
-    utahid: 'utahid',
-  },
   // if user is already registered, then they will be sent to the main navigator
   // don't redirect to new-user because we don't want registered users to see that screen
   OAUTH_REDIRECT_SCREEN: 'choose-type',

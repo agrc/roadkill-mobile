@@ -1,13 +1,9 @@
+import commonConfig from 'common/config';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
-const baseBundleId = 'gov.dts.ugrc.utahwvcr';
-const bundleIds = {
-  development: `${baseBundleId}.dev`,
-  staging: `${baseBundleId}.staging`,
-  production: baseBundleId,
-};
-const bundleId = bundleIds[process.env.ENVIRONMENT];
+const bundleId = commonConfig.bundleIds[process.env.ENVIRONMENT];
 const names = {
   development: 'Utah Roadkill Dev',
   staging: 'Utah Roadkill Staging',
@@ -16,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 582;
+const buildNumber = 583;
 
 export default {
   name,
@@ -96,6 +92,7 @@ export default {
     ],
   },
   plugins: [
+    'expo-apple-authentication',
     'sentry-expo',
     'expo-notifications',
     [

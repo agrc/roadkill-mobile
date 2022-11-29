@@ -1,3 +1,4 @@
+import commonConfig from 'common/config';
 import { exchangeCodeAsync, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
 import Constants from 'expo-constants';
 import jwt_decode from 'jwt-decode';
@@ -110,7 +111,7 @@ export default function useUtahIDProvider() {
   const getBearerToken = async () => {
     console.log('getBearerToken');
 
-    const prefix = `${config.PROVIDER_NAMES.utahid}:Bearer `;
+    const prefix = `${commonConfig.authProviderNames.utahid}:Bearer `;
     if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
       return prefix + accessToken.current;
     }
@@ -177,5 +178,5 @@ export default function useUtahIDProvider() {
     return refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current));
   };
 
-  return { logIn, logOut, getBearerToken, hasValidToken: hasValidRefreshToken };
+  return { logIn, logOut, getBearerToken };
 }
