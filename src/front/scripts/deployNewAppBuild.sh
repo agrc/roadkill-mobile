@@ -21,7 +21,7 @@ rm -rf ./dist
 ./scripts/removeArtifacts.sh $PLATFORM
 
 echo "building $PLATFORM platform(s)"
-eas build --platform $PLATFORM --profile $RELEASE_BRANCH --non-interactive
+eas build --platform $PLATFORM --profile $RELEASE_BRANCH
 
 ./scripts/downloadArtifacts.sh $PLATFORM $RELEASE_BRANCH $RELEASE_BRANCH
 
