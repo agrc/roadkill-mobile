@@ -1524,6 +1524,11 @@
       "id": 16,
       "name": "Utah State University",
       "org_type": "agency"
+    },
+    {
+      "id": 1,
+      "name": "Redrock Kleanup llc ",
+      "org_type": "contractor"
     }
   ]
 }
