@@ -24,7 +24,6 @@ runs:
       name: 🗝️ Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        create_credentials_file: true
         token_format: access_token
         workload_identity_provider: ${{ inputs.identity_provider }}
         service_account: ${{ inputs.service_account_email }}
@@ -34,7 +33,7 @@ runs:
       run: |
         wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
         chmod +x cloud_sql_proxy
-        ./cloud_sql_proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 -credential_file=${{ steps.auth.credentials_file_path }} &
+        ./cloud_sql_proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 &
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
