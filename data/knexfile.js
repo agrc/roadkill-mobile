@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const client = 'postgresql';
 const connection = {
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'admin',
   password: process.env.DATABASE_ADMIN_PASSWORD,
   database: 'app',
