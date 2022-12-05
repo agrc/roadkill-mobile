@@ -101,6 +101,7 @@ jobs:
             /secrets/client_id/value=client-id:latest,
             /secrets/database_password/value=database-password:latest,
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
+            /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
 
   deploy-prod:
     name: Migration DB, Build, and Deploy to Production
@@ -150,3 +151,4 @@ jobs:
             /secrets/client_id/value=client-id:latest,
             /secrets/database_password/value=database-password:latest,
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
+            /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
