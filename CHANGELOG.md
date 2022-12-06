@@ -1,3 +1,7 @@
+## [v3.0.1-588](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-587...v3.0.1-588) (2022-12-06)
+
+
+
 ## [v3.0.1-582](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-581...v3.0.1-582) (2022-11-18)
 
 
