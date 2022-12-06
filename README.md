@@ -57,6 +57,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 
 ### Cutting a New Release
 
+1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `staging`)
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
 1. Determine if app version (`version` in [app.config.js](src/front/app.config.js)) needs to be bumped.
@@ -99,10 +100,6 @@ After testing in dev client...
       - Use any simulator
 1. Create new version in iTunes connect and update all relevant information.
 1. Submit the apps for review in both app stores.
-
-### Steps for Creating a Expo New Release Channel
-
-1. Update [src/front/config.js](src/front/config.js).
 
 ### Secrets
 
