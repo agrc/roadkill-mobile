@@ -20,7 +20,7 @@ export default {
   description: 'A mobile application for reporting and removing roadkill in Utah.',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.0.1',
+  version: '3.0.2',
   orientation: 'portrait',
   icon: process.env.ENVIRONMENT === 'production' ? './assets/icon.png' : `./assets/icon_${process.env.ENVIRONMENT}.png`,
   splash: {
