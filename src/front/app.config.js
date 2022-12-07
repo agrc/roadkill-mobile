@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 588;
+const buildNumber = 590;
 
 export default {
   name,
@@ -132,7 +132,7 @@ export default {
   },
 
   // required for eas update command
-  runtimeVersion: '1.0.2',
+  runtimeVersion: '1.0.3',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
