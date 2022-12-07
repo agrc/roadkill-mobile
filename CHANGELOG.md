@@ -1,3 +1,12 @@
+## [v3.0.1-590](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-588...v3.0.1-590) (2022-12-07)
+
+
+### Bug Fixes
+
+* **front:** fix crash when viewing submission list on android ([80ebae3](https://github.com/agrc/roadkill-mobile/commit/80ebae3bd1261ee957dada1245a8f9d62673ffda))
+
+
+
 ## [v3.0.1-588](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-587...v3.0.1-588) (2022-12-06)
 
 
