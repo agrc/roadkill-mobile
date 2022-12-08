@@ -22,19 +22,19 @@ export default function Index() {
         </p>
         <div className="flex pt-4 justify-around items-center flex-wrap">
           <a
-            href="https://apps.apple.com/us/app/utah-wvc-reporter/id1566659475?itsct=apps_box_badge&amp;itscg=30200"
+            href="https://apps.apple.com/us/app/utah-roadkill-reporter/id1566659475?itsct=apps_box_badge&amp;itscg=30200"
             style={{
               display: 'inline-block',
               overflow: 'hidden',
               borderRadius: '13px',
-              width: badgeWidth,
-              height: badgeHeight,
+              width: '250px',
+              height: '83px',
             }}
           >
             <img
-              src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1667260800&h=ed6fe6b2bdfd2a71fd9602adf7b16b11"
+              src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1667260800?h=ed6fe6b2bdfd2a71fd9602adf7b16b11"
               alt="Download on the App Store"
-              style={{ borderRadius: '16px', width: badgeWidth, height: badgeHeight }}
+              style={{ borderRadius: '13px', width: '250px', height: '83px' }}
             />
           </a>
           <a href="https://play.google.com/store/apps/details?id=gov.dts.ugrc.utahwvcr&pli=1&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
