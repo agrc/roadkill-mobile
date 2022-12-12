@@ -102,36 +102,37 @@ export default function useAppleProvider() {
     //   throwAsyncError(new Error('Not a real user'));
     // }
 
-    if (!signInResult.email && cachedUserInfo.current) {
-      signInResult.email = cachedUserInfo.current.email;
-      signInResult.fullName.givenName = cachedUserInfo.current.given_name;
-      signInResult.fullName.familyName = cachedUserInfo.current.family_name;
-    }
+    // user and identityToken are sent every time
+    // only overwrite the cached user if it's populated
+    const existingUserInfoString = await SecureStore.getItemAsync(STORE_KEY);
+    const existingUserInfo = existingUserInfoString ? JSON.parse(existingUserInfoString) : null;
 
-    // we only get email, and names on the first sign in, so cache them locally
-    // user is sent every time
     cachedUserInfo.current = {
       sub: signInResult.user,
-      email: signInResult.email,
-      given_name: signInResult.fullName.givenName,
-      family_name: signInResult.fullName.familyName,
+      email: signInResult.email || existingUserInfo?.email,
+      given_name: signInResult.fullName.givenName || existingUserInfo?.given_name,
+      family_name: signInResult.fullName.familyName || existingUserInfo?.family_name,
       identityToken: signInResult.identityToken,
     };
+    console.log('cachedUserInfo.current', cachedUserInfo.current);
+
+    // we only get email, and names on the first sign in, so cache them locally
     await SecureStore.setItemAsync(STORE_KEY, JSON.stringify(cachedUserInfo.current));
 
     await refreshToken(signInResult.identityToken, signInResult.authorizationCode);
 
     return {
-      sub: signInResult.user,
-      email: signInResult.email,
-      given_name: signInResult.fullName.givenName,
-      family_name: signInResult.fullName.familyName,
+      sub: cachedUserInfo.current.sub,
+      email: cachedUserInfo.current.email,
+      given_name: cachedUserInfo.current.given_name,
+      family_name: cachedUserInfo.current.family_name,
     };
   };
 
   const logOut = async () => {
     cachedUserInfo.current = null;
-    await SecureStore.deleteItemAsync(STORE_KEY);
+    // don't ever delete the cached user info because we will need the email and name
+    // if they haven't yet registered
   };
 
   const getBearerToken = async () => {
