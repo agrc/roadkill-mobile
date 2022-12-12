@@ -53,19 +53,26 @@ export default function NewUserScreen() {
   const shape = {
     phone: yup.string().phone('US').required(),
   };
+
+  // add org, if required
   if (organizationIsRequired) {
     shape.organization_name = yup.string().required();
     shape.organization_id = yup.number().required();
   }
+
+  // add name/email, if not provided by oauth
+  if (!authInfo.oauthUser.given_name || !authInfo.oauthUser.family_name) {
+    shape.name = yup.string().required();
+  }
   const schema = yup.object().shape(shape);
 
-  const register = async ({ phone, organization_id, organization_name }) => {
+  const register = async ({ phone, organization_id, organization_name, name, email }) => {
     await registerMutation.mutate({
       user: {
         phone,
-        first_name: authInfo.oauthUser.given_name,
-        last_name: authInfo.oauthUser.family_name,
-        email: authInfo.oauthUser.email,
+        first_name: authInfo.oauthUser.given_name || name.split(' ')[0],
+        last_name: authInfo.oauthUser.family_name || name.split(' ')[1] || '<none provided>',
+        email: authInfo.oauthUser.email || email,
         auth_id: authInfo.oauthUser.sub,
         auth_provider: authInfo.providerName,
         role: userType,
@@ -85,13 +92,23 @@ export default function NewUserScreen() {
     logOut(true);
   };
 
+  const name = authInfo?.oauthUser.given_name
+    ? `${authInfo?.oauthUser.given_name} ${authInfo?.oauthUser.family_name}`
+    : '';
+
   return (
     <RootView showSpinner={registerMutation.isLoading}>
       <ScrollView style={styles.layout}>
         <Text category="h1">Please complete your profile</Text>
 
         <Formik
-          initialValues={{ phone: null, organization_id: null, organization_name: null }}
+          initialValues={{
+            phone: null,
+            organization_id: null,
+            organization_name: null,
+            name,
+            email: authInfo?.oauthUser.email ?? '',
+          }}
           validationSchema={schema}
           onSubmit={register}
           isSubmitting={registerMutation.isLoading}
@@ -102,10 +119,17 @@ export default function NewUserScreen() {
                 <Input
                   style={styles.input}
                   label="Name"
-                  value={`${authInfo?.oauthUser.given_name} ${authInfo?.oauthUser.family_name}`}
-                  disabled
+                  value={values.name}
+                  onChangeText={handleChange('name')}
+                  disabled={authInfo?.oauthUser.given_name || authInfo?.oauthUser.family_name}
                 />
-                <Input style={styles.input} label="Email" value={authInfo?.oauthUser.email} disabled />
+                <Input
+                  style={styles.input}
+                  label="Email"
+                  value={values.email}
+                  disabled={authInfo?.oauthUser.email}
+                  onChangeText={handleChange('email')}
+                />
                 {organizationIsRequired ? (
                   <>
                     <Text category="label" appearance="hint" style={styles.label}>
