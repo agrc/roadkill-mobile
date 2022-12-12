@@ -66,7 +66,12 @@ export async function getToken(request, response) {
 export async function verifyAppleTokenAndCode(request, response) {
   const { authorizationCode, identityToken } = request.body;
 
-  const sub = await appleSignIn.verifyIdToken(identityToken);
+  let sub;
+  try {
+    sub = await appleSignIn.verifyIdToken(identityToken);
+  } catch (error) {
+    return response.status(401).json({ error_description: error.message, error: 'invalid identityToken' });
+  }
 
   // check for cached refresh token and use that rather than getTokens
   let refreshToken = await getCachedAppleRefreshToken(sub);
