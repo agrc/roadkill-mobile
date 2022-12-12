@@ -1,3 +1,17 @@
+## [v3.0.1-591](https://github.com/agrc/roadkill-mobile/compare/v3.0.2-590...v3.0.1-591) (2022-12-12)
+
+
+### Bug Fixes
+
+* **back:** December dependency bumps 🌲 ([9b92b02](https://github.com/agrc/roadkill-mobile/commit/9b92b02d8f9f7dcc6656aac65a10c8782cdd137b))
+* **back:** handle expired apple id tokens on load ([5f9c9b6](https://github.com/agrc/roadkill-mobile/commit/5f9c9b6545307073d221be18517884a502c07abf))
+* **front:** fix bug preventing some users from registering via Apple Sign-in ([d677625](https://github.com/agrc/roadkill-mobile/commit/d6776253efec37dda059a6ae0dacfb7912eba1d7)), closes [#221](https://github.com/agrc/roadkill-mobile/issues/221)
+* **front:** provide register path for apple users with no name/email cached values ([4f22453](https://github.com/agrc/roadkill-mobile/commit/4f22453aea0a60982253e4bf4925e6fd024b5e14)), closes [#221](https://github.com/agrc/roadkill-mobile/issues/221)
+* **website:** December dependency bumps 🌲 ([dedf5a7](https://github.com/agrc/roadkill-mobile/commit/dedf5a7de76e0c02811e8f36cab940a780a70172))
+* **website:** update link to apple app store with correct name ([d02aa54](https://github.com/agrc/roadkill-mobile/commit/d02aa545e6ec5fd5e934f24e14bc0b48fd2deb59))
+
+
+
 ## [v3.0.1-590](https://github.com/agrc/roadkill-mobile/compare/v3.0.1-588...v3.0.1-590) (2022-12-07)
 
 
