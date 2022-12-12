@@ -14,8 +14,8 @@ echo "publishing OTA update"
 results=$(npx env-cmd -f $ENV_FILE eas update --auto --json --non-interactive)
 
 echo "renaming files for sentry sourcemap upload"
-mv dist/bundles/android-7d6c4c5b200ae7b69ccec0a25f3285a4.js dist/bundles/index.android.bundle.js
-mv dist/bundles/ios-4b354f6df3dd2ef77c402a0aac9f2ecc.js dist/bundles/main.jsbundle.js
+mv $(find ./dist/bundles/android-*.js) dist/bundles/index.android.bundle.js
+mv $(find ./dist/bundles/ios-*.js) dist/bundles/main.jsbundle.js
 
 config=$(eas config -p android -e $RELEASE_BRANCH | sed -n '/^{/,/^}/p' | jq -s '.[0]')
 
