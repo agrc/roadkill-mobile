@@ -18,7 +18,7 @@ export default function useFacebookProvider() {
     console.log('refreshing token');
     const accessToken = await AccessToken.getCurrentAccessToken();
 
-    if (!accessToken?.accessToken) {
+    if (!accessToken || !accessToken?.accessToken) {
       throwAsyncError(new Error('Missing access token'));
     }
 
@@ -30,15 +30,16 @@ export default function useFacebookProvider() {
 
   const getAuthentication = async () => {
     console.log('getting authentication');
+    let result;
     try {
-      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
       console.log('login result', result);
-
-      if (result.isCancelled) {
-        throwAsyncError(new Error('User cancelled the login process'));
-      }
     } catch (error) {
       throwAsyncError(error);
+    }
+
+    if (result.isCancelled) {
+      throwAsyncError(new Error('User cancelled the login process'));
     }
   };
 
