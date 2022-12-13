@@ -1,3 +1,14 @@
+## [v3.0.3-592](https://github.com/agrc/roadkill-mobile/compare/v3.0.2-591...v3.0.3-592) (2022-12-13)
+
+
+### Bug Fixes
+
+* **back:** use more explicit table alias ([48ada90](https://github.com/agrc/roadkill-mobile/commit/48ada9079ac69487c4fcf83a506535dbec40dab0))
+* **front:** fix rename of sentry upload files ([75b548b](https://github.com/agrc/roadkill-mobile/commit/75b548bcd10d6cf3c1b972ab4367ea860b9c76b8))
+* **front:** slightly better facebook error handling ([0436f42](https://github.com/agrc/roadkill-mobile/commit/0436f420fbe62e47c9b64cac87bb8147db0d613b))
+
+
+
 ## [v3.0.1-591](https://github.com/agrc/roadkill-mobile/compare/v3.0.2-590...v3.0.1-591) (2022-12-12)
 
 
