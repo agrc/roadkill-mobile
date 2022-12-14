@@ -49,17 +49,22 @@ export default function useAppleProvider() {
 
   React.useEffect(() => {
     const giddyUp = async () => {
-      const cachedUserInfoString = await SecureStore.getItemAsync(STORE_KEY);
-      cachedUserInfo.current = cachedUserInfoString ? JSON.parse(cachedUserInfoString) : null;
+      cachedUserInfo.current = await getCachedUserInfo();
 
       // because there is no way to know if this token is valid on the server
-      if (cachedUserInfo.current) {
+      if (cachedUserInfo.current?.identityToken) {
         await refreshToken(cachedUserInfo.current.identityToken);
       }
     };
 
     giddyUp();
   }, []);
+
+  const getCachedUserInfo = async () => {
+    const stringValue = await SecureStore.getItemAsync(STORE_KEY);
+
+    return stringValue ? JSON.parse(stringValue) : null;
+  };
 
   const logIn = async () => {
     console.log('apple logIn');
@@ -104,8 +109,7 @@ export default function useAppleProvider() {
 
     // user and identityToken are sent every time
     // only overwrite the cached user if it's populated
-    const existingUserInfoString = await SecureStore.getItemAsync(STORE_KEY);
-    const existingUserInfo = existingUserInfoString ? JSON.parse(existingUserInfoString) : null;
+    const existingUserInfo = await getCachedUserInfo();
 
     cachedUserInfo.current = {
       sub: signInResult.user,
@@ -130,9 +134,14 @@ export default function useAppleProvider() {
   };
 
   const logOut = async () => {
-    cachedUserInfo.current = null;
     // don't ever delete the cached user info because we will need the email and name
     // if they haven't yet registered
+    // but remove cached identity token so that it doesn't try and log them in the next time
+    // the app loads (see useEffect)
+    cachedUserInfo.current.identityToken = null;
+    await SecureStore.setItemAsync(STORE_KEY, JSON.stringify(cachedUserInfo.current));
+
+    cachedUserInfo.current = null;
   };
 
   const getBearerToken = async () => {
