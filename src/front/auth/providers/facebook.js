@@ -16,10 +16,24 @@ export default function useFacebookProvider() {
 
   const refreshToken = async () => {
     console.log('refreshing token');
-    const accessToken = await AccessToken.getCurrentAccessToken();
+    let accessToken = await AccessToken.getCurrentAccessToken();
 
     if (!accessToken || !accessToken?.accessToken) {
-      throwAsyncError(new Error('Missing access token'));
+      console.log('no access token, refreshing...');
+      await AccessToken.refreshCurrentAccessTokenAsync();
+
+      accessToken = await AccessToken.getCurrentAccessToken();
+
+      if (!accessToken || !accessToken?.accessToken) {
+        console.log('unable to refresh access token, getting fresh auth');
+        await getAuthentication();
+
+        accessToken = await AccessToken.getCurrentAccessToken();
+
+        if (!accessToken || !accessToken?.accessToken) {
+          throwAsyncError(new Error('Unable to get access token'));
+        }
+      }
     }
 
     authentication.current = {
