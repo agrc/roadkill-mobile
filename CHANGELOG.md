@@ -1,3 +1,13 @@
+## [v3.0.3-593](https://github.com/agrc/roadkill-mobile/compare/v3.0.3-592...v3.0.3-593) (2022-12-14)
+
+
+### Bug Fixes
+
+* **front:** handle missing facebook access token ([9bfb712](https://github.com/agrc/roadkill-mobile/commit/9bfb712d0e9985d20cf58da221bf2ff4a88b175e))
+* **front:** prevent apple id log in refresh when logged in with other providers ([5bc237d](https://github.com/agrc/roadkill-mobile/commit/5bc237dbf631253698fa5b122e3640df75688583))
+
+
+
 ## [v3.0.3-592](https://github.com/agrc/roadkill-mobile/compare/v3.0.2-591...v3.0.3-592) (2022-12-13)
 
 
