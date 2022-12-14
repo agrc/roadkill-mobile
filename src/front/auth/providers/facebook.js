@@ -10,6 +10,8 @@ export const isAuthenticationExpired = (auth) => {
   return new Date(auth.expirationDate) < Date.now();
 };
 
+const cancelledMessage = 'User cancelled the login process';
+
 export default function useFacebookProvider() {
   const authentication = React.useRef(null);
   const throwAsyncError = useAsyncError();
@@ -53,12 +55,21 @@ export default function useFacebookProvider() {
     }
 
     if (result.isCancelled) {
-      throwAsyncError(new Error('User cancelled the login process'));
+      throw Error(cancelledMessage);
     }
   };
 
   const logIn = async () => {
-    await getAuthentication();
+    try {
+      await getAuthentication();
+    } catch (error) {
+      if (error.message === cancelledMessage) {
+        return null;
+      }
+
+      throwAsyncError(error);
+    }
+
     await refreshToken();
 
     let user;
