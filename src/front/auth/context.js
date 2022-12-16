@@ -156,16 +156,24 @@ export function AuthContextProvider({ children, onReady }) {
 
   const registerUser = async (userData) => {
     const token = await getBearerToken();
-    const responseJson = await ky
-      .post(`${config.API}/user/register`, {
-        json: userData,
-        headers: {
-          Authorization: token,
-          [commonConfig.versionHeaderName]: commonConfig.apiVersion,
-        },
-        timeout,
-      })
-      .json();
+    let responseJson;
+    try {
+      responseJson = await ky
+        .post(`${config.API}/user/register`, {
+          json: userData,
+          headers: {
+            Authorization: token,
+            [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+          },
+          timeout,
+        })
+        .json();
+    } catch (error) {
+      if (error.name === 'HTTPError') {
+        console.error('HTTPError response text', await error.response.text());
+      }
+      throw error;
+    }
 
     setAuthInfo({
       ...authInfo,
