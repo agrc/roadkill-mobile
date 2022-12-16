@@ -1,3 +1,12 @@
+## [v3.0.4-595](https://github.com/agrc/roadkill-mobile/compare/v3.0.4-594...v3.0.4-595) (2022-12-16)
+
+
+### Features
+
+* allow users to cancel reports sooner in the process ([e804be7](https://github.com/agrc/roadkill-mobile/commit/e804be7817ac15025691a84afd3c073cb6ffedae)), closes [#223](https://github.com/agrc/roadkill-mobile/issues/223)
+
+
+
 ## [v3.0.4-594](https://github.com/agrc/roadkill-mobile/compare/v3.0.3-592...v3.0.4-594) (2022-12-16)
 
 
