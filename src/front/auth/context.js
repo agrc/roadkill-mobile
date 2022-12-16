@@ -76,13 +76,21 @@ export function AuthContextProvider({ children, onReady }) {
       const tabsSupportingBrowsers = await WebBrowser.getCustomTabsSupportingBrowsersAsync();
       browserPackage = tabsSupportingBrowsers?.preferredBrowserPackage;
 
-      WebBrowser.warmUpAsync(browserPackage);
+      try {
+        WebBrowser.warmUpAsync(browserPackage);
+      } catch (error) {
+        console.log('error warming up browser', error);
+      }
     };
 
     giddyUp();
 
     return () => {
-      WebBrowser.coolDownAsync(browserPackage);
+      try {
+        WebBrowser.coolDownAsync(browserPackage);
+      } catch (error) {
+        console.log('error cooling down browser', error);
+      }
     };
   }, []);
 
