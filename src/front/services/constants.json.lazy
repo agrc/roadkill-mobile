@@ -1574,6 +1574,16 @@
       "id": 23,
       "name": "Department of health and human services ",
       "org_type": "agency"
+    },
+    {
+      "id": 24,
+      "name": "Utah Trust Lands Administration ",
+      "org_type": "agency"
+    },
+    {
+      "id": 25,
+      "name": "Utah Department of Public Safety",
+      "org_type": "agency"
     }
   ]
 }
