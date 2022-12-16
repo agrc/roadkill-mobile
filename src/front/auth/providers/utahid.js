@@ -178,5 +178,5 @@ export default function useUtahIDProvider() {
     return refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current));
   };
 
-  return { logIn, logOut, getBearerToken };
+  return { logIn, logOut, getBearerToken, hasValidToken: hasValidRefreshToken };
 }

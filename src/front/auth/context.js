@@ -47,6 +47,7 @@ export function AuthContextProvider({ children, onReady }) {
   //   logIn: resolves with oauthUser object,
   //   logOut: resolves with null,
   //   getBearerToken: resolves with token
+  //   hasValidToken: returns boolean (used to determine if we should send a token to logout endpoint)
   // }
 
   const PROVIDER_LOOKUP = {
@@ -179,20 +180,25 @@ export function AuthContextProvider({ children, onReady }) {
       const doLogOut = async () => {
         setStatus(STATUS.loading);
 
-        try {
-          const response = await ky.post(`${config.API}/user/logout`, {
-            headers: {
-              Authorization: await getBearerToken(),
-              [commonConfig.versionHeaderName]: commonConfig.apiVersion,
-            },
-            timeout,
-          });
+        // no big deal if we don't have a valid token to send to the server
+        // we don't want to have getBearerToken kick off the sign in flow
+        // that would be confusing to users
+        if (currentProvider.hasValidToken()) {
+          try {
+            const response = await ky.post(`${config.API}/user/logout`, {
+              headers: {
+                Authorization: await getBearerToken(),
+                [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+              },
+              timeout,
+            });
 
-          if (response.status !== 200) {
-            console.error(`logout failed: ${response.body}`);
+            if (response.status !== 200) {
+              console.error(`logout failed: ${response.body}`);
+            }
+          } catch (error) {
+            console.error(`logout failed: ${error.message}`);
           }
-        } catch (error) {
-          console.error(`logout failed: ${error.message}`);
         }
 
         try {
