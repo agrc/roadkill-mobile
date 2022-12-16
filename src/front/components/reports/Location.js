@@ -7,7 +7,7 @@ import { getIcon } from '../../services/icons';
 import { getAssistancePrompt } from '../../services/location';
 import useStyles from '../../services/styles';
 
-function Location({ onSetLocation }) {
+function Location({ onSetLocation, onCancel }) {
   const commonStyles = useStyles();
   const theme = useTheme();
   const [assistancePrompt, setAssistancePrompt] = React.useState(null);
@@ -38,6 +38,9 @@ function Location({ onSetLocation }) {
       >
         Set Location
       </Button>
+      <Button appearance="ghost" onPress={onCancel}>
+        Cancel
+      </Button>
       {assistancePrompt ? (
         <Text appearance="hint" style={styles.note}>
           <Autolink phone text={assistancePrompt} />
@@ -49,6 +52,7 @@ function Location({ onSetLocation }) {
 
 Location.propTypes = {
   onSetLocation: propTypes.func.isRequired,
+  onCancel: propTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
