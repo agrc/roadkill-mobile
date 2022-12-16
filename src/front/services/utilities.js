@@ -5,6 +5,7 @@ import * as Linking from 'expo-linking';
 import * as MailComposer from 'expo-mail-composer';
 import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
+import { Alert } from 'react-native';
 import config from './config';
 
 export function useMounted() {
@@ -127,7 +128,12 @@ export async function sendEmailToSupport() {
     });
   }
 
-  Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
+  try {
+    Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
+  } catch (error) {
+    // user may not have email app installed
+    Alert.alert('Support', `Please send an email to\n${config.SUPPORT_EMAIL}\nfor support.`);
+  }
 }
 
 export async function wrapAsyncWithDelay(action, preAction, postAction, delay) {
