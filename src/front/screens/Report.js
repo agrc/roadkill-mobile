@@ -141,7 +141,8 @@ const Report = ({
 
     const successMessages = {
       pickup: 'Your report has been submitted.',
-      report: 'Your report has been submitted and a notification has been sent to remove the animal.',
+      report:
+        'Your report has been submitted and a notification has been sent to remove the animal. We appreciate your patience while we work to schedule the removal of the animal.',
     };
 
     Alert.alert('Success!', successMessages[reportType], [
