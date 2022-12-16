@@ -191,6 +191,10 @@ export default function MainScreen() {
           text: 'Report a carcass',
           onPress: () => displayReport(config.REPORT_TYPES.report),
         },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
       ]);
     } else {
       // contractor
