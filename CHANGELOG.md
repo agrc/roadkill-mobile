@@ -1,3 +1,22 @@
+## [v3.0.4-594](https://github.com/agrc/roadkill-mobile/compare/v3.0.3-592...v3.0.4-594) (2022-12-16)
+
+
+### Bug Fixes
+
+* **front:** don't hit logout endpoint if we don't have a valid token ([7a668e3](https://github.com/agrc/roadkill-mobile/commit/7a668e38fe34e08ba7703586bea5dbf2f8521d54))
+* **front:** don't surface warm up/cool down errors to user ([78780ea](https://github.com/agrc/roadkill-mobile/commit/78780ea1146dab9e194c73ad5a3d51e584372d3d))
+* **front:** gracefully handle user-cancelled facebook login ([5067db5](https://github.com/agrc/roadkill-mobile/commit/5067db5c13010bfdfe1ab0cf96a3a85deffdf975))
+* **front:** gracefully handle when user does not have a default email app registered ([849a322](https://github.com/agrc/roadkill-mobile/commit/849a322b624238f3c1199d48c6e4a12488858d24))
+* **front:** handle missing facebook access token ([9bfb712](https://github.com/agrc/roadkill-mobile/commit/9bfb712d0e9985d20cf58da221bf2ff4a88b175e))
+* **front:** prevent apple id log in refresh when logged in with other providers ([5bc237d](https://github.com/agrc/roadkill-mobile/commit/5bc237dbf631253698fa5b122e3640df75688583))
+
+
+### Features
+
+* **front:** add patience sentence to public report success message ([fe2f68d](https://github.com/agrc/roadkill-mobile/commit/fe2f68dfb005e812d15a9f369d97050f47bf05b2)), closes [#222](https://github.com/agrc/roadkill-mobile/issues/222)
+
+
+
 ## [v3.0.3-593](https://github.com/agrc/roadkill-mobile/compare/v3.0.3-592...v3.0.3-593) (2022-12-14)
 
 
