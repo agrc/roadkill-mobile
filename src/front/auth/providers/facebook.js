@@ -116,5 +116,5 @@ export default function useFacebookProvider() {
 
   const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
 
-  return { logIn, logOut, getBearerToken };
+  return { logIn, logOut, getBearerToken, hasValidToken };
 }

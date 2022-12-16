@@ -147,7 +147,7 @@ export default function useAppleProvider() {
   const getBearerToken = async () => {
     const prefix = `${commonConfig.authProviderNames.apple}:Bearer `;
 
-    if (isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))) {
+    if (hasValidToken()) {
       console.log('refreshing token');
 
       await refreshToken(cachedUserInfo.current.identityToken);
@@ -156,5 +156,9 @@ export default function useAppleProvider() {
     return prefix + cachedUserInfo.current.identityToken;
   };
 
-  return { logIn, logOut, getBearerToken };
+  const hasValidToken = () => {
+    return isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken));
+  };
+
+  return { logIn, logOut, getBearerToken, hasValidToken };
 }
