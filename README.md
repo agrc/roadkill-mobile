@@ -12,7 +12,7 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 
 ### Debugging
 
-I use [Flipper](https://fbflipper.com/) with a custom Expo development client as described in [this article](https://blog.expo.dev/developing-react-native-with-expo-and-flipper-8c426bdf995a).
+There's not a great solution at the moment...
 
 ### Testing Deep Links
 
