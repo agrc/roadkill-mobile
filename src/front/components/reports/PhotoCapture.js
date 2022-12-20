@@ -10,7 +10,7 @@ import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { ACCURACY, getLocation } from '../../services/location';
 import useStyles, { PADDING } from '../../services/styles';
-import { pointCoordinatesToString } from '../../services/utilities';
+import { pointCoordinatesToString, useAsyncError } from '../../services/utilities';
 import Spinner from '../Spinner';
 
 const THUMBNAIL_SIZE = 110;
@@ -62,6 +62,7 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
   const [showLoader, setShowLoader] = React.useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
+  const throwAsyncError = useAsyncError();
 
   const photoOptions = {
     quality: config.IMAGE_COMPRESSION_QUALITY,
@@ -86,7 +87,7 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
     try {
       result = await ImagePicker.launchImageLibraryAsync(photoOptions);
     } catch (error) {
-      console.log('error', error);
+      throwAsyncError(error);
     }
 
     if (!result.canceled && result.assets.length > 0) {
@@ -120,7 +121,7 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
       if (error.message.includes("Call to function 'ExponentImagePicker.launchCameraAsync' has been rejected")) {
         displayCameraActivityFailedAlert();
       } else {
-        throw error;
+        throwAsyncError(error);
       }
     }
 
