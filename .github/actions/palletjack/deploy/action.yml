@@ -1,0 +1,74 @@
+name: Deploy Palletjack Skid to GCF
+description: Deploy Palletjack Skid to Google Cloud Function and Cloud Scheduler
+inputs:
+  schedule:
+    description: Cloud Scheduler cron schedule
+    default: 0 6,18 * * *
+  identity_provider:
+    description: gcp federation identity provider
+    required: true
+  service_account_email:
+    description: gcp service account email
+    required: true
+  project_id:
+    description: gcp project id
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 🗝️ Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        create_credentials_file: true
+        token_format: access_token
+        workload_identity_provider: ${{ inputs.identity_provider }}
+        service_account: ${{ inputs.service_account_email }}
+
+    - name: 🚀 Deploy to Cloud Function
+      id: deploy
+      uses: google-github-actions/deploy-cloud-functions@v1
+      with:
+        name: roadkill-skid
+        runtime: python39
+        entry_point: main
+        source_dir: src/palletjack/src/roadkill
+        service_account_email: cloud-function-sa@${{ inputs.project_id }}.iam.gserviceaccount.com
+        event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
+        event_trigger_resource: projects/${{ inputs.project_id }}/topics/palletjack-topic
+        deploy_timeout: 600
+        memory_mb: 512
+        timeout: 240
+        secret_volumes: |
+          /secrets/app/secrets.json=${{inputs.project_id}}/skid-secrets
+
+    - name: 📥 Create PubSub topic
+      shell: bash
+      run: |
+        if [ ! "$(gcloud pubsub topics list | grep palletjack-topic)" ]; then
+          gcloud pubsub topics create palletjack-topic --quiet
+        fi
+
+    - name: 🕰️ Create Cloud Scheduler
+      shell: bash
+      run: |
+        if [ ! "$(gcloud scheduler jobs list --location=us-central1 | grep palletjack)" ]; then
+          gcloud scheduler jobs create pubsub palletjack \
+            --description="Trigger palletjack twice per day" \
+            --schedule="${{ inputs.schedule }}" \
+            --time-zone=America/Denver \
+            --location=us-central1 \
+            --topic=palletjack-topic \
+            --message-body='{"run": "now"}' \
+            --quiet
+        else
+          gcloud scheduler jobs update pubsub palletjack \
+            --description="Trigger palletjack twice per day" \
+            --schedule="${{ inputs.schedule }}" \
+            --time-zone=America/Denver \
+            --location=us-central1 \
+            --topic=palletjack-topic \
+            --message-body='{"run": "now"}' \
+            --quiet
+        fi

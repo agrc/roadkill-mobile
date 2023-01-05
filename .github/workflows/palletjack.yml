@@ -1,0 +1,53 @@
+name: Palletjack - Deploy to GCP Function
+
+on:
+  push:
+    paths:
+      - 'src/palletjack/**'
+      - '.github/workflows/palletjack.yml'
+      - '.github/actions/palletjack/deploy/action.yml'
+
+concurrency:
+  group: '${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dev:
+    name: Deploy Staging to GCF
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'staging'
+    environment:
+      name: Staging
+
+    steps:
+      - name: ⬇️ Set up code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Deploy
+        uses: ./.github/actions/palletjack/deploy
+        with:
+          identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project_id: ${{ secrets.PROJECT_ID }}
+
+  deploy-prod:
+    name: Deploy Production to GCF
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'production'
+    environment:
+      name: Production
+
+    steps:
+      - name: ⬇️ Set up code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Deploy
+        uses: ./.github/actions/palletjack/deploy
+        with:
+          identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          project_id: ${{ secrets.PROJECT_ID }}
