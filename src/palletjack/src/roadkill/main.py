@@ -11,9 +11,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 import pandas as pd
-import sqlalchemy
-import os
-import geopandas as gpd
 
 import arcgis
 from palletjack import (
