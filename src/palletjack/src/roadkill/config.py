@@ -15,7 +15,6 @@ SENDGRID_SETTINGS = {  #: Settings for SendGridHandler
 LOG_LEVEL = logging.DEBUG
 LOG_FILE_NAME = 'log'
 
-FOLDER = 'Roadkill'
 TABLES = [
     #: ('table_name', 'id_column', 'geog_column', layer_index)
     ('agol_pickup_reports', 'report_id', 'animal_location', 0),
