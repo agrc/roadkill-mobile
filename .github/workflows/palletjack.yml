@@ -33,6 +33,7 @@ jobs:
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           project_id: ${{ secrets.PROJECT_ID }}
+          schedule: 0 6 * * *
 
   deploy-prod:
     name: Deploy Production to GCF
@@ -51,3 +52,4 @@ jobs:
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
           project_id: ${{ secrets.PROJECT_ID }}
+          schedule: 0 6,12,18,0 * * *

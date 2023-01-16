@@ -3,7 +3,7 @@ description: Deploy Palletjack Skid to Google Cloud Function and Cloud Scheduler
 inputs:
   schedule:
     description: Cloud Scheduler cron schedule
-    default: 0 6,18 * * *
+    required: true
   identity_provider:
     description: gcp federation identity provider
     required: true
