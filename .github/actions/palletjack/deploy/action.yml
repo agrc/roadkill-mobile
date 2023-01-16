@@ -39,7 +39,7 @@ runs:
         event_trigger_resource: projects/${{ inputs.project_id }}/topics/palletjack-topic
         deploy_timeout: 600
         memory_mb: 512
-        timeout: 1200
+        timeout: 540
         secret_volumes: |
           /secrets/app/secrets.json=${{inputs.project_id}}/skid-secrets
         env_vars: PROJECT_ID=${{ inputs.project_id }}
