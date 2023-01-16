@@ -42,6 +42,7 @@ runs:
         timeout: 240
         secret_volumes: |
           /secrets/app/secrets.json=${{inputs.project_id}}/skid-secrets
+        env_vars: PROJECT_ID=${{ inputs.project_id }}
 
     - name: 📥 Create PubSub topic
       shell: bash
