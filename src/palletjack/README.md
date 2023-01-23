@@ -9,5 +9,5 @@ This [palletjack](https://github.com/agrc/palletjack) skid is used to push updat
 
 ## Development
 
-1. `pip install -r requirements.txt`
-1. `pip install -r requirements.dev.txt`
+1. `pip install -r src/roadkill/requirements.txt`
+1. `pip install -r src/roadkill/requirements.dev.txt`
