@@ -176,7 +176,7 @@ def process():
         try:
             port = secrets.PORT
         except AttributeError:
-            port = None
+            port = 5432
 
         loader = PostgresLoader(
             secrets.HOST,
