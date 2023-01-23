@@ -4,3 +4,4 @@ data/sql/create_users.sql
 data/emulator-data/*/
 node_modules/
 data/emulator-data/firebase-export-metadata.json
+.coverage

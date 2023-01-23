@@ -1,3 +1,4 @@
 roadkill.egg-info
 __pycache__
 secrets.json
+secrets.*.json
