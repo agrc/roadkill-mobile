@@ -173,12 +173,17 @@ def process():
             # proxy_port=8080,
             # verify_cert=False,
         )
+        try:
+            port = secrets.PORT
+        except AttributeError:
+            port = None
+
         loader = PostgresLoader(
             secrets.HOST,
             secrets.DATABASE,
             secrets.DATABASE_USER,
             secrets.DATABASE_PASSWORD,
-            secrets.PORT,
+            port,
         )
 
         additional_summary_rows = []
