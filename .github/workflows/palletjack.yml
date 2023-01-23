@@ -36,6 +36,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          sudo apt install -y libkrb5-dev
           pip install -r src/roadkill/requirements.txt
           pip install -r src/roadkill/requirements.dev.txt
 
