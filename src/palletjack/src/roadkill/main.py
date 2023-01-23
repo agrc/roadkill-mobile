@@ -12,8 +12,6 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 
 import arcgis
-import numpy as np
-import pandas as pd
 from supervisor.message_handlers import SendGridHandler
 from supervisor.models import MessageDetails, Supervisor
 
@@ -47,7 +45,12 @@ def _get_secrets():
     #: Otherwise, try to load a local copy for local development
     secret_folder = Path(__file__).parent / "secrets"
     if secret_folder.exists():
+        #: staging
         return json.loads((secret_folder / "secrets.json").read_text(encoding="utf-8"))
+        #: prod
+        # return json.loads(
+        #     (secret_folder / "secrets.prod.json").read_text(encoding="utf-8")
+        # )
 
     raise FileNotFoundError("Secrets folder not found; secrets not loaded.")
 
@@ -123,98 +126,28 @@ def _remove_log_file_handlers(log_name, loggers):
                 pass
 
 
-def _get_new_and_updated_records(database_records, agol_records):
-    """A helper function to get the new and updated records between two dataframes
+def _get_new_and_deleted_records(database_records, agol_records):
+    """A helper function to get the new and deleted records between two dataframes
 
     Args:
-        dataframe1 (DataFrame): The first dataframe to compare
-        dataframe2 (DataFrame): The second dataframe to compare
+        database_records (DataFrame): Data from the database
+        agol_records (DataFrame): Data from AGOL
 
     Returns:
-        (updated_records, new_records): A tuple of the updated and new records (DataFrame, DataFrame)
+        (updated_records, deleted_ids): A tuple of the updated records and deleted objectids (DataFrame, List<int>)
     """
 
-    #: Get the new records
     new_records = database_records[
         ~database_records.index.isin(agol_records.index)
     ].copy()
     new_records["OBJECTID"] = -1
 
-    #: Get the updated records
-    existing_database_records = database_records[
-        database_records.index.isin(agol_records.index)
+    deleted_records = agol_records[
+        ~agol_records.index.isin(database_records.index)
     ].copy()
+    deleted_ids = deleted_records["OBJECTID"].tolist()
 
-    #: make a copies so that we can compare WKT values and round timestamps
-    existing_database_records_copy = _get_normalized_copy(existing_database_records)
-    agol_records_copy = _get_normalized_copy(agol_records)
-    agol_records_copy.drop(["OBJECTID"], axis=1, inplace=True)
-    if "Shape__Length" in agol_records_copy.columns:
-        agol_records_copy.drop(["Shape__Length"], axis=1, inplace=True)
-    #: comparing nans is weird in pandas: https://github.com/pandas-dev/pandas/issues/38063
-    updated_records = agol_records[
-        ~(
-            existing_database_records_copy.eq(agol_records_copy)
-            | existing_database_records_copy.isna() & agol_records_copy.isna()
-        ).all(axis=1)
-    ]
-    updated_records.update(existing_database_records)
-
-    return (new_records, updated_records)
-
-
-def _round_coordinates(geometry):
-    """A helper function to round the coordinates of a geometry
-
-    Args:
-        geometry (Geometry): The geometry to round
-
-    Returns:
-        Geometry: The rounded geometry
-    """
-
-    decimal_places = 4
-    if geometry.geometry_type == "point":
-        return arcgis.geometry.Point(
-            {
-                "x": round(geometry.x, decimal_places),
-                "y": round(geometry.y, decimal_places),
-                "spatialReference": geometry.spatial_reference,
-            }
-        )
-    elif geometry.geometry_type == "polyline":
-        return arcgis.geometry.Polyline(
-            {
-                "paths": [
-                    [
-                        [round(x, decimal_places), round(y, decimal_places)]
-                        for x, y in path
-                    ]
-                    for path in geometry.coordinates()
-                ],
-                "spatialReference": geometry.spatial_reference,
-            }
-        )
-    else:
-        return geometry
-
-
-def _get_normalized_copy(dataframe):
-    normalized = dataframe.copy()
-    normalized["SHAPE"] = normalized["SHAPE"].apply(lambda x: _round_coordinates(x).WKT)
-
-    #: dates are rounded differently between postgres and agol
-    for column in normalized.select_dtypes(
-        include=["datetime64[ns, UTC]", "datetime64[ns]"]
-    ):
-        normalized[column] = normalized[column].apply(lambda x: x.ctime())
-
-    #: empty comments come in as '' from agol but None from postgres
-    #: comparing Nones in pandas dataframes is weird: https://github.com/pandas-dev/pandas/issues/20442
-    #: so I just replace them with pd.NA
-    normalized.replace({"": np.nan, None: np.nan, "None": np.nan}, inplace=True)
-
-    return normalized
+    return (new_records, deleted_ids)
 
 
 def process():
@@ -258,11 +191,9 @@ def process():
             )
             # database_records.rename(columns={geog_column: "SHAPE"}, inplace=True)
             module_logger.info(f"Database records count: {len(database_records)}")
-            module_logger.debug(f"database_records dtypes: {database_records.dtypes}")
 
             search_results = gis.content.search(
                 query=f"owner:{secrets.AGOL_USER} AND title:{table} AND type:Feature Service"
-                # query=f"owner:{secrets.AGOL_USER} AND title:{table}"
             )
             if len(search_results) == 0:
                 #: this code will only work if you have arcpy installed...
@@ -277,25 +208,25 @@ def process():
             agol_records = layer.query().sdf
             agol_records.set_index(id_column, inplace=True)
             module_logger.info(f"AGOL records count: {len(agol_records)}")
-            module_logger.debug(f"agol_records dtypes: {agol_records.dtypes}")
 
-            new_records, updated_records = _get_new_and_updated_records(
+            new_records, deleted_ids = _get_new_and_deleted_records(
                 database_records, agol_records
             )
             module_logger.info(f"New records count: {len(new_records)}")
-            module_logger.info(f"Updated records count: {len(updated_records)}")
+            module_logger.info(f"Deleted records count: {len(deleted_ids)}")
 
-            if len(new_records) == 0 and len(updated_records) == 0:
-                module_logger.info("No changes detected, skipping...")
-                continue
+            if len(new_records) > 0:
+                module_logger.info("Adding new records to AGOL...")
+                new_records.reset_index(inplace=True)
+                updater = FeatureServiceInlineUpdater(gis, new_records, "OBJECTID")
+                updater.upsert_new_data_in_hosted_feature_layer(item.id, 0)
 
-            edits = pd.concat([new_records, updated_records], axis=0)
-            edits.reset_index(inplace=True)
-            updater = FeatureServiceInlineUpdater(gis, edits, "OBJECTID")
-            updater.upsert_new_data_in_hosted_feature_layer(item.id, 0)
+            if len(deleted_ids) > 0:
+                module_logger.info("Deleting records...")
+                layer.delete_features(",".join([str(oid) for oid in deleted_ids]))
 
             additional_summary_rows.append(
-                f"{table} database records: {len(database_records)}, agol records: {len(agol_records)}, new records: {len(new_records)}, updated records: {len(updated_records)}"
+                f"{table} database records: {len(database_records)}, agol records: {len(agol_records)}, new records: {len(new_records)}, deleted records: {len(deleted_ids)}"
             )
 
         end = datetime.datetime.now()
