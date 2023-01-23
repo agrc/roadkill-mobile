@@ -46,11 +46,11 @@ def _get_secrets():
     secret_folder = Path(__file__).parent / "secrets"
     if secret_folder.exists():
         #: staging
-        return json.loads((secret_folder / "secrets.json").read_text(encoding="utf-8"))
+        # return json.loads((secret_folder / "secrets.json").read_text(encoding="utf-8"))
         #: prod
-        # return json.loads(
-        #     (secret_folder / "secrets.prod.json").read_text(encoding="utf-8")
-        # )
+        return json.loads(
+            (secret_folder / "secrets.prod.json").read_text(encoding="utf-8")
+        )
 
     raise FileNotFoundError("Secrets folder not found; secrets not loaded.")
 
@@ -140,7 +140,7 @@ def _get_new_and_deleted_records(database_records, agol_records):
     new_records = database_records[
         ~database_records.index.isin(agol_records.index)
     ].copy()
-    new_records["OBJECTID"] = -1
+    new_records["OBJECTID"] = range(-1, -len(new_records) - 1, -1)
 
     deleted_records = agol_records[
         ~agol_records.index.isin(database_records.index)
