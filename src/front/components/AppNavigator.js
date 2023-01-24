@@ -2,15 +2,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Drawer, DrawerItem, IndexPath, useTheme } from '@ui-kitten/components';
-import * as Analytics from 'expo-firebase-analytics';
+import analytics from '@react-native-firebase/analytics';
 import * as Linking from 'expo-linking';
-import * as SecureStorage from 'expo-secure-store';
 import propTypes from 'prop-types';
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { v4 as uuid } from 'uuid';
 import useAuth from '../auth/context';
 import AboutScreen from '../screens/About';
 import ChooseTypeScreen from '../screens/ChooseType';
@@ -172,34 +170,6 @@ const AppNavigator = () => {
   const navigationRef = React.useRef(null);
   const routeNameRef = React.useRef(null);
   const { authInfo } = useAuth();
-  const [analyticsIsReady, setAnalyticsIsReady] = React.useState(false);
-
-  React.useEffect(() => {
-    const initAnalytics = async () => {
-      if (!__DEV__ && !process.env.JEST_WORKER_ID) {
-        const key = 'CLIENT_ID';
-        let id = await SecureStorage.getItemAsync(key);
-
-        if (!id) {
-          id = uuid();
-
-          SecureStorage.setItemAsync(key, id);
-        }
-
-        // needs to be called before any other analytics methods
-        Analytics.setClientId(id);
-      }
-
-      // useful for debugging analytics...
-      // if (__DEV__) {
-      //   Analytics.setDebugModeEnabled(true);
-      // }
-
-      setAnalyticsIsReady(true);
-    };
-
-    initAnalytics();
-  }, []);
 
   const linking = { prefixes: [prefix], config: { screens: { login: 'oauthredirect' } } };
   const setInitialRouteName = () => (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
@@ -207,8 +177,8 @@ const AppNavigator = () => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
-    if (previousRouteName !== currentRouteName && analyticsIsReady) {
-      await Analytics.logEvent('screen_view', { screen_name: currentRouteName });
+    if (previousRouteName !== currentRouteName) {
+      await analytics().logEvent('screen_view', { screen_name: currentRouteName });
     }
 
     routeNameRef.current = currentRouteName;
