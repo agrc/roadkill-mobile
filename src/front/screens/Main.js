@@ -145,6 +145,8 @@ export default function MainScreen() {
       Alert.alert('Error', 'Location services are required to submit reports.', [
         { text: 'OK', onPress: () => Linking.openSettings() },
       ]);
+
+      return;
     }
 
     const location = await getLocation();
