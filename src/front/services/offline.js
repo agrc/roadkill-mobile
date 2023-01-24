@@ -67,9 +67,8 @@ export async function getOfflineSubmission(id, pickupIndex) {
     console.error(
       `Error attempting to read offline submission with id: ${id} (pickupIndex: ${pickupIndex}): \n\n ${error}`
     );
-    Sentry.Native.captureException(error);
 
-    return null;
+    throw error;
   }
 }
 
