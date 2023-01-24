@@ -18,6 +18,7 @@ import React from 'react';
 import { Alert, Platform } from 'react-native';
 import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
+import useAuth from '../auth/context';
 import { useAPI } from './api';
 import config from './config';
 import { isPickupReport } from './utilities';
@@ -85,6 +86,7 @@ export function OfflineCacheContextProvider({ children }) {
   const { isInternetReachable } = useNetInfo();
   const [cachedSubmissionIds, setCachedSubmissionIds] = React.useState([]);
   const { postReport, postRoute } = useAPI();
+  const {authInfo} = useAuth();
 
   React.useEffect(() => {
     const giddyUp = async () => {
@@ -161,10 +163,10 @@ export function OfflineCacheContextProvider({ children }) {
   });
 
   React.useEffect(() => {
-    if (isInternetReachable && cachedSubmissionIds.length > 0 && !mutation.isLoading) {
+    if (isInternetReachable && authInfo?.user && cachedSubmissionIds.length > 0 && !mutation.isLoading) {
       mutation.mutate();
     }
-  }, [isInternetReachable]);
+  }, [isInternetReachable, authInfo?.user]);
 
   React.useEffect(() => {
     const updateBadgeCount = async () => {
