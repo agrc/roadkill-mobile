@@ -2,6 +2,11 @@ import { db } from './clients.js';
 
 export async function getMySubmissions(user_id) {
   console.log('user_id', user_id);
+
+  if (user_id === undefined) {
+    return [];
+  }
+
   const reports = await db('report_infos as r')
     .join('users as u', 'u.id', 'r.user_id')
     .leftJoin('pickup_reports as pick', 'pick.report_id', 'r.report_id')
