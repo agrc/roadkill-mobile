@@ -10,6 +10,7 @@ import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
+import * as Constants from 'expo-constants'
 
 const deleteCacheMessage = 'Deleting cache files...';
 const updateMessage = 'Checking for updates...';
@@ -67,7 +68,7 @@ export default function AppInfoScreen() {
         <Divider />
         <ValueContainer label="Application Version" value={nativeApplicationVersion} />
         <ValueContainer label="Runtime Version" value={runtimeVersion} />
-        <ValueContainer label="Build Number" value={manifest?.extra?.expoClient?.ios?.buildNumber || ''} />
+        <ValueContainer label="Build Number" value={manifest?.extra?.expoClient?.ios?.buildNumber || Constants?.manifest?.ios?.buildNumber || ''} />
         <ValueContainer label="Release Channel" value={channel || 'dev'} />
 
         <View style={styles.buttonContainer}>
