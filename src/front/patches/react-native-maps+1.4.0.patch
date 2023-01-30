@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-maps/android/src/main/java/com/airbnb/android/react/maps/AirMapTileProvider.java b/node_modules/react-native-maps/android/src/main/java/com/airbnb/android/react/maps/AirMapTileProvider.java
+index 4f7acba..4e496bc 100644
+--- a/node_modules/react-native-maps/android/src/main/java/com/airbnb/android/react/maps/AirMapTileProvider.java
++++ b/node_modules/react-native-maps/android/src/main/java/com/airbnb/android/react/maps/AirMapTileProvider.java
+@@ -213,7 +213,9 @@ public class AirMapTileProvider implements TileProvider {
+ 			} catch (Exception e) {
+ 			  e.printStackTrace();
+ 			}
+-		} else if (image == null && !this.offlineMode) {
++		}
++
++		if (image == null && !this.offlineMode) {
+ 			Log.d("urlTile", "Normal fetch");
+ 			image = fetchTile(x, y, zoom);
+ 			if (image == null) {
