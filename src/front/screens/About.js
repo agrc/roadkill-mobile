@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import { nativeApplicationVersion } from 'expo-application';
-import * as Constants from 'expo-constants';
+import Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
 import { channel, checkForUpdateAsync, fetchUpdateAsync, manifest, reloadAsync, runtimeVersion } from 'expo-updates';
 import { useState } from 'react';
@@ -78,10 +78,7 @@ export default function AppInfoScreen() {
         <Divider />
         <ValueContainer label="Application Version" value={nativeApplicationVersion} />
         <ValueContainer label="Runtime Version" value={runtimeVersion} />
-        <ValueContainer
-          label="Build Number"
-          value={manifest?.extra?.expoClient?.ios?.buildNumber || Constants?.manifest?.ios?.buildNumber || ''}
-        />
+        <ValueContainer label="Build Number" value={Constants.expoConfig.ios.buildNumber || ''} />
         <ValueContainer label="Release Channel" value={channel || 'dev'} />
 
         <View style={styles.buttonContainer}>
