@@ -60,21 +60,25 @@ export async function createPickup({
   ...reportInfo
 }) {
   return await db.transaction(async (transaction) => {
-    const photoInsertResult = await transaction('photos').insert(
-      {
-        bucket_path,
-        photo_location: pointCoordStringToWKT(photo_location),
-        photo_date,
-      },
-      'id'
-    );
+    let photoInsertResult;
+    if (bucket_path) {
+      photoInsertResult = await transaction('photos').insert(
+        {
+          bucket_path,
+          photo_location: pointCoordStringToWKT(photo_location),
+          photo_date,
+        },
+        'id'
+      );
+    }
+
     const infosInsertResult = await transaction('report_infos').insert(
       {
         ...reportInfo,
         user_id: user_id,
         animal_location: pointCoordStringToWKT(animal_location),
         submit_location: pointCoordStringToWKT(submit_location),
-        photo_id: photoInsertResult[0].id,
+        photo_id: photoInsertResult ? photoInsertResult[0].id : null,
       },
       'report_id'
     );

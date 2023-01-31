@@ -47,7 +47,7 @@ exports.report = yup.object().shape({
 
 exports.pickup = yup.object().shape({
   animal_location,
-  photo: photo.required().typeError('A photo is required.'),
+  photo: photo.nullable(),
   photo_location,
   photo_date,
   submit_location,
