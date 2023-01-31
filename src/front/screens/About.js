@@ -1,6 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import { nativeApplicationVersion } from 'expo-application';
+import * as Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
 import { channel, checkForUpdateAsync, fetchUpdateAsync, manifest, reloadAsync, runtimeVersion } from 'expo-updates';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
-import * as Constants from 'expo-constants'
 
 const deleteCacheMessage = 'Deleting cache files...';
 const updateMessage = 'Checking for updates...';
@@ -26,7 +26,17 @@ export default function AppInfoScreen() {
     if (__DEV__) {
       Alert.alert('Cannot update in development mode.');
     } else {
-      const updateCheckResult = await checkForUpdateAsync();
+      let updateCheckResult;
+      try {
+        updateCheckResult = await checkForUpdateAsync();
+      } catch (e) {
+        Alert.alert('No update available', 'No over-the-air updates have been published for this version.');
+
+        setLoaderMessage(null);
+
+        return;
+      }
+
       if (updateCheckResult.isAvailable) {
         await fetchUpdateAsync();
         await reloadAsync();
@@ -68,7 +78,10 @@ export default function AppInfoScreen() {
         <Divider />
         <ValueContainer label="Application Version" value={nativeApplicationVersion} />
         <ValueContainer label="Runtime Version" value={runtimeVersion} />
-        <ValueContainer label="Build Number" value={manifest?.extra?.expoClient?.ios?.buildNumber || Constants?.manifest?.ios?.buildNumber || ''} />
+        <ValueContainer
+          label="Build Number"
+          value={manifest?.extra?.expoClient?.ios?.buildNumber || Constants?.manifest?.ios?.buildNumber || ''}
+        />
         <ValueContainer label="Release Channel" value={channel || 'dev'} />
 
         <View style={styles.buttonContainer}>
