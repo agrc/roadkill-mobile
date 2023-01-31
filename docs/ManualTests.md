@@ -135,13 +135,15 @@ Setup: able to identify to "Yes"
 
 Setup: open the report and select a location
 
-| set up                 | action                | assertion                   |
-|------------------------|-----------------------|-----------------------------|
-|                        |                       | repeat submission is not shown and photo is required |
-|                        | take new photo        | native photo capture is shown and photo is passed back to the form |
-|                        | choose existing photo | native photo selection is shown and photo is passed back to the form |
-| take or choose a photo | click on "X" button   | verify that photo was cleared |
-|                        | submit report         | success dialog should show and report should be reset and closed |
+| set up                      | action                                                           | assertion |
+|-----------------------------|------------------------------------------------------------------|-----|
+|                             |                                                                  | repeat submission is not shown |
+|                             | take new photo                                                   | native photo capture is shown and photo is passed back to the form |
+|                             | choose existing photo                                            | native photo selection is shown and photo is passed back to the form |
+| take or choose a photo      | click on "X" button                                              | verify that photo was cleared |
+| submit report with no photo | success dialog should show and report should be reset and closed |     |
+| submit report with photo    | success dialog should show and report should be reset and closed |     |
+|                             | submit report                                                    | success dialog should show and report should be reset and closed |
 
 ### Form Reset
 

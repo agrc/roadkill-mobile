@@ -58,7 +58,7 @@ const displayCameraActivityFailedAlert = () => {
   ]);
 };
 
-export default function PhotoCapture({ isRequired, onChange, uri, style }) {
+export default function PhotoCapture({ onChange, uri, style }) {
   const [showLoader, setShowLoader] = React.useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
@@ -197,17 +197,12 @@ export default function PhotoCapture({ isRequired, onChange, uri, style }) {
         )}
         <Spinner show={showLoader} />
       </View>
-      {isRequired ? (
-        <Text appearance="hint">A photo of the animal at the pick up location is required.</Text>
-      ) : (
-        <Text appearance="hint">If possible and safe, please take a photo.</Text>
-      )}
+      <Text appearance="hint">If possible and safe, please take a photo.</Text>
     </View>
   );
 }
 
 PhotoCapture.propTypes = {
-  isRequired: propTypes.bool.isRequired,
   uri: propTypes.string,
   onChange: propTypes.func.isRequired,
   style: propTypes.oneOfType([propTypes.object, propTypes.array]),

@@ -98,12 +98,7 @@ export default function Form({
             </>
           ) : null}
           {children({ values, setFieldValue, errors })}
-          <PhotoCapture
-            isRequired={validationSchema.fields.photo.spec.presence === 'required'}
-            onChange={onPhotoChange}
-            uri={values.photo?.uri}
-            style={styles.bottomBump}
-          />
+          <PhotoCapture onChange={onPhotoChange} uri={values.photo?.uri} style={styles.bottomBump} />
           <Text category="h6">Additional comments:</Text>
           <Input
             multiline

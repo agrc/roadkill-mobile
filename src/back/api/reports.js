@@ -26,16 +26,14 @@ export function getNewPickupHandler(upload, createPickup) {
   return async function create(request, response) {
     const user_id = response.locals.userId;
 
-    if (!request.file) {
-      response.status(400).json({
-        error: 'No photo provided',
-      });
-      return;
+    let bucket_path = null;
+    if (request.file) {
+      bucket_path = await upload(request.file, user_id);
     }
 
     const reportId = await createPickup({
       ...request.body,
-      bucket_path: await upload(request.file, user_id),
+      bucket_path,
       user_id,
     });
 
