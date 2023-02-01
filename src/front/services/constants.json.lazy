@@ -1462,6 +1462,17 @@
       "family": "vultures",
       "rare": false,
       "frequent": false
+    },
+    {
+      "species_id": 134,
+      "common_name": "Turkey",
+      "scientific_name": "Meleagris",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "upland birds",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
     }
   ],
   "organizations": [
@@ -1583,6 +1594,26 @@
     {
       "id": 25,
       "name": "Utah Department of Public Safety",
+      "org_type": "agency"
+    },
+    {
+      "id": 26,
+      "name": "Emery School District ",
+      "org_type": "agency"
+    },
+    {
+      "id": 27,
+      "name": "Cottonwood improvement  district ",
+      "org_type": "agency"
+    },
+    {
+      "id": 28,
+      "name": "Dnr state parks ",
+      "org_type": "agency"
+    },
+    {
+      "id": 29,
+      "name": "MDT",
       "org_type": "agency"
     }
   ]
