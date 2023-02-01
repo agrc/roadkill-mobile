@@ -1,3 +1,46 @@
+## [v3.0.5-601](https://github.com/agrc/roadkill-mobile/compare/v3.0.4-596...v3.0.5-601) (2023-02-01)
+
+
+### Bug Fixes
+
+* **back:** January dependency bumps 🌲 ([f39d710](https://github.com/agrc/roadkill-mobile/commit/f39d710eba58bb37c9702be0dd8f95403fd9985c))
+* **back:** return zero submissions for users that are not yet in the database ([ca6c4d5](https://github.com/agrc/roadkill-mobile/commit/ca6c4d5c2da83f003ce92962cb0d85e2a1334e4e))
+* **front:** better handling of offline submission errors ([3b80345](https://github.com/agrc/roadkill-mobile/commit/3b80345f7800ff60567005eb4ad0dd8fad31e547))
+* **front:** bump expo-compatible libraries ([c0bca15](https://github.com/agrc/roadkill-mobile/commit/c0bca15d314f322325ea9d453b3991f18184d4e6))
+* **front:** bump minimum required android version to 10 ([d8a2008](https://github.com/agrc/roadkill-mobile/commit/d8a2008ca4d8ae487a68b8f8adb1ca16bb01b81e))
+* **front:** bump non-expo-compatible libraries ([518df7a](https://github.com/agrc/roadkill-mobile/commit/518df7a37cd4cea6a147aa57cbf63b889e7f4bb1))
+* **front:** bump react-native-maps ([e7a8e62](https://github.com/agrc/roadkill-mobile/commit/e7a8e62d0ef2664e940808775106c9d26eef3221))
+* **front:** don't publish duplicate OTA update on new app builds ([a3eee26](https://github.com/agrc/roadkill-mobile/commit/a3eee261c51c45a4a473eb2342285b0ee2169f58))
+* **front:** don't try to get location if location services are not enabled ([5a6aa71](https://github.com/agrc/roadkill-mobile/commit/5a6aa71f4185d641c37134de31d75d6d6da65b17))
+* **front:** don't try to submit offline reports if the user is not logged in ([75373c4](https://github.com/agrc/roadkill-mobile/commit/75373c4adc8fd4384c1013569351adc82aee8241))
+* **front:** handle no existing ota updates ([5e8ffec](https://github.com/agrc/roadkill-mobile/commit/5e8ffec1c283c4640cf96a08ae1ac730755ab46b))
+* **front:** patch RNM to fix missing tiles on android issue ([c13a816](https://github.com/agrc/roadkill-mobile/commit/c13a816ac23049827b48a67b29b75bafe2724a75)), closes [#194](https://github.com/agrc/roadkill-mobile/issues/194)
+* **front:** replace deprecated analytics library ([20364e3](https://github.com/agrc/roadkill-mobile/commit/20364e3d6262b292a9fc4917d8e3cdce569c6ccb))
+* **front:** simplify and use more reliable build number reference ([9c5e2b1](https://github.com/agrc/roadkill-mobile/commit/9c5e2b13e5d24bc3ddf4e63003b0e0f5fd4a799d))
+* **front:** slow down and reduce background location updates ([6a499e3](https://github.com/agrc/roadkill-mobile/commit/6a499e3d2baacfd38a7943019b092b7acc0e78f1)), closes [#234](https://github.com/agrc/roadkill-mobile/issues/234)
+* **front:** upgrade to M1 build worker ([df1265d](https://github.com/agrc/roadkill-mobile/commit/df1265d3ead221c7df69878f1b5e3b69aa43f296))
+* make photos optional for all reports ([8f7fcca](https://github.com/agrc/roadkill-mobile/commit/8f7fcca55a7a91f6b0d66f43b73a152027b9772a)), closes [#235](https://github.com/agrc/roadkill-mobile/issues/235)
+* **palletjack:** add default port value in skid ([c1819e4](https://github.com/agrc/roadkill-mobile/commit/c1819e47f39aa43412ebe8c4fc66bf04cc7c5d8b))
+* **palletjack:** add missing ci dep ([64f142d](https://github.com/agrc/roadkill-mobile/commit/64f142de3003612fde6329e36353a09e2de1b441))
+* **palletjack:** bump palletjack dep ([67fd3ad](https://github.com/agrc/roadkill-mobile/commit/67fd3ad8ec41ee091a0485d7a0ecd2f50ce0c27f))
+* **palletjack:** fix pack to requirements files ([9c8f7d5](https://github.com/agrc/roadkill-mobile/commit/9c8f7d5b695567d42f245c723a4d11664401725c))
+* **palletjack:** give up on change detection and stick to adds and deletes ([7290d25](https://github.com/agrc/roadkill-mobile/commit/7290d256f87b90de0f311e92b42fbd011bc1fe80))
+* **palletjack:** handle no ports in gcp ([731adf0](https://github.com/agrc/roadkill-mobile/commit/731adf0d28b6ce4b9875caa7549631c028e65b98))
+* **palletjack:** increase function timeout ([3ec5bca](https://github.com/agrc/roadkill-mobile/commit/3ec5bca67898b5f01fe8965110606b28cb812397))
+* **palletjack:** make sure objectids are unique ([a925af5](https://github.com/agrc/roadkill-mobile/commit/a925af5c7775d2a6ef5ee84e8dcd39c3be8b3fb9))
+* **palletjack:** max timeout is 540 ([8af9e4e](https://github.com/agrc/roadkill-mobile/commit/8af9e4e9fd8b5bbdf46bc3ac4d72a33db9a4d9df))
+* **palletjack:** separate staging and prod schedules ([afc0d11](https://github.com/agrc/roadkill-mobile/commit/afc0d1150447bbf7cbcd17419dbad2e40fc86231))
+* **palletjack:** simplify email subject line ([0d6a5ff](https://github.com/agrc/roadkill-mobile/commit/0d6a5ff0c69911c5774fd8b5110c776970d8dbf8))
+* **website:** Jan dependency bumps 🌲 ([201d00d](https://github.com/agrc/roadkill-mobile/commit/201d00d2514d627dcb3fe739e6a99cc66b46b472))
+
+
+### Features
+
+* **palletjack:** add project id to summary email ([b399e98](https://github.com/agrc/roadkill-mobile/commit/b399e986a4ab87ecc73809b478678b5adae436cc))
+* **palletjack:** implement palletjack skid ([a1970fa](https://github.com/agrc/roadkill-mobile/commit/a1970fa3fc3bb897cd7e0cc4b1f173cd3f7120a9)), closes [#225](https://github.com/agrc/roadkill-mobile/issues/225)
+
+
+
 ## [v3.0.4-595](https://github.com/agrc/roadkill-mobile/compare/v3.0.4-594...v3.0.4-595) (2022-12-16)
 
 
