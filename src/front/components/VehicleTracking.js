@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { length, lineString } from '@turf/turf';
 import { Button, Card, Divider, Modal, Text, useTheme } from '@ui-kitten/components';
+import CheapRuler from 'cheap-ruler';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
@@ -14,7 +15,7 @@ import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
-import { dateToString, lineCoordinatesToString } from '../services/utilities';
+import { appendCoordinates, dateToString, lineCoordinatesToString } from '../services/utilities';
 import Spinner from './Spinner';
 
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
@@ -91,7 +92,9 @@ export const vehicleTrackingReducer = (draft, action) => {
     }
 
     case 'ADD_ROUTE_COORDINATES':
-      draft.routeCoordinates = draft.routeCoordinates.concat(action.payload);
+      if (action.payload.length > 0) {
+        draft.routeCoordinates = appendCoordinates(draft.routeCoordinates, action.payload, CheapRuler);
+      }
 
       break;
     case 'RESET':

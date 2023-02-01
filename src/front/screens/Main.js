@@ -88,7 +88,6 @@ export default function MainScreen() {
     await Location.startLocationUpdatesAsync(backgroundLocationService.taskName, {
       accuracy: Location.Accuracy.BestForNavigation,
       activityType: Location.ActivityType.AutomotiveNavigation,
-      deferredUpdatesDistance: 15, // meters
       deferredUpdatesInterval: 2500, // milliseconds
       foregroundService: {
         notificationTitle: 'Vehicle Tracking',

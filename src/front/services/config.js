@@ -48,4 +48,5 @@ export default {
     report: 'report',
     pickup: 'pickup',
   },
+  MIN_TRACKING_VERTEX_DISTANCE: 15, // meters
 };
