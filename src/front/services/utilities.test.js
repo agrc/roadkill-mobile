@@ -1,4 +1,7 @@
+import CheapRuler from 'cheap-ruler';
+import config from '../services/config';
 import {
+  appendCoordinates,
   coordinatesToRegion,
   extentStringToRegion,
   getSubmitValues,
@@ -217,5 +220,146 @@ describe('getSubmitValues', () => {
 
     expect(output.b).toBeUndefined();
     expect(output.c).toBe(false);
+  });
+});
+
+describe('appendCoordinates', () => {
+  it('does not add coordinates that are too close', () => {
+    const existing = [
+      {
+        latitude: 40.5,
+        longitude: -111.5,
+      },
+      {
+        latitude: 40.6,
+        longitude: -111.6,
+      },
+    ];
+
+    const newCoords = [
+      {
+        latitude: 40.6001, // 8 meters away
+        longitude: -111.6,
+      },
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    const expected = [
+      {
+        latitude: 40.5,
+        longitude: -111.5,
+      },
+      {
+        latitude: 40.6,
+        longitude: -111.6,
+      },
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
+  });
+
+  it('creates new rulers when the latitude changes by more than one degree', () => {
+    const existing = [
+      {
+        latitude: 43.5,
+        longitude: -111.5,
+      },
+    ];
+
+    const mock = jest.fn(() => {
+      return { distance: () => config.MIN_TRACKING_VERTEX_DISTANCE + 1 };
+    });
+
+    appendCoordinates(
+      existing,
+      [
+        {
+          latitude: 44.5,
+          longitude: -111.5,
+        },
+      ],
+      mock
+    );
+
+    // should not create new ruler
+    appendCoordinates(
+      existing,
+      [
+        {
+          latitude: 45,
+          longitude: -111.5,
+        },
+      ],
+      mock
+    );
+
+    // should create new ruler
+    appendCoordinates(
+      existing,
+      [
+        {
+          latitude: 46.5,
+          longitude: -111.5,
+        },
+      ],
+      mock
+    );
+
+    expect(mock.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('can handle empty existing', () => {
+    const existing = [];
+
+    const newCoords = [
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    const expected = [
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
+  });
+
+  it('can handle empty existing and a single new', () => {
+    const existing = [];
+
+    const newCoords = [
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    const expected = [
+      {
+        latitude: 40.8,
+        longitude: -111.8,
+      },
+    ];
+
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
   });
 });

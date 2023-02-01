@@ -267,3 +267,31 @@ export function getSubmitValues(values) {
 
   return output;
 }
+
+let ruler;
+let rulerLatitude;
+export function appendCoordinates(existing, newCoordinates, CheapRuler) {
+  // if there is no existing coordinates, grab the first new coordinate
+  if (existing.length === 0) {
+    existing.push(newCoordinates.shift());
+  }
+
+  let last = existing[existing.length - 1];
+
+  // only create a new ruler if the latitude has changed by more than 1 degree
+  if (!ruler || Math.abs(rulerLatitude - last.latitude) > 1) {
+    ruler = new CheapRuler(last.latitude, 'meters');
+    rulerLatitude = last.latitude;
+  }
+
+  for (let coordinates of newCoordinates) {
+    last = existing[existing.length - 1];
+    const distance = ruler.distance([last.longitude, last.latitude], [coordinates.longitude, coordinates.latitude]);
+
+    if (distance >= config.MIN_TRACKING_VERTEX_DISTANCE) {
+      existing.push(coordinates);
+    }
+  }
+
+  return existing;
+}

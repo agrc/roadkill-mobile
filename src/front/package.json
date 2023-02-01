@@ -42,6 +42,7 @@
     "@ui-kitten/components": "^5.1.2",
     "@ui-kitten/eva-icons": "^5.1.2",
     "babel-plugin-inline-dotenv": "^1.7.0",
+    "cheap-ruler": "^3.0.2",
     "common": "file:../common",
     "date-fns": "^2.29.3",
     "expo": "^47.0.0",
