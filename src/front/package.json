@@ -68,7 +68,6 @@
     "expo-status-bar": "~1.4.2",
     "expo-task-manager": "~11.0.1",
     "expo-updates": "~0.15.6",
-    "firebase": "^9.16.0",
     "formik": "^2.2.9",
     "immer": "^9.0.18",
     "indefinite": "^2.4.1",

@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 601;
+const buildNumber = 602;
 
 export default {
   name,
@@ -121,6 +121,7 @@ export default {
         },
       },
     ],
+    '@react-native-firebase/app',
   ],
   extra: {
     eas: {
