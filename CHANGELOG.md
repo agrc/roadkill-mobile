@@ -1,3 +1,13 @@
+## [v3.0.5-604](https://github.com/agrc/roadkill-mobile/compare/v3.0.5-601...v3.0.5-604) (2023-02-06)
+
+
+### Bug Fixes
+
+* **front:** add missing firebase plugin and remove old firebase dep ([81300e3](https://github.com/agrc/roadkill-mobile/commit/81300e36f0804a5aec846f2b2cfcccba03a58040))
+* **front:** fix android crash on submissions view ([1216517](https://github.com/agrc/roadkill-mobile/commit/121651726852e2d0b27dc81cb6046053ccdac953))
+
+
+
 ## [v3.0.5-602](https://github.com/agrc/roadkill-mobile/compare/v3.0.5-601...v3.0.5-602) (2023-02-02)
 
 
