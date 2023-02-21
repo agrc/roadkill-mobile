@@ -123,6 +123,15 @@ export default function ChooseTypeScreen({ navigation }) {
             Member of the public
           </Option>
           <Collapsible collapsed={!showAuthButtons} style={styles.buttonContainer}>
+            {appleSignInIsAvailable ? (
+              <AppleAuthentication.AppleAuthenticationButton
+                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                cornerRadius={5}
+                style={[styles.oauthButton, styles.appleButton]}
+                onPress={() => initLogIn(commonConfig.authProviderNames.apple)}
+              />
+            ) : null}
             <Button
               onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
               accessoryLeft={UtahIdLogoImage}
@@ -146,15 +155,6 @@ export default function ChooseTypeScreen({ navigation }) {
               disabledImage={facebookBtnDisabled}
               pressedImage={facebookBtnPressed}
             />
-            {appleSignInIsAvailable ? (
-              <AppleAuthentication.AppleAuthenticationButton
-                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                cornerRadius={5}
-                style={[styles.oauthButton, styles.appleButton]}
-                onPress={() => initLogIn(commonConfig.authProviderNames.apple)}
-              />
-            ) : null}
           </Collapsible>
           <Option type={config.USER_TYPES.contractor} onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}>
             State contractor
