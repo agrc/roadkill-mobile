@@ -4,6 +4,7 @@ import { nativeApplicationVersion } from 'expo-application';
 import Constants from 'expo-constants';
 import { brand, modelName, osVersion } from 'expo-device';
 import { channel, checkForUpdateAsync, fetchUpdateAsync, manifest, reloadAsync, runtimeVersion } from 'expo-updates';
+import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import 'yup-phone';
@@ -72,6 +73,7 @@ export default function AppInfoScreen() {
           vehicle collisions. Data collected from this app will allow UDWR and UDOT to reduce wildlife-vehicle
           collisions and make highways safer for drivers and wildlife.
         </Text>
+
         <Text category="h5" style={styles.header}>
           App
         </Text>
@@ -100,6 +102,17 @@ export default function AppInfoScreen() {
         <ValueContainer label="Size" value={cacheSize} />
         <View style={styles.buttonContainer}>
           <Button onPress={handleClearCache}>Clear Cache</Button>
+        </View>
+
+        {/* Facebook requires a link to the privacy policy in the app */}
+        <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
+          <Button
+            // appearance="ghost"
+            status="basic"
+            onPress={() => WebBrowser.openBrowserAsync('https://www.utah.gov/support/privacypolicy.html')}
+          >
+            Privacy Policy
+          </Button>
         </View>
       </ScrollView>
       <Spinner show={!!loaderMessage} message={loaderMessage} />
