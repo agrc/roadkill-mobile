@@ -1,3 +1,17 @@
+## v3.0.6-605 (2023-02-21)
+
+
+### Bug Fixes
+
+* **front:** bump image-picker deps ([cea997b](https://github.com/agrc/roadkill-mobile/commit/cea997b8dc307a162909a382af07ea9121efc912)), closes [#226](https://github.com/agrc/roadkill-mobile/issues/226)
+* **front:** move apple sign-in button to top of list ([1babe3d](https://github.com/agrc/roadkill-mobile/commit/1babe3daa261cf77e75a1fbdcae045e52dd5f610)), closes [#238](https://github.com/agrc/roadkill-mobile/issues/238)
+
+
+### Features
+
+* **front:** add link to privacy policy ([033eac4](https://github.com/agrc/roadkill-mobile/commit/033eac45e55baa8c7d7f3898d60ef4996897789a)), closes [#244](https://github.com/agrc/roadkill-mobile/issues/244)
+
+
 ## [v3.0.5-604](https://github.com/agrc/roadkill-mobile/compare/v3.0.5-601...v3.0.5-604) (2023-02-06)
 
 
