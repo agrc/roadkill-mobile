@@ -1,3 +1,13 @@
+## [v3.0.6-606](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-605...v3.0.6-606) (2023-02-22)
+
+
+### Bug Fixes
+
+* **front:** default to social login buttons to be visible ([7ec7a34](https://github.com/agrc/roadkill-mobile/commit/7ec7a3464a168ec71ba7648468c7538656dc9ba4))
+* **front:** downgrade expo-image-picker due to build bug ([61d6dcc](https://github.com/agrc/roadkill-mobile/commit/61d6dcc28aa89d2cffbe8a23837b83cc55166248))
+
+
+
 ## v3.0.6-605 (2023-02-21)
 
 
