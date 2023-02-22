@@ -102,7 +102,7 @@ export default function ChooseTypeScreen({ navigation }) {
     pressedImage: propTypes.node.isRequired,
   };
 
-  const [showAuthButtons, setShowAuthButtons] = React.useState(false);
+  const [showAuthButtons, setShowAuthButtons] = React.useState(true);
 
   return (
     <RootView showSpinner={showSpinner}>
