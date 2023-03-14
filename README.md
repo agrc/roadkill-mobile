@@ -132,7 +132,7 @@ Database migrations are managed via [knex](https://knexjs.org/#Migrations) from 
 
 ## Identification Images
 
-These are the images that show up next to the species/class/order/family names. They are stored in a bucket named `ut-dts-agrc-roadkill-[dev|prod]-identification-images`. Members of the `ut-dts-agrc-roadkill-viewers` Google Group have object admin level access to the bucket. The images should be uploaded with the file extension: `.jpg` and sized `150` by `150` pixels.
+These are the images that show up next to the species/class/order/family names. They are stored in a bucket named `ut-dts-agrc-roadkill-[dev|prod]-identification-images`. Members of the `gcp-dts-ugrc-roadkill-viewers` Google Group have object admin level access to the bucket. The images should be uploaded with the file extension: `.jpg` and sized `150` by `150` pixels.
 
 The file name should match a distinct value from one of the following columns in the `species` table:
 
