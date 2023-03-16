@@ -12,6 +12,12 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
   }
 }
 
+const WEBSITES = {
+  production: 'https://roadkill-reporter.utah.gov',
+  staging: 'https://roadkill-reporter.dev.utah.gov',
+  development: 'https://roadkill-reporter.dev.utah.gov',
+};
+
 export default {
   CLIENT_ID: Constants.expoConfig.extra.CLIENT_ID,
   API,
@@ -49,4 +55,5 @@ export default {
     pickup: 'pickup',
   },
   MIN_TRACKING_VERTEX_DISTANCE: 15, // meters
+  WEBSITE: WEBSITES[Constants.expoConfig.extra.ENVIRONMENT],
 };

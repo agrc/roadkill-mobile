@@ -10,6 +10,7 @@ import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import 'yup-phone';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
+import config from '../services/config';
 import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
 
@@ -106,11 +107,7 @@ export default function AppInfoScreen() {
 
         {/* Facebook requires a link to the privacy policy in the app */}
         <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
-          <Button
-            // appearance="ghost"
-            status="basic"
-            onPress={() => WebBrowser.openBrowserAsync('https://www.utah.gov/support/privacypolicy.html')}
-          >
+          <Button status="basic" onPress={() => WebBrowser.openBrowserAsync(`${config.WEBSITE}/privacy-policy`)}>
             Privacy Policy
           </Button>
         </View>
