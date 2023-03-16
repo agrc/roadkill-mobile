@@ -1,3 +1,19 @@
+## [v3.0.6-607](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-606...v3.0.6-607) (2023-03-16)
+
+
+### Bug Fixes
+
+* **front:** point to newly created privacy policy page on website ([f295486](https://github.com/agrc/roadkill-mobile/commit/f2954869bd804c4cc318ecaf0c4d029f53906d66)), closes [#247](https://github.com/agrc/roadkill-mobile/issues/247)
+* **website:** add facebook ownership verification requirement ([112d36d](https://github.com/agrc/roadkill-mobile/commit/112d36dff64f1b6443fa5730da7002da42510a8d))
+* **website:** bump deps 🌲 ([b215b87](https://github.com/agrc/roadkill-mobile/commit/b215b87dfe2ab1f0a78baae3541f8d0871db03e4))
+
+
+### Features
+
+* **website:** add privacy policy page ([9666ca6](https://github.com/agrc/roadkill-mobile/commit/9666ca690c4434b0c54478ab87bd2878d300753f)), closes [#247](https://github.com/agrc/roadkill-mobile/issues/247)
+
+
+
 ## [v3.0.6-606](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-605...v3.0.6-606) (2023-02-22)
 
 
