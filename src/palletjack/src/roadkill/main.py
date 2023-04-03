@@ -15,7 +15,7 @@ import arcgis
 from supervisor.message_handlers import SendGridHandler
 from supervisor.models import MessageDetails, Supervisor
 
-from palletjack import FeatureServiceInlineUpdater, PostgresLoader
+from palletjack import extract, load, transform
 
 #: This makes it work when calling with just `python <file>`/installing via pip and in the gcf framework, where
 #: the relative imports fail because of how it's calling the function.
@@ -122,7 +122,7 @@ def _remove_log_file_handlers(log_name, loggers):
                 if log_name in handler.stream.name:
                     logger.removeHandler(handler)
                     handler.close()
-            except Exception as error:
+            except Exception:
                 pass
 
 
@@ -148,6 +148,27 @@ def _get_new_and_deleted_records(database_records, agol_records):
     deleted_ids = deleted_records["OBJECTID"].tolist()
 
     return (new_records, deleted_ids)
+
+
+def _transform(dataframe, int_fields, date_fields):
+    """A helper function to prepare the dataframe to be loaded into AGOL
+
+    Args:
+        dataframe (DataFrame): The dataframe to be transformed
+        int_fields (List<str>): The fields that should be converted to int
+        date_fields (List<str>): The fields that should be converted to datetime
+    """
+    dataframe.reset_index(inplace=True)
+    dataframe.spatial.set_geometry("SHAPE")
+    dataframe.spatial.project(4326)
+    dataframe.spatial.sr = {"wkid": 4326}
+    dataframe.spatial.set_geometry("SHAPE")
+
+    renamed_df = transform.DataCleaning.rename_dataframe_columns_for_agol(dataframe)
+    floats_df = transform.DataCleaning.switch_to_float(renamed_df, int_fields)
+    dates_df = transform.DataCleaning.switch_to_datetime(floats_df, date_fields)
+
+    return floats_df
 
 
 def process():
@@ -178,7 +199,7 @@ def process():
         except AttributeError:
             port = 5432
 
-        loader = PostgresLoader(
+        loader = extract.PostgresLoader(
             secrets.HOST,
             secrets.DATABASE,
             secrets.DATABASE_USER,
@@ -187,50 +208,57 @@ def process():
         )
 
         additional_summary_rows = []
-        for table, id_column, geog_column in config.TABLES:
-            module_logger.info(f"Processing {table}...")
+        for table, id_column, geog_column, int_fields, date_fields in config.TABLES:
+            module_logger.info("Processing %s ...", table)
 
             #: get data from database
             database_records = loader.read_table_into_dataframe(
                 f"public.{table}", id_column, "4326", geog_column
             )
-            # database_records.rename(columns={geog_column: "SHAPE"}, inplace=True)
-            module_logger.info(f"Database records count: {len(database_records)}")
+            database_records.rename(columns={geog_column: "SHAPE"}, inplace=True)
+            module_logger.info("Database records count: %s", len(database_records))
 
             search_results = gis.content.search(
-                query=f"owner:{secrets.AGOL_USER} AND title:{table} AND type:Feature Service"
+                query=f'owner:{secrets.AGOL_USER} AND title:"{table}" AND type:Feature Service'
             )
             if len(search_results) == 0:
                 #: this code will only work if you have arcpy installed...
                 module_logger.info("Publishing to AGOL...")
-                database_records.reset_index(inplace=True)
-                database_records.spatial.to_featurelayer(title=table, gis=gis)
+                prepared_df = _transform(database_records, int_fields, date_fields)
+                prepared_df.spatial.to_featurelayer(title=table, gis=gis)
 
                 continue
 
-            item = search_results[0]
+            item = [r for r in search_results if r.title == table][0]
             layer = item.layers[0]
             agol_records = layer.query().sdf
             agol_records.set_index(id_column, inplace=True)
-            module_logger.info(f"AGOL records count: {len(agol_records)}")
+            module_logger.info("AGOL records count: %s", len(agol_records))
 
             new_records, deleted_ids = _get_new_and_deleted_records(
                 database_records, agol_records
             )
-            module_logger.info(f"New records count: {len(new_records)}")
-            module_logger.info(f"Deleted records count: {len(deleted_ids)}")
+            module_logger.info("New records count: %s", len(new_records))
+            module_logger.info("Deleted records count: %s", len(deleted_ids))
 
             if len(new_records) > 0:
                 module_logger.info("Adding new records to AGOL...")
-                new_records.reset_index(inplace=True)
-                new_records.spatial.project(4326)
-                new_records.spatial.sr = {"wkid": 4326}
-                updater = FeatureServiceInlineUpdater(gis, new_records, "OBJECTID")
-                updater.upsert_new_data_in_hosted_feature_layer(item.id, 0)
+                prepared_df = _transform(new_records, int_fields, date_fields)
+                if table == "agol_public_reports":
+                    prepared_df["repeat_submission"] = prepared_df[
+                        "repeat_submission"
+                    ].astype("int")
+                updates = load.FeatureServiceUpdater.add_features(
+                    gis, item.id, prepared_df
+                )
+                module_logger.info("Added %s records", updates)
 
             if len(deleted_ids) > 0:
                 module_logger.info("Deleting records...")
-                layer.delete_features(",".join([str(oid) for oid in deleted_ids]))
+                deleted = load.FeatureServiceUpdater.remove_features(
+                    gis, item.id, deleted_ids
+                )
+                module_logger.info("Deleted %s records", deleted)
 
             additional_summary_rows.append(
                 f"{table} database records: {len(database_records)}, agol records: {len(agol_records)}, new records: {len(new_records)}, deleted records: {len(deleted_ids)}"

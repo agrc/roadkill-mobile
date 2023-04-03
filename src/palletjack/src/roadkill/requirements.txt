@@ -1,3 +1,3 @@
-ugrc-palletjack==2.7.*
+ugrc-palletjack==3.0.*
 agrc-supervisor==3.0.*
 pandas==1.5.*

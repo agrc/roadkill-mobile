@@ -16,8 +16,26 @@ LOG_LEVEL = logging.DEBUG
 LOG_FILE_NAME = "log"
 
 TABLES = [
-    #: ('table_name', 'id_column', 'geog_column')
-    ("agol_pickup_reports", "report_id", "animal_location"),
-    ("agol_public_reports", "report_id", "animal_location"),
-    ("agol_routes", "route_id", "geog"),
+    #: ('table_name', 'id_column', 'geog_column', 'int_fields')
+    (
+        "agol_pickup_reports",
+        "report_id",
+        "animal_location",
+        ["report_id", "species_id", "user_id"],
+        [],
+    ),
+    (
+        "agol_public_reports",
+        "report_id",
+        "animal_location",
+        ["report_id", "species_id", "user_id"],
+        [],
+    ),
+    (
+        "agol_routes",
+        "route_id",
+        "geog",
+        ["route_id", "user_id"],
+        ["start_time", "end_time"],
+    ),
 ]
