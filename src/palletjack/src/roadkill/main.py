@@ -223,6 +223,8 @@ def process():
             if len(new_records) > 0:
                 module_logger.info("Adding new records to AGOL...")
                 new_records.reset_index(inplace=True)
+                new_records.spatial.project(4326)
+                new_records.spatial.sr = {"wkid": 4326}
                 updater = FeatureServiceInlineUpdater(gis, new_records, "OBJECTID")
                 updater.upsert_new_data_in_hosted_feature_layer(item.id, 0)
 
