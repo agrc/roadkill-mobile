@@ -1,0 +1,5 @@
+tqdm==4.65.*
+psycopg2-binary==2.9.*
+sqlacodegen==3.0.0rc2
+geoalchemy2==0.13.*
+pandas==2.0.*
