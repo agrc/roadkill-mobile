@@ -40,7 +40,9 @@ def _get_secrets():
 
     #: Try to get the secrets from the Cloud Function mount point
     if secret_folder.exists():
-        return json.loads(Path("/secrets/app/secrets.json").read_text(encoding="utf-8"))
+        return json.loads(
+            Path("/secrets/app/secrets.prod.json").read_text(encoding="utf-8")
+        )
 
     #: Otherwise, try to load a local copy for local development
     secret_folder = Path(__file__).parent / "secrets"
@@ -168,7 +170,7 @@ def _transform(dataframe, int_fields, date_fields):
     floats_df = transform.DataCleaning.switch_to_float(renamed_df, int_fields)
     dates_df = transform.DataCleaning.switch_to_datetime(floats_df, date_fields)
 
-    return floats_df
+    return dates_df
 
 
 def process():
