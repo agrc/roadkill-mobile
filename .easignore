@@ -1,13 +1,17 @@
+.coverage
 .github/*
 .vscode/*
+*.aab
+*.apk
+*.gz
+*.ipa
 data/*
+docker-compose.yaml
 docs/*
+facebook-screen-recording/*
 src/back/*
 src/front/.env
-# these are the big problem files that bloat the upload to EAS
 src/front/dev-clients/**
 src/front/store-assets/**
-*.apk
-*.ipa
-*.aab
-*.gz
+src/palletjack/*
+src/website/*
