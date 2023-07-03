@@ -10,7 +10,7 @@
       },
       "ios": {
         "image": "latest",
-        "resourceClass": "m1-medium"
+        "resourceClass": "m-medium"
       },
       "env": {
         "GOOGLE_SERVICES_ANDROID": "google-services.json",
