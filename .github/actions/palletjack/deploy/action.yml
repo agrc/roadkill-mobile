@@ -38,7 +38,7 @@ runs:
         event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
         event_trigger_resource: projects/${{ inputs.project_id }}/topics/palletjack-topic
         deploy_timeout: 600
-        memory_mb: 1024
+        memory_mb: 2048
         timeout: 540 # this is the max allowed
         secret_volumes: |
           /secrets/app/secrets.json=${{inputs.project_id}}/skid-secrets
