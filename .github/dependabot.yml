@@ -5,9 +5,27 @@ updates:
     target-branch: staging
     schedule:
       interval: monthly
+    groups:
+      ci-dependencies:
 
   - package-ecosystem: npm
     directory: /
     target-branch: staging
     schedule:
       interval: monthly
+    groups:
+      safe-dependencies:
+        update-types: ['minor', 'patch']
+      major-dependencies:
+        update-types: ['major']
+
+  - package-ecosystem: pip
+    directory: src/palletjack/src/roadkill
+    target-branch: staging
+    schedule:
+      interval: monthly
+    groups:
+      safe-dependencies:
+        update-types: ['minor', 'patch']
+      major-dependencies:
+        update-types: ['major']
