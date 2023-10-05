@@ -1,6 +1,3 @@
-const badgeWidth = '250px';
-const badgeHeight = '83px';
-
 export default function Index() {
   return (
     <div className="flex justify-center">

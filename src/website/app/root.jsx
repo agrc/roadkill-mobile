@@ -2,7 +2,7 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@re
 import styles from './tailwind.css';
 
 export function meta() {
-  return { title: 'Utah Roadkill Reporter' };
+  return [{ title: 'Utah Roadkill Reporter' }];
 }
 
 export function links() {
