@@ -86,6 +86,7 @@ jobs:
           project-id: ${{ secrets.PROJECT_ID }}
           service: api
           flags: |
+            --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
             --max-instances=10
             --min-instances=0
             --set-cloudsql-instances=${{ secrets.CLOUDSQL_INSTANCE }}
@@ -136,6 +137,7 @@ jobs:
           project-id: ${{ secrets.PROJECT_ID }}
           service: api
           flags: |
+            --service-account=cloud-run-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com
             --max-instances=10
             --min-instances=1
             --set-cloudsql-instances=${{ secrets.CLOUDSQL_INSTANCE }}
