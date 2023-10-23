@@ -83,7 +83,6 @@ export default {
         config: {
           organization: 'utah-ugrc',
           project: 'roadkill',
-          authToken: process.env.SENTRY_AUTH_TOKEN,
         },
       },
     ],
