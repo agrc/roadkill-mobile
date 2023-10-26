@@ -38,7 +38,7 @@ const withReactNativeMaps = (config) => {
     async (config) => {
       const filePath = path.join(
         config.modRequest.platformProjectRoot,
-        'Podfile'
+        'Podfile',
       );
       const contents = fs.readFileSync(filePath, 'utf-8');
 
@@ -53,7 +53,7 @@ const withReactNativeMaps = (config) => {
 
       if (!addCode.didMerge) {
         console.error(
-          "ERROR: Cannot add withReactNativeMaps to the project's ios/Podfile because it's malformed."
+          "ERROR: Cannot add withReactNativeMaps to the project's ios/Podfile because it's malformed.",
         );
         return config;
       }

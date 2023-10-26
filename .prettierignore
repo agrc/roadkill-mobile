@@ -1,2 +1,4 @@
 */node_modules
 .vscode
+src/front/.expo-shared
+*/package-lock.json

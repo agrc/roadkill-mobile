@@ -28,7 +28,8 @@ const carrotDown = getIcon({
 });
 
 export default function ChooseTypeScreen({ navigation }) {
-  const [appleSignInIsAvailable, setAppleSignInIsAvailable] = React.useState(false);
+  const [appleSignInIsAvailable, setAppleSignInIsAvailable] =
+    React.useState(false);
 
   React.useEffect(() => {
     const checkAppleSignIn = async () => {
@@ -78,8 +79,15 @@ export default function ChooseTypeScreen({ navigation }) {
     }
   };
 
-  const UtahIdLogoImage = () => <Image source={utahIdLogo} resizeMode="contain" />;
-  const SocialButton = ({ providerName, normalImage, disabledImage, pressedImage }) => {
+  const UtahIdLogoImage = () => (
+    <Image source={utahIdLogo} resizeMode="contain" />
+  );
+  const SocialButton = ({
+    providerName,
+    normalImage,
+    disabledImage,
+    pressedImage,
+  }) => {
     const [pressed, setPressed] = React.useState(false);
     return (
       <Pressable
@@ -91,7 +99,12 @@ export default function ChooseTypeScreen({ navigation }) {
         accessibilityLabel={`sign in with ${providerName}`}
         style={styles.oauthButton}
       >
-        <Image source={showSpinner ? disabledImage : pressed ? pressedImage : normalImage} style={styles.socialImage} />
+        <Image
+          source={
+            showSpinner ? disabledImage : pressed ? pressedImage : normalImage
+          }
+          style={styles.socialImage}
+        />
       </Pressable>
     );
   };
@@ -122,11 +135,18 @@ export default function ChooseTypeScreen({ navigation }) {
           >
             Member of the public
           </Option>
-          <Collapsible collapsed={!showAuthButtons} style={styles.buttonContainer}>
+          <Collapsible
+            collapsed={!showAuthButtons}
+            style={styles.buttonContainer}
+          >
             {appleSignInIsAvailable ? (
               <AppleAuthentication.AppleAuthenticationButton
-                buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                buttonType={
+                  AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                }
+                buttonStyle={
+                  AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                }
                 cornerRadius={5}
                 style={[styles.oauthButton, styles.appleButton]}
                 onPress={() => initLogIn(commonConfig.authProviderNames.apple)}
@@ -156,13 +176,23 @@ export default function ChooseTypeScreen({ navigation }) {
               pressedImage={facebookBtnPressed}
             />
           </Collapsible>
-          <Option type={config.USER_TYPES.contractor} onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}>
+          <Option
+            type={config.USER_TYPES.contractor}
+            onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
+          >
             State contractor
           </Option>
-          <Option type={config.USER_TYPES.agency} onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}>
+          <Option
+            type={config.USER_TYPES.agency}
+            onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
+          >
             State agency employee
           </Option>
-          {config.SHOW_STORYBOOK ? <Button onPress={() => navigation.navigate('storybook')}>Storybook</Button> : null}
+          {config.SHOW_STORYBOOK ? (
+            <Button onPress={() => navigation.navigate('storybook')}>
+              Storybook
+            </Button>
+          ) : null}
         </View>
       </Layout>
     </RootView>

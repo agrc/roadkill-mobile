@@ -75,7 +75,11 @@ export default function App() {
   return (
     <ErrorBoundary onError={onError}>
       <IconRegistry icons={[EvaIconsPack, ...packs]} />
-      <ApplicationProvider {...eva} customMapping={mapping} theme={{ ...eva.light, ...theme }}>
+      <ApplicationProvider
+        {...eva}
+        customMapping={mapping}
+        theme={{ ...eva.light, ...theme }}
+      >
         <QueryClientProvider client={queryClient}>
           <AuthContextProvider onReady={() => setAuthIsReady(true)}>
             {authIsReady ? (

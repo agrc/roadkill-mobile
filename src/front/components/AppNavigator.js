@@ -39,7 +39,9 @@ const AuthNavigator = () => {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="choose-type" component={ChooseTypeScreen} />
       <Screen name="new-user" component={NewUserScreen} />
-      {config.SHOW_STORYBOOK ? <Screen name="storybook" component={StorybookUIRoot} /> : null}
+      {config.SHOW_STORYBOOK ? (
+        <Screen name="storybook" component={StorybookUIRoot} />
+      ) : null}
     </Navigator>
   );
 };
@@ -87,16 +89,36 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
 
   return (
     <SafeAreaView>
-      <Drawer selectedIndex={state.index === 0 ? null : new IndexPath(state.index)} onSelect={onSelect}>
+      <Drawer
+        selectedIndex={state.index === 0 ? null : new IndexPath(state.index)}
+        onSelect={onSelect}
+      >
         <DrawerItem title="Main" style={{ display: 'none' }} />
         <DrawerItem
           title="My Reports"
-          accessoryLeft={() => <DrawerIcon name="list" alertNumber={cachedSubmissionIds.length || null} />}
+          accessoryLeft={() => (
+            <DrawerIcon
+              name="list"
+              alertNumber={cachedSubmissionIds.length || null}
+            />
+          )}
         />
-        <DrawerItem title="Profile" accessoryLeft={() => <DrawerIcon name="person" />} />
-        <DrawerItem title="About" accessoryLeft={() => <DrawerIcon name="info" />} />
-        <DrawerItem title="Contact" accessoryLeft={() => <DrawerIcon name="email" />} />
-        <DrawerItem title="Logout" accessoryLeft={() => <DrawerIcon name="log-out" />} />
+        <DrawerItem
+          title="Profile"
+          accessoryLeft={() => <DrawerIcon name="person" />}
+        />
+        <DrawerItem
+          title="About"
+          accessoryLeft={() => <DrawerIcon name="info" />}
+        />
+        <DrawerItem
+          title="Contact"
+          accessoryLeft={() => <DrawerIcon name="email" />}
+        />
+        <DrawerItem
+          title="Logout"
+          accessoryLeft={() => <DrawerIcon name="log-out" />}
+        />
         {config.SHOW_STORYBOOK ? <DrawerItem title="Storybook" /> : null}
       </Drawer>
     </SafeAreaView>
@@ -114,7 +136,10 @@ const CloseButton = () => {
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: PADDING }}>
+    <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      style={{ paddingHorizontal: PADDING }}
+    >
       <CloseIcon />
     </TouchableOpacity>
   );
@@ -130,7 +155,10 @@ const BackButton = () => {
   });
 
   return (
-    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: PADDING }}>
+    <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      style={{ paddingHorizontal: PADDING }}
+    >
       <BackIcon />
     </TouchableOpacity>
   );
@@ -140,9 +168,17 @@ const ReportsNavigator = () => {
 
   return (
     <Navigator screenOptions={{ headerLeft: BackButton }}>
-      <Screen name="My Reports" component={MyReportsScreen} options={{ headerLeft: CloseButton }} />
+      <Screen
+        name="My Reports"
+        component={MyReportsScreen}
+        options={{ headerLeft: CloseButton }}
+      />
       <Screen name="Report Info" component={ReportInfoScreen} />
-      <Screen name="Route Info" component={RouteInfoScreen} options={{ title: 'Route Info' }} />
+      <Screen
+        name="Route Info"
+        component={RouteInfoScreen}
+        options={{ title: 'Route Info' }}
+      />
     </Navigator>
   );
 };
@@ -154,14 +190,26 @@ const MainNavigator = () => {
 
   return (
     <Navigator
-      drawerContent={(args) => getDrawContent({ ...args, logOut, cachedSubmissionIds })}
+      drawerContent={(args) =>
+        getDrawContent({ ...args, logOut, cachedSubmissionIds })
+      }
       screenOptions={{ swipeEnabled: false, headerLeft: CloseButton }}
     >
-      <Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-      <Screen name="Reports Navigator" component={ReportsNavigator} options={{ headerShown: false }} />
+      <Screen
+        name="Main"
+        component={MainScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Reports Navigator"
+        component={ReportsNavigator}
+        options={{ headerShown: false }}
+      />
       <Screen name="Profile" component={ProfileScreen} />
       <Screen name="About" component={AboutScreen} />
-      {config.SHOW_STORYBOOK ? <Screen name="Storybook" component={StorybookUIRoot} /> : null}
+      {config.SHOW_STORYBOOK ? (
+        <Screen name="Storybook" component={StorybookUIRoot} />
+      ) : null}
     </Navigator>
   );
 };
@@ -171,14 +219,20 @@ const AppNavigator = () => {
   const routeNameRef = React.useRef(null);
   const { authInfo } = useAuth();
 
-  const linking = { prefixes: [prefix], config: { screens: { login: 'oauthredirect' } } };
-  const setInitialRouteName = () => (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
+  const linking = {
+    prefixes: [prefix],
+    config: { screens: { login: 'oauthredirect' } },
+  };
+  const setInitialRouteName = () =>
+    (routeNameRef.current = navigationRef.current.getCurrentRoute().name);
   const updateRouteName = async () => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
     if (previousRouteName !== currentRouteName) {
-      await analytics().logEvent('screen_view', { screen_name: currentRouteName });
+      await analytics().logEvent('screen_view', {
+        screen_name: currentRouteName,
+      });
     }
 
     routeNameRef.current = currentRouteName;
@@ -191,7 +245,11 @@ const AppNavigator = () => {
       onStateChange={updateRouteName}
       linking={linking}
     >
-      {authInfo?.user && authInfo.registered ? <MainNavigator /> : <AuthNavigator />}
+      {authInfo?.user && authInfo.registered ? (
+        <MainNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 };

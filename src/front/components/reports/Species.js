@@ -76,13 +76,18 @@ const reducer = (draft, action) => {
   switch (action.type) {
     case 'SET_SPECIES': {
       draft.constants.species = action.payload;
-      draft.constants.frequentSpecies = action.payload.filter((item) => item.frequent);
+      draft.constants.frequentSpecies = action.payload.filter(
+        (item) => item.frequent,
+      );
 
       break;
     }
 
     case 'SELECT_SPECIES': {
-      if (typeof action.payload === 'string' && action.payload.toLowerCase() === config.UNKNOWN.toLowerCase()) {
+      if (
+        typeof action.payload === 'string' &&
+        action.payload.toLowerCase() === config.UNKNOWN.toLowerCase()
+      ) {
         draft.value.species_id = null;
         draft.value.common_name = config.UNKNOWN;
         draft.value.scientific_name = config.UNKNOWN;
@@ -118,7 +123,9 @@ const reducer = (draft, action) => {
 
         draft.autoCompleteItems = dedupe(newValues).sort();
       } else if (action.payload === COMMON) {
-        draft.autoCompleteItems = Array.from(draft.constants.species).sort(sortBy('common_name'));
+        draft.autoCompleteItems = Array.from(draft.constants.species).sort(
+          sortBy('common_name'),
+        );
       }
 
       break;
@@ -176,7 +183,13 @@ const reducer = (draft, action) => {
   }
 };
 
-function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) {
+function Species({
+  onChange,
+  style,
+  ableToIdentify,
+  setAbleToIdentify,
+  reset,
+}) {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
   const isMounted = useMounted();
 
@@ -209,7 +222,9 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
         return (
           <SearchList
             value={state.value}
-            onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+            onChange={(item) =>
+              dispatch({ type: 'SELECT_SPECIES', payload: item })
+            }
             items={state.constants.frequentSpecies}
           />
         );
@@ -218,7 +233,9 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
         return (
           <SearchList
             value={state.value}
-            onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+            onChange={(item) =>
+              dispatch({ type: 'SELECT_SPECIES', payload: item })
+            }
             items={state.autoCompleteItems}
             placeholder="common name"
           />
@@ -231,7 +248,9 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
           <>
             <SearchList
               value={state.filterValue}
-              onChange={(value) => dispatch({ type: 'SET_FILTER', payload: value })}
+              onChange={(value) =>
+                dispatch({ type: 'SET_FILTER', payload: value })
+              }
               items={state.autoCompleteItems}
               placeholder={`${state.searchType} name`}
               style={{ marginBottom: PADDING }}
@@ -241,11 +260,15 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
                 <Text category="h6">Select a species:</Text>
                 <SearchList
                   value={state.value}
-                  onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+                  onChange={(item) =>
+                    dispatch({ type: 'SELECT_SPECIES', payload: item })
+                  }
                   items={state.constants.species
                     .filter(
                       (item) =>
-                        item[SEARCH_TYPE_TO_FIELD[state.searchType]]?.toLowerCase() === state.filterValue.toLowerCase()
+                        item[
+                          SEARCH_TYPE_TO_FIELD[state.searchType]
+                        ]?.toLowerCase() === state.filterValue.toLowerCase(),
                     )
                     .sort(sortBy('common_name'))}
                   placeholder={state.filterValue}
@@ -285,7 +308,12 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
         <>
           <TabBar
             selectedIndex={SEARCH_TYPES.indexOf(state.searchType)}
-            onSelect={(index) => dispatch({ type: 'CHANGE_SEARCH_TYPE', payload: SEARCH_TYPES[index] })}
+            onSelect={(index) =>
+              dispatch({
+                type: 'CHANGE_SEARCH_TYPE',
+                payload: SEARCH_TYPES[index],
+              })
+            }
           >
             {SEARCH_TYPES.map((type) => (
               <Tab
@@ -304,10 +332,14 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
           </View>
           {state.value.species_id ? (
             <>
-              <Text category="h6">How confident are you in your species identification?</Text>
+              <Text category="h6">
+                How confident are you in your species identification?
+              </Text>
               <RadioPills
                 value={state.value.species_confidence_level}
-                onChange={(value) => dispatch({ type: 'SET_CONFIDENCE_LEVEL', payload: value })}
+                onChange={(value) =>
+                  dispatch({ type: 'SET_CONFIDENCE_LEVEL', payload: value })
+                }
                 options={CONFIDENCE_LEVELS}
               />
             </>
@@ -319,27 +351,38 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
           <SearchList
             value={
               Object.keys(CLASS_DESCRIPTION_TO_VALUE).filter(
-                (key) => CLASS_DESCRIPTION_TO_VALUE[key].toLowerCase() === state.value.species_class?.toLowerCase()
+                (key) =>
+                  CLASS_DESCRIPTION_TO_VALUE[key].toLowerCase() ===
+                  state.value.species_class?.toLowerCase(),
               )[0]
             }
-            onChange={(value) => dispatch({ type: 'SET_SELECTED_CLASS', payload: CLASS_DESCRIPTION_TO_VALUE[value] })}
+            onChange={(value) =>
+              dispatch({
+                type: 'SET_SELECTED_CLASS',
+                payload: CLASS_DESCRIPTION_TO_VALUE[value],
+              })
+            }
             items={Object.keys(CLASS_DESCRIPTION_TO_VALUE)}
           />
 
-          {state.value.species_class && state.value.species_class !== config.UNKNOWN ? (
+          {state.value.species_class &&
+          state.value.species_class !== config.UNKNOWN ? (
             <View style={styles.marginTop}>
               <Text category="h6">Does the animal look like a...</Text>
               <SearchList
                 value={state.value.family}
-                onChange={(value) => dispatch({ type: 'SET_FAMILY', payload: value })}
+                onChange={(value) =>
+                  dispatch({ type: 'SET_FAMILY', payload: value })
+                }
                 items={dedupe(
                   state.constants.species
                     .filter(
                       (item) =>
-                        item.species_class.toLowerCase() === state.value.species_class?.toLowerCase() &&
-                        item.family !== config.UNKNOWN
+                        item.species_class.toLowerCase() ===
+                          state.value.species_class?.toLowerCase() &&
+                        item.family !== config.UNKNOWN,
                     )
-                    .map((item) => item.family)
+                    .map((item) => item.family),
                 )
                   .sort()
                   .concat([config.UNKNOWN])}
@@ -356,11 +399,20 @@ function Species({ onChange, style, ableToIdentify, setAbleToIdentify, reset }) 
               <Text category="h6">Select a species:</Text>
               <SearchList
                 value={
-                  state.value.common_name?.toLowerCase() === config.UNKNOWN.toLowerCase() ? config.UNKNOWN : state.value
+                  state.value.common_name?.toLowerCase() ===
+                  config.UNKNOWN.toLowerCase()
+                    ? config.UNKNOWN
+                    : state.value
                 }
-                onChange={(item) => dispatch({ type: 'SELECT_SPECIES', payload: item })}
+                onChange={(item) =>
+                  dispatch({ type: 'SELECT_SPECIES', payload: item })
+                }
                 items={state.constants.species
-                  .filter((item) => item.family.toLowerCase() === state.value.family.toLowerCase())
+                  .filter(
+                    (item) =>
+                      item.family.toLowerCase() ===
+                      state.value.family.toLowerCase(),
+                  )
                   .sort(sortBy('common_name'))
                   .concat([config.UNKNOWN])}
                 placeholder="common name"

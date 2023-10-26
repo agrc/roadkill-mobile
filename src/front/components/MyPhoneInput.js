@@ -10,7 +10,15 @@ const InnerPhoneInput = forwardRef(({ onChangeText, value, ...props }, ref) => {
     }
   };
 
-  return <Input ref={ref} label="test" onChangeText={innerOnChangeText} value={value} {...props} />;
+  return (
+    <Input
+      ref={ref}
+      label="test"
+      onChangeText={innerOnChangeText}
+      value={value}
+      {...props}
+    />
+  );
 });
 InnerPhoneInput.displayName = 'InnerPhoneInput';
 InnerPhoneInput.propTypes = {
@@ -25,7 +33,7 @@ export default function MyPhoneInput({ value, style, onChange, label }) {
         (props) => (
           <InnerPhoneInput label={label} {...props} />
         ),
-        [label]
+        [label],
       )}
       defaultCountry="US"
       value={value || undefined}

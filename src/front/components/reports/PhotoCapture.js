@@ -10,7 +10,10 @@ import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { ACCURACY, getLocation } from '../../services/location';
 import useStyles, { PADDING } from '../../services/styles';
-import { pointCoordinatesToString, useAsyncError } from '../../services/utilities';
+import {
+  pointCoordinatesToString,
+  useAsyncError,
+} from '../../services/utilities';
 import Spinner from '../Spinner';
 
 const THUMBNAIL_SIZE = 110;
@@ -44,18 +47,22 @@ export function getDateFromExif(exif) {
 }
 
 const displayCameraActivityFailedAlert = () => {
-  Alert.alert('The app is not able to open your camera.', 'Restarting the app can solve this issue. Restart now?', [
-    {
-      text: 'Cancel',
-    },
-    {
-      text: 'Ok',
-      onPress: async () => {
-        await unregisterAllTasksAsync();
-        await reloadAsync();
+  Alert.alert(
+    'The app is not able to open your camera.',
+    'Restarting the app can solve this issue. Restart now?',
+    [
+      {
+        text: 'Cancel',
       },
-    },
-  ]);
+      {
+        text: 'Ok',
+        onPress: async () => {
+          await unregisterAllTasksAsync();
+          await reloadAsync();
+        },
+      },
+    ],
+  );
 };
 
 export default function PhotoCapture({ onChange, uri, style }) {
@@ -93,7 +100,9 @@ export default function PhotoCapture({ onChange, uri, style }) {
     if (!result.canceled && result.assets.length > 0) {
       const { uri, exif } = result.assets[0];
 
-      const coordinates = pointCoordinatesToString(getCoordinatesFromExif(exif));
+      const coordinates = pointCoordinatesToString(
+        getCoordinatesFromExif(exif),
+      );
 
       onChange({
         uri,
@@ -118,7 +127,11 @@ export default function PhotoCapture({ onChange, uri, style }) {
     try {
       result = await ImagePicker.launchCameraAsync(photoOptions);
     } catch (error) {
-      if (error.message.includes("Call to function 'ExponentImagePicker.launchCameraAsync' has been rejected")) {
+      if (
+        error.message.includes(
+          "Call to function 'ExponentImagePicker.launchCameraAsync' has been rejected",
+        )
+      ) {
         displayCameraActivityFailedAlert();
       } else {
         throwAsyncError(error);
@@ -152,20 +165,33 @@ export default function PhotoCapture({ onChange, uri, style }) {
     setShowLoader(false);
   };
 
-  const PlaceholderIcon = getIcon({ pack: 'font-awesome', name: 'photo', size: 50, color: theme['color-basic-400'] });
+  const PlaceholderIcon = getIcon({
+    pack: 'font-awesome',
+    name: 'photo',
+    size: 50,
+    color: theme['color-basic-400'],
+  });
 
   return (
     <View style={style}>
       <View style={styles.container}>
         <View style={styles.buttonContainer}>
           <Button
-            accessoryLeft={getIcon({ pack: 'font-awesome', name: 'camera', color: theme['color-basic-800'] })}
+            accessoryLeft={getIcon({
+              pack: 'font-awesome',
+              name: 'camera',
+              color: theme['color-basic-800'],
+            })}
             onPress={captureImage}
           >
             Take new photo
           </Button>
           <Button
-            accessoryLeft={getIcon({ pack: 'font-awesome', name: 'photo', color: theme['color-basic-800'] })}
+            accessoryLeft={getIcon({
+              pack: 'font-awesome',
+              name: 'photo',
+              color: theme['color-basic-800'],
+            })}
             onPress={pickImage}
             style={{ marginTop: PADDING }}
           >
@@ -183,7 +209,11 @@ export default function PhotoCapture({ onChange, uri, style }) {
             />
             <Button
               size="tiny"
-              accessoryLeft={getIcon({ pack: 'font-awesome', name: 'remove', size: 25 })}
+              accessoryLeft={getIcon({
+                pack: 'font-awesome',
+                name: 'remove',
+                size: 25,
+              })}
               appearance="ghost"
               status="danger"
               onPress={() => onChange(null)}
@@ -191,7 +221,13 @@ export default function PhotoCapture({ onChange, uri, style }) {
             />
           </>
         ) : (
-          <View style={[commonStyles.image, styles.image, styles.placeholderContainer]}>
+          <View
+            style={[
+              commonStyles.image,
+              styles.image,
+              styles.placeholderContainer,
+            ]}
+          >
             <PlaceholderIcon />
           </View>
         )}

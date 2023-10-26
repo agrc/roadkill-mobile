@@ -3,7 +3,13 @@ import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { Marker } from 'react-native-maps';
 import { useQuery } from 'react-query';
 import useAuth from '../auth/context';
@@ -15,10 +21,15 @@ import config from '../services/config';
 import { coordsToLocation } from '../services/location';
 import { getOfflineSubmission } from '../services/offline';
 import useStyles, { PADDING } from '../services/styles';
-import { booleanToYesNo, dateToString, isPickupReport } from '../services/utilities';
+import {
+  booleanToYesNo,
+  dateToString,
+  isPickupReport,
+} from '../services/utilities';
 
 export default function ReportInfoScreen() {
-  const { reportId, offlineStorageId, offlineRouteId, offlineIndex } = useRoute().params;
+  const { reportId, offlineStorageId, offlineRouteId, offlineIndex } =
+    useRoute().params;
   // offlineRouteId & offlineIndex are only populated for reports associated with offline routes
   const navigation = useNavigation();
   const { get } = useAPI();
@@ -33,12 +44,18 @@ export default function ReportInfoScreen() {
         bearerToken: await getBearerToken(),
       };
     } else {
-      const offlineSubmission = await getOfflineSubmission(offlineStorageId || offlineRouteId, offlineIndex);
+      const offlineSubmission = await getOfflineSubmission(
+        offlineStorageId || offlineRouteId,
+        offlineIndex,
+      );
 
       return offlineSubmission;
     }
   };
-  const { data, isLoading, isError, error } = useQuery(`report-${reportId}`, getReportData);
+  const { data, isLoading, isError, error } = useQuery(
+    `report-${reportId}`,
+    getReportData,
+  );
 
   React.useEffect(() => {
     if (data) {
@@ -54,7 +71,9 @@ export default function ReportInfoScreen() {
         <ScrollView style={styles.container}>
           {isError ? (
             <Card status="danger" style={styles.errorCard}>
-              <Text>There was an error retrieving your report from the server!</Text>
+              <Text>
+                There was an error retrieving your report from the server!
+              </Text>
               <Text>{error?.message}</Text>
             </Card>
           ) : null}
@@ -73,14 +92,24 @@ function Photo({ photo_id, offlinePhoto, date, bearerToken }) {
     return null;
   }
 
-  const uri = photo_id ? `${config.API}/photos/thumb/${photo_id}` : offlinePhoto.uri;
+  const uri = photo_id
+    ? `${config.API}/photos/thumb/${photo_id}`
+    : offlinePhoto.uri;
 
   return (
     <>
       <View style={styles.photoContainer}>
         <View style={{ marginLeft: -PADDING, flex: 1 }}>
-          <ValueContainer label="Photo ID" value={photo_id || '(unsubmitted)'} divider={false} />
-          <ValueContainer label="Photo Date" value={dateToString(date)} divider={false} />
+          <ValueContainer
+            label="Photo ID"
+            value={photo_id || '(unsubmitted)'}
+            divider={false}
+          />
+          <ValueContainer
+            label="Photo Date"
+            value={dateToString(date)}
+            divider={false}
+          />
         </View>
         <Image
           source={{
@@ -122,13 +151,25 @@ export function ReportInfo({ data }) {
         isStatic={true}
         innerRef={mapRef}
         // zoom is for Google Maps and altitude is for Apple Maps
-        initialCamera={{ center: animalCoords, zoom: 14, pitch: 0, heading: 0, altitude: 2500 }}
+        initialCamera={{
+          center: animalCoords,
+          zoom: 14,
+          pitch: 0,
+          heading: 0,
+          altitude: 2500,
+        }}
       >
         <Marker coordinate={animalCoords} />
       </Map>
       <Divider />
-      <ValueContainer label="Report ID" value={data.report_id || '(unsubmitted)'} />
-      <ValueContainer label="Submitted" value={dateToString(data.submit_date)} />
+      <ValueContainer
+        label="Report ID"
+        value={data.report_id || '(unsubmitted)'}
+      />
+      <ValueContainer
+        label="Submitted"
+        value={dateToString(data.submit_date)}
+      />
       <Divider />
       <ValueContainer label="Common Name" value={data.common_name} />
       <ValueContainer label="Scientific Name" value={data.scientific_name} />
@@ -136,22 +177,39 @@ export function ReportInfo({ data }) {
       <ValueContainer label="Class" value={data.species_class} />
       <ValueContainer label="Order" value={data.species_order} />
       <ValueContainer label="Family" value={data.family} />
-      <ValueContainer label="Species Confidence Level" value={data.species_confidence_level} />
+      <ValueContainer
+        label="Species Confidence Level"
+        value={data.species_confidence_level}
+      />
       <ValueContainer label="Sex" value={data.sex} />
       <ValueContainer label="Age Class" value={data.age_class} />
       {isPickupReport(data) ? (
         // pickup report
-        <ValueContainer label="Pickup Date" value={dateToString(data.pickup_date, false)} />
+        <ValueContainer
+          label="Pickup Date"
+          value={dateToString(data.pickup_date, false)}
+        />
       ) : (
         // public report
         <>
-          <ValueContainer label="Repeat Submission" value={booleanToYesNo(data.repeat_submission)} />
-          <ValueContainer label="Discovery Date" value={dateToString(data.discovery_date, false)} />
+          <ValueContainer
+            label="Repeat Submission"
+            value={booleanToYesNo(data.repeat_submission)}
+          />
+          <ValueContainer
+            label="Discovery Date"
+            value={dateToString(data.discovery_date, false)}
+          />
         </>
       )}
       <Divider />
       <ValueContainer label="Comments" value={data.comments} />
-      <Photo photo_id={data.photo_id} offlinePhoto={data.photo} date={data.photo_date} bearerToken={data.bearerToken} />
+      <Photo
+        photo_id={data.photo_id}
+        offlinePhoto={data.photo}
+        date={data.photo_date}
+        bearerToken={data.bearerToken}
+      />
     </>
   );
 }

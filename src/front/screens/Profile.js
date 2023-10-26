@@ -1,4 +1,11 @@
-import { Button, Card, Divider, Input, Layout, Text } from '@ui-kitten/components';
+import {
+  Button,
+  Card,
+  Divider,
+  Input,
+  Layout,
+  Text,
+} from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React, { useRef } from 'react';
@@ -26,7 +33,9 @@ export default function ProfileScreen() {
   React.useEffect(() => {
     const init = async () => {
       const constants = await getConstants();
-      const orgs = constants.organizations.filter((org) => org.org_type === userType);
+      const orgs = constants.organizations.filter(
+        (org) => org.org_type === userType,
+      );
       orgs.push(commonConfig.otherOrg);
 
       setOrganizationsLookup(orgs);
@@ -42,7 +51,10 @@ export default function ProfileScreen() {
 
     return responseJson.profile;
   };
-  const { data, isLoading, isError, error } = useQuery(config.QUERY_KEYS.profile, getProfileData);
+  const { data, isLoading, isError, error } = useQuery(
+    config.QUERY_KEYS.profile,
+    getProfileData,
+  );
 
   const updateProfileData = async (newData) => {
     await post('user/profile/update', newData);
@@ -111,7 +123,9 @@ export default function ProfileScreen() {
       <ScrollView style={styles.container}>
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>There was an error retrieving your profile from the server!</Text>
+            <Text>
+              There was an error retrieving your profile from the server!
+            </Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}
@@ -124,7 +138,12 @@ export default function ProfileScreen() {
                 disabled
                 style={styles.padded}
               />
-              <Input label="Email (from sign-in provider)" value={`${data.email}`} disabled style={styles.padded} />
+              <Input
+                label="Email (from sign-in provider)"
+                value={`${data.email}`}
+                disabled
+                style={styles.padded}
+              />
               <Formik
                 innerRef={formikRef}
                 initialValues={{
@@ -138,7 +157,17 @@ export default function ProfileScreen() {
                 }}
                 validationSchema={schema}
               >
-                {({ values, handleChange, handleBlur, handleSubmit, dirty, errors, isValid, setValues, touched }) => (
+                {({
+                  values,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  dirty,
+                  errors,
+                  isValid,
+                  setValues,
+                  touched,
+                }) => (
                   <>
                     <MyPhoneInput
                       accessibilityRole="text"
@@ -154,14 +183,19 @@ export default function ProfileScreen() {
                     />
                     {data.organization_id !== null ? (
                       <>
-                        <Text category="label" appearance="hint" style={styles.label}>
+                        <Text
+                          category="label"
+                          appearance="hint"
+                          style={styles.label}
+                        >
                           Organization
                         </Text>
                         <SearchList
                           value={{
                             id: values.organization_id,
                             name:
-                              values.organization_id === commonConfig.otherOrg.id
+                              values.organization_id ===
+                              commonConfig.otherOrg.id
                                 ? commonConfig.otherOrg.name
                                 : values.organization_name,
                           }}
@@ -169,7 +203,10 @@ export default function ProfileScreen() {
                             const newValues = {
                               ...values,
                               organization_id: item?.id,
-                              organization_name: item?.id === commonConfig.otherOrg.id ? null : item?.name,
+                              organization_name:
+                                item?.id === commonConfig.otherOrg.id
+                                  ? null
+                                  : item?.name,
                             };
                             setValues(newValues);
                           }}
@@ -188,11 +225,17 @@ export default function ProfileScreen() {
                             style={[styles.input, styles.padded]}
                             label="Add New Organization"
                             caption={
-                              errors.organization_name && touched.organization_name ? errors.organization_name : null
+                              errors.organization_name &&
+                              touched.organization_name
+                                ? errors.organization_name
+                                : null
                             }
                             textContentType="organizationName"
                             value={
-                              values.organization_name !== commonConfig.otherOrg.name ? values.organization_name : ''
+                              values.organization_name !==
+                              commonConfig.otherOrg.name
+                                ? values.organization_name
+                                : ''
                             }
                             onChangeText={handleChange('organization_name')}
                             onBlur={handleBlur('organization_name')}
@@ -227,11 +270,23 @@ export default function ProfileScreen() {
               <Text category="h5">Other Information</Text>
             </View>
             <Divider />
-            <ValueContainer label="Approved" value={booleanToYesNo(data.approved)} />
-            <ValueContainer label="Registered Date" value={dateToString(data.registered_date)} />
+            <ValueContainer
+              label="Approved"
+              value={booleanToYesNo(data.approved)}
+            />
+            <ValueContainer
+              label="Registered Date"
+              value={dateToString(data.registered_date)}
+            />
             <ValueContainer label="Role" value={data.role} />
-            <ValueContainer label="Sign-in Provider" value={data.auth_provider} />
-            <ValueContainer label="Total Reports Submitted" value={data.reports_submitted} />
+            <ValueContainer
+              label="Sign-in Provider"
+              value={data.auth_provider}
+            />
+            <ValueContainer
+              label="Total Reports Submitted"
+              value={data.reports_submitted}
+            />
 
             <View style={styles.deleteButtonContainer}>
               <Text category="h5" style={{ marginBottom: PADDING }}>

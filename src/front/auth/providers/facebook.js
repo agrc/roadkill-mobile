@@ -48,7 +48,10 @@ export default function useFacebookProvider() {
     console.log('getting authentication');
     let result;
     try {
-      result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
       console.log('login result', result);
     } catch (error) {
       throwAsyncError(error);
@@ -118,7 +121,8 @@ export default function useFacebookProvider() {
     return prefix + authentication.current.token;
   };
 
-  const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
+  const hasValidToken = () =>
+    authentication.current && !isAuthenticationExpired(authentication.current);
 
   return { logIn, logOut, getBearerToken, hasValidToken };
 }

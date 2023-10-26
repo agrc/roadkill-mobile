@@ -37,7 +37,9 @@ describe('PhotoCapture', () => {
         DateTimeOriginal: '2018:12:01 12:00:00',
       };
 
-      expect(getDateFromExif(exif)).toMatch(/2018-12-01T\d\d:\d\d:\d\d\.\d\d\dZ/);
+      expect(getDateFromExif(exif)).toMatch(
+        /2018-12-01T\d\d:\d\d:\d\d\.\d\d\dZ/,
+      );
     });
     it('returns null if no date is present', () => {
       expect(getDateFromExif({})).toBeNull();

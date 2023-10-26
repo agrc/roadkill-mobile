@@ -1,4 +1,9 @@
-import { FontAwesome, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import {
+  FontAwesome,
+  FontAwesome5,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons';
 import { Icon } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
@@ -8,14 +13,21 @@ function createIconsMap(Icons) {
     {},
     {
       get: (target, name) => getIconProvider(Icons, name),
-    }
+    },
   );
 }
 
 const ThirdPartyIcon = ({ Icons, name, style, fill }) => {
   const { height, tintColor, width, ...iconStyle } = StyleSheet.flatten(style);
 
-  return <Icons name={name} size={height || width} color={fill || tintColor} style={iconStyle} />;
+  return (
+    <Icons
+      name={name}
+      size={height || width}
+      color={fill || tintColor}
+      style={iconStyle}
+    />
+  );
 };
 ThirdPartyIcon.propTypes = {
   Icons: propTypes.func.isRequired,
@@ -50,14 +62,28 @@ const packs = [
 
 export default packs;
 
-export function getIcon({ pack, name, size = null, color = null, style = null }) {
+export function getIcon({
+  pack,
+  name,
+  size = null,
+  color = null,
+  style = null,
+}) {
   const HydratedIcon = (props) => {
     const appliedStyle = [props.style, style];
     if (size) {
       appliedStyle.push({ width: size, height: size });
     }
 
-    return <Icon {...props} pack={pack} name={name} style={appliedStyle} fill={color} />;
+    return (
+      <Icon
+        {...props}
+        pack={pack}
+        name={name}
+        style={appliedStyle}
+        fill={color}
+      />
+    );
   };
   HydratedIcon.propTypes = {
     style: propTypes.object,

@@ -39,7 +39,9 @@ export default async function myFetch(url, options, parseJson) {
     } catch {
       errorText = response.statusText;
     }
-    throw new HTTPError(`Fetch error: status code: ${response.status} text: ${errorText}`);
+    throw new HTTPError(
+      `Fetch error: status code: ${response.status} text: ${errorText}`,
+    );
   }
 
   if (parseJson) {

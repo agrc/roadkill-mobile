@@ -29,7 +29,10 @@ export async function verifyPermissions() {
     await new Promise((resolve) => {
       let buttons = [{ text: 'OK', onPress: resolve }];
       if (!existingPermissions.canAskAgain) {
-        buttons.push({ text: 'Go To Settings', onPress: () => Linking.openSettings() });
+        buttons.push({
+          text: 'Go To Settings',
+          onPress: () => Linking.openSettings(),
+        });
       }
       Alert.alert(
         'Background Location Permissions',
@@ -41,7 +44,7 @@ export async function verifyPermissions() {
             Platform.OS === 'android' ? 'Allow all the time' : 'Always'
           }** option in the location settings dialog`,
         ].join(' '),
-        buttons
+        buttons,
       );
     });
 
@@ -56,9 +59,11 @@ export async function verifyPermissions() {
   console.log('enabled', enabled);
 
   if (!enabled) {
-    Alert.alert('Error', 'Location services are required to record vehicle routes.', [
-      { text: 'OK', onPress: () => Linking.openSettings() },
-    ]);
+    Alert.alert(
+      'Error',
+      'Location services are required to record vehicle routes.',
+      [{ text: 'OK', onPress: () => Linking.openSettings() }],
+    );
 
     return false;
   }

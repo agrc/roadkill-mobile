@@ -28,7 +28,8 @@ export const tileCacheDirectory = cacheDirectory + 'tiles';
 const offlineDataStorageDirectory = documentDirectory + 'offlineData';
 const offlineMessage = 'No connection to the internet was detected.';
 const errorMessage = 'An error occurred while trying to upload your report:';
-const commonMessage = 'You report has been saved to the your device for later submission.';
+const commonMessage =
+  'You report has been saved to the your device for later submission.';
 const dataFileName = 'data.json';
 
 function ensureDirectory(path) {
@@ -56,7 +57,9 @@ const OfflineCacheContext = React.createContext();
 
 export async function getOfflineSubmission(id, pickupIndex) {
   try {
-    const json = await readAsStringAsync(`${offlineDataStorageDirectory}/${id}/${dataFileName}`);
+    const json = await readAsStringAsync(
+      `${offlineDataStorageDirectory}/${id}/${dataFileName}`,
+    );
 
     if (pickupIndex) {
       return JSON.parse(json).pickups[pickupIndex];
@@ -76,7 +79,9 @@ async function deleteOfflineSubmission(id) {
   try {
     await deleteAsync(`${offlineDataStorageDirectory}/${id}`);
   } catch (error) {
-    console.error(`Error attempting to delete offline submission with id: ${id}: \n\n ${error}`);
+    console.error(
+      `Error attempting to delete offline submission with id: ${id}: \n\n ${error}`,
+    );
     Sentry.Native.captureException(error);
   }
 }
@@ -92,7 +97,9 @@ export function OfflineCacheContextProvider({ children }) {
       const folderNames = await readDirectoryAsync(offlineDataStorageDirectory);
 
       // filter out any weird stuff like .DS_Store
-      setCachedSubmissionIds(folderNames.filter((folderName) => folderName.match(/^\d+$/)));
+      setCachedSubmissionIds(
+        folderNames.filter((folderName) => folderName.match(/^\d+$/)),
+      );
     };
 
     giddyUp();
@@ -122,7 +129,9 @@ export function OfflineCacheContextProvider({ children }) {
           }
         } else {
           // route
-          const routeResponse = await postRoute(lodash.omit(submission, ['pickups']));
+          const routeResponse = await postRoute(
+            lodash.omit(submission, ['pickups']),
+          );
 
           for (let j = 0; j < submission.pickups.length; j++) {
             const pickup = submission.pickups[j];
@@ -143,7 +152,10 @@ export function OfflineCacheContextProvider({ children }) {
     }
 
     if (failedSubmissionIds.length === 0) {
-      Alert.alert('Offline Submission', 'Your offline data was successfully submitted.');
+      Alert.alert(
+        'Offline Submission',
+        'Your offline data was successfully submitted.',
+      );
     } else {
       Alert.alert('Offline Submission Error', lastError);
     }
@@ -162,7 +174,12 @@ export function OfflineCacheContextProvider({ children }) {
   });
 
   React.useEffect(() => {
-    if (isInternetReachable && authInfo?.user && cachedSubmissionIds.length > 0 && !mutation.isLoading) {
+    if (
+      isInternetReachable &&
+      authInfo?.user &&
+      cachedSubmissionIds.length > 0 &&
+      !mutation.isLoading
+    ) {
       mutation.mutate();
     }
   }, [isInternetReachable, authInfo?.user]);
@@ -177,10 +194,16 @@ export function OfflineCacheContextProvider({ children }) {
       let allowed = true;
       if (Platform.OS === 'ios') {
         let status = await Notifications.getPermissionsAsync();
-        if (status.ios.status === Notifications.IosAuthorizationStatus.NOT_DETERMINED) {
-          status = await Notifications.requestPermissionsAsync({ ios: { allowBadge: true } });
+        if (
+          status.ios.status ===
+          Notifications.IosAuthorizationStatus.NOT_DETERMINED
+        ) {
+          status = await Notifications.requestPermissionsAsync({
+            ios: { allowBadge: true },
+          });
         }
-        allowed = status.ios.status !== Notifications.IosAuthorizationStatus.DENIED;
+        allowed =
+          status.ios.status !== Notifications.IosAuthorizationStatus.DENIED;
       }
 
       if (allowed) {
@@ -216,7 +239,9 @@ export function OfflineCacheContextProvider({ children }) {
     await new Promise((resolve) => {
       Alert.alert(
         'Offline Report',
-        (error ? `${errorMessage} \n\n ${error.message}` : offlineMessage) + '\n\n' + commonMessage,
+        (error ? `${errorMessage} \n\n ${error.message}` : offlineMessage) +
+          '\n\n' +
+          commonMessage,
         [{ text: 'OK', onPress: resolve }],
       );
     });
@@ -231,7 +256,10 @@ export function OfflineCacheContextProvider({ children }) {
 
     submitValues.photo = await movePhoto(submitValues.photo, reportDirectory);
 
-    await writeAsStringAsync(`${reportDirectory}/${dataFileName}`, JSON.stringify(submitValues));
+    await writeAsStringAsync(
+      `${reportDirectory}/${dataFileName}`,
+      JSON.stringify(submitValues),
+    );
 
     setCachedSubmissionIds((existing) => [...existing, id]);
 
@@ -286,7 +314,9 @@ OfflineCacheContextProvider.propTypes = {
 export function useOfflineCache() {
   const context = React.useContext(OfflineCacheContext);
   if (!context) {
-    throw new Error('useOfflineCache must be used within a OfflineCacheContextProvider component');
+    throw new Error(
+      'useOfflineCache must be used within a OfflineCacheContextProvider component',
+    );
   }
   return context;
 }

@@ -8,7 +8,10 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
     // API = API.replace('localhost', '10.0.3.2'); // genymotion emulator
     API = API.replace('localhost', '10.0.2.2'); // android studio emulator
   } else if (Device.isDevice) {
-    API = API.replace('localhost', Constants.manifest2.extra.expoClient.hostUri.split(':').shift());
+    API = API.replace(
+      'localhost',
+      Constants.manifest2.extra.expoClient.hostUri.split(':').shift(),
+    );
   }
 }
 
@@ -42,7 +45,8 @@ export default {
   MAX_ZOOM_LEVEL: 18, // google maps
   MIN_ALTITUDE: 650, // apple maps
   IMAGE_COMPRESSION_QUALITY: 0.1, // 1 is max quality
-  SHOW_STORYBOOK: __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
+  SHOW_STORYBOOK:
+    __DEV__ && !process.env.JEST_WORKER_ID && !global.__REMOTEDEV__,
   UNKNOWN: 'unknown',
   QUERY_KEYS: {
     submissions: 'submissions',

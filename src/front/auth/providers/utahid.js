@@ -1,10 +1,19 @@
 import commonConfig from 'common/config';
-import { exchangeCodeAsync, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
+import {
+  exchangeCodeAsync,
+  refreshAsync,
+  revokeAsync,
+  useAuthRequest,
+} from 'expo-auth-session';
 import Constants from 'expo-constants';
 import jwt_decode from 'jwt-decode';
 import config from '../../services/config';
 import myFetch from '../../services/fetch';
-import { isTokenExpired, useAsyncError, useSecureRef } from '../../services/utilities';
+import {
+  isTokenExpired,
+  useAsyncError,
+  useSecureRef,
+} from '../../services/utilities';
 
 const redirectUri = `${Constants.expoConfig.scheme}://${config.OAUTH_REDIRECT_SCREEN}`;
 console.log('redirectUri', redirectUri);
@@ -52,7 +61,13 @@ export default function useUtahIDProvider() {
       } else if (['cancel', 'dismiss'].indexOf(response?.type) > -1) {
         return null;
       } else {
-        throwAsyncError(new Error(`response.type: ${response.type}; response: ${JSON.stringify(response)}`));
+        throwAsyncError(
+          new Error(
+            `response.type: ${response.type}; response: ${JSON.stringify(
+              response,
+            )}`,
+          ),
+        );
       }
     } catch (error) {
       throwAsyncError(error);
@@ -83,7 +98,10 @@ export default function useUtahIDProvider() {
       );
     }
 
-    if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
+    if (
+      accessToken.current &&
+      !isTokenExpired(jwt_decode(accessToken.current))
+    ) {
       await revokeAsync(
         {
           clientId: config.CLIENT_ID,
@@ -94,11 +112,14 @@ export default function useUtahIDProvider() {
     }
 
     if (idToken.current && !isTokenExpired(jwt_decode(idToken.current))) {
-      const response = await myFetch(`https://login.dts.utah.gov/sso/oauth2/connect/endSession`, {
-        searchParams: {
-          id_token_hint: idToken.current,
+      const response = await myFetch(
+        `https://login.dts.utah.gov/sso/oauth2/connect/endSession`,
+        {
+          searchParams: {
+            id_token_hint: idToken.current,
+          },
         },
-      });
+      );
 
       if (response.status !== 204) {
         console.warn('logOut: failed to end session', response.body);
@@ -114,7 +135,10 @@ export default function useUtahIDProvider() {
     console.log('getBearerToken');
 
     const prefix = `${commonConfig.authProviderNames.utahid}:Bearer `;
-    if (accessToken.current && !isTokenExpired(jwt_decode(accessToken.current))) {
+    if (
+      accessToken.current &&
+      !isTokenExpired(jwt_decode(accessToken.current))
+    ) {
       return prefix + accessToken.current;
     }
 
@@ -177,7 +201,9 @@ export default function useUtahIDProvider() {
   };
 
   const hasValidRefreshToken = () => {
-    return refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current));
+    return (
+      refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current))
+    );
   };
 
   return { logIn, logOut, getBearerToken, hasValidToken: hasValidRefreshToken };

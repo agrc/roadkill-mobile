@@ -17,13 +17,17 @@ const buildNumber = 607;
 export default {
   name,
   slug: 'wildlife-vehicle-collision-reporter', // changing this may result in new signing keys being generated (https://forums.expo.dev/t/changed-app-json-slug-and-android-build-keys-changed-can-i-get-them-back/9927/3)
-  description: 'A mobile application for reporting and removing roadkill in Utah.',
+  description:
+    'A mobile application for reporting and removing roadkill in Utah.',
   owner: 'ugrc',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
   version: '3.0.7',
   orientation: 'portrait',
-  icon: process.env.ENVIRONMENT === 'production' ? './assets/icon.png' : `./assets/icon_${process.env.ENVIRONMENT}.png`,
+  icon:
+    process.env.ENVIRONMENT === 'production'
+      ? './assets/icon.png'
+      : `./assets/icon_${process.env.ENVIRONMENT}.png`,
   splash: {
     image:
       process.env.ENVIRONMENT === 'production'
@@ -95,8 +99,10 @@ export default {
     [
       'expo-image-picker',
       {
-        photosPermission: 'The app accesses to your photos to allow you to submit a photo of the animal.',
-        cameraPermission: 'The app accesses your camera to allow you to capture and submit a photo of the animal.',
+        photosPermission:
+          'The app accesses to your photos to allow you to submit a photo of the animal.',
+        cameraPermission:
+          'The app accesses your camera to allow you to capture and submit a photo of the animal.',
       },
     ],
     [

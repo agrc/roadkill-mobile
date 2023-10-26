@@ -5,6 +5,18 @@ export default {
   component: Location,
 };
 
-export const Default = () => <Location onSetLocation={() => {}} onEditLocation={() => {}} showEdit={true} />;
+export const Default = () => (
+  <Location
+    onSetLocation={() => {}}
+    onEditLocation={() => {}}
+    showEdit={true}
+  />
+);
 
-export const AfterSet = () => <Location onSetLocation={() => {}} onEditLocation={() => {}} showEdit={false} />;
+export const AfterSet = () => (
+  <Location
+    onSetLocation={() => {}}
+    onEditLocation={() => {}}
+    showEdit={false}
+  />
+);

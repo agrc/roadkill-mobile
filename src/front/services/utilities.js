@@ -45,7 +45,10 @@ export function useSecureState(key) {
   const setState = (value) => {
     // value could be string or object
     setInternalState(value);
-    SecureStorage.setItemAsync(key, typeof value === 'object' ? JSON.stringify(value) : value);
+    SecureStorage.setItemAsync(
+      key,
+      typeof value === 'object' ? JSON.stringify(value) : value,
+    );
   };
 
   return [state, setState];
@@ -71,7 +74,10 @@ export function useSecureRef(key) {
   const setRef = (value) => {
     // value could be string or object
     ref.current = value;
-    SecureStorage.setItemAsync(key, typeof value === 'object' ? JSON.stringify(value) : value);
+    SecureStorage.setItemAsync(
+      key,
+      typeof value === 'object' ? JSON.stringify(value) : value,
+    );
   };
 
   return [ref, setRef];
@@ -98,7 +104,7 @@ export function useAsyncError() {
         });
       }
     },
-    [setError]
+    [setError],
   );
 
   return throwAsyncError;
@@ -132,7 +138,10 @@ export async function sendEmailToSupport() {
     Linking.openURL(`mailto:${config.SUPPORT_EMAIL}`);
   } catch (error) {
     // user may not have email app installed
-    Alert.alert('Support', `Please send an email to\n${config.SUPPORT_EMAIL}\nfor support.`);
+    Alert.alert(
+      'Support',
+      `Please send an email to\n${config.SUPPORT_EMAIL}\nfor support.`,
+    );
   }
 }
 
@@ -191,7 +200,9 @@ export function lineStringToCoordinates(string) {
 }
 
 export function offlineLineStringToCoordinates(lineString) {
-  return lineString.split(',').map((coord) => pointStringToCoordinates(coord.trim()));
+  return lineString
+    .split(',')
+    .map((coord) => pointStringToCoordinates(coord.trim()));
 }
 
 function extentToRegion(minx, maxx, miny, maxy) {
@@ -207,7 +218,9 @@ const extentStringRegex = /\(\((.*)\)\)/;
 export function extentStringToRegion(string) {
   const match = extentStringRegex.exec(string);
 
-  const coords = match[1].split(',').map((coord) => pointStringToCoordinates(coord));
+  const coords = match[1]
+    .split(',')
+    .map((coord) => pointStringToCoordinates(coord));
 
   const minx = coords[0].longitude;
   const maxx = coords[2].longitude;
@@ -286,7 +299,10 @@ export function appendCoordinates(existing, newCoordinates, CheapRuler) {
 
   for (let coordinates of newCoordinates) {
     last = existing[existing.length - 1];
-    const distance = ruler.distance([last.longitude, last.latitude], [coordinates.longitude, coordinates.latitude]);
+    const distance = ruler.distance(
+      [last.longitude, last.latitude],
+      [coordinates.longitude, coordinates.latitude],
+    );
 
     if (distance >= config.MIN_TRACKING_VERTEX_DISTANCE) {
       existing.push(coordinates);

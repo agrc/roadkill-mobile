@@ -3,7 +3,15 @@ import { View } from 'react-native';
 import MapButton from './MapButton';
 
 const Container = ({ children }) => (
-  <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 20 }}>{children}</View>
+  <View
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      padding: 20,
+    }}
+  >
+    {children}
+  </View>
 );
 Container.propTypes = {
   children: propTypes.node,
@@ -23,7 +31,12 @@ export const Default = () => (
         onPress={() => console.log('clicked')}
         showAlert={false}
       />
-      <MapButton iconPack="material-community" iconName="menu" onPress={() => console.log('clicked')} showAlert={false}>
+      <MapButton
+        iconPack="material-community"
+        iconName="menu"
+        onPress={() => console.log('clicked')}
+        showAlert={false}
+      >
         With Text
       </MapButton>
     </Container>
@@ -63,7 +76,17 @@ export const Default = () => (
 
 export const ShowAlert = () => (
   <Container>
-    <MapButton iconPack="material-community" iconName="menu" onPress={() => console.log('pressed')} alertNumber={5} />
-    <MapButton iconPack="material-community" iconName="menu" onPress={() => console.log('pressed')} alertNumber={26} />
+    <MapButton
+      iconPack="material-community"
+      iconName="menu"
+      onPress={() => console.log('pressed')}
+      alertNumber={5}
+    />
+    <MapButton
+      iconPack="material-community"
+      iconName="menu"
+      onPress={() => console.log('pressed')}
+      alertNumber={26}
+    />
   </Container>
 );

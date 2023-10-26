@@ -17,7 +17,9 @@ const getStory = (initialAbleToIdentify) => {
         family: null,
         species_confidence_level: null,
       });
-      const [ableToIdentify, setAbleToIdentify] = React.useState(initialAbleToIdentify);
+      const [ableToIdentify, setAbleToIdentify] = React.useState(
+        initialAbleToIdentify,
+      );
 
       return (
         <RootView>

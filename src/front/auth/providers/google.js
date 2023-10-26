@@ -19,7 +19,8 @@ export default function useGoogleProvider() {
   // eslint-disable-next-line no-unused-vars
   const [request, result, promptAsync] = useAuthRequest(
     {
-      androidClientId: Constants.expoConfig.extra.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
+      androidClientId:
+        Constants.expoConfig.extra.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
       iosClientId: Constants.expoConfig.extra.GOOGLE_OAUTH_CLIENT_ID_IOS,
       selectAccount: true,
     },
@@ -61,7 +62,11 @@ export default function useGoogleProvider() {
         return null;
       } else {
         throwAsyncError(
-          new Error(`promptResponse.type: ${promptResponse.type}; promptResponse: ${JSON.stringify(promptResponse)}`),
+          new Error(
+            `promptResponse.type: ${
+              promptResponse.type
+            }; promptResponse: ${JSON.stringify(promptResponse)}`,
+          ),
         );
       }
     } catch (error) {
@@ -97,8 +102,14 @@ export default function useGoogleProvider() {
   };
 
   const logOut = async () => {
-    if (authentication.current && !isAuthenticationExpired(authentication.current)) {
-      await revokeAsync({ token: authentication.current.accessToken }, discovery);
+    if (
+      authentication.current &&
+      !isAuthenticationExpired(authentication.current)
+    ) {
+      await revokeAsync(
+        { token: authentication.current.accessToken },
+        discovery,
+      );
     }
 
     authentication.current = null;
@@ -119,7 +130,8 @@ export default function useGoogleProvider() {
     }
   };
 
-  const hasValidToken = () => authentication.current && !isAuthenticationExpired(authentication.current);
+  const hasValidToken = () =>
+    authentication.current && !isAuthenticationExpired(authentication.current);
 
   return { logIn, logOut, getBearerToken, hasValidToken };
 }

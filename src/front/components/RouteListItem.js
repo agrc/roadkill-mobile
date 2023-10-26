@@ -16,7 +16,10 @@ export default function RouteListItem({ item }) {
       description={`${dateToString(item.start_time)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>
-        navigation.navigate('Route Info', { routeId: item.route_id, offlineStorageId: item.offlineStorageId })
+        navigation.navigate('Route Info', {
+          routeId: item.route_id,
+          offlineStorageId: item.offlineStorageId,
+        })
       }
       style={item.offlineStorageId ? commonStyles.offlineItem : null}
     />

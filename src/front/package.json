@@ -4,6 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "eas-build-pre-install": "bash ./scripts/eas-build-pre-install.sh",
+    "format": "prettier --write .",
     "postinstall": "patch-package",
     "lint": "eslint .",
     "prestart": "sb-rn-get-stories",

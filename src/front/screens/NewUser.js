@@ -33,7 +33,10 @@ export default function NewUserScreen() {
     onError: (error) => {
       Sentry.Native.captureException(error);
 
-      Alert.alert('Error', 'Error submitting registration. Please try again later.');
+      Alert.alert(
+        'Error',
+        'Error submitting registration. Please try again later.',
+      );
     },
   });
   const [organizationsLookup, setOrganizationsLookup] = React.useState([]);
@@ -41,7 +44,9 @@ export default function NewUserScreen() {
   React.useEffect(() => {
     const init = async () => {
       const constants = await getConstants();
-      const orgs = constants.organizations.filter((org) => org.org_type === userType);
+      const orgs = constants.organizations.filter(
+        (org) => org.org_type === userType,
+      );
       orgs.push(commonConfig.otherOrg);
 
       setOrganizationsLookup(orgs);
@@ -66,12 +71,21 @@ export default function NewUserScreen() {
   }
   const schema = object().shape(shape);
 
-  const register = async ({ phone, organization_id, organization_name, name, email }) => {
+  const register = async ({
+    phone,
+    organization_id,
+    organization_name,
+    name,
+    email,
+  }) => {
     await registerMutation.mutate({
       user: {
         phone,
         first_name: authInfo.oauthUser.given_name || name.split(' ')[0],
-        last_name: authInfo.oauthUser.family_name || name.split(' ')[1] || '<none provided>',
+        last_name:
+          authInfo.oauthUser.family_name ||
+          name.split(' ')[1] ||
+          '<none provided>',
         email: authInfo.oauthUser.email || email,
         auth_id: authInfo.oauthUser.sub,
         auth_provider: authInfo.providerName,
@@ -113,7 +127,17 @@ export default function NewUserScreen() {
           onSubmit={register}
           isSubmitting={registerMutation.isLoading}
         >
-          {({ values, handleChange, handleBlur, handleSubmit, errors, isValid, touched, dirty, setValues }) => (
+          {({
+            values,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            errors,
+            isValid,
+            touched,
+            dirty,
+            setValues,
+          }) => (
             <>
               <View style={styles.inputsContainer}>
                 <Input
@@ -121,7 +145,10 @@ export default function NewUserScreen() {
                   label="Name"
                   value={values.name}
                   onChangeText={handleChange('name')}
-                  disabled={authInfo?.oauthUser.given_name || authInfo?.oauthUser.family_name}
+                  disabled={
+                    authInfo?.oauthUser.given_name ||
+                    authInfo?.oauthUser.family_name
+                  }
                 />
                 <Input
                   style={styles.input}
@@ -132,7 +159,11 @@ export default function NewUserScreen() {
                 />
                 {organizationIsRequired ? (
                   <>
-                    <Text category="label" appearance="hint" style={styles.label}>
+                    <Text
+                      category="label"
+                      appearance="hint"
+                      style={styles.label}
+                    >
                       Organization
                     </Text>
                     <SearchList
@@ -147,7 +178,10 @@ export default function NewUserScreen() {
                         setValues({
                           ...values,
                           organization_id: item?.id,
-                          organization_name: item?.id === commonConfig.otherOrg.id ? null : item?.name,
+                          organization_name:
+                            item?.id === commonConfig.otherOrg.id
+                              ? null
+                              : item?.name,
                         });
                       }}
                       items={organizationsLookup}
@@ -163,10 +197,17 @@ export default function NewUserScreen() {
                         style={styles.input}
                         label="Add New Organization"
                         caption={
-                          errors.organization_name && touched.organization_name ? errors.organization_name : null
+                          errors.organization_name && touched.organization_name
+                            ? errors.organization_name
+                            : null
                         }
                         textContentType="organizationName"
-                        value={values.organization_name !== commonConfig.otherOrg.name ? values.organization_name : ''}
+                        value={
+                          values.organization_name !==
+                          commonConfig.otherOrg.name
+                            ? values.organization_name
+                            : ''
+                        }
                         onChangeText={handleChange('organization_name')}
                         onBlur={handleBlur('organization_name')}
                         status={errors.organization_name ? 'danger' : null}
@@ -202,8 +243,8 @@ export default function NewUserScreen() {
               {__DEV__ ? (
                 <>
                   <Text category="c1">
-                    [The below text is only for debugging the values sent to the database. It will not show up in
-                    production.]
+                    [The below text is only for debugging the values sent to the
+                    database. It will not show up in production.]
                   </Text>
                   <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
                   <Text>values: {JSON.stringify(values, null, '  ')}</Text>

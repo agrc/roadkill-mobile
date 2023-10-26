@@ -19,7 +19,9 @@ const MapButton = ({
   const buttonSize = 30;
 
   if (!color) {
-    color = ['basic', 'success'].includes(status) ? theme['color-basic-800'] : 'white';
+    color = ['basic', 'success'].includes(status)
+      ? theme['color-basic-800']
+      : 'white';
   }
 
   const ButtonIcon = () => {
@@ -56,7 +58,13 @@ const MapButton = ({
         shadowOpacity: 0.8,
       }}
     >
-      <Button accessoryLeft={ButtonIcon} style={style} size="tiny" onPress={onPress} status={status} />
+      <Button
+        accessoryLeft={ButtonIcon}
+        style={style}
+        size="tiny"
+        onPress={onPress}
+        status={status}
+      />
     </View>
   );
 };

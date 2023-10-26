@@ -25,7 +25,10 @@ function Location({ onSetLocation, onCancel }) {
 
   return (
     <View>
-      <Text>Move the map to place the crosshair at the location of the animal carcass.</Text>
+      <Text>
+        Move the map to place the crosshair at the location of the animal
+        carcass.
+      </Text>
       <Button
         accessoryLeft={getIcon({
           pack: 'font-awesome-5',

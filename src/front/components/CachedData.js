@@ -12,7 +12,8 @@ export default function CachedData({ data }) {
   if (data.length === 0) {
     return null;
   }
-  const { submitOfflineSubmissions, isSubmitting, isConnected } = useOfflineCache();
+  const { submitOfflineSubmissions, isSubmitting, isConnected } =
+    useOfflineCache();
 
   const submit = async () => {
     await submitOfflineSubmissions();
@@ -32,7 +33,11 @@ export default function CachedData({ data }) {
       <Divider />
       {data.map((item) => (
         <View key={item.offlineStorageId}>
-          {item.animal_location ? <ReportListItem item={item} /> : <RouteListItem item={item} />}
+          {item.animal_location ? (
+            <ReportListItem item={item} />
+          ) : (
+            <RouteListItem item={item} />
+          )}
           <Divider />
         </View>
       ))}

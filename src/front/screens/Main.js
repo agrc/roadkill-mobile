@@ -13,13 +13,25 @@ import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
 import RootView from '../components/RootView';
-import VehicleTracking, { initialVehicleTrackingState, vehicleTrackingReducer } from '../components/VehicleTracking';
-import backgroundLocationService, { verifyPermissions } from '../services/backgroundLocation';
+import VehicleTracking, {
+  initialVehicleTrackingState,
+  vehicleTrackingReducer,
+} from '../components/VehicleTracking';
+import backgroundLocationService, {
+  verifyPermissions,
+} from '../services/backgroundLocation';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
-import { getLocation, locationToRegion, useFollowUser } from '../services/location';
+import {
+  getLocation,
+  locationToRegion,
+  useFollowUser,
+} from '../services/location';
 import { useOfflineCache } from '../services/offline';
-import { pointStringToCoordinates, wrapAsyncWithDelay } from '../services/utilities';
+import {
+  pointStringToCoordinates,
+  wrapAsyncWithDelay,
+} from '../services/utilities';
 import Report from './Report';
 
 const initialReportState = {
@@ -53,11 +65,14 @@ export default function MainScreen() {
   const { cachedSubmissionIds } = useOfflineCache();
   const theme = useTheme();
   const [carcassCoordinates, setCarcassCoordinates] = React.useState(null);
-  const [reportState, dispatchReportState] = useImmerReducer(reportReducer, initialReportState);
+  const [reportState, dispatchReportState] = useImmerReducer(
+    reportReducer,
+    initialReportState,
+  );
   const { followUser, stopFollowUser, isFollowing } = useFollowUser(mapView);
   const [vehicleTrackingState, vehicleTrackingDispatch] = useImmerReducer(
     vehicleTrackingReducer,
-    initialVehicleTrackingState
+    initialVehicleTrackingState,
   );
 
   // these three functions had to be hoisted from VehicleTracking
@@ -85,16 +100,19 @@ export default function MainScreen() {
       });
     });
 
-    await Location.startLocationUpdatesAsync(backgroundLocationService.taskName, {
-      accuracy: Location.Accuracy.BestForNavigation,
-      activityType: Location.ActivityType.AutomotiveNavigation,
-      deferredUpdatesInterval: 2500, // milliseconds
-      foregroundService: {
-        notificationTitle: 'Vehicle Tracking',
-        notificationBody: 'Tracking your vehicle',
+    await Location.startLocationUpdatesAsync(
+      backgroundLocationService.taskName,
+      {
+        accuracy: Location.Accuracy.BestForNavigation,
+        activityType: Location.ActivityType.AutomotiveNavigation,
+        deferredUpdatesInterval: 2500, // milliseconds
+        foregroundService: {
+          notificationTitle: 'Vehicle Tracking',
+          notificationBody: 'Tracking your vehicle',
+        },
+        showsBackgroundLocationIndicator: true,
       },
-      showsBackgroundLocationIndicator: true,
-    });
+    );
   };
 
   const startRoute = async () => {
@@ -134,18 +152,22 @@ export default function MainScreen() {
 
     const result = await Location.requestForegroundPermissionsAsync();
     if (!result.granted) {
-      Alert.alert('Error', 'Location permissions are required to submit reports.', [
-        { text: 'OK', onPress: () => Linking.openSettings() },
-      ]);
+      Alert.alert(
+        'Error',
+        'Location permissions are required to submit reports.',
+        [{ text: 'OK', onPress: () => Linking.openSettings() }],
+      );
 
       return;
     }
 
     const enabled = await Location.hasServicesEnabledAsync();
     if (!enabled) {
-      Alert.alert('Error', 'Location services are required to submit reports.', [
-        { text: 'OK', onPress: () => Linking.openSettings() },
-      ]);
+      Alert.alert(
+        'Error',
+        'Location services are required to submit reports.',
+        [{ text: 'OK', onPress: () => Linking.openSettings() }],
+      );
 
       return;
     }
@@ -160,7 +182,7 @@ export default function MainScreen() {
       initLocation,
       () => setShowSpinner(true),
       () => setShowSpinner(false),
-      config.SPINNER_DELAY
+      config.SPINNER_DELAY,
     );
   }, []);
 
@@ -184,7 +206,10 @@ export default function MainScreen() {
 
     if (authInfo.user.role === config.USER_TYPES.public) {
       displayReport(config.REPORT_TYPES.report);
-    } else if (authInfo.user.role === config.USER_TYPES.agency || authInfo.user.role === config.USER_TYPES.admin) {
+    } else if (
+      authInfo.user.role === config.USER_TYPES.agency ||
+      authInfo.user.role === config.USER_TYPES.admin
+    ) {
       Alert.alert('I would like to...', null, [
         {
           text: 'Report and pick up a carcass',
@@ -218,7 +243,7 @@ export default function MainScreen() {
                 displayReport(config.REPORT_TYPES.pickup);
               },
             },
-          ]
+          ],
         );
 
         return;
@@ -241,7 +266,7 @@ export default function MainScreen() {
                 displayReport(config.REPORT_TYPES.pickup);
               },
             },
-          ]
+          ],
         );
 
         return;
@@ -291,12 +316,23 @@ export default function MainScreen() {
       setCrosshairCoordinates(null);
     }
   }, [reportState.showReport]);
-  const VehicleIcon = getIcon({ pack: 'material', name: 'drive-eta', size: 36, color: theme['color-basic-900'] });
+  const VehicleIcon = getIcon({
+    pack: 'material',
+    name: 'drive-eta',
+    size: 36,
+    color: theme['color-basic-900'],
+  });
   const showTrackingMarker =
-    vehicleTrackingState.isTracking && !vehicleTrackingState.isPaused && vehicleTrackingState.routeCoordinates.length;
+    vehicleTrackingState.isTracking &&
+    !vehicleTrackingState.isPaused &&
+    vehicleTrackingState.routeCoordinates.length;
 
   return (
-    <RootView showSpinner={showSpinner} spinnerMessage="getting current location" style={styles.root}>
+    <RootView
+      showSpinner={showSpinner}
+      spinnerMessage="getting current location"
+      style={styles.root}
+    >
       <FocusAwareStatusBar style={'light'} />
       {initialLocation ? (
         <>
@@ -310,7 +346,9 @@ export default function MainScreen() {
             {vehicleTrackingState.routeCoordinates?.length ? (
               <Polyline
                 coordinates={vehicleTrackingState.routeCoordinates}
-                strokeColor={theme[`color-${vehicleTrackingState.buttonStatus}-500`]}
+                strokeColor={
+                  theme[`color-${vehicleTrackingState.buttonStatus}-500`]
+                }
                 strokeWidth={8}
                 zIndex={1}
               />
@@ -318,7 +356,9 @@ export default function MainScreen() {
             {vehicleTrackingState.pickups?.length > 0
               ? vehicleTrackingState.pickups.map((pickup) => (
                   <Marker
-                    coordinate={pointStringToCoordinates(pickup.animal_location)}
+                    coordinate={pointStringToCoordinates(
+                      pickup.animal_location,
+                    )}
                     key={pickup.submit_date}
                     zIndex={2}
                     pinColor="navy"
@@ -328,7 +368,11 @@ export default function MainScreen() {
               : null}
             {showTrackingMarker ? (
               <Marker
-                coordinate={vehicleTrackingState.routeCoordinates[vehicleTrackingState.routeCoordinates.length - 1]}
+                coordinate={
+                  vehicleTrackingState.routeCoordinates[
+                    vehicleTrackingState.routeCoordinates.length - 1
+                  ]
+                }
                 key="current-location"
                 zIndex={10}
                 tappable={false}
@@ -349,12 +393,21 @@ export default function MainScreen() {
                 }
               </Marker>
             ) : null}
-            {carcassCoordinates ? <Marker coordinate={carcassCoordinates} zIndex={2} tappable={false} /> : null}
+            {carcassCoordinates ? (
+              <Marker
+                coordinate={carcassCoordinates}
+                zIndex={2}
+                tappable={false}
+              />
+            ) : null}
           </Map>
           {crosshairCoordinates ? (
             <View
               pointerEvents="none"
-              style={[styles.crosshairContainer, { top: crosshairCoordinates.y, left: crosshairCoordinates.x }]}
+              style={[
+                styles.crosshairContainer,
+                { top: crosshairCoordinates.y, left: crosshairCoordinates.x },
+              ]}
             >
               <CrosshairIcon />
             </View>

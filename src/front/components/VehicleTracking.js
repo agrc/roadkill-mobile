@@ -1,6 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { length, lineString } from '@turf/turf';
-import { Button, Card, Divider, Modal, Text, useTheme } from '@ui-kitten/components';
+import {
+  Button,
+  Card,
+  Divider,
+  Modal,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import CheapRuler from 'cheap-ruler';
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
@@ -15,27 +22,34 @@ import config from '../services/config';
 import { getIcon } from '../services/icons';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
-import { appendCoordinates, dateToString, lineCoordinatesToString } from '../services/utilities';
+import {
+  appendCoordinates,
+  dateToString,
+  lineCoordinatesToString,
+} from '../services/utilities';
 import Spinner from './Spinner';
 
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
 
-TaskManager.defineTask(backgroundLocationService.taskName, async ({ data, error }) => {
-  if (error) {
-    console.log(error);
-    Sentry.captureException(error);
+TaskManager.defineTask(
+  backgroundLocationService.taskName,
+  async ({ data, error }) => {
+    if (error) {
+      console.log(error);
+      Sentry.captureException(error);
 
-    return;
-  }
-
-  if (data) {
-    const { locations } = data;
-
-    if (locations) {
-      backgroundLocationService.notify(locations);
+      return;
     }
-  }
-});
+
+    if (data) {
+      const { locations } = data;
+
+      if (locations) {
+        backgroundLocationService.notify(locations);
+      }
+    }
+  },
+);
 
 const buttonStatuses = {
   idle: 'basic',
@@ -93,7 +107,11 @@ export const vehicleTrackingReducer = (draft, action) => {
 
     case 'ADD_ROUTE_COORDINATES':
       if (action.payload.length > 0) {
-        draft.routeCoordinates = appendCoordinates(draft.routeCoordinates, action.payload, CheapRuler);
+        draft.routeCoordinates = appendCoordinates(
+          draft.routeCoordinates,
+          action.payload,
+          CheapRuler,
+        );
       }
 
       break;
@@ -123,7 +141,10 @@ const getDistance = (coords) => {
     return 'n/a';
   }
 
-  const arrayCoords = coords.map(({ latitude, longitude }) => [longitude, latitude]);
+  const arrayCoords = coords.map(({ latitude, longitude }) => [
+    longitude,
+    latitude,
+  ]);
 
   const line = lineString(arrayCoords);
 
@@ -132,7 +153,12 @@ const getDistance = (coords) => {
   return `${miles.toFixed(2)} miles`;
 };
 
-export default function VehicleTracking({ state, dispatch, startTracking, resumeRoute }) {
+export default function VehicleTracking({
+  state,
+  dispatch,
+  startTracking,
+  resumeRoute,
+}) {
   const theme = useTheme();
 
   useEffect(() => {
@@ -166,10 +192,14 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     backgroundLocationService.unsubscribe();
 
     try {
-      const hasStarted = await Location.hasStartedLocationUpdatesAsync(backgroundLocationService.taskName);
+      const hasStarted = await Location.hasStartedLocationUpdatesAsync(
+        backgroundLocationService.taskName,
+      );
 
       if (hasStarted) {
-        await Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
+        await Location.stopLocationUpdatesAsync(
+          backgroundLocationService.taskName,
+        );
       }
     } catch (error) {
       console.log(error);
@@ -188,20 +218,24 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
   const cancelRoute = () => {
     console.log('cancelRoute');
 
-    Alert.alert('Are you sure?', "Canceled routes are deleted and can't be submitted.", [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {
-        text: 'Discard route',
-        onPress: async () => {
-          await stopTracking();
-
-          dispatch({ type: 'RESET' });
+    Alert.alert(
+      'Are you sure?',
+      "Canceled routes are deleted and can't be submitted.",
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: 'Discard route',
+          onPress: async () => {
+            await stopTracking();
+
+            dispatch({ type: 'RESET' });
+          },
+        },
+      ],
+    );
   };
 
   const { postReport, postRoute } = useAPI();
@@ -217,7 +251,9 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
 
   const confirmCompleteRoute = () => {
     if (state.routeCoordinates.length < 2) {
-      Alert.alert('You must have tracked at least two positions to submit a route!');
+      Alert.alert(
+        'You must have tracked at least two positions to submit a route!',
+      );
 
       return;
     }
@@ -234,7 +270,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
           text: 'Submit route',
           onPress: completeRoute,
         },
-      ]
+      ],
     );
   };
   const [spinnerMessage, setSpinnerMessage] = React.useState('');
@@ -272,9 +308,14 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     const submitErrors = [];
     for (let index = 0; index < state.pickups.length; index++) {
       // create a new object since we are adding a prop
-      const pickup = { ...state.pickups[index], route_id: responseJson.route_id };
+      const pickup = {
+        ...state.pickups[index],
+        route_id: responseJson.route_id,
+      };
 
-      setSpinnerMessage(`submitting pickup ${index + 1} of ${state.pickups.length}...`);
+      setSpinnerMessage(
+        `submitting pickup ${index + 1} of ${state.pickups.length}...`,
+      );
 
       try {
         await postReport(pickup, config.REPORT_TYPES.pickup);
@@ -289,7 +330,7 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
         'Error',
         `Your route has been submitted successfully, but there were errors submitting your pickups. They have been cached on your device for later submission. \n\n${submitErrors
           .map((error) => error.message)
-          .join('\n')}`
+          .join('\n')}`,
       );
     } else {
       Alert.alert('Success!', 'Your route has been submitted successfully.');
@@ -319,7 +360,13 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     <View>
       <View style={styles.header}>
         <Text category="h5">{title}</Text>
-        <Button accessoryLeft={CloseIcon} size="tiny" appearance="ghost" onPress={close} style={styles.closeButton} />
+        <Button
+          accessoryLeft={CloseIcon}
+          size="tiny"
+          appearance="ghost"
+          onPress={close}
+          style={styles.closeButton}
+        />
       </View>
     </View>
   );
@@ -333,7 +380,9 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
     <>
       <Modal
         visible={state.isModalVisible}
-        backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
+        backdropStyle={{
+          backgroundColor: theme['color-basic-transparent-600'],
+        }}
         onBackdropPress={close}
         style={styles.modal}
       >
@@ -352,10 +401,18 @@ export default function VehicleTracking({ state, dispatch, startTracking, resume
               Pause Route
             </Button>
           )}
-          <Button style={styles.button} onPress={confirmCompleteRoute} status="info">
+          <Button
+            style={styles.button}
+            onPress={confirmCompleteRoute}
+            status="info"
+          >
             Finish and Submit Route
           </Button>
-          <Button style={styles.button} onPress={cancelRoute} appearance="ghost">
+          <Button
+            style={styles.button}
+            onPress={cancelRoute}
+            appearance="ghost"
+          >
             Cancel Route
           </Button>
         </Card>

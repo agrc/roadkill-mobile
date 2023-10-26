@@ -38,9 +38,14 @@ export default function useAppleProvider() {
     } catch (error) {
       if (error.response.status === 401 && !isRetry) {
         console.log('refresh token failed, refresh credentials');
-        const refreshedCredentials = await AppleAuthentication.refreshAsync(appleOptions);
+        const refreshedCredentials =
+          await AppleAuthentication.refreshAsync(appleOptions);
 
-        return await refreshToken(refreshedCredentials.identityToken, refreshedCredentials.authorizationCode, true);
+        return await refreshToken(
+          refreshedCredentials.identityToken,
+          refreshedCredentials.authorizationCode,
+          true,
+        );
       }
     }
 
@@ -70,7 +75,10 @@ export default function useAppleProvider() {
 
   const logIn = async () => {
     console.log('apple logIn');
-    if (cachedUserInfo.current?.identityToken && !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))) {
+    if (
+      cachedUserInfo.current?.identityToken &&
+      !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))
+    ) {
       return cachedUserInfo.current;
     }
 
@@ -116,16 +124,24 @@ export default function useAppleProvider() {
     cachedUserInfo.current = {
       sub: signInResult.user,
       email: signInResult.email || existingUserInfo?.email,
-      given_name: signInResult.fullName.givenName || existingUserInfo?.given_name,
-      family_name: signInResult.fullName.familyName || existingUserInfo?.family_name,
+      given_name:
+        signInResult.fullName.givenName || existingUserInfo?.given_name,
+      family_name:
+        signInResult.fullName.familyName || existingUserInfo?.family_name,
       identityToken: signInResult.identityToken,
     };
     console.log('cachedUserInfo.current', cachedUserInfo.current);
 
     // we only get email, and names on the first sign in, so cache them locally
-    await SecureStore.setItemAsync(STORE_KEY, JSON.stringify(cachedUserInfo.current));
+    await SecureStore.setItemAsync(
+      STORE_KEY,
+      JSON.stringify(cachedUserInfo.current),
+    );
 
-    await refreshToken(signInResult.identityToken, signInResult.authorizationCode);
+    await refreshToken(
+      signInResult.identityToken,
+      signInResult.authorizationCode,
+    );
 
     return {
       sub: cachedUserInfo.current.sub,
@@ -141,7 +157,10 @@ export default function useAppleProvider() {
     // but remove cached identity token so that it doesn't try and log them in the next time
     // the app loads (see useEffect)
     cachedUserInfo.current.identityToken = null;
-    await SecureStore.setItemAsync(STORE_KEY, JSON.stringify(cachedUserInfo.current));
+    await SecureStore.setItemAsync(
+      STORE_KEY,
+      JSON.stringify(cachedUserInfo.current),
+    );
 
     cachedUserInfo.current = null;
   };

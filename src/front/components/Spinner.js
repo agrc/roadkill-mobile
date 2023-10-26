@@ -1,4 +1,8 @@
-import { Spinner as KittenSpinner, Text, useTheme } from '@ui-kitten/components';
+import {
+  Spinner as KittenSpinner,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import useStyles, { PADDING } from '../services/styles';
@@ -9,11 +13,22 @@ export default function Spinner({ show, message }) {
 
   return show ? (
     <View
-      style={[styles.loader, commonStyles.roundedBorders, { backgroundColor: theme['color-basic-transparent-600'] }]}
+      style={[
+        styles.loader,
+        commonStyles.roundedBorders,
+        { backgroundColor: theme['color-basic-transparent-600'] },
+      ]}
     >
-      <KittenSpinner color={theme['color-basic-1100']} size="large" status="control" />
+      <KittenSpinner
+        color={theme['color-basic-1100']}
+        size="large"
+        status="control"
+      />
       {message ? (
-        <Text category="h6" style={[{ color: theme['color-basic-900'] }, styles.message]}>
+        <Text
+          category="h6"
+          style={[{ color: theme['color-basic-900'] }, styles.message]}
+        >
           {message}
         </Text>
       ) : null}

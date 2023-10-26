@@ -61,7 +61,16 @@ export default function Form({
       }}
       style={style}
     >
-      {({ values, setFieldValue, errors, dirty, isValid, handleSubmit, handleChange, setValues }) => (
+      {({
+        values,
+        setFieldValue,
+        errors,
+        dirty,
+        isValid,
+        handleSubmit,
+        handleChange,
+        setValues,
+      }) => (
         <>
           <Species
             onChange={useCallback(
@@ -72,7 +81,7 @@ export default function Form({
                 });
                 setResetSpecies(false);
               },
-              [values]
+              [values],
             )}
             reset={resetSpecies}
             style={styles.bottomBump}
@@ -98,7 +107,11 @@ export default function Form({
             </>
           ) : null}
           {children({ values, setFieldValue, errors })}
-          <PhotoCapture onChange={onPhotoChange} uri={values.photo?.uri} style={styles.bottomBump} />
+          <PhotoCapture
+            onChange={onPhotoChange}
+            uri={values.photo?.uri}
+            style={styles.bottomBump}
+          />
           <Text category="h6">Additional comments:</Text>
           <Input
             multiline
@@ -107,7 +120,11 @@ export default function Form({
             onChangeText={handleChange('comments')}
           />
           <View style={styles.buttonContainer}>
-            <Button appearance="ghost" onPress={() => onClose()} style={styles.button}>
+            <Button
+              appearance="ghost"
+              onPress={() => onClose()}
+              style={styles.button}
+            >
               Cancel
             </Button>
             <Button
@@ -122,8 +139,8 @@ export default function Form({
           {__DEV__ ? (
             <>
               <Text category="c1">
-                [The below text is only for debugging the values sent to the database. It will not show up in
-                production.]
+                [The below text is only for debugging the values sent to the
+                database. It will not show up in production.]
               </Text>
               <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
               <Text>values: {JSON.stringify(values, null, '  ')}</Text>

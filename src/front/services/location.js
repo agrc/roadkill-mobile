@@ -129,7 +129,8 @@ export function useFollowUser(mapViewRef) {
 export async function getAssistancePrompt() {
   const existingPermissions = await Location.getForegroundPermissionsAsync();
 
-  let prompt = 'If you encounter a live animal please contact your local law enforcement.';
+  let prompt =
+    'If you encounter a live animal please contact your local law enforcement.';
   if (!existingPermissions.granted) {
     return prompt;
   }

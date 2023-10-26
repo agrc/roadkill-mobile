@@ -1,4 +1,13 @@
-import { Card, Divider, Input, List, ListItem, Modal, Text, useTheme } from '@ui-kitten/components';
+import {
+  Card,
+  Divider,
+  Input,
+  List,
+  ListItem,
+  Modal,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Image } from 'expo-image';
 import a from 'indefinite';
@@ -40,7 +49,14 @@ function itemPropOrString(field) {
 const pixelRatio = PixelRatio.get();
 const fallbackImage = require('../../assets/id-image-fallback.png');
 
-function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayPhoto = true }) {
+function MyListItem({
+  item,
+  onPress,
+  selected,
+  itemToString,
+  itemToKey,
+  displayPhoto = true,
+}) {
   const theme = useTheme();
   const selectedStyle = {
     borderColor: theme['color-primary-500'],
@@ -53,7 +69,9 @@ function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayP
   }
 
   const [imageSource, setImageSource] = React.useState({
-    uri: `${config.API}/reports/id_image/${itemToKey(item).toString().replace('/', '_')}/${pixelRatio}`,
+    uri: `${config.API}/reports/id_image/${itemToKey(item)
+      .toString()
+      .replace('/', '_')}/${pixelRatio}`,
     width: commonConfig.searchListImageSize,
     height: commonConfig.searchListImageSize,
     scale: pixelRatio,
@@ -67,7 +85,10 @@ function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayP
       accessoryLeft={() =>
         displayPhoto ? (
           <Image
-            style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
+            style={{
+              width: commonConfig.searchListImageSize,
+              height: commonConfig.searchListImageSize,
+            }}
             source={imageSource}
             onError={switchToFallbackImage}
           />
@@ -223,7 +244,9 @@ export default function SearchList({
 
           <Modal
             visible={showModal}
-            backdropStyle={{ backgroundColor: theme['color-basic-transparent-600'] }}
+            backdropStyle={{
+              backgroundColor: theme['color-basic-transparent-600'],
+            }}
             style={modalStyle}
           >
             <SafeAreaView style={{ flex: 1 }}>

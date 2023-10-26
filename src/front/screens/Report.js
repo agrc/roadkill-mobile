@@ -1,8 +1,20 @@
-import { Datepicker, NativeDateService, Text, useTheme } from '@ui-kitten/components';
+import {
+  Datepicker,
+  NativeDateService,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import * as reportSchemas from 'common/validation/reports';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, Animated, Keyboard, StyleSheet, useWindowDimensions, View } from 'react-native';
+import {
+  Alert,
+  Animated,
+  Keyboard,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
@@ -17,7 +29,10 @@ import { getIcon } from '../services/icons';
 import { ACCURACY, getLocation } from '../services/location';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
-import { getSubmitValues, pointCoordinatesToString } from '../services/utilities';
+import {
+  getSubmitValues,
+  pointCoordinatesToString,
+} from '../services/utilities';
 
 const SET_LOCATION_VIEW = 'set_location_view';
 const MAIN_VIEW = 'main_view';
@@ -98,10 +113,15 @@ const Report = ({
     submitValues.submit_date = new Date().toISOString();
     const currentLocation = await getLocation(ACCURACY.Highest);
     console.log('got location');
-    submitValues.submit_location = pointCoordinatesToString(currentLocation.coords);
+    submitValues.submit_location = pointCoordinatesToString(
+      currentLocation.coords,
+    );
 
     // if there is a route being collected and this is a pickup report, then cache the data on the device for later submission
-    if (vehicleTrackingState.isTracking && reportType === config.REPORT_TYPES.pickup) {
+    if (
+      vehicleTrackingState.isTracking &&
+      reportType === config.REPORT_TYPES.pickup
+    ) {
       vehicleTrackingDispatch({ type: 'ADD_PICKUP', payload: submitValues });
 
       Alert.alert(
@@ -112,7 +132,7 @@ const Report = ({
             text: 'OK',
             onPress: () => onClose(true),
           },
-        ]
+        ],
       );
 
       return;
@@ -181,7 +201,10 @@ const Report = ({
   }, [show]);
 
   React.useEffect(() => {
-    const newMaxHeight = view === MAIN_VIEW ? windowDimensions.height : windowDimensions.height * 0.5;
+    const newMaxHeight =
+      view === MAIN_VIEW
+        ? windowDimensions.height
+        : windowDimensions.height * 0.5;
 
     if (show) {
       if (view === MAIN_VIEW) {
@@ -213,16 +236,20 @@ const Report = ({
     };
 
     if (!force && isDirty()) {
-      Alert.alert('Are you sure?', 'All in-progress report data will be lost.', [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Discard report',
-          onPress: () => close(),
-        },
-      ]);
+      Alert.alert(
+        'Are you sure?',
+        'All in-progress report data will be lost.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Discard report',
+            onPress: () => close(),
+          },
+        ],
+      );
     } else {
       close();
     }
@@ -237,7 +264,10 @@ const Report = ({
   // set up form
   const reportFormikRef = React.useRef(null);
   const pickupFormikRef = React.useRef(null);
-  const formikRef = reportType === config.REPORT_TYPES.report ? reportFormikRef : pickupFormikRef;
+  const formikRef =
+    reportType === config.REPORT_TYPES.report
+      ? reportFormikRef
+      : pickupFormikRef;
 
   React.useEffect(() => {
     if (show) {
@@ -268,7 +298,11 @@ const Report = ({
       // enough for different screen sizes.
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
     >
-      <KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={PADDING + 5} scrollEnabled={showMain}>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraScrollHeight={PADDING + 5}
+        scrollEnabled={showMain}
+      >
         <View style={styles.body}>
           {!showMain ? (
             <Location onSetLocation={onSetLocation} onCancel={onClose} />
@@ -296,7 +330,9 @@ const Report = ({
                   <>
                     <RepeatSubmission
                       checked={values.repeat_submission}
-                      onChange={(newValue) => setFieldValue('repeat_submission', newValue)}
+                      onChange={(newValue) =>
+                        setFieldValue('repeat_submission', newValue)
+                      }
                       cancelReport={() => onClose()}
                       style={styles.bumpBottom}
                     />
@@ -309,7 +345,9 @@ const Report = ({
                       date={values.discovery_date}
                       dateService={localDateService}
                       max={new Date()}
-                      onSelect={(newValue) => setFieldValue('discovery_date', newValue)}
+                      onSelect={(newValue) =>
+                        setFieldValue('discovery_date', newValue)
+                      }
                       style={styles.bumpBottom}
                     />
                   </>
@@ -337,7 +375,9 @@ const Report = ({
                       date={values.pickup_date}
                       dateService={localDateService}
                       max={new Date()}
-                      onSelect={(newValue) => setFieldValue('pickup_date', newValue)}
+                      onSelect={(newValue) =>
+                        setFieldValue('pickup_date', newValue)
+                      }
                       style={styles.bumpBottom}
                     />
                   </>
@@ -353,7 +393,10 @@ const Report = ({
 };
 
 Report.propTypes = {
-  reportType: propTypes.oneOf([config.REPORT_TYPES.report, config.REPORT_TYPES.pickup]).isRequired,
+  reportType: propTypes.oneOf([
+    config.REPORT_TYPES.report,
+    config.REPORT_TYPES.pickup,
+  ]).isRequired,
   show: propTypes.bool.isRequired,
   hideReport: propTypes.func.isRequired,
   setMarker: propTypes.func.isRequired,

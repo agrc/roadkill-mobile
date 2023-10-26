@@ -86,4 +86,6 @@ export const DistinctLocations = () => <ReportInfo data={distinctLocations} />;
 
 export const NoPhotoLocation = () => <ReportInfo data={noPhotoLocation} />;
 
-export const OfflineSubmissionWithPhoto = () => <ReportInfo data={offlineReport} />;
+export const OfflineSubmissionWithPhoto = () => (
+  <ReportInfo data={offlineReport} />
+);

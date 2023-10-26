@@ -266,7 +266,9 @@ describe('appendCoordinates', () => {
       },
     ];
 
-    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(
+      expected,
+    );
   });
 
   it('creates new rulers when the latitude changes by more than one degree', () => {
@@ -289,7 +291,7 @@ describe('appendCoordinates', () => {
           longitude: -111.5,
         },
       ],
-      mock
+      mock,
     );
 
     // should not create new ruler
@@ -301,7 +303,7 @@ describe('appendCoordinates', () => {
           longitude: -111.5,
         },
       ],
-      mock
+      mock,
     );
 
     // should create new ruler
@@ -313,7 +315,7 @@ describe('appendCoordinates', () => {
           longitude: -111.5,
         },
       ],
-      mock
+      mock,
     );
 
     expect(mock.mock.calls.length).toBeGreaterThanOrEqual(2);
@@ -340,7 +342,9 @@ describe('appendCoordinates', () => {
       },
     ];
 
-    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(
+      expected,
+    );
   });
 
   it('can handle empty existing and a single new', () => {
@@ -360,6 +364,8 @@ describe('appendCoordinates', () => {
       },
     ];
 
-    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(expected);
+    expect(appendCoordinates(existing, newCoords, CheapRuler)).toEqual(
+      expected,
+    );
   });
 });

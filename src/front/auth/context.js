@@ -72,7 +72,8 @@ export function AuthContextProvider({ children, onReady }) {
     const giddyUp = async () => {
       // best practice to speed up browser for android
       // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
-      const tabsSupportingBrowsers = await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+      const tabsSupportingBrowsers =
+        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
       browserPackage = tabsSupportingBrowsers?.preferredBrowserPackage;
 
       try {
@@ -285,7 +286,16 @@ export function AuthContextProvider({ children, onReady }) {
 
   return (
     <AuthContext.Provider
-      value={{ authInfo, logIn, logOut, status, getBearerToken, setUserType, userType, registerUser }}
+      value={{
+        authInfo,
+        logIn,
+        logOut,
+        status,
+        getBearerToken,
+        setUserType,
+        userType,
+        registerUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

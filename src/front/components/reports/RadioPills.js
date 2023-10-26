@@ -26,14 +26,24 @@ export default function RadioPills({ options, value, onChange, label, style }) {
         style={[
           styles.pill,
           isUnknown && isSelected
-            ? { backgroundColor: theme['color-basic-500'], borderColor: theme['color-basic-500'] }
+            ? {
+                backgroundColor: theme['color-basic-500'],
+                borderColor: theme['color-basic-500'],
+              }
             : null,
         ]}
         status={isUnknown ? 'basic' : 'primary'}
         size="small"
       >
         {(evaProps) => (
-          <Text {...evaProps} style={[evaProps.style, styles.capitalize, { color: theme['color-basic-800'] }]}>
+          <Text
+            {...evaProps}
+            style={[
+              evaProps.style,
+              styles.capitalize,
+              { color: theme['color-basic-800'] },
+            ]}
+          >
             {optionLabel}
           </Text>
         )}

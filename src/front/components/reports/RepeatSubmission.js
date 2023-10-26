@@ -3,20 +3,29 @@ import propTypes from 'prop-types';
 import { Alert, StyleSheet, View } from 'react-native';
 import { PADDING } from '../../services/styles';
 
-export default function RepeatSubmission({ checked, onChange, cancelReport, style }) {
+export default function RepeatSubmission({
+  checked,
+  onChange,
+  cancelReport,
+  style,
+}) {
   const onToggle = (newValue) => {
     if (newValue) {
       // note: if this text is used as the title, it gets cut off in the alert box on android
-      Alert.alert(null, 'Please understand that it may take up to two weeks for a reported animal to be removed.', [
-        {
-          text: 'Continue with repeat submission',
-        },
-        {
-          text: 'Cancel submission',
-          onPress: cancelReport,
-          style: 'cancel',
-        },
-      ]);
+      Alert.alert(
+        null,
+        'Please understand that it may take up to two weeks for a reported animal to be removed.',
+        [
+          {
+            text: 'Continue with repeat submission',
+          },
+          {
+            text: 'Cancel submission',
+            onPress: cancelReport,
+            style: 'cancel',
+          },
+        ],
+      );
     }
     onChange(newValue);
   };

@@ -49,8 +49,19 @@ export const ItemsAsObjects = () => {
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
-          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="items as objects" /> : null}
+          <Text category="c1">{`value: ${JSON.stringify(
+            value,
+            null,
+            '  ',
+          )}`}</Text>
+          {items ? (
+            <SearchList
+              value={value}
+              onChange={setValue}
+              items={items}
+              placeholder="items as objects"
+            />
+          ) : null}
         </ScrollView>
       </RootView>
     );
@@ -73,8 +84,19 @@ export const ManyObjectItems = () => {
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
-          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="many objects" /> : null}
+          <Text category="c1">{`value: ${JSON.stringify(
+            value,
+            null,
+            '  ',
+          )}`}</Text>
+          {items ? (
+            <SearchList
+              value={value}
+              onChange={setValue}
+              items={items}
+              placeholder="many objects"
+            />
+          ) : null}
         </ScrollView>
       </RootView>
     );
@@ -90,7 +112,9 @@ export const ManyStringItems = () => {
 
     React.useEffect(() => {
       if (constants) {
-        setItems([...new Set(constants.species.map((item) => item.family))].sort());
+        setItems(
+          [...new Set(constants.species.map((item) => item.family))].sort(),
+        );
         setItems(constants.species);
       }
     }, [constants]);
@@ -98,8 +122,19 @@ export const ManyStringItems = () => {
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
-          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          {items ? <SearchList value={value} onChange={setValue} items={items} placeholder="many strings" /> : null}
+          <Text category="c1">{`value: ${JSON.stringify(
+            value,
+            null,
+            '  ',
+          )}`}</Text>
+          {items ? (
+            <SearchList
+              value={value}
+              onChange={setValue}
+              items={items}
+              placeholder="many strings"
+            />
+          ) : null}
         </ScrollView>
       </RootView>
     );
@@ -114,8 +149,17 @@ export const ItemsAsStrings = () => {
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
-          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
-          <SearchList value={value} onChange={setValue} items={items} placeholder="items as strings" />
+          <Text category="c1">{`value: ${JSON.stringify(
+            value,
+            null,
+            '  ',
+          )}`}</Text>
+          <SearchList
+            value={value}
+            onChange={setValue}
+            items={items}
+            placeholder="items as strings"
+          />
         </ScrollView>
       </RootView>
     );
@@ -138,7 +182,11 @@ export const OrganizationItems = () => {
     return (
       <RootView>
         <ScrollView style={{ paddingHorizontal: 25 }}>
-          <Text category="c1">{`value: ${JSON.stringify(value, null, '  ')}`}</Text>
+          <Text category="c1">{`value: ${JSON.stringify(
+            value,
+            null,
+            '  ',
+          )}`}</Text>
           <Text category="label" appearance="hint">
             Organization
           </Text>

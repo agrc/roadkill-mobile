@@ -35,7 +35,9 @@ export default function MyReportsScreen() {
 
   React.useEffect(() => {
     const getSubmissionData = async () => {
-      const promises = cachedSubmissionIds.map((id) => getOfflineSubmission(id));
+      const promises = cachedSubmissionIds.map((id) =>
+        getOfflineSubmission(id),
+      );
       const newSubmissions = await Promise.all(promises);
 
       setOfflineSubmissions(newSubmissions.filter((submission) => submission));
@@ -48,7 +50,10 @@ export default function MyReportsScreen() {
     }
   }, [cachedSubmissionIds]);
 
-  const { data, isLoading, isError, error } = useQuery(config.QUERY_KEYS.submissions, getSubmissions);
+  const { data, isLoading, isError, error } = useQuery(
+    config.QUERY_KEYS.submissions,
+    getSubmissions,
+  );
 
   return (
     <Layout style={{ flex: 1 }}>
@@ -61,15 +66,28 @@ export default function MyReportsScreen() {
         ) : null}
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>There was an error retrieving your previously submitted data from the server!</Text>
+            <Text>
+              There was an error retrieving your previously submitted data from
+              the server!
+            </Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}
         {data ? (
           data.length ? (
             data.map((item) => (
-              <View key={item.report_id ? `report_${item.report_id}` : `route_${item.route_id}`}>
-                {item.report_id ? <ReportListItem item={item} /> : <RouteListItem item={item} />}
+              <View
+                key={
+                  item.report_id
+                    ? `report_${item.report_id}`
+                    : `route_${item.route_id}`
+                }
+              >
+                {item.report_id ? (
+                  <ReportListItem item={item} />
+                ) : (
+                  <RouteListItem item={item} />
+                )}
                 <Divider />
               </View>
             ))
