@@ -65,7 +65,7 @@ export async function getOfflineSubmission(id, pickupIndex) {
     return JSON.parse(json);
   } catch (error) {
     console.error(
-      `Error attempting to read offline submission with id: ${id} (pickupIndex: ${pickupIndex}): \n\n ${error}`
+      `Error attempting to read offline submission with id: ${id} (pickupIndex: ${pickupIndex}): \n\n ${error}`,
     );
 
     throw error;
@@ -85,7 +85,7 @@ export function OfflineCacheContextProvider({ children }) {
   const { isInternetReachable } = useNetInfo();
   const [cachedSubmissionIds, setCachedSubmissionIds] = React.useState([]);
   const { postReport, postRoute } = useAPI();
-  const {authInfo} = useAuth();
+  const { authInfo } = useAuth();
 
   React.useEffect(() => {
     const giddyUp = async () => {
@@ -217,7 +217,7 @@ export function OfflineCacheContextProvider({ children }) {
       Alert.alert(
         'Offline Report',
         (error ? `${errorMessage} \n\n ${error.message}` : offlineMessage) + '\n\n' + commonMessage,
-        [{ text: 'OK', onPress: resolve }]
+        [{ text: 'OK', onPress: resolve }],
       );
     });
   };
@@ -256,7 +256,7 @@ export function OfflineCacheContextProvider({ children }) {
 
     await writeAsStringAsync(
       `${routeDirectory}/${dataFileName}`,
-      JSON.stringify({ ...submitValues, pickups: newPickups })
+      JSON.stringify({ ...submitValues, pickups: newPickups }),
     );
 
     setCachedSubmissionIds((existing) => [...existing, id]);
@@ -286,7 +286,7 @@ OfflineCacheContextProvider.propTypes = {
 export function useOfflineCache() {
   const context = React.useContext(OfflineCacheContext);
   if (!context) {
-    throw new Error('useOfflineCache must be used within a OfflineCacheProvider');
+    throw new Error('useOfflineCache must be used within a OfflineCacheContextProvider component');
   }
   return context;
 }

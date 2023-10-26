@@ -1,8 +1,8 @@
+import analytics from '@react-native-firebase/analytics';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Drawer, DrawerItem, IndexPath, useTheme } from '@ui-kitten/components';
-import analytics from '@react-native-firebase/analytics';
 import * as Linking from 'expo-linking';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -31,7 +31,7 @@ const prefix = Linking.createURL('/');
 let StorybookUIRoot;
 if (config.SHOW_STORYBOOK) {
   // don't ship this code in production
-  StorybookUIRoot = require('../storybook').default;
+  StorybookUIRoot = require('../.storybook/index').default;
 }
 
 const AuthNavigator = () => {

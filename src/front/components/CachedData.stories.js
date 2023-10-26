@@ -1,5 +1,4 @@
-import { storiesOf } from '@storybook/react-native';
-import CachedData from '../../components/CachedData';
+import CachedData from './CachedData';
 
 const data = [
   {
@@ -98,6 +97,11 @@ const data = [
   },
 ];
 
-storiesOf('CachedData', module)
-  .add('default', () => <CachedData data={data} />)
-  .add('no data', () => <CachedData data={[]} />);
+export default {
+  title: 'CachedData',
+  component: CachedData,
+};
+
+export const Default = () => <CachedData data={data} />;
+
+export const NoData = () => <CachedData data={[]} />;

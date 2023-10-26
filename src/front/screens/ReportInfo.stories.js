@@ -1,6 +1,5 @@
-import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { ReportInfo } from '../../screens/ReportInfo';
+import { ReportInfo } from './ReportInfo';
 
 const publicData = {
   report_id: 37,
@@ -73,10 +72,18 @@ const offlineReport = {
   offlineStorageId: 1648159544460,
 };
 
-storiesOf('ReportInfo', module)
-  .addDecorator((getStory) => <ScrollView>{getStory()}</ScrollView>)
-  .add('public report', () => <ReportInfo data={publicData} />)
-  .add('pickup report', () => <ReportInfo data={pickupData} />)
-  .add('distinct locations', () => <ReportInfo data={distinctLocations} />)
-  .add('no photo location', () => <ReportInfo data={noPhotoLocation} />)
-  .add('offline submission with photo', () => <ReportInfo data={offlineReport} />);
+export default {
+  title: 'ReportInfo',
+  component: ReportInfo,
+  decorators: [(getStory) => <ScrollView>{getStory()}</ScrollView>],
+};
+
+export const PublicReport = () => <ReportInfo data={publicData} />;
+
+export const PickupReport = () => <ReportInfo data={pickupData} />;
+
+export const DistinctLocations = () => <ReportInfo data={distinctLocations} />;
+
+export const NoPhotoLocation = () => <ReportInfo data={noPhotoLocation} />;
+
+export const OfflineSubmissionWithPhoto = () => <ReportInfo data={offlineReport} />;

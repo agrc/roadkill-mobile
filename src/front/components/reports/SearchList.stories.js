@@ -1,10 +1,9 @@
-import { storiesOf } from '@storybook/react-native';
 import { Text } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import SearchList from '../../components/reports/SearchList';
-import RootView from '../../components/RootView';
 import { getConstants } from '../../services/constants.js';
+import RootView from '../RootView';
+import SearchList from './SearchList';
 
 const emptyObject = {
   species_id: null,
@@ -30,7 +29,12 @@ const useConstants = () => {
   return constants;
 };
 
-const ItemsAsObjects = () => {
+export default {
+  title: 'SearchList',
+  component: SearchList,
+};
+
+export const ItemsAsObjects = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(emptyObject);
     const constants = useConstants();
@@ -53,7 +57,7 @@ const ItemsAsObjects = () => {
   });
 };
 
-const ManyObjectItems = () => {
+export const ManyObjectItems = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(emptyObject);
 
@@ -77,7 +81,7 @@ const ManyObjectItems = () => {
   });
 };
 
-const ManyStringItems = () => {
+export const ManyStringItems = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(null);
 
@@ -102,7 +106,7 @@ const ManyStringItems = () => {
   });
 };
 
-const ItemsAsStrings = () => {
+export const ItemsAsStrings = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState(null);
     const items = ['one', 'amphibians', 'three', 'four', 'five'];
@@ -118,7 +122,7 @@ const ItemsAsStrings = () => {
   });
 };
 
-const OrganizationItems = () => {
+export const OrganizationItems = () => {
   return React.createElement(() => {
     const [value, setValue] = React.useState({ id: null, name: null });
 
@@ -155,10 +159,3 @@ const OrganizationItems = () => {
     );
   });
 };
-
-storiesOf('SearchList', module)
-  .add('items as objects', ItemsAsObjects)
-  .add('items as strings', ItemsAsStrings)
-  .add('many object items', ManyObjectItems)
-  .add('many string items', ManyStringItems)
-  .add('organization items', OrganizationItems);

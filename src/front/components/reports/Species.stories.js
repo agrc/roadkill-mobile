@@ -1,9 +1,8 @@
-import { storiesOf } from '@storybook/react-native';
 import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import Species from '../../components/reports/Species';
-import RootView from '../../components/RootView';
+import RootView from '../RootView';
+import Species from './Species';
 
 const getStory = (initialAbleToIdentify) => {
   const Story = () =>
@@ -39,4 +38,11 @@ const getStory = (initialAbleToIdentify) => {
   return Story;
 };
 
-storiesOf('Species', module).add('able to identify', getStory(true)).add('not able to identify', getStory(false));
+export default {
+  title: 'Species',
+  component: Species,
+};
+
+export const AbleToIdentify = getStory(true);
+
+export const NotAbleToIdentify = getStory(false);

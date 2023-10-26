@@ -1,8 +1,12 @@
-import { storiesOf } from '@storybook/react-native';
 import React from 'react';
-import RadioPills from '../../components/reports/RadioPills';
+import RadioPills from './RadioPills';
 
-const Default = () => {
+export default {
+  title: 'RadioPills',
+  component: RadioPills,
+};
+
+export const Default = () => {
   const options = [
     {
       label: 'Option 1',
@@ -28,7 +32,7 @@ const Default = () => {
   });
 };
 
-const OptionsAsStrings = () => {
+export const OptionsAsStrings = () => {
   const options = ['frequent', 'common', 'latin', 'order', 'class', 'group'];
   return React.createElement(() => {
     const [value, setValue] = React.useState('');
@@ -37,7 +41,7 @@ const OptionsAsStrings = () => {
   });
 };
 
-const UnknownOption = () => {
+export const UnknownOption = () => {
   const options = ['frequent', 'common', 'latin', 'order', 'class', 'group', 'unknown'];
   return React.createElement(() => {
     const [value, setValue] = React.useState('');
@@ -45,8 +49,3 @@ const UnknownOption = () => {
     return <RadioPills value={value} onChange={setValue} options={options} label="unknown option" />;
   });
 };
-
-storiesOf('RadioPills', module)
-  .add('default', Default)
-  .add('options as strings', OptionsAsStrings)
-  .add('unknown option', UnknownOption);

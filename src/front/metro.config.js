@@ -8,5 +8,6 @@ const commonDir = path.resolve(__dirname + '/../common');
 defaultConfig.resolver.extraNodeModules.common = commonDir;
 defaultConfig.watchFolders.push(commonDir);
 defaultConfig.resolver.assetExts.push('lazy');
+defaultConfig.resolver.resolverMainFields.unshift('sbmodern');
 
 module.exports = defaultConfig;

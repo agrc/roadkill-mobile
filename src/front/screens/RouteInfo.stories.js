@@ -1,6 +1,5 @@
-import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { RouteInfo } from '../../screens/RouteInfo';
+import { RouteInfo } from './RouteInfo';
 
 const data = {
   geog: 'LINESTRING(-111.83664740299157 40.68497478203966,-111.833962450252 40.685259146753374,-111.83360250623468 40.687057563909086,-111.79836687175637 40.68700608968323,-111.79780062239998 40.68313533254923,-111.8021303061858 40.67575632033561,-111.8149814273767 40.6770502705976,-111.81495921426092 40.68029957595697,-111.82029087594982 40.680738856072644,-111.82008419351716 40.68217707333608,-111.82951124074336 40.68190631043272,-111.83064135509944 40.68434550518023,-111.83638543261853 40.68501182968802)',
@@ -85,7 +84,12 @@ const offlineData = {
   ],
 };
 
-storiesOf('RouteInfo', module)
-  .addDecorator((getStory) => <ScrollView>{getStory()}</ScrollView>)
-  .add('default', () => <RouteInfo data={data} />)
-  .add('offline route', () => <RouteInfo data={offlineData} />);
+export default {
+  title: 'RouteInfo',
+  component: RouteInfo,
+  decorators: [(getStory) => <ScrollView>{getStory()}</ScrollView>],
+};
+
+export const Default = () => <RouteInfo data={data} />;
+
+export const OfflineRoute = () => <RouteInfo data={offlineData} />;
