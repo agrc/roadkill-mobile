@@ -10,7 +10,7 @@ if (__DEV__ && !process.env.JEST_WORKER_ID) {
   } else if (Device.isDevice) {
     API = API.replace(
       'localhost',
-      Constants.manifest2.extra.expoClient.hostUri.split(':').shift(),
+      Constants.expoConfig.hostUri.split(':').shift(),
     );
   }
 }
