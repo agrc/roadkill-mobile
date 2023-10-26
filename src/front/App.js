@@ -24,10 +24,21 @@ enableLatestRenderer();
 console.log('starting up...');
 const queryClient = new QueryClient();
 
-Sentry.init({
-  dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
-  environment: Constants.expoConfig.extra.ENVIRONMENT,
-});
+// https://github.com/expo/sentry-expo/issues/347#issuecomment-1712008457
+if (__DEV__) {
+  if (!global.sentryInit) {
+    Sentry.init({
+      dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
+      environment: Constants.expoConfig.extra.ENVIRONMENT,
+    });
+    global.sentryInit = true;
+  }
+} else {
+  Sentry.init({
+    dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
+    environment: Constants.expoConfig.extra.ENVIRONMENT,
+  });
+}
 
 if (__DEV__) {
   /*
