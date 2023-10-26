@@ -20,7 +20,7 @@ export default {
   description: 'A mobile application for reporting and removing roadkill in Utah.',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.0.6',
+  version: '3.0.7',
   orientation: 'portrait',
   icon: process.env.ENVIRONMENT === 'production' ? './assets/icon.png' : `./assets/icon_${process.env.ENVIRONMENT}.png`,
   splash: {
@@ -134,8 +134,10 @@ export default {
     APP_QUAD_WORD: process.env.APP_QUAD_WORD,
   },
 
-  // required for eas update command
-  runtimeVersion: '1.0.5',
+  /* required for eas update command
+    bump major version when upgrading expo version
+  */
+  runtimeVersion: '2.0.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
