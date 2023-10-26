@@ -1,15 +1,15 @@
 import * as eva from '@eva-design/eva';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import Constants from 'expo-constants';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { LogBox, View } from 'react-native';
+import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { enableLatestRenderer } from 'react-native-maps';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
@@ -38,15 +38,6 @@ if (__DEV__) {
     dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
     environment: Constants.expoConfig.extra.ENVIRONMENT,
   });
-}
-
-if (__DEV__) {
-  /*
-    react-query causes these types of logs to be shown but they say that they are nothing to worry about
-    this may be able to be removed after upgrading to RN 0.65
-    ref: https://github.com/tannerlinsley/react-query/issues/1259
-  */
-  LogBox.ignoreLogs(['Setting a timer']);
 }
 
 export default function App() {

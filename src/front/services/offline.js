@@ -1,4 +1,5 @@
 import { useNetInfo } from '@react-native-community/netinfo';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   cacheDirectory,
   deleteAsync,
@@ -16,7 +17,6 @@ import prettyBytes from 'pretty-bytes';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
-import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import { useAPI } from './api';
@@ -106,7 +106,7 @@ export function OfflineCacheContextProvider({ children }) {
   }, []);
 
   const submit = async function () {
-    if (mutation.isLoading) {
+    if (mutation.isPending) {
       console.warn('already submitting, skipping');
 
       return;
@@ -166,7 +166,8 @@ export function OfflineCacheContextProvider({ children }) {
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(submit, {
+  const mutation = useMutation({
+    mutationFn: submit,
     onSuccess: () => {
       queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
@@ -178,7 +179,7 @@ export function OfflineCacheContextProvider({ children }) {
       isInternetReachable &&
       authInfo?.user &&
       cachedSubmissionIds.length > 0 &&
-      !mutation.isLoading
+      !mutation.isPending
     ) {
       mutation.mutate();
     }
@@ -300,7 +301,7 @@ export function OfflineCacheContextProvider({ children }) {
         cacheRoute,
         cachedSubmissionIds,
         submitOfflineSubmissions: mutation.mutate.bind(mutation),
-        isSubmitting: mutation.isLoading,
+        isSubmitting: mutation.isPending,
       }}
     >
       {children}

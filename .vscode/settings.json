@@ -77,6 +77,7 @@
     "sqlalchemy",
     "SRID",
     "tailwindcss",
+    "tanstack",
     "tappable",
     "UDWR",
     "Unsubmitted",

@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useQuery } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import CachedData from '../components/CachedData';
 import ReportListItem from '../components/ReportListItem';
@@ -50,10 +50,10 @@ export default function MyReportsScreen() {
     }
   }, [cachedSubmissionIds]);
 
-  const { data, isLoading, isError, error } = useQuery(
-    config.QUERY_KEYS.submissions,
-    getSubmissions,
-  );
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: [config.QUERY_KEYS.submissions],
+    queryFn: getSubmissions,
+  });
 
   return (
     <Layout style={{ flex: 1 }}>
@@ -98,7 +98,7 @@ export default function MyReportsScreen() {
           )
         ) : null}
       </ScrollView>
-      <Spinner show={isLoading} message={'Loading your submissions...'} />
+      <Spinner show={isPending} message={'Loading your submissions...'} />
     </Layout>
   );
 }

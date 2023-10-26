@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Datepicker,
   NativeDateService,
@@ -16,7 +17,6 @@ import {
   View,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Form from '../components/reports/Form';
@@ -174,7 +174,8 @@ const Report = ({
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(submitReport, {
+  const mutation = useMutation({
+    mutationFn: submitReport,
     onSuccess: () => {
       queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
@@ -387,7 +388,7 @@ const Report = ({
           </View>
         </View>
       </KeyboardAwareScrollView>
-      <Spinner show={mutation.isLoading} />
+      <Spinner show={mutation.isPending} />
     </Animated.View>
   ) : null;
 };

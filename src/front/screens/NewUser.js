@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
+import { useMutation } from '@tanstack/react-query';
 import { Button, Input, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
-import { useMutation } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
@@ -21,7 +21,8 @@ export default function NewUserScreen() {
   const { logOut, userType, authInfo, registerUser } = useAuth();
   const navigation = useNavigation();
   const organizationIsRequired = userType !== config.USER_TYPES.public;
-  const registerMutation = useMutation(registerUser, {
+  const registerMutation = useMutation({
+    mutationFn: registerUser,
     onSuccess: () => {
       if (userType !== config.USER_TYPES.public) {
         Alert.alert(
@@ -111,7 +112,7 @@ export default function NewUserScreen() {
     : '';
 
   return (
-    <RootView showSpinner={registerMutation.isLoading}>
+    <RootView showSpinner={registerMutation.isPending}>
       <ScrollView style={styles.layout}>
         <Text category="h1">Please complete your profile</Text>
 
@@ -125,7 +126,7 @@ export default function NewUserScreen() {
           }}
           validationSchema={schema}
           onSubmit={register}
-          isSubmitting={registerMutation.isLoading}
+          isSubmitting={registerMutation.isPending}
         >
           {({
             values,
@@ -232,7 +233,7 @@ export default function NewUserScreen() {
               <Button
                 onPress={handleSubmit}
                 style={styles.input}
-                disabled={!dirty || !isValid || registerMutation.isLoading}
+                disabled={!dirty || !isValid || registerMutation.isPending}
                 status="info"
               >
                 Register

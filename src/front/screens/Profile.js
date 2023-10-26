@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Button,
   Card,
@@ -10,7 +11,6 @@ import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React, { useRef } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
@@ -51,10 +51,10 @@ export default function ProfileScreen() {
 
     return responseJson.profile;
   };
-  const { data, isLoading, isError, error } = useQuery(
-    config.QUERY_KEYS.profile,
-    getProfileData,
-  );
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: [config.QUERY_KEYS.profile],
+    queryFn: getProfileData,
+  });
 
   const updateProfileData = async (newData) => {
     await post('user/profile/update', newData);
@@ -62,7 +62,8 @@ export default function ProfileScreen() {
 
   const formikRef = useRef();
   const queryClient = useQueryClient();
-  const updateMutation = useMutation(updateProfileData, {
+  const updateMutation = useMutation({
+    mutationFn: updateProfileData,
     onSuccess: () => {
       Alert.alert('Success', 'Profile updated successfully!');
 
@@ -79,7 +80,8 @@ export default function ProfileScreen() {
     },
   });
 
-  const deleteAccountMutation = useMutation(deleteAccount, {
+  const deleteAccountMutation = useMutation({
+    mutationFn: deleteAccount,
     onSuccess: () => {
       Alert.alert('Success', 'Your account has successfully deleted!');
 
@@ -247,7 +249,7 @@ export default function ProfileScreen() {
                     <Button
                       style={styles.button}
                       onPress={handleSubmit}
-                      disabled={!dirty || !isValid || updateMutation.isLoading}
+                      disabled={!dirty || !isValid || updateMutation.isPending}
                       status="info"
                     >
                       Update
@@ -296,7 +298,7 @@ export default function ProfileScreen() {
                 style={styles.button}
                 onPress={handleDeleteAccountButton}
                 status="danger"
-                disabled={deleteAccountMutation.isLoading}
+                disabled={deleteAccountMutation.isPending}
               >
                 Delete Account
               </Button>
@@ -304,7 +306,7 @@ export default function ProfileScreen() {
           </>
         ) : null}
       </ScrollView>
-      <Spinner show={isLoading} message={'Loading profile...'} />
+      <Spinner show={isPending} message={'Loading profile...'} />
     </Layout>
   );
 }

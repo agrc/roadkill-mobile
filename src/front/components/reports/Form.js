@@ -130,7 +130,7 @@ export default function Form({
             <Button
               status="info"
               onPress={handleSubmit}
-              disabled={!dirty || !isValid || mutation.isLoading}
+              disabled={!dirty || !isValid || mutation.isPending}
               style={styles.button}
             >
               Submit Report

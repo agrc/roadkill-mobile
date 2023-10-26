@@ -1,10 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query';
 import commonConfig from 'common/config';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
-import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';

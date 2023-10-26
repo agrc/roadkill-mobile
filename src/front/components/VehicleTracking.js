@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { length, lineString } from '@turf/turf';
 import {
   Button,
@@ -14,7 +15,6 @@ import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { useMutation, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
@@ -338,7 +338,8 @@ export default function VehicleTracking({
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(submitRoute, {
+  const mutation = useMutation({
+    mutationFn: submitRoute,
     onSuccess: () => {
       queryClient.invalidateQueries(config.QUERY_KEYS.submissions);
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
@@ -417,7 +418,7 @@ export default function VehicleTracking({
           </Button>
         </Card>
       </Modal>
-      <Spinner show={mutation.isLoading} message={spinnerMessage} />
+      <Spinner show={mutation.isPending} message={spinnerMessage} />
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useQuery } from '@tanstack/react-query';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import propTypes from 'prop-types';
@@ -11,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { useQuery } from 'react-query';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
@@ -52,10 +52,10 @@ export default function ReportInfoScreen() {
       return offlineSubmission;
     }
   };
-  const { data, isLoading, isError, error } = useQuery(
-    `report-${reportId}`,
-    getReportData,
-  );
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: [`report-${reportId}`],
+    queryFn: getReportData,
+  });
 
   React.useEffect(() => {
     if (data) {
@@ -80,7 +80,7 @@ export default function ReportInfoScreen() {
           <ReportInfo data={data} />
         </ScrollView>
       </SafeAreaView>
-      <Spinner show={isLoading} message={'Loading report details...'} />
+      <Spinner show={isPending} message={'Loading report details...'} />
     </Layout>
   );
 }

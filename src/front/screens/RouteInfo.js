@@ -1,4 +1,5 @@
 import { useRoute } from '@react-navigation/native';
+import { useQuery } from '@tanstack/react-query';
 import { Card, Divider, Layout, Text, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -11,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
-import { useQuery } from 'react-query';
 import Map from '../components/Map';
 import ReportListItem from '../components/ReportListItem';
 import Spinner from '../components/Spinner';
@@ -43,10 +43,10 @@ export default function RouteInfoScreen() {
       return offlineSubmission;
     }
   };
-  const { data, isLoading, isError, error } = useQuery(
-    `route-${routeId}`,
-    getRouteData,
-  );
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: [`route-${routeId}`],
+    queryFn: getRouteData,
+  });
 
   return (
     <Layout style={styles.container}>
@@ -61,7 +61,7 @@ export default function RouteInfoScreen() {
         ) : null}
         {data ? <RouteInfo data={data} /> : null}
       </ScrollView>
-      <Spinner show={isLoading} message={'Loading route details...'} />
+      <Spinner show={isPending} message={'Loading route details...'} />
     </Layout>
   );
 }
