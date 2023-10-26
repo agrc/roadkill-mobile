@@ -1,8 +1,8 @@
 import * as Location from 'expo-location';
-import ky from 'ky';
 import React from 'react';
 import { Platform } from 'react-native';
 import config from './config';
+import myFetch from './fetch';
 
 export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
@@ -110,7 +110,7 @@ export function useFollowUser(mapViewRef) {
         accuracy: Location.Accuracy.Highest,
         distanceInterval: 1, // in meters
       },
-      getCallback(zoomIn)
+      getCallback(zoomIn),
     );
 
     setSubscription(sub);
@@ -141,21 +141,25 @@ export async function getAssistancePrompt() {
   }
 
   try {
-    const response = await ky(`${config.URLS.PSAP_FEATURE_SERVICE}/query`, {
-      searchParams: {
-        f: 'json',
-        outFields: 'DsplayName,PHONE_NUMBER',
-        geometryType: 'esriGeometryPoint',
-        geometry: JSON.stringify({
-          x: currentLocation.coords.longitude,
-          y: currentLocation.coords.latitude,
-          spatialReference: {
-            wkid: 4326,
-          },
-        }),
-        returnGeometry: false,
+    const response = await myFetch(
+      `${config.URLS.PSAP_FEATURE_SERVICE}/query`,
+      {
+        searchParams: {
+          f: 'json',
+          outFields: 'DsplayName,PHONE_NUMBER',
+          geometryType: 'esriGeometryPoint',
+          geometry: JSON.stringify({
+            x: currentLocation.coords.longitude,
+            y: currentLocation.coords.latitude,
+            spatialReference: {
+              wkid: 4326,
+            },
+          }),
+          returnGeometry: false,
+        },
       },
-    }).json();
+      true,
+    );
 
     if (response.features?.length) {
       const attributes = response.features[0].attributes;

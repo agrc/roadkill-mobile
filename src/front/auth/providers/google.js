@@ -2,9 +2,9 @@ import commonConfig from 'common/config';
 import { revokeAsync } from 'expo-auth-session';
 import { discovery, useAuthRequest } from 'expo-auth-session/providers/google';
 import Constants from 'expo-constants';
-import ky from 'ky';
 import React from 'react';
 import config from '../../services/config';
+import myFetch from '../../services/fetch';
 import { useAsyncError } from '../../services/utilities';
 
 export const isAuthenticationExpired = (auth) => {
@@ -25,7 +25,7 @@ export default function useGoogleProvider() {
     },
     {
       path: config.OAUTH_REDIRECT_SCREEN,
-    }
+    },
   );
   const throwAsyncError = useAsyncError();
 
@@ -61,7 +61,7 @@ export default function useGoogleProvider() {
         return null;
       } else {
         throwAsyncError(
-          new Error(`promptResponse.type: ${promptResponse.type}; promptResponse: ${JSON.stringify(promptResponse)}`)
+          new Error(`promptResponse.type: ${promptResponse.type}; promptResponse: ${JSON.stringify(promptResponse)}`),
         );
       }
     } catch (error) {
@@ -80,11 +80,15 @@ export default function useGoogleProvider() {
 
     let user;
     try {
-      user = await ky('https://openidconnect.googleapis.com/v1/userinfo', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      user = await myFetch(
+        'https://openidconnect.googleapis.com/v1/userinfo',
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      }).json();
+        true,
+      );
     } catch (error) {
       throwAsyncError(error);
     }

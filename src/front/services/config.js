@@ -48,7 +48,6 @@ export default {
     submissions: 'submissions',
     profile: 'profile',
   },
-  API_REQUEST_TIMEOUT: 1000 * 300, // 5 minutes - matches GCP cloud run timeout
   MAX_TRACKING_TIME: 1000 * 60 * 60 * 12, // 12 hours
   REPORT_TYPES: {
     report: 'report',

@@ -1,8 +1,8 @@
 import commonConfig from 'common/config';
-import ky from 'ky';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import config from '../services/config';
+import myFetch from './fetch';
 
 // this FormData class is NOT the same class as in the browser
 // ref: https://github.com/facebook/react-native/blob/main/Libraries/Network/FormData.js
@@ -21,13 +21,12 @@ export function getFormData(submitValues) {
 export function useAPI() {
   const { getBearerToken } = useAuth();
 
-  async function makeRequest(method, route, data, isFormData = false, timeout = config.API_REQUEST_TIMEOUT) {
+  async function makeRequest(method, route, data, isFormData = false) {
     const options = {
       headers: {
         Authorization: await getBearerToken(),
         [commonConfig.versionHeaderName]: commonConfig.apiVersion,
       },
-      timeout,
       method,
     };
     if (data) {
@@ -40,7 +39,7 @@ export function useAPI() {
 
     let responseJson;
     try {
-      responseJson = await ky(`${config.API}/${route}`, options).json();
+      responseJson = await myFetch(`${config.API}/${route}`, options, true);
     } catch (error) {
       Sentry.Native.captureException(error);
       throw error;

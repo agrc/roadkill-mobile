@@ -1,7 +1,7 @@
 import commonConfig from 'common/config';
-import ky from 'ky';
 import React from 'react';
 import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
+import myFetch from '../../services/fetch';
 import { useAsyncError } from '../../services/utilities';
 
 Settings.initializeSDK();
@@ -77,12 +77,16 @@ export default function useFacebookProvider() {
       // using user = await Profile.getCurrentProfile(); doesn't return an email on Android for some reason
       // so we have to use the graph api for now
       // ref: https://github.com/thebergamo/react-native-fbsdk-next#get-profile-information
-      user = await ky('https://graph.facebook.com/me', {
-        searchParams: {
-          access_token: authentication.current.token,
-          fields: 'id,first_name,last_name,name,email',
+      user = await myFetch(
+        'https://graph.facebook.com/me',
+        {
+          searchParams: {
+            access_token: authentication.current.token,
+            fields: 'id,first_name,last_name,name,email',
+          },
         },
-      }).json();
+        true,
+      );
     } catch (error) {
       throwAsyncError(error);
     }

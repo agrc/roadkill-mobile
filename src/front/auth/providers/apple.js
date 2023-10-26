@@ -2,9 +2,9 @@ import commonConfig from 'common/config';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
-import ky from 'ky';
 import React from 'react';
 import config from '../../services/config';
+import myFetch from '../../services/fetch';
 import { isTokenExpired, useAsyncError } from '../../services/utilities';
 
 const STORE_KEY = 'roadkill-apple-user-info';
@@ -27,12 +27,14 @@ export default function useAppleProvider() {
       payload.authorizationCode = authorizationCode;
     }
     try {
-      refreshResult = await ky
-        .post(`${config.API}/user/apple-token`, {
+      refreshResult = await myFetch(
+        `${config.API}/user/apple-token`,
+        {
+          method: 'POST',
           json: payload,
-          timeout: config.API_REQUEST_TIMEOUT,
-        })
-        .json();
+        },
+        true,
+      );
     } catch (error) {
       if (error.response.status === 401 && !isRetry) {
         console.log('refresh token failed, refresh credentials');

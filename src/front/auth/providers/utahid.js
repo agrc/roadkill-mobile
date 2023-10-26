@@ -2,8 +2,8 @@ import commonConfig from 'common/config';
 import { exchangeCodeAsync, refreshAsync, revokeAsync, useAuthRequest } from 'expo-auth-session';
 import Constants from 'expo-constants';
 import jwt_decode from 'jwt-decode';
-import ky from 'ky';
 import config from '../../services/config';
+import myFetch from '../../services/fetch';
 import { isTokenExpired, useAsyncError, useSecureRef } from '../../services/utilities';
 
 const redirectUri = `${Constants.expoConfig.scheme}://${config.OAUTH_REDIRECT_SCREEN}`;
@@ -27,7 +27,7 @@ export default function useUtahIDProvider() {
       scopes: ['openid', 'profile', 'email'],
       redirectUri,
     },
-    discovery
+    discovery,
   );
   const throwAsyncError = useAsyncError();
 
@@ -79,7 +79,7 @@ export default function useUtahIDProvider() {
           clientId: config.CLIENT_ID,
           token: refreshToken.current,
         },
-        discovery
+        discovery,
       );
     }
 
@@ -89,13 +89,15 @@ export default function useUtahIDProvider() {
           clientId: config.CLIENT_ID,
           token: accessToken.current,
         },
-        discovery
+        discovery,
       );
     }
 
     if (idToken.current && !isTokenExpired(jwt_decode(idToken.current))) {
-      const response = await ky.get('https://login.dts.utah.gov/sso/oauth2/connect/endSession', {
-        searchParams: { id_token_hint: idToken.current },
+      const response = await myFetch(`https://login.dts.utah.gov/sso/oauth2/connect/endSession`, {
+        searchParams: {
+          id_token_hint: idToken.current,
+        },
       });
 
       if (response.status !== 204) {
@@ -139,7 +141,7 @@ export default function useUtahIDProvider() {
             code_challenge: request.codeChallenge,
           },
         },
-        discovery
+        discovery,
       );
 
       return tokenResponse;
@@ -163,7 +165,7 @@ export default function useUtahIDProvider() {
           clientId: config.CLIENT_ID,
           refreshToken: refreshToken.current,
         },
-        discovery
+        discovery,
       );
 
       setAccessToken(tokenResponse.accessToken);

@@ -1,7 +1,6 @@
 import commonConfig from 'common/config';
 import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
-import ky from 'ky';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
@@ -9,6 +8,7 @@ import { useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';
+import myFetch from '../services/fetch';
 import { useAsyncError, useSecureState } from '../services/utilities';
 import useAppleProvider from './providers/apple';
 import useFacebookProvider from './providers/facebook';
@@ -24,7 +24,6 @@ export const STATUS = {
 
 WebBrowser.maybeCompleteAuthSession();
 const AuthContext = React.createContext();
-const timeout = config.API_REQUEST_TIMEOUT;
 
 export function AuthContextProvider({ children, onReady }) {
   const [authInfo, setAuthInfo] = useSecureState(config.USER_STORE_KEY);
@@ -123,8 +122,10 @@ export function AuthContextProvider({ children, onReady }) {
         return { success: false, registered: false };
       }
 
-      const loginResponse = await ky
-        .post(`${config.API}/user/login`, {
+      const loginResponse = await myFetch(
+        `${config.API}/user/login`,
+        {
+          method: 'POST',
           json: {
             auth_id: oauthUser.sub,
             auth_provider: providerName,
@@ -136,9 +137,14 @@ export function AuthContextProvider({ children, onReady }) {
             Authorization: token,
             [commonConfig.versionHeaderName]: commonConfig.apiVersion,
           },
-          timeout,
-        })
-        .json();
+        },
+        true,
+      );
+
+      if (loginResponse.errors) {
+        throw new Error(loginResponse.errors[0].message);
+      }
+
       const { user, registered, constants } = loginResponse;
 
       setAuthInfo({
@@ -166,16 +172,18 @@ export function AuthContextProvider({ children, onReady }) {
     const token = await getBearerToken();
     let responseJson;
     try {
-      responseJson = await ky
-        .post(`${config.API}/user/register`, {
+      responseJson = await myFetch(
+        `${config.API}/user/register`,
+        {
+          method: 'POST',
           json: userData,
           headers: {
             Authorization: token,
             [commonConfig.versionHeaderName]: commonConfig.apiVersion,
           },
-          timeout,
-        })
-        .json();
+        },
+        true,
+      );
     } catch (error) {
       if (error.name === 'HTTPError') {
         console.error('HTTPError response text', await error.response.text());
@@ -201,12 +209,12 @@ export function AuthContextProvider({ children, onReady }) {
         // that would be confusing to users
         if (currentProvider.hasValidToken()) {
           try {
-            const response = await ky.post(`${config.API}/user/logout`, {
+            const response = await myFetch(`${config.API}/user/logout`, {
+              method: 'POST',
               headers: {
                 Authorization: await getBearerToken(),
                 [commonConfig.versionHeaderName]: commonConfig.apiVersion,
               },
-              timeout,
             });
 
             if (response.status !== 200) {
@@ -256,7 +264,7 @@ export function AuthContextProvider({ children, onReady }) {
         {
           cancelable: true,
           onDismiss: () => resolve(false),
-        }
+        },
       );
     });
   };

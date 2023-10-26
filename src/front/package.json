@@ -24,7 +24,7 @@
       "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@sentry/.*|ky|autolinker)"
+      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@sentry/.*|autolinker)"
     ]
   },
   "dependencies": {
@@ -75,7 +75,6 @@
     "immer": "^10.0.3",
     "indefinite": "^2.4.3",
     "jwt-decode": "^3.1.2",
-    "ky": "^1.1.0",
     "lodash": "^4.17.21",
     "mime": "^3.0.0",
     "pretty-bytes": "^6.1.1",
