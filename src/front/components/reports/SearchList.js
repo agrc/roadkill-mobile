@@ -1,5 +1,6 @@
 import { Card, Divider, Input, List, ListItem, Modal, Text, useTheme } from '@ui-kitten/components';
 import commonConfig from 'common/config';
+import { Image } from 'expo-image';
 import a from 'indefinite';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -13,7 +14,6 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
@@ -66,7 +66,7 @@ function MyListItem({ item, onPress, selected, itemToString, itemToKey, displayP
     <ListItem
       accessoryLeft={() =>
         displayPhoto ? (
-          <FastImage
+          <Image
             style={{ width: commonConfig.searchListImageSize, height: commonConfig.searchListImageSize }}
             source={imageSource}
             onError={switchToFallbackImage}
