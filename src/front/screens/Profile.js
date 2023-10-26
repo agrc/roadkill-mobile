@@ -5,8 +5,8 @@ import React, { useRef } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import * as Sentry from 'sentry-expo';
-import * as yup from 'yup';
-import 'yup-phone';
+import { number, object, string } from 'yup';
+import 'yup-phone-lite';
 import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
 import SearchList from '../components/reports/SearchList';
@@ -93,18 +93,18 @@ export default function ProfileScreen() {
           text: 'Delete my account',
           onPress: () => deleteAccountMutation.mutate(),
         },
-      ]
+      ],
     );
   };
 
   const shape = {
-    phone: yup.string().phone('US').required(),
+    phone: string().phone('US').required(),
   };
   if (data?.organization_id) {
-    shape.organization_name = yup.string().required();
-    shape.organization_id = yup.number().required();
+    shape.organization_name = string().required();
+    shape.organization_id = number().required();
   }
-  const schema = yup.object().shape(shape);
+  const schema = object().shape(shape);
 
   return (
     <Layout style={styles.container}>

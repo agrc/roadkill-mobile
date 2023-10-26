@@ -6,8 +6,8 @@ import React from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { useMutation } from 'react-query';
 import * as Sentry from 'sentry-expo';
-import * as yup from 'yup';
-import 'yup-phone';
+import { number, object, string } from 'yup';
+import 'yup-phone-lite';
 import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
 import SearchList from '../components/reports/SearchList';
@@ -26,7 +26,7 @@ export default function NewUserScreen() {
       if (userType !== config.USER_TYPES.public) {
         Alert.alert(
           'Success',
-          'Thank you for registering! Your registration has been sent to system administrators for approval. You will get an email once your account has been approved. Please note that you may still collect and submit data before your account is approved.'
+          'Thank you for registering! Your registration has been sent to system administrators for approval. You will get an email once your account has been approved. Please note that you may still collect and submit data before your account is approved.',
         );
       }
     },
@@ -51,20 +51,20 @@ export default function NewUserScreen() {
   }, []);
 
   const shape = {
-    phone: yup.string().phone('US').required(),
+    phone: string().phone('US').required(),
   };
 
   // add org, if required
   if (organizationIsRequired) {
-    shape.organization_name = yup.string().required();
-    shape.organization_id = yup.number().required();
+    shape.organization_name = string().required();
+    shape.organization_id = number().required();
   }
 
   // add name/email, if not provided by oauth
   if (!authInfo.oauthUser.given_name || !authInfo.oauthUser.family_name) {
-    shape.name = yup.string().required();
+    shape.name = string().required();
   }
-  const schema = yup.object().shape(shape);
+  const schema = object().shape(shape);
 
   const register = async ({ phone, organization_id, organization_name, name, email }) => {
     await registerMutation.mutate({

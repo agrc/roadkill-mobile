@@ -7,7 +7,7 @@ import { channel, checkForUpdateAsync, fetchUpdateAsync, manifest, reloadAsync, 
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
-import 'yup-phone';
+import 'yup-phone-lite';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import config from '../services/config';
