@@ -99,7 +99,7 @@ export function AuthContextProvider({ children, onReady }) {
       console.log('authInfo', authInfo);
       onReady();
     }
-  }, [authInfo]);
+  }, [authInfo, onReady]);
 
   const logIn = async (providerName) => {
     setStatus(STATUS.loading);

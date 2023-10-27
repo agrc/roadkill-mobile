@@ -21,7 +21,7 @@ function Location({ onSetLocation, onCancel }) {
     if (!assistancePrompt) {
       init();
     }
-  }, []);
+  }, [assistancePrompt]);
 
   return (
     <View>

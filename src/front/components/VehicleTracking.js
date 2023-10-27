@@ -184,7 +184,7 @@ export default function VehicleTracking({
     };
 
     checkStorage();
-  }, []);
+  }, [dispatch, startTracking, state]);
 
   const stopTracking = async () => {
     console.log('stopTracking');

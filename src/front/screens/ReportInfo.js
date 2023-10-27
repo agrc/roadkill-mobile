@@ -63,7 +63,7 @@ export default function ReportInfoScreen() {
         title: `${isPickupReport(data) ? 'Pickup' : 'Carcass'} Report Info`,
       });
     }
-  }, [data]);
+  }, [data, navigation]);
 
   return (
     <Layout style={styles.container}>

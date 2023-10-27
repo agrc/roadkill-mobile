@@ -40,7 +40,7 @@ export function useSecureState(key) {
     };
 
     init();
-  }, []);
+  }, [key]);
 
   const setState = (value) => {
     // value could be string or object
@@ -69,7 +69,7 @@ export function useSecureRef(key) {
     };
 
     init();
-  }, []);
+  }, [key]);
 
   const setRef = (value) => {
     // value could be string or object

@@ -9,14 +9,12 @@ export default {
 };
 
 export const Default = () => {
-  return React.createElement(() => {
-    const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(null);
 
-    return (
-      <View style={{ padding: 20 }}>
-        <PhotoCapture isRequired={false} value={value} onChange={setValue} />
-        <Text>{JSON.stringify(value, null, '  ')}</Text>
-      </View>
-    );
-  });
+  return (
+    <View style={{ padding: 20 }}>
+      <PhotoCapture isRequired={false} value={value} onChange={setValue} />
+      <Text>{JSON.stringify(value, null, '  ')}</Text>
+    </View>
+  );
 };

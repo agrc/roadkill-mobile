@@ -183,7 +183,12 @@ export function OfflineCacheContextProvider({ children }) {
     ) {
       mutation.mutate();
     }
-  }, [isInternetReachable, authInfo?.user]);
+  }, [
+    isInternetReachable,
+    authInfo?.user,
+    cachedSubmissionIds.length,
+    mutation,
+  ]);
 
   React.useEffect(() => {
     const updateBadgeCount = async () => {

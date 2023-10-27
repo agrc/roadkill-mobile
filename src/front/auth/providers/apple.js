@@ -19,40 +19,43 @@ export default function useAppleProvider() {
   const throwAsyncError = useAsyncError();
   const cachedUserInfo = React.useRef(null);
 
-  const refreshToken = async (identityToken, authorizationCode, isRetry) => {
-    console.log('refreshing apple token');
-    let refreshResult;
-    const payload = { identityToken };
-    if (authorizationCode) {
-      payload.authorizationCode = authorizationCode;
-    }
-    try {
-      refreshResult = await myFetch(
-        `${config.API}/user/apple-token`,
-        {
-          method: 'POST',
-          json: payload,
-        },
-        true,
-      );
-    } catch (error) {
-      if (error.response.status === 401 && !isRetry) {
-        console.log('refresh token failed, refresh credentials');
-        const refreshedCredentials =
-          await AppleAuthentication.refreshAsync(appleOptions);
-
-        return await refreshToken(
-          refreshedCredentials.identityToken,
-          refreshedCredentials.authorizationCode,
+  const refreshToken = React.useCallback(
+    async (identityToken, authorizationCode, isRetry) => {
+      console.log('refreshing apple token');
+      let refreshResult;
+      const payload = { identityToken };
+      if (authorizationCode) {
+        payload.authorizationCode = authorizationCode;
+      }
+      try {
+        refreshResult = await myFetch(
+          `${config.API}/user/apple-token`,
+          {
+            method: 'POST',
+            json: payload,
+          },
           true,
         );
+      } catch (error) {
+        if (error.response.status === 401 && !isRetry) {
+          console.log('refresh token failed, refresh credentials');
+          const refreshedCredentials =
+            await AppleAuthentication.refreshAsync(appleOptions);
+
+          return await refreshToken(
+            refreshedCredentials.identityToken,
+            refreshedCredentials.authorizationCode,
+            true,
+          );
+        }
       }
-    }
 
-    console.log('refreshResult', JSON.stringify(refreshResult, null, 2));
+      console.log('refreshResult', JSON.stringify(refreshResult, null, 2));
 
-    cachedUserInfo.current.identityToken = refreshResult.identityToken;
-  };
+      cachedUserInfo.current.identityToken = refreshResult.identityToken;
+    },
+    [],
+  );
 
   React.useEffect(() => {
     const giddyUp = async () => {
@@ -65,7 +68,7 @@ export default function useAppleProvider() {
     };
 
     giddyUp();
-  }, []);
+  }, [refreshToken]);
 
   const getCachedUserInfo = async () => {
     const stringValue = await SecureStore.getItemAsync(STORE_KEY);

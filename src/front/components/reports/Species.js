@@ -203,18 +203,18 @@ function Species({
     };
 
     init();
-  }, []);
+  }, [dispatch, isMounted]);
 
   React.useEffect(() => {
     if (reset) {
       dispatch({ type: 'RESET' });
     }
-  }, [reset]);
+  }, [dispatch, reset]);
 
   React.useEffect(() => {
     // exclude fields that are not part of the report_info table
     onChange(omit(state.value, ['rare', 'frequent']));
-  }, [state.value]);
+  }, [onChange, state.value]);
 
   const renderSearch = () => {
     switch (state.searchType) {

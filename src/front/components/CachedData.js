@@ -9,15 +9,16 @@ import RouteListItem from './RouteListItem';
 import Spinner from './Spinner';
 
 export default function CachedData({ data }) {
-  if (data.length === 0) {
-    return null;
-  }
   const { submitOfflineSubmissions, isSubmitting, isConnected } =
     useOfflineCache();
 
   const submit = async () => {
     await submitOfflineSubmissions();
   };
+
+  if (data.length === 0) {
+    return null;
+  }
 
   return (
     <>

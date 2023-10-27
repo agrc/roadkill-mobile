@@ -1,7 +1,7 @@
 import { Button, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import propTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../../services/config';
 import { PADDING } from '../../services/styles';
@@ -46,7 +46,7 @@ export default function Form({
       formikRef.current.setFieldValue('age_class', null);
       formikRef.current.setFieldValue('sex', null);
     }
-  }, [ableToIdentify]);
+  }, [ableToIdentify, formikRef]);
   const [resetSpecies, setResetSpecies] = React.useState(false);
 
   return (
@@ -73,16 +73,13 @@ export default function Form({
       }) => (
         <>
           <Species
-            onChange={useCallback(
-              (speciesValues) => {
-                setValues({
-                  ...values,
-                  ...speciesValues,
-                });
-                setResetSpecies(false);
-              },
-              [values],
-            )}
+            onChange={(speciesValues) => {
+              setValues({
+                ...values,
+                ...speciesValues,
+              });
+              setResetSpecies(false);
+            }}
             reset={resetSpecies}
             style={styles.bottomBump}
             ableToIdentify={ableToIdentify}

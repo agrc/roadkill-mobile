@@ -10,8 +10,8 @@ import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
-import SearchList from '../components/reports/SearchList';
 import RootView from '../components/RootView';
+import SearchList from '../components/reports/SearchList';
 import config from '../services/config';
 import { getConstants } from '../services/constants';
 import { PADDING } from '../services/styles';
@@ -54,7 +54,7 @@ export default function NewUserScreen() {
     };
 
     init();
-  }, []);
+  }, [userType]);
 
   const shape = {
     phone: string().phone('US').required(),

@@ -16,9 +16,9 @@ import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
 import MyPhoneInput from '../components/MyPhoneInput';
-import SearchList from '../components/reports/SearchList';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
+import SearchList from '../components/reports/SearchList';
 import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getConstants } from '../services/constants';
@@ -42,7 +42,7 @@ export default function ProfileScreen() {
     };
 
     init();
-  }, []);
+  }, [userType]);
 
   const { get, post, deleteAccount } = useAPI();
 

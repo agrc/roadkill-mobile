@@ -67,7 +67,7 @@ export function useFollowUser(mapViewRef) {
         subscription.remove();
       }
     };
-  }, []);
+  }, [subscription]);
 
   const zoomTo = (location, zoomIn) => {
     const camera = {

@@ -186,13 +186,13 @@ export default function MainScreen() {
     );
   }, []);
 
-  const setMarker = async () => {
+  const setMarker = React.useCallback(async () => {
     const points = { ...crosshairCoordinates };
 
     const coordinates = await mapView.current.coordinateForPoint(points);
 
     setCarcassCoordinates(coordinates);
-  };
+  }, [crosshairCoordinates]);
 
   const showAddReport = () => {
     const displayReport = async (newReportType) => {
@@ -282,12 +282,12 @@ export default function MainScreen() {
     }
   };
 
-  const hideAddReport = () => {
+  const hideAddReport = React.useCallback(() => {
     dispatchReportState({
       type: 'hide',
     });
     setCarcassCoordinates(null);
-  };
+  }, [dispatchReportState]);
 
   const { height, width } = useWindowDimensions();
   const mapSizeStyle = {

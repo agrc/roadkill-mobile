@@ -25,34 +25,30 @@ export const Default = () => {
       value: 'option4',
     },
   ];
-  return React.createElement(() => {
-    const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState('');
 
-    return (
-      <RadioPills
-        value={value}
-        onChange={setValue}
-        options={options}
-        label="test label"
-      />
-    );
-  });
+  return (
+    <RadioPills
+      value={value}
+      onChange={setValue}
+      options={options}
+      label="test label"
+    />
+  );
 };
 
 export const OptionsAsStrings = () => {
   const options = ['frequent', 'common', 'latin', 'order', 'class', 'group'];
-  return React.createElement(() => {
-    const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState('');
 
-    return (
-      <RadioPills
-        value={value}
-        onChange={setValue}
-        options={options}
-        label="test label"
-      />
-    );
-  });
+  return (
+    <RadioPills
+      value={value}
+      onChange={setValue}
+      options={options}
+      label="test label"
+    />
+  );
 };
 
 export const UnknownOption = () => {
@@ -65,16 +61,15 @@ export const UnknownOption = () => {
     'group',
     'unknown',
   ];
-  return React.createElement(() => {
-    const [value, setValue] = React.useState('');
 
-    return (
-      <RadioPills
-        value={value}
-        onChange={setValue}
-        options={options}
-        label="unknown option"
-      />
-    );
-  });
+  const [value, setValue] = React.useState('');
+
+  return (
+    <RadioPills
+      value={value}
+      onChange={setValue}
+      options={options}
+      label="unknown option"
+    />
+  );
 };

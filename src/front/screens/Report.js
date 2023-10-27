@@ -13,16 +13,16 @@ import {
   Animated,
   Keyboard,
   StyleSheet,
-  useWindowDimensions,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
+import Spinner from '../components/Spinner';
 import Form from '../components/reports/Form';
 import Location from '../components/reports/Location';
 import RepeatSubmission from '../components/reports/RepeatSubmission';
-import Spinner from '../components/Spinner';
 import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
@@ -199,7 +199,7 @@ const Report = ({
         ...COMMON_ANIMATION_PROPS,
       }).start();
     }
-  }, [show]);
+  }, [show, windowDimensions.height]);
 
   React.useEffect(() => {
     const newMaxHeight =
@@ -221,7 +221,7 @@ const Report = ({
         }
       });
     }
-  }, [view]);
+  }, [show, view, windowDimensions.height]);
 
   const isDirty = () => {
     return carcassCoordinates !== null || formikRef.current?.dirty;

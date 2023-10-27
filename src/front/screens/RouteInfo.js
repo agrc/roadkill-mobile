@@ -70,6 +70,7 @@ const METERS_IN_MILES = 1609.34;
 export function RouteInfo({ data }) {
   const mapRef = React.useRef(null);
 
+  const theme = useTheme();
   if (!data) {
     return null;
   }
@@ -77,7 +78,6 @@ export function RouteInfo({ data }) {
   const routeCoordinates = data.route_id
     ? lineStringToCoordinates(data.geog)
     : offlineLineStringToCoordinates(data.geog);
-  const theme = useTheme();
   const mapPadding = PADDING * 3;
   const iosEdgePadding = {
     top: mapPadding,
