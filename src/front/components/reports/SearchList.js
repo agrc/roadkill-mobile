@@ -12,7 +12,7 @@ import commonConfig from 'common/config';
 import { Image } from 'expo-image';
 import a from 'indefinite';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   PixelRatio,
   Platform,
@@ -20,8 +20,8 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
-  useWindowDimensions,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
@@ -51,7 +51,7 @@ const fallbackImage = require('../../assets/id-image-fallback.png');
 
 function MyListItem({
   item,
-  onPress,
+  onSelectItem,
   selected,
   itemToString,
   itemToKey,
@@ -68,16 +68,17 @@ function MyListItem({
     style.paddingVertical = PADDING;
   }
 
-  const [imageSource, setImageSource] = React.useState({
+  const imageSource = {
     uri: `${config.API}/reports/id_image/${itemToKey(item)
       .toString()
       .replace('/', '_')}/${pixelRatio}`,
     width: commonConfig.searchListImageSize,
     height: commonConfig.searchListImageSize,
     scale: pixelRatio,
-  });
-  const switchToFallbackImage = () => {
-    setImageSource(fallbackImage);
+  };
+
+  const onPress = () => {
+    onSelectItem(item);
   };
 
   return (
@@ -90,7 +91,7 @@ function MyListItem({
               height: commonConfig.searchListImageSize,
             }}
             source={imageSource}
-            onError={switchToFallbackImage}
+            placeholder={fallbackImage}
           />
         ) : null
       }
@@ -112,7 +113,7 @@ function MyListItem({
 
 MyListItem.propTypes = {
   item: propTypes.oneOfType([propTypes.string, propTypes.object]).isRequired,
-  onPress: propTypes.func.isRequired,
+  onSelectItem: propTypes.func.isRequired,
   selected: propTypes.bool.isRequired,
   itemToString: propTypes.func.isRequired,
   itemToKey: propTypes.func.isRequired,
@@ -164,13 +165,16 @@ export default function SearchList({
     setFilteredItems(filteredItems);
   };
 
-  const onSelectItem = (item) => {
-    onChange(item);
+  const onSelectItem = useCallback(
+    (item) => {
+      onChange(item);
 
-    setInputValue(itemToString(item));
-    setFilteredItems([]);
-    setShowModal(false);
-  };
+      setInputValue(itemToString(item));
+      setFilteredItems([]);
+      setShowModal(false);
+    },
+    [itemToString, onChange],
+  );
 
   const clearInput = () => {
     if (inputValue === '') {
@@ -223,6 +227,23 @@ export default function SearchList({
     setShowModal(true);
   };
 
+  const renderItem = React.useCallback(
+    ({ item }) => {
+      return (
+        <MyListItem
+          key={itemToKey(item)}
+          item={item}
+          onSelectItem={onSelectItem}
+          selected={itemToKey(item) === itemToKey(value)}
+          itemToString={itemToString}
+          itemToKey={itemToKey}
+          displayPhoto={displayPhotos}
+        />
+      );
+    },
+    [displayPhotos, itemToKey, itemToString, onSelectItem, value],
+  );
+
   if (!items) {
     return null;
   }
@@ -249,33 +270,21 @@ export default function SearchList({
             }}
             style={modalStyle}
           >
-            <SafeAreaView style={{ flex: 1 }}>
-              <View style={styles.container}>
-                <Input
-                  accessoryRight={clearable ? renderClearIcon : null}
-                  value={inputValue}
-                  placeholder={placeholder}
-                  onChangeText={onChangeText}
-                  ref={searchInputRef}
-                />
-                <List
-                  data={filteredItems}
-                  ItemSeparatorComponent={Divider}
-                  renderItem={({ item }) => (
-                    <MyListItem
-                      key={itemToKey(item)}
-                      item={item}
-                      onPress={() => onSelectItem(item)}
-                      selected={itemToKey(item) === itemToKey(value)}
-                      itemToString={itemToString}
-                      itemToKey={itemToKey}
-                      displayPhoto={displayPhotos}
-                    />
-                  )}
-                  keyboardShouldPersistTaps="always"
-                  style={{ backgroundColor: theme['color-basic-100'] }}
-                />
-              </View>
+            <SafeAreaView style={styles.container}>
+              <Input
+                accessoryRight={clearable ? renderClearIcon : null}
+                value={inputValue}
+                placeholder={placeholder}
+                onChangeText={onChangeText}
+                ref={searchInputRef}
+              />
+              <List
+                data={filteredItems}
+                ItemSeparatorComponent={Divider}
+                renderItem={renderItem}
+                keyboardShouldPersistTaps="always"
+                style={{ backgroundColor: theme['color-basic-100'] }}
+              />
             </SafeAreaView>
           </Modal>
         </>
@@ -284,7 +293,7 @@ export default function SearchList({
           <View key={itemToKey(item)}>
             <MyListItem
               item={item}
-              onPress={() => onSelectItem(item)}
+              onSelectItem={onSelectItem}
               selected={itemToKey(item) === itemToKey(value)}
               itemToString={itemToString}
               itemToKey={itemToKey}

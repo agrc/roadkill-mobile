@@ -73,13 +73,8 @@ export default function Form({
       }) => (
         <>
           <Species
-            onChange={(speciesValues) => {
-              setValues({
-                ...values,
-                ...speciesValues,
-              });
-              setResetSpecies(false);
-            }}
+            setValues={setValues}
+            setResetSpecies={setResetSpecies}
             reset={resetSpecies}
             style={styles.bottomBump}
             ableToIdentify={ableToIdentify}

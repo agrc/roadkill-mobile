@@ -184,7 +184,8 @@ const reducer = (draft, action) => {
 };
 
 function Species({
-  onChange,
+  setValues,
+  setResetSpecies,
   style,
   ableToIdentify,
   setAbleToIdentify,
@@ -213,8 +214,14 @@ function Species({
 
   React.useEffect(() => {
     // exclude fields that are not part of the report_info table
-    onChange(omit(state.value, ['rare', 'frequent']));
-  }, [onChange, state.value]);
+    const newValues = omit(state.value, ['rare', 'frequent']);
+
+    setValues((previousValues) => ({
+      ...previousValues,
+      ...newValues,
+    }));
+    setResetSpecies(false);
+  }, [setResetSpecies, setValues, state.value]);
 
   const renderSearch = () => {
     switch (state.searchType) {
@@ -433,7 +440,8 @@ export default memo(Species);
 
 Species.propTypes = {
   ableToIdentify: propTypes.bool.isRequired,
-  onChange: propTypes.func.isRequired,
+  setValues: propTypes.func.isRequired,
+  setResetSpecies: propTypes.func.isRequired,
   reset: propTypes.bool.isRequired,
   setAbleToIdentify: propTypes.func.isRequired,
   style: propTypes.object,
