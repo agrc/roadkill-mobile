@@ -10,6 +10,7 @@ export const Default = () => (
     onSetLocation={() => {}}
     onEditLocation={() => {}}
     showEdit={true}
+    onCancel={() => {}}
   />
 );
 
@@ -18,5 +19,6 @@ export const AfterSet = () => (
     onSetLocation={() => {}}
     onEditLocation={() => {}}
     showEdit={false}
+    onCancel={() => {}}
   />
 );
