@@ -115,13 +115,10 @@ export default {
         autoLogAppEventsEnabled: false,
       },
     ],
-    './withReactNativeMaps',
+    './react-native-maps-plugin',
     [
       'expo-build-properties',
       {
-        android: {
-          minSdkVersion: 29,
-        },
         ios: {
           useFrameworks: 'static',
         },
