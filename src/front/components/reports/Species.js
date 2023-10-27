@@ -2,7 +2,7 @@ import { Divider, Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
 import { omit } from 'lodash';
 import propTypes from 'prop-types';
 import React, { memo, useEffect } from 'react';
-import { Alert, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
 import { getConstants } from '../../services/constants';
@@ -285,7 +285,7 @@ function Species({
 
   const { width } = useWindowDimensions();
   const shrinkTabText = width < 380;
-  const tabTextStyle = shrinkTabText ? { fontSize: 12 } : {};
+  const tabTextStyle = shrinkTabText ? { fontSize: 12 } : null;
 
   return state.constants.species ? (
     <View style={style}>
@@ -318,11 +318,16 @@ function Species({
             {SEARCH_TYPES.map((type) => (
               <Tab
                 key={type}
-                title={({ category, style }) => (
-                  <Text category={category} style={[style, tabTextStyle]}>
-                    {type}
-                  </Text>
-                )}
+                title={(textProps) => {
+                  return (
+                    <Text
+                      {...textProps}
+                      style={[textProps.style, tabTextStyle]}
+                    >
+                      {type}
+                    </Text>
+                  );
+                }}
               />
             ))}
           </TabBar>
