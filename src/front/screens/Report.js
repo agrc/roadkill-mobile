@@ -10,13 +10,13 @@ import propTypes from 'prop-types';
 import React from 'react';
 import {
   Alert,
-  Animated,
   Keyboard,
   StyleSheet,
   View,
   useWindowDimensions,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Spinner from '../components/Spinner';
@@ -34,12 +34,6 @@ import {
   pointCoordinatesToString,
 } from '../services/utilities';
 
-const SET_LOCATION_VIEW = 'set_location_view';
-const MAIN_VIEW = 'main_view';
-const COMMON_ANIMATION_PROPS = {
-  useNativeDriver: false,
-  duration: 250,
-};
 const commonInitialValues = {
   photo: null,
   photo_location: null,
@@ -94,10 +88,8 @@ const Report = ({
   vehicleTrackingDispatch,
   vehicleTrackingState,
 }) => {
-  const animatedMaxHeight = React.useRef(new Animated.Value(0));
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
-  const [view, setView] = React.useState(SET_LOCATION_VIEW);
   const [showMain, setShowMain] = React.useState(false);
   const { isConnected, cacheReport } = useOfflineCache();
 
@@ -185,44 +177,6 @@ const Report = ({
     },
   });
 
-  React.useEffect(() => {
-    if (show) {
-      Animated.timing(animatedMaxHeight.current, {
-        // is there a better way to get the height of the animated view?
-        // I'm hoping that 50% of window height is good for the smaller devices...
-        toValue: windowDimensions.height * 0.5,
-        ...COMMON_ANIMATION_PROPS,
-      }).start();
-    } else {
-      Animated.timing(animatedMaxHeight.current, {
-        toValue: 0,
-        ...COMMON_ANIMATION_PROPS,
-      }).start();
-    }
-  }, [show, windowDimensions.height]);
-
-  React.useEffect(() => {
-    const newMaxHeight =
-      view === MAIN_VIEW
-        ? windowDimensions.height
-        : windowDimensions.height * 0.5;
-
-    if (show) {
-      if (view === MAIN_VIEW) {
-        setShowMain(true);
-      }
-
-      Animated.timing(animatedMaxHeight.current, {
-        toValue: newMaxHeight,
-        ...COMMON_ANIMATION_PROPS,
-      }).start(() => {
-        if (view === SET_LOCATION_VIEW) {
-          setShowMain(false);
-        }
-      });
-    }
-  }, [show, view, windowDimensions.height]);
-
   const isDirty = () => {
     return carcassCoordinates !== null || formikRef.current?.dirty;
   };
@@ -231,7 +185,6 @@ const Report = ({
     const close = () => {
       Keyboard.dismiss();
       hideReport();
-      setView(SET_LOCATION_VIEW);
       setShowMain(false);
       formikRef.current?.resetForm();
     };
@@ -259,7 +212,7 @@ const Report = ({
   const onSetLocation = () => {
     setMarker();
 
-    setTimeout(() => setView(MAIN_VIEW), 600);
+    setTimeout(() => setShowMain(true), 600);
   };
 
   // set up form
@@ -280,23 +233,22 @@ const Report = ({
 
   const containerStyle = {
     ...styles.container,
-    maxHeight: animatedMaxHeight.current,
     backgroundColor: theme['color-basic-100'],
     borderColor: theme['color-basic-400'],
     elevation: 5,
+    maxHeight: showMain
+      ? windowDimensions.height
+      : windowDimensions.height * 0.5,
   };
-  if (showMain) {
-    containerStyle.height = windowDimensions.height;
-  } else {
+  if (!showMain) {
     containerStyle.borderTopLeftRadius = RADIUS;
     containerStyle.borderTopRightRadius = RADIUS;
   }
 
   return show ? (
     <Animated.View
-      // The reason why I'm doing maxHeight rather than height is because we can't find the
-      // height of the animated view until it's displayed. A fixed height would not be flexible
-      // enough for different screen sizes.
+      entering={SlideInDown}
+      exiting={SlideOutDown}
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
     >
       <KeyboardAwareScrollView
