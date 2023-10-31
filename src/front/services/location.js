@@ -8,6 +8,17 @@ export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   let location;
   try {
+    if (accuracy <= Location.Accuracy.Balanced) {
+      console.log('getting last known location');
+      location = await Location.getLastKnownPositionAsync({
+        maxAge: 1000 * 60 * 2, // minutes
+      });
+
+      if (location) {
+        return location;
+      }
+    }
+
     console.log('getting current position', accuracy);
     location = await Location.getCurrentPositionAsync({
       accuracy,
