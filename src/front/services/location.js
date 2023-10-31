@@ -7,25 +7,16 @@ import myFetch from './fetch';
 export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
   let location;
-  // work around for: https://github.com/expo/expo/issues/14248
   try {
-    if (accuracy <= Location.Accuracy.Balanced) {
-      console.log('getting last known location');
-      location = await Location.getLastKnownPositionAsync({
-        maxAge: 1000 * 60 * 5, // 5 minutes
-      });
-
-      if (location) {
-        return location;
-      }
-    }
-
     console.log('getting current position', accuracy);
     location = await Location.getCurrentPositionAsync({
       accuracy,
+      timeout: 8000,
     });
   } catch (error) {
-    console.log(`getCurrentPositionAsync: ${error}`);
+    console.log(
+      `getCurrentPositionAsync: ${error}, falling back to last known position`,
+    );
 
     location = await Location.getLastKnownPositionAsync({
       requiredAccuracy: accuracy,
