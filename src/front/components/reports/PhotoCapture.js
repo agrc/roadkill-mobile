@@ -1,4 +1,5 @@
 import { Button, Text, useTheme } from '@ui-kitten/components';
+import { manipulateAsync } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { unregisterAllTasksAsync } from 'expo-task-manager';
 import { reloadAsync } from 'expo-updates';
@@ -6,6 +7,7 @@ import mime from 'mime';
 import propTypes from 'prop-types';
 import { memo, useState } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
+import * as Sentry from 'sentry-expo';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { ACCURACY, getLocation } from '../../services/location';
@@ -65,6 +67,34 @@ const displayCameraActivityFailedAlert = () => {
   );
 };
 
+async function resizeImage(uri, width, height) {
+  let newUri;
+  const largestDimension = width > height ? 'width' : 'height';
+  try {
+    const result = await manipulateAsync(
+      uri,
+      [
+        {
+          resize: {
+            [largestDimension]: config.IMAGE_MAX_DIMENSION,
+          },
+        },
+      ],
+      {
+        compress: config.IMAGE_COMPRESSION_QUALITY,
+      },
+    );
+
+    newUri = result.uri;
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error(error);
+    newUri = uri;
+  }
+
+  return newUri;
+}
+
 function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
   const [showLoader, setShowLoader] = useState(false);
   const theme = useTheme();
@@ -98,15 +128,17 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
     }
 
     if (!result.canceled && result.assets.length > 0) {
-      const { uri, exif } = result.assets[0];
+      const { uri, exif, width, height } = result.assets[0];
 
       const coordinates = pointCoordinatesToString(
         getCoordinatesFromExif(exif),
       );
 
+      const compressedUri = await resizeImage(uri, width, height);
+
       onChange({
-        uri,
-        type: mime.getType(uri),
+        uri: compressedUri,
+        type: mime.getType(compressedUri),
         name: 'photo',
         coordinates,
         date: getDateFromExif(exif),
@@ -139,7 +171,7 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
     }
 
     if (!result.canceled && result.assets.length > 0) {
-      const { uri, exif } = result.assets[0];
+      const { uri, exif, width, height } = result.assets[0];
 
       // on iOS when capturing a new image, the GPS tags are not included in the exif data.
       // might as well get them on both platforms when taking a new image
@@ -153,9 +185,11 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
         // ignore
       }
 
+      const compressedUri = await resizeImage(uri, width, height);
+
       onChange({
-        uri,
-        type: mime.getType(uri),
+        uri: compressedUri,
+        type: mime.getType(compressedUri),
         name: 'photo',
         coordinates,
         date: getDateFromExif(exif),
