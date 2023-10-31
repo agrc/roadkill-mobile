@@ -1,7 +1,7 @@
 import { Divider, Tab, TabBar, Text, Toggle } from '@ui-kitten/components';
 import { omit } from 'lodash';
 import propTypes from 'prop-types';
-import React, { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { Alert, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
@@ -206,13 +206,13 @@ function Species({
     init();
   }, [dispatch, isMounted]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (reset) {
       dispatch({ type: 'RESET' });
     }
   }, [dispatch, reset]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // exclude fields that are not part of the report_info table
     const newValues = omit(state.value, ['rare', 'frequent']);
 
@@ -223,15 +223,18 @@ function Species({
     setResetSpecies(false);
   }, [setResetSpecies, setValues, state.value]);
 
+  const onSelectionChange = useCallback(
+    (item) => dispatch({ type: 'SELECT_SPECIES', payload: item }),
+    [dispatch],
+  );
+
   const renderSearch = () => {
     switch (state.searchType) {
       case FREQUENT:
         return (
           <SearchList
             value={state.value}
-            onChange={(item) =>
-              dispatch({ type: 'SELECT_SPECIES', payload: item })
-            }
+            onChange={onSelectionChange}
             items={state.constants.frequentSpecies}
           />
         );
@@ -240,9 +243,7 @@ function Species({
         return (
           <SearchList
             value={state.value}
-            onChange={(item) =>
-              dispatch({ type: 'SELECT_SPECIES', payload: item })
-            }
+            onChange={onSelectionChange}
             items={state.autoCompleteItems}
             placeholder="common name"
           />
@@ -267,9 +268,7 @@ function Species({
                 <Text category="h6">Select a species:</Text>
                 <SearchList
                   value={state.value}
-                  onChange={(item) =>
-                    dispatch({ type: 'SELECT_SPECIES', payload: item })
-                  }
+                  onChange={onSelectionChange}
                   items={state.constants.species
                     .filter(
                       (item) =>
@@ -293,6 +292,14 @@ function Species({
   const { width } = useWindowDimensions();
   const shrinkTabText = width < 380;
   const tabTextStyle = shrinkTabText ? { fontSize: 12 } : null;
+  const onTabSelect = useCallback(
+    (index) =>
+      dispatch({
+        type: 'CHANGE_SEARCH_TYPE',
+        payload: SEARCH_TYPES[index],
+      }),
+    [dispatch],
+  );
 
   return state.constants.species ? (
     <View style={style}>
@@ -315,12 +322,7 @@ function Species({
         <>
           <TabBar
             selectedIndex={SEARCH_TYPES.indexOf(state.searchType)}
-            onSelect={(index) =>
-              dispatch({
-                type: 'CHANGE_SEARCH_TYPE',
-                payload: SEARCH_TYPES[index],
-              })
-            }
+            onSelect={onTabSelect}
           >
             {SEARCH_TYPES.map((type) => (
               <Tab
@@ -416,9 +418,7 @@ function Species({
                     ? config.UNKNOWN
                     : state.value
                 }
-                onChange={(item) =>
-                  dispatch({ type: 'SELECT_SPECIES', payload: item })
-                }
+                onChange={onSelectionChange}
                 items={state.constants.species
                   .filter(
                     (item) =>

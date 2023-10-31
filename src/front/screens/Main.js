@@ -440,7 +440,7 @@ export default function MainScreen() {
           <MapButton
             iconPack="material-community"
             iconName={isFollowing ? 'crosshairs-gps' : 'crosshairs'}
-            onPress={() => followUser()}
+            onPress={followUser}
           />
         </View>
       </View>

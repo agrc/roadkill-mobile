@@ -79,6 +79,8 @@ const formSchemas = {
 };
 const localDateService = new NativeDateService('en', { format: 'MM/DD/YYYY' });
 
+const today = new Date();
+
 const Report = ({
   show,
   reportType,
@@ -94,6 +96,10 @@ const Report = ({
   const { isConnected, cacheReport } = useOfflineCache();
 
   const { postReport } = useAPI();
+  const dateIcon = getIcon({
+    pack: 'font-awesome-5',
+    name: 'calendar-alt',
+  });
 
   const submitReport = async (values) => {
     console.log('submitReport');
@@ -245,6 +251,16 @@ const Report = ({
     containerStyle.borderTopRightRadius = RADIUS;
   }
 
+  const onRepeatChange = (newValue) => {
+    formikRef.current.setFieldValue('repeat_submission', newValue);
+  };
+
+  const onDiscoveryDateChange = (newValue) =>
+    formikRef.current.setFieldValue('discovery_date', newValue);
+
+  const onPickupDateChange = (newValue) =>
+    formikRef.current.setFieldValue('pickup_date', newValue);
+
   return show ? (
     <Animated.View
       entering={SlideInDown}
@@ -279,28 +295,21 @@ const Report = ({
                 reportType={reportType}
                 validationSchema={formSchemas.report}
               >
-                {({ values, setFieldValue }) => (
+                {({ values }) => (
                   <>
                     <RepeatSubmission
                       checked={values.repeat_submission}
-                      onChange={(newValue) =>
-                        setFieldValue('repeat_submission', newValue)
-                      }
-                      cancelReport={() => onClose()}
+                      onChange={onRepeatChange}
+                      cancelReport={onClose}
                       style={styles.bumpBottom}
                     />
                     <Text category="h6">When was the animal discovered?</Text>
                     <Datepicker
-                      accessoryRight={getIcon({
-                        pack: 'font-awesome-5',
-                        name: 'calendar-alt',
-                      })}
+                      accessoryRight={dateIcon}
                       date={values.discovery_date}
                       dateService={localDateService}
-                      max={new Date()}
-                      onSelect={(newValue) =>
-                        setFieldValue('discovery_date', newValue)
-                      }
+                      max={today}
+                      onSelect={onDiscoveryDateChange}
                       style={styles.bumpBottom}
                     />
                   </>
@@ -317,20 +326,15 @@ const Report = ({
                 reportType={reportType}
                 validationSchema={formSchemas.pickup}
               >
-                {({ values, setFieldValue }) => (
+                {({ values }) => (
                   <>
                     <Text category="h6">When was the animal picked up?</Text>
                     <Datepicker
-                      accessoryRight={getIcon({
-                        pack: 'font-awesome-5',
-                        name: 'calendar-alt',
-                      })}
+                      accessoryRight={dateIcon}
                       date={values.pickup_date}
                       dateService={localDateService}
-                      max={new Date()}
-                      onSelect={(newValue) =>
-                        setFieldValue('pickup_date', newValue)
-                      }
+                      max={today}
+                      onSelect={onPickupDateChange}
                       style={styles.bumpBottom}
                     />
                   </>

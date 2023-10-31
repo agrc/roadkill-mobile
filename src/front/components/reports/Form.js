@@ -1,7 +1,7 @@
 import { Button, Input, Text } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import propTypes from 'prop-types';
-import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../../services/config';
 import { PADDING } from '../../services/styles';
@@ -11,6 +11,9 @@ import Species from './Species';
 
 const GENDERS = ['female', 'male'];
 const AGES = ['adult', 'juvenile'];
+
+const ageOptions = AGES.concat([config.UNKNOWN]);
+const genderOptions = GENDERS.concat([config.UNKNOWN]);
 
 export default function Form({
   formikRef,
@@ -37,8 +40,20 @@ export default function Form({
       formikRef.current.setFieldValue('photo_date', date);
     }
   };
-  const [ableToIdentify, setAbleToIdentify] = React.useState(true);
-  React.useEffect(() => {
+  const onAgeChange = useCallback(
+    (newValue) => {
+      formikRef.current.setFieldValue('age_class', newValue);
+    },
+    [formikRef],
+  );
+  const onGenderChange = useCallback(
+    (newValue) => {
+      formikRef.current.setFieldValue('sex', newValue);
+    },
+    [formikRef],
+  );
+  const [ableToIdentify, setAbleToIdentify] = useState(true);
+  useEffect(() => {
     if (!ableToIdentify) {
       formikRef.current.setFieldValue('age_class', config.UNKNOWN);
       formikRef.current.setFieldValue('sex', config.UNKNOWN);
@@ -47,7 +62,7 @@ export default function Form({
       formikRef.current.setFieldValue('sex', null);
     }
   }, [ableToIdentify, formikRef]);
-  const [resetSpecies, setResetSpecies] = React.useState(false);
+  const [resetSpecies, setResetSpecies] = useState(false);
 
   return (
     <Formik
@@ -85,15 +100,15 @@ export default function Form({
               <Text category="h6">Animal age?</Text>
               <RadioPills
                 value={values.age_class}
-                onChange={handleChange('age_class')}
-                options={AGES.concat([config.UNKNOWN])}
+                onChange={onAgeChange}
+                options={ageOptions}
                 style={styles.bottomBump}
               />
               <Text category="h6">Animal sex?</Text>
               <RadioPills
                 value={values.sex}
-                onChange={handleChange('sex')}
-                options={GENDERS.concat([config.UNKNOWN])}
+                onChange={onGenderChange}
+                options={genderOptions}
                 style={styles.bottomBump}
               />
             </>
@@ -112,11 +127,7 @@ export default function Form({
             onChangeText={handleChange('comments')}
           />
           <View style={styles.buttonContainer}>
-            <Button
-              appearance="ghost"
-              onPress={() => onClose()}
-              style={styles.button}
-            >
+            <Button appearance="ghost" onPress={onClose} style={styles.button}>
               Cancel
             </Button>
             <Button

@@ -123,14 +123,17 @@ MyListItem.propTypes = {
 // eslint-disable-next-line no-func-assign
 MyListItem = React.memo(MyListItem);
 
+const commonItemToString = itemPropOrString(COMMON);
+const idItemToString = itemPropOrString(ID);
+
 export default function SearchList({
   value,
   onChange,
   placeholder,
   items,
   style,
-  itemToString = itemPropOrString(COMMON),
-  itemToKey = itemPropOrString(ID),
+  itemToString = commonItemToString,
+  itemToKey = idItemToString,
   displayPhotos = true,
   forceModal = false,
   clearable = true,

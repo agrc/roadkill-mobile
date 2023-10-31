@@ -4,7 +4,7 @@ import { unregisterAllTasksAsync } from 'expo-task-manager';
 import { reloadAsync } from 'expo-updates';
 import mime from 'mime';
 import propTypes from 'prop-types';
-import React from 'react';
+import { memo, useState } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
@@ -65,8 +65,8 @@ const displayCameraActivityFailedAlert = () => {
   );
 };
 
-export default function PhotoCapture({ onChange, uri, style }) {
-  const [showLoader, setShowLoader] = React.useState(false);
+function PhotoCapture({ onChange, uri, style }) {
+  const [showLoader, setShowLoader] = useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
   const throwAsyncError = useAsyncError();
@@ -243,6 +243,8 @@ PhotoCapture.propTypes = {
   onChange: propTypes.func.isRequired,
   style: propTypes.oneOfType([propTypes.object, propTypes.array]),
 };
+
+export default memo(PhotoCapture);
 
 const styles = StyleSheet.create({
   container: {
