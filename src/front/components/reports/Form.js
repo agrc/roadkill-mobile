@@ -63,6 +63,7 @@ export default function Form({
     }
   }, [ableToIdentify, formikRef]);
   const [resetSpecies, setResetSpecies] = useState(false);
+  const [photoIsProcessing, setPhotoIsProcessing] = useState(false);
 
   return (
     <Formik
@@ -118,6 +119,7 @@ export default function Form({
             onChange={onPhotoChange}
             uri={values.photo?.uri}
             style={styles.bottomBump}
+            setPhotoIsProcessing={setPhotoIsProcessing}
           />
           <Text category="h6">Additional comments:</Text>
           <Input
@@ -133,7 +135,9 @@ export default function Form({
             <Button
               status="info"
               onPress={handleSubmit}
-              disabled={!dirty || !isValid || mutation.isPending}
+              disabled={
+                !dirty || !isValid || mutation.isPending || photoIsProcessing
+              }
               style={styles.button}
             >
               Submit Report

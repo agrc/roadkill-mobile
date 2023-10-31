@@ -65,7 +65,7 @@ const displayCameraActivityFailedAlert = () => {
   );
 };
 
-function PhotoCapture({ onChange, uri, style }) {
+function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
   const [showLoader, setShowLoader] = useState(false);
   const theme = useTheme();
   const commonStyles = useStyles();
@@ -182,7 +182,12 @@ function PhotoCapture({ onChange, uri, style }) {
               name: 'camera',
               color: theme['color-basic-800'],
             })}
-            onPress={captureImage}
+            onPress={() => {
+              setPhotoIsProcessing(true);
+              captureImage().finally(() => {
+                setPhotoIsProcessing(false);
+              });
+            }}
           >
             Take new photo
           </Button>
@@ -192,7 +197,12 @@ function PhotoCapture({ onChange, uri, style }) {
               name: 'photo',
               color: theme['color-basic-800'],
             })}
-            onPress={pickImage}
+            onPress={() => {
+              setPhotoIsProcessing(true);
+              pickImage().finally(() => {
+                setPhotoIsProcessing(false);
+              });
+            }}
             style={{ marginTop: PADDING }}
           >
             Choose existing
@@ -242,6 +252,7 @@ PhotoCapture.propTypes = {
   uri: propTypes.string,
   onChange: propTypes.func.isRequired,
   style: propTypes.oneOfType([propTypes.object, propTypes.array]),
+  setPhotoIsProcessing: propTypes.func.isRequired,
 };
 
 export default memo(PhotoCapture);
