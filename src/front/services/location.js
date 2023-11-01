@@ -128,6 +128,8 @@ export function useFollowUser(mapViewRef) {
   return { followUser, stopFollowUser, isFollowing: !!subscription };
 }
 
+const cache = {};
+
 export async function getAssistancePrompt() {
   const existingPermissions = await Location.getForegroundPermissionsAsync();
 
@@ -137,10 +139,20 @@ export async function getAssistancePrompt() {
     return prompt;
   }
 
-  let currentLocation = await Location.getLastKnownPositionAsync();
+  let currentLocation = await Location.getLastKnownPositionAsync({
+    maxAge: 1000 * 60 * 10, // minutes
+  });
 
   if (!currentLocation) {
     currentLocation = await getLocation();
+  }
+
+  const cacheKey = `${currentLocation.coords.latitude.toFixed(
+    2,
+  )},${currentLocation.coords.longitude.toFixed(2)}`;
+
+  if (cache[cacheKey]) {
+    return cache[cacheKey];
   }
 
   try {
@@ -168,6 +180,8 @@ export async function getAssistancePrompt() {
       const attributes = response.features[0].attributes;
 
       prompt = `If you encounter a live animal that needs assistance, please call ${attributes.DsplayName} at ${attributes.PHONE_NUMBER}.`;
+
+      cache[cacheKey] = prompt;
     }
   } catch (error) {
     console.error(error);
