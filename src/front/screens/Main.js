@@ -186,13 +186,13 @@ export default function MainScreen() {
     );
   }, []);
 
-  const setMarker = React.useCallback(async () => {
-    const points = { ...crosshairCoordinates };
+  const setMarker = async () => {
+    const points = { ...crosshairPoints };
 
     const coordinates = await mapView.current.coordinateForPoint(points);
 
     setCarcassCoordinates(coordinates);
-  }, [crosshairCoordinates]);
+  };
 
   const showAddReport = () => {
     const displayReport = async (newReportType) => {
@@ -302,20 +302,21 @@ export default function MainScreen() {
     color: theme['color-basic-900'],
   });
 
-  const [crosshairCoordinates, setCrosshairCoordinates] = React.useState(null);
+  const [crosshairPoints, setCrosshairPoints] = React.useState(null);
   React.useEffect(() => {
     const giddyUp = async () => {
       const camera = await mapView.current.getCamera();
-      const newCoords = await mapView.current.pointForCoordinate(camera.center);
-      setCrosshairCoordinates(newCoords);
+      const newPoints = await mapView.current.pointForCoordinate(camera.center);
+      setCrosshairPoints(newPoints);
     };
 
     if (reportState.showReport) {
       giddyUp();
     } else {
-      setCrosshairCoordinates(null);
+      setCrosshairPoints(null);
     }
   }, [reportState.showReport]);
+
   const VehicleIcon = getIcon({
     pack: 'material',
     name: 'drive-eta',
@@ -401,12 +402,12 @@ export default function MainScreen() {
               />
             ) : null}
           </Map>
-          {crosshairCoordinates ? (
+          {crosshairPoints ? (
             <View
               pointerEvents="none"
               style={[
                 styles.crosshairContainer,
-                { top: crosshairCoordinates.y, left: crosshairCoordinates.x },
+                { top: crosshairPoints.y, left: crosshairPoints.x },
               ]}
             >
               <CrosshairIcon />
