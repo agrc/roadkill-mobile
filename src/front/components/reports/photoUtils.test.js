@@ -1,4 +1,4 @@
-import { getCoordinatesFromExif, getDateFromExif } from './PhotoCapture';
+import { getCoordinatesFromExif, getDateFromExif } from './photoUtils';
 
 describe('PhotoCapture', () => {
   describe('getCoordinatesFromExif', () => {
