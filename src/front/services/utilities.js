@@ -54,12 +54,16 @@ export function useSecureState(key) {
   return [state, setState];
 }
 
+const secureStoreOptions = {
+  keychainAccessible: SecureStorage.ALWAYS,
+};
+
 export function useSecureRef(key) {
   const ref = React.useRef();
 
   React.useEffect(() => {
     const init = async () => {
-      const value = await SecureStorage.getItemAsync(key);
+      const value = await SecureStorage.getItemAsync(key, secureStoreOptions);
 
       try {
         ref.current = JSON.parse(value);
@@ -77,6 +81,7 @@ export function useSecureRef(key) {
     SecureStorage.setItemAsync(
       key,
       typeof value === 'object' ? JSON.stringify(value) : value,
+      secureStoreOptions,
     );
   };
 

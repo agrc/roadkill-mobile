@@ -37,6 +37,7 @@
     "isin",
     "isna",
     "key",
+    "keychain",
     "knex",
     "knexfile",
     "levelname",
