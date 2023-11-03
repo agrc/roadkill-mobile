@@ -9,7 +9,7 @@ import * as Sentry from 'sentry-expo';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';
 import myFetch from '../services/fetch';
-import { useAsyncError, useSecureState } from '../services/utilities';
+import { useSecureState } from '../services/utilities';
 import useAppleProvider from './providers/apple';
 import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
@@ -60,8 +60,6 @@ export function AuthContextProvider({ children, onReady }) {
   if (authInfo) {
     currentProvider = PROVIDER_LOOKUP[authInfo.providerName];
   }
-
-  const throwAsyncError = useAsyncError();
 
   React.useEffect(() => {
     if (Platform.OS == 'ios') {
