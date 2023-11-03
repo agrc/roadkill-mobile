@@ -1,3 +1,35 @@
+## [v3.0.7-609](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-607...v3.0.7-609) (2023-11-03)
+
+
+### Bug Fixes
+
+* **back:** Q2 Dep Bumps🌲 ([9ae6e73](https://github.com/agrc/roadkill-mobile/commit/9ae6e738e9329890ce5200267bb3d94dd91fa1e0))
+* **back:** Q3 Dep Bumps 🌲 ([1b7e5bd](https://github.com/agrc/roadkill-mobile/commit/1b7e5bd4f26a1e19229049827e4518c1d5479675))
+* **data:** upgrade syntax for newer version of auth proxy tool ([26e7ecc](https://github.com/agrc/roadkill-mobile/commit/26e7eccf5f9c537e3fdc27b6db6f8eb9b3acb8e4))
+* **front:** add location caching for lower accuracies ([c70ca72](https://github.com/agrc/roadkill-mobile/commit/c70ca72af6fdec6baed797f848344413fe9494ce))
+* **front:** bump expo to v49 ([36d79c5](https://github.com/agrc/roadkill-mobile/commit/36d79c500ce0a8a9580bd180448d6c8eb6563f60))
+* **front:** bump network connection library for better timeout handling ([b6c2059](https://github.com/agrc/roadkill-mobile/commit/b6c20595f21e5be854e042a10ab0dd94c1e2b7b1)), closes [#287](https://github.com/agrc/roadkill-mobile/issues/287)
+* **front:** make sure that auth is available even when the phone is locked ([59cfd43](https://github.com/agrc/roadkill-mobile/commit/59cfd43659e7660e40a438d7205ff10f1bd8f792))
+* **front:** offline caching and error handling ([f6a59b8](https://github.com/agrc/roadkill-mobile/commit/f6a59b8f89c6f003b1dec93d9cc802b62aaa927e)), closes [#287](https://github.com/agrc/roadkill-mobile/issues/287) [#288](https://github.com/agrc/roadkill-mobile/issues/288)
+* **front:** prevent user from submitting report before photo has finished loading ([9e04b52](https://github.com/agrc/roadkill-mobile/commit/9e04b522d68f9e5d60563965a81cb64f55fe8b81))
+* **front:** reduce image size to help with submission bandwidth ([9019dec](https://github.com/agrc/roadkill-mobile/commit/9019dec3958444ef1520c0f8b965b31365582049)), closes [#286](https://github.com/agrc/roadkill-mobile/issues/286)
+* **front:** simplify location requests ([e606c78](https://github.com/agrc/roadkill-mobile/commit/e606c788860e9b875b1625c9ed461396f1c78bd8))
+* **front:** simplify report slide up animation and layout ([15a1404](https://github.com/agrc/roadkill-mobile/commit/15a1404f8d1aa81f8018aa236179493a2c4420be))
+* **front:** switch to newer fast image library ([8406c20](https://github.com/agrc/roadkill-mobile/commit/8406c207d433aca8eaa5a7810f97d5c6e82a7f32)), closes [#220](https://github.com/agrc/roadkill-mobile/issues/220)
+* **front:** verify existence of cached data before attempting to upload ([a435ec6](https://github.com/agrc/roadkill-mobile/commit/a435ec69aa3b5213a174e9e4f679e614af755c44))
+
+
+### Features
+
+* **front:** cache psap queries ([1d7028b](https://github.com/agrc/roadkill-mobile/commit/1d7028b5a3e4a9cf72e3d08467e313be9713c2f0))
+
+
+### Performance Improvements
+
+* **front:** optimize report form re-renders to provide more snappy feedback when changing values ([e931170](https://github.com/agrc/roadkill-mobile/commit/e931170679ae4d4ed86e97c3a2b185f87626c112))
+
+
+
 ## [v3.0.6-607](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-606...v3.0.6-607) (2023-03-16)
 
 

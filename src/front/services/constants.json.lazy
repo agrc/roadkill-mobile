@@ -386,17 +386,6 @@
       "frequent": false
     },
     {
-      "species_id": 37,
-      "common_name": "Spotted Shunk",
-      "scientific_name": "Spilogale putorius",
-      "species_type": "wild",
-      "species_class": "mammals",
-      "species_order": "carnivores",
-      "family": "skunks",
-      "rare": false,
-      "frequent": false
-    },
-    {
       "species_id": 38,
       "common_name": "Cottontail Rabbit",
       "scientific_name": "Sylvilagus spp.",
@@ -1473,6 +1462,171 @@
       "family": "unknown",
       "rare": false,
       "frequent": false
+    },
+    {
+      "species_id": 135,
+      "common_name": "American Crow",
+      "scientific_name": "Corvus brachyrhynchos",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 136,
+      "common_name": "Black-billed Magpie",
+      "scientific_name": "Pica hudsonia",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 137,
+      "common_name": "Bald Eagle",
+      "scientific_name": "Haliaeetus leucocephalus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 138,
+      "common_name": "American White Pelican",
+      "scientific_name": "Pelecanus erythrorhynchos",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 139,
+      "common_name": "Barn Owl",
+      "scientific_name": "Tyto alba",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 140,
+      "common_name": "Great Horned Owl",
+      "scientific_name": "Bubo virginianus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 141,
+      "common_name": "Ground Squirrel",
+      "scientific_name": "Marmotini",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "rodents",
+      "family": "prairie dogs",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 142,
+      "common_name": "Groundhog",
+      "scientific_name": "Marmota monax",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "rodents",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 143,
+      "common_name": "Muskrat",
+      "scientific_name": "Ondatra zibethicus",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "rodents",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 37,
+      "common_name": "Spotted Skunk",
+      "scientific_name": "Spilogale putorius",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "carnivores",
+      "family": "skunks",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 144,
+      "common_name": "Peregrine Falcon",
+      "scientific_name": "Falco peregrinus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 146,
+      "common_name": "Greater Sage-Grouse",
+      "scientific_name": "Centrocercus urophasianus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "upland birds",
+      "family": "grouse",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 147,
+      "common_name": "Common Raven",
+      "scientific_name": "Corvus corax",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 148,
+      "common_name": "Northern Harrier",
+      "scientific_name": "Circus cyaneus",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "vultures",
+      "family": "vultures",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 149,
+      "common_name": "Sandhill Crane",
+      "scientific_name": "Grus canadensis",
+      "species_type": "wild",
+      "species_class": "birds",
+      "species_order": "unknown",
+      "family": "unknown",
+      "rare": false,
+      "frequent": false
     }
   ],
   "organizations": [
@@ -1614,6 +1768,81 @@
     {
       "id": 29,
       "name": "MDT",
+      "org_type": "agency"
+    },
+    {
+      "id": 30,
+      "name": "Public",
+      "org_type": "agency"
+    },
+    {
+      "id": 31,
+      "name": "Box Elder County Sheriff’s Office ",
+      "org_type": "agency"
+    },
+    {
+      "id": 32,
+      "name": "Lehi police ",
+      "org_type": "agency"
+    },
+    {
+      "id": 33,
+      "name": "Salem Police",
+      "org_type": "agency"
+    },
+    {
+      "id": 34,
+      "name": "Sandy city police department ",
+      "org_type": "agency"
+    },
+    {
+      "id": 35,
+      "name": "UDAF",
+      "org_type": "agency"
+    },
+    {
+      "id": 36,
+      "name": "CWMU Association ",
+      "org_type": "contractor"
+    },
+    {
+      "id": 37,
+      "name": "Department of Enviornmental Quality",
+      "org_type": "agency"
+    },
+    {
+      "id": 38,
+      "name": "Salt Lake County Parks",
+      "org_type": "agency"
+    },
+    {
+      "id": 39,
+      "name": "University of Utah ",
+      "org_type": "agency"
+    },
+    {
+      "id": 40,
+      "name": "Sandy city public utilities ",
+      "org_type": "agency"
+    },
+    {
+      "id": 41,
+      "name": "Draper Police",
+      "org_type": "agency"
+    },
+    {
+      "id": 42,
+      "name": "Weber County Animal Control",
+      "org_type": "agency"
+    },
+    {
+      "id": 43,
+      "name": "Taylorsville City",
+      "org_type": "agency"
+    },
+    {
+      "id": 44,
+      "name": "Hideout",
       "org_type": "agency"
     }
   ]
