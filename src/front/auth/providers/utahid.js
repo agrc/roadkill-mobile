@@ -139,6 +139,8 @@ export default function useUtahIDProvider() {
       accessToken.current &&
       !isTokenExpired(jwt_decode(accessToken.current))
     ) {
+      console.log('returning cached token');
+
       return prefix + accessToken.current;
     }
 
@@ -183,21 +185,17 @@ export default function useUtahIDProvider() {
       return tokens?.accessToken;
     }
 
-    try {
-      const tokenResponse = await refreshAsync(
-        {
-          clientId: config.CLIENT_ID,
-          refreshToken: refreshToken.current,
-        },
-        discovery,
-      );
+    const tokenResponse = await refreshAsync(
+      {
+        clientId: config.CLIENT_ID,
+        refreshToken: refreshToken.current,
+      },
+      discovery,
+    );
 
-      setAccessToken(tokenResponse.accessToken);
+    setAccessToken(tokenResponse.accessToken);
 
-      return tokenResponse.accessToken;
-    } catch (error) {
-      throwAsyncError(error);
-    }
+    return tokenResponse.accessToken;
   };
 
   const hasValidRefreshToken = () => {

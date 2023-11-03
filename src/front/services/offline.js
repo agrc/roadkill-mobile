@@ -15,7 +15,7 @@ import * as Notifications from 'expo-notifications';
 import lodash from 'lodash';
 import prettyBytes from 'pretty-bytes';
 import propTypes from 'prop-types';
-import React from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
@@ -48,12 +48,13 @@ export async function getBaseMapCacheSize() {
 
   return prettyBytes(size || 0);
 }
+
 export async function clearBaseMapCache() {
   await deleteAsync(tileCacheDirectory);
   await ensureDirectory(tileCacheDirectory);
 }
 
-const OfflineCacheContext = React.createContext();
+const OfflineCacheContext = createContext();
 
 export async function getOfflineSubmission(id, pickupIndex) {
   try {
@@ -88,11 +89,11 @@ async function deleteOfflineSubmission(id) {
 
 export function OfflineCacheContextProvider({ children }) {
   const { isInternetReachable } = useNetInfo();
-  const [cachedSubmissionIds, setCachedSubmissionIds] = React.useState([]);
+  const [cachedSubmissionIds, setCachedSubmissionIds] = useState([]);
   const { postReport, postRoute } = useAPI();
   const { authInfo } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const giddyUp = async () => {
       const folderNames = await readDirectoryAsync(offlineDataStorageDirectory);
 
@@ -160,7 +161,9 @@ export function OfflineCacheContextProvider({ children }) {
       Alert.alert('Offline Submission Error', lastError);
     }
 
-    setCachedSubmissionIds(failedSubmissionIds);
+    if (failedSubmissionIds.length !== cachedSubmissionIds.length) {
+      setCachedSubmissionIds(failedSubmissionIds);
+    }
 
     return lastError;
   };
@@ -174,13 +177,17 @@ export function OfflineCacheContextProvider({ children }) {
     },
   });
 
-  React.useEffect(() => {
+  // prevent endless retries...
+  const lastTry = useRef();
+  useEffect(() => {
     if (
+      (!lastTry?.current || lastTry.current < Date.now() - 1000 * 60 * 1) &&
       isInternetReachable &&
       authInfo?.user &&
       cachedSubmissionIds.length > 0 &&
       !mutation.isPending
     ) {
+      lastTry.current = Date.now();
       mutation.mutate();
     }
   }, [
@@ -190,7 +197,7 @@ export function OfflineCacheContextProvider({ children }) {
     mutation,
   ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const updateBadgeCount = async () => {
       let badgeNumber = 0;
       if (cachedSubmissionIds && cachedSubmissionIds.length > 0) {
@@ -318,7 +325,7 @@ OfflineCacheContextProvider.propTypes = {
 };
 
 export function useOfflineCache() {
-  const context = React.useContext(OfflineCacheContext);
+  const context = useContext(OfflineCacheContext);
   if (!context) {
     throw new Error(
       'useOfflineCache must be used within a OfflineCacheContextProvider component',

@@ -22,9 +22,17 @@ export function useAPI() {
   const { getBearerToken } = useAuth();
 
   async function makeRequest(method, route, data, isFormData = false) {
+    let token;
+    try {
+      token = await getBearerToken();
+    } catch (error) {
+      Sentry.Native.captureException(error);
+      throw error;
+    }
+
     const options = {
       headers: {
-        Authorization: await getBearerToken(),
+        Authorization: token,
         [commonConfig.versionHeaderName]: commonConfig.apiVersion,
       },
       method,

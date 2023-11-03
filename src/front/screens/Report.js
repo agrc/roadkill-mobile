@@ -1,3 +1,4 @@
+import NetInfo from '@react-native-community/netinfo';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Datepicker,
@@ -93,7 +94,7 @@ const Report = ({
   const windowDimensions = useWindowDimensions();
   const theme = useTheme();
   const [showMain, setShowMain] = React.useState(false);
-  const { isConnected, cacheReport } = useOfflineCache();
+  const { cacheReport } = useOfflineCache();
 
   const { postReport } = useAPI();
   const dateIcon = getIcon({
@@ -136,7 +137,8 @@ const Report = ({
       return;
     }
 
-    if (!isConnected) {
+    // do an explicit NetInfo.fetch() here so that I get the most reliable connection status
+    if (!(await NetInfo.fetch()).isInternetReachable) {
       await cacheReport(submitValues);
 
       onClose(true);
@@ -148,6 +150,7 @@ const Report = ({
     try {
       responseJson = await postReport(submitValues, reportType);
     } catch (error) {
+      console.log('error posting report, caching offline', error);
       await cacheReport(submitValues, error);
 
       onClose(true);

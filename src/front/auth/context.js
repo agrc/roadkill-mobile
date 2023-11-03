@@ -96,7 +96,7 @@ export function AuthContextProvider({ children, onReady }) {
 
   React.useEffect(() => {
     if (authInfo === null || authInfo) {
-      console.log('authInfo', authInfo);
+      console.log('authInfo', JSON.stringify(authInfo, null, 2));
       onReady();
     }
   }, [authInfo, onReady]);
@@ -277,11 +277,7 @@ export function AuthContextProvider({ children, onReady }) {
       throw new Error('user is not logged in!');
     }
 
-    try {
-      return await currentProvider.getBearerToken();
-    } catch (error) {
-      throwAsyncError(error);
-    }
+    return await currentProvider.getBearerToken();
   };
 
   return (
