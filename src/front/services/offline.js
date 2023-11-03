@@ -57,10 +57,17 @@ export async function clearBaseMapCache() {
 const OfflineCacheContext = createContext();
 
 export async function getOfflineSubmission(id, pickupIndex) {
+  const filePath = `${offlineDataStorageDirectory}/${id}/${dataFileName}`;
   try {
-    const json = await readAsStringAsync(
-      `${offlineDataStorageDirectory}/${id}/${dataFileName}`,
-    );
+    // if data.json doesn't exist, remove the folder
+    const fileInfo = await getInfoAsync(filePath);
+    if (!fileInfo.exists) {
+      await deleteAsync(`${offlineDataStorageDirectory}/${id}`);
+
+      throw new Error(`${filePath} does not exist. Folder deleted.`);
+    }
+
+    const json = await readAsStringAsync(filePath);
 
     if (pickupIndex) {
       return JSON.parse(json).pickups[pickupIndex];
@@ -267,14 +274,23 @@ export function OfflineCacheContextProvider({ children }) {
 
     submitValues.offlineStorageId = id;
 
-    submitValues.photo = await movePhoto(submitValues.photo, reportDirectory);
+    try {
+      submitValues.photo = await movePhoto(submitValues.photo, reportDirectory);
 
-    await writeAsStringAsync(
-      `${reportDirectory}/${dataFileName}`,
-      JSON.stringify(submitValues),
-    );
+      await writeAsStringAsync(
+        `${reportDirectory}/${dataFileName}`,
+        JSON.stringify(submitValues),
+      );
 
-    setCachedSubmissionIds((existing) => [...existing, id]);
+      setCachedSubmissionIds((existing) => [...existing, id]);
+    } catch (error) {
+      console.warning(
+        `error caching report, deleting directory ${reportDirectory}`,
+      );
+      await deleteAsync(reportDirectory);
+
+      throw error;
+    }
 
     await showAlert(error);
   };
