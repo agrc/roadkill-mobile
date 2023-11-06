@@ -1,0 +1,109 @@
+diff --git a/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapTileProvider.java b/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapTileProvider.java
+index 2b1a646..ea5bad1 100644
+--- a/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapTileProvider.java
++++ b/node_modules/react-native-maps/android/src/main/java/com/rnmaps/maps/MapTileProvider.java
+@@ -213,7 +213,9 @@ public class MapTileProvider implements TileProvider {
+ 			} catch (Exception e) {
+ 			  e.printStackTrace();
+ 			}
+-		} else if (image == null && !this.offlineMode) {
++		}
++
++		if (image == null && !this.offlineMode) {
+ 			Log.d("urlTile", "Normal fetch");
+ 			image = fetchTile(x, y, zoom);
+ 			if (image == null) {
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMap.m b/node_modules/react-native-maps/ios/AirMaps/AIRMap.m
+index fe1ae13..551f464 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMap.m
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMap.m
+@@ -116,13 +116,21 @@ const NSInteger AIRMapMaxZoomLevel = 20;
+         [self addOverlay:(id<MKOverlay>)subview];
+     } else if ([subview isKindOfClass:[AIRMapUrlTile class]]) {
+         ((AIRMapUrlTile *)subview).map = self;
+-        [self addOverlay:(id<MKOverlay>)subview];
++        if (((AIRMapUrlTile *)subview).showLabels) {
++            [self addOverlay:(id<MKOverlay>)subview];
++        } else {
++            [self addOverlay:(id<MKOverlay>)subview level:MKOverlayLevelAboveLabels];
++        }
+     }else if ([subview isKindOfClass:[AIRMapWMSTile class]]) {
+         ((AIRMapWMSTile *)subview).map = self;
+         [self addOverlay:(id<MKOverlay>)subview];
+     } else if ([subview isKindOfClass:[AIRMapLocalTile class]]) {
+         ((AIRMapLocalTile *)subview).map = self;
+-        [self addOverlay:(id<MKOverlay>)subview];
++        if (((AIRMapLocalTile *)subview).showLabels) {
++            [self addOverlay:(id<MKOverlay>)subview];
++        } else {
++            [self addOverlay:(id<MKOverlay>)subview level:MKOverlayLevelAboveLabels];
++        }
+     } else if ([subview isKindOfClass:[AIRMapOverlay class]]) {
+         ((AIRMapOverlay *)subview).map = self;
+         [self addOverlay:(id<MKOverlay>)subview];
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTile.h b/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTile.h
+index d03d7b1..8e7102f 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTile.h
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTile.h
+@@ -23,6 +23,8 @@
+ @property (nonatomic, strong) MKTileOverlay *tileOverlay;
+ @property (nonatomic, strong) MKTileOverlayRenderer *renderer;
+ 
++@property BOOL showLabels;
++
+ @property (nonatomic, copy) NSString *pathTemplate;
+ @property (nonatomic, assign) CGFloat tileSize;
+ 
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTileManager.m b/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTileManager.m
+index a7997bf..e9f391b 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTileManager.m
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMapLocalTileManager.m
+@@ -33,6 +33,7 @@ RCT_EXPORT_MODULE()
+ }
+ 
+ RCT_EXPORT_VIEW_PROPERTY(pathTemplate, NSString)
++RCT_EXPORT_VIEW_PROPERTY(showLabels, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(tileSize, CGFloat)
+ 
+ @end
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.h b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.h
+index fdbc012..c6dcbfb 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.h
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.h
+@@ -38,6 +38,7 @@
+ @property NSInteger minimumZ;
+ @property BOOL flipY;
+ @property BOOL shouldReplaceMapContent;
++@property BOOL showLabels;
+ @property NSInteger tileSize;
+ @property (nonatomic, copy) NSString *tileCachePath;
+ @property NSInteger tileCacheMaxAge;
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.m b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.m
+index f77f627..ba3c7c0 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.m
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTile.m
+@@ -21,6 +21,12 @@
+     [self update];
+ }
+ 
++- (void)setShowLabels:(BOOL)showLabels
++{
++    _showLabels = showLabels;
++    [self update];
++}
++
+ - (void)setMaximumZ:(NSInteger)maximumZ
+ {
+     _maximumZ = maximumZ;
+diff --git a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTileManager.m b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTileManager.m
+index 292a4bd..42933d3 100644
+--- a/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTileManager.m
++++ b/node_modules/react-native-maps/ios/AirMaps/AIRMapUrlTileManager.m
+@@ -38,6 +38,7 @@ RCT_EXPORT_VIEW_PROPERTY(maximumNativeZ, NSInteger)
+ RCT_EXPORT_VIEW_PROPERTY(minimumZ, NSInteger)
+ RCT_EXPORT_VIEW_PROPERTY(flipY, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(shouldReplaceMapContent, BOOL)
++RCT_EXPORT_VIEW_PROPERTY(showLabels, BOOL)
+ RCT_EXPORT_VIEW_PROPERTY(tileSize, NSInteger)
+ RCT_EXPORT_VIEW_PROPERTY(tileCachePath, NSString)
+ RCT_EXPORT_VIEW_PROPERTY(tileCacheMaxAge, NSInteger)
