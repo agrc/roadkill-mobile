@@ -14,8 +14,8 @@ echo "publishing OTA update"
 results=$(npx env-cmd -f $ENV_FILE eas update --auto --json --non-interactive)
 
 echo "renaming files for sentry sourcemap upload"
-mv $(find ./dist/bundles/android-*.js) dist/bundles/index.android.bundle.js
-mv $(find ./dist/bundles/ios-*.js) dist/bundles/main.jsbundle.js
+mv $(find ./dist/bundles/android-*.hbc) dist/bundles/index.android.bundle
+mv $(find ./dist/bundles/ios-*.hbc) dist/bundles/main.jsbundle
 
 config=$(eas config -p android -e $RELEASE_BRANCH | sed -n '/^{/,/^}/p' | jq -s '.[0]')
 
@@ -36,7 +36,7 @@ npx sentry-cli releases \
   files $bundle_id@$version+$build \
   upload-sourcemaps \
   --dist $(echo $android_results | jq -r '.id') \
-  --rewrite dist/bundles/index.android.bundle.js $(find ./dist/bundles/android-*.map) \
+  --rewrite dist/bundles/index.android.bundle $(find ./dist/bundles/android-*.map) \
   --org utah-ugrc \
   --project roadkill
 
@@ -45,7 +45,7 @@ npx sentry-cli releases \
   files $bundle_id@$version+$build \
   upload-sourcemaps \
   --dist $(echo $ios_results | jq -r '.id') \
-  --rewrite dist/bundles/main.jsbundle.js $(find ./dist/bundles/ios-*.map) \
+  --rewrite dist/bundles/main.jsbundle $(find ./dist/bundles/ios-*.map) \
   --org utah-ugrc \
   --project roadkill
 
