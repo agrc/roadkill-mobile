@@ -40,17 +40,12 @@ export default function ChooseTypeScreen({ navigation }) {
   }, []);
 
   const { setUserType } = useAuth();
-  const Option = ({ children, type, onPress, accessoryLeft }) => {
-    const innerOnPress = () => {
-      setUserType(type);
-      onPress();
-    };
-
+  const Option = ({ children, onPress, accessoryLeft }) => {
     return (
       <Button
         appearance="outline"
         style={styles.option}
-        onPress={innerOnPress}
+        onPress={onPress}
         status="info"
         size="giant"
         accessibilityRole="button"
@@ -62,14 +57,14 @@ export default function ChooseTypeScreen({ navigation }) {
   };
   Option.propTypes = {
     children: propTypes.string.isRequired,
-    type: propTypes.string.isRequired,
     onPress: propTypes.func.isRequired,
     accessoryLeft: propTypes.func,
   };
 
   const { logIn, status } = useAuth();
   const showSpinner = status === STATUS.loading;
-  const initLogIn = async (providerName) => {
+  const initLogIn = async (providerName, userType) => {
+    setUserType(userType);
     const { success, registered } = await logIn(providerName);
     if (!success) {
       return;
@@ -91,7 +86,7 @@ export default function ChooseTypeScreen({ navigation }) {
     const [pressed, setPressed] = React.useState(false);
     return (
       <Pressable
-        onPress={() => initLogIn(providerName)}
+        onPress={() => initLogIn(providerName, config.USER_TYPES.public)}
         disabled={showSpinner}
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}
@@ -129,7 +124,6 @@ export default function ChooseTypeScreen({ navigation }) {
 
         <View style={styles.optionsContainer}>
           <Option
-            type={config.USER_TYPES.public}
             onPress={() => setShowAuthButtons(!showAuthButtons)}
             accessoryLeft={showAuthButtons ? carrotDown : carrotRight}
           >
@@ -149,11 +143,21 @@ export default function ChooseTypeScreen({ navigation }) {
                 }
                 cornerRadius={5}
                 style={[styles.oauthButton, styles.appleButton]}
-                onPress={() => initLogIn(commonConfig.authProviderNames.apple)}
+                onPress={() =>
+                  initLogIn(
+                    commonConfig.authProviderNames.apple,
+                    config.USER_TYPES.public,
+                  )
+                }
               />
             ) : null}
             <Button
-              onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
+              onPress={() =>
+                initLogIn(
+                  commonConfig.authProviderNames.utahid,
+                  config.USER_TYPES.public,
+                )
+              }
               accessoryLeft={UtahIdLogoImage}
               status="basic"
               appearance="outline"
@@ -177,14 +181,22 @@ export default function ChooseTypeScreen({ navigation }) {
             />
           </Collapsible>
           <Option
-            type={config.USER_TYPES.contractor}
-            onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
+            onPress={() =>
+              initLogIn(
+                commonConfig.authProviderNames.utahid,
+                config.USER_TYPES.contractor,
+              )
+            }
           >
             State contractor
           </Option>
           <Option
-            type={config.USER_TYPES.agency}
-            onPress={() => initLogIn(commonConfig.authProviderNames.utahid)}
+            onPress={() =>
+              initLogIn(
+                commonConfig.authProviderNames.utahid,
+                config.USER_TYPES.agency,
+              )
+            }
           >
             State agency employee
           </Option>
