@@ -47,20 +47,23 @@ const MapButton = ({
     );
   };
 
+  const shadowStyle = {
+    shadowColor: theme['color-basic-800'],
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.8,
+  };
+
   return (
     <View
       // eslint-disable-next-line react-native/no-color-literals
       style={{
-        elevation: 5,
         backgroundColor: 'transparent',
-        shadowColor: theme['color-basic-800'],
-        shadowOffset: { width: 2, height: 2 },
-        shadowOpacity: 0.8,
+        elevation: 5,
       }}
     >
       <Button
         accessoryLeft={ButtonIcon}
-        style={style}
+        style={[style, shadowStyle]}
         size="tiny"
         onPress={onPress}
         status={status}
