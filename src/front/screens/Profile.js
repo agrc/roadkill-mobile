@@ -10,7 +10,14 @@ import {
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React, { useRef } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import * as Sentry from 'sentry-expo';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
@@ -132,7 +139,9 @@ export default function ProfileScreen() {
           </Card>
         ) : null}
         {data ? (
-          <>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
             <View style={{ padding: PADDING }}>
               <Input
                 label="Name (from sign-in provider)"
@@ -303,7 +312,7 @@ export default function ProfileScreen() {
                 Delete Account
               </Button>
             </View>
-          </>
+          </KeyboardAvoidingView>
         ) : null}
       </ScrollView>
       <Spinner show={isPending} message={'Loading profile...'} />

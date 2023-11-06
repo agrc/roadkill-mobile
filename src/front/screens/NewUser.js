@@ -4,7 +4,14 @@ import { Button, Input, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import * as Sentry from 'sentry-expo';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
@@ -113,135 +120,146 @@ export default function NewUserScreen() {
 
   return (
     <RootView showSpinner={registerMutation.isPending}>
-      <ScrollView style={styles.layout}>
-        <Text category="h1">Please complete your profile</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView style={styles.layout}>
+          <Text category="h1">Please complete your profile</Text>
 
-        <Formik
-          initialValues={{
-            phone: null,
-            organization_id: null,
-            organization_name: null,
-            name,
-            email: authInfo?.oauthUser.email ?? '',
-          }}
-          validationSchema={schema}
-          onSubmit={register}
-          isSubmitting={registerMutation.isPending}
-        >
-          {({
-            values,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            errors,
-            isValid,
-            touched,
-            dirty,
-            setValues,
-          }) => (
-            <>
-              <View style={styles.inputsContainer}>
-                <Input
-                  style={styles.input}
-                  label="Name"
-                  value={values.name}
-                  onChangeText={handleChange('name')}
-                  disabled={
-                    authInfo?.oauthUser.given_name ||
-                    authInfo?.oauthUser.family_name
-                  }
-                />
-                <Input
-                  style={styles.input}
-                  label="Email"
-                  value={values.email}
-                  disabled={authInfo?.oauthUser.email}
-                  onChangeText={handleChange('email')}
-                />
-                {organizationIsRequired ? (
-                  <>
-                    <Text
-                      category="label"
-                      appearance="hint"
-                      style={styles.label}
-                    >
-                      Organization
-                    </Text>
-                    <SearchList
-                      value={{
-                        id: values.organization_id,
-                        name:
-                          values.organization_id === commonConfig.otherOrg.id
-                            ? commonConfig.otherOrg.name
-                            : values.organization_name,
-                      }}
-                      onChange={(item) => {
-                        setValues({
-                          ...values,
-                          organization_id: item?.id,
-                          organization_name:
-                            item?.id === commonConfig.otherOrg.id
-                              ? null
-                              : item?.name,
-                        });
-                      }}
-                      items={organizationsLookup}
-                      placeholder="Organization"
-                      itemToString={(item) => item?.name}
-                      itemToKey={(item) => item?.id}
-                      displayPhotos={false}
-                      forceModal={true}
-                    />
-                    {values.organization_id === commonConfig.otherOrg.id ? (
-                      <Input
-                        accessibilityRole="text"
-                        style={styles.input}
-                        label="Add New Organization"
-                        caption={
-                          errors.organization_name && touched.organization_name
-                            ? errors.organization_name
-                            : null
-                        }
-                        textContentType="organizationName"
-                        value={
-                          values.organization_name !==
-                          commonConfig.otherOrg.name
-                            ? values.organization_name
-                            : ''
-                        }
-                        onChangeText={handleChange('organization_name')}
-                        onBlur={handleBlur('organization_name')}
-                        status={errors.organization_name ? 'danger' : null}
+          <Formik
+            initialValues={{
+              phone: null,
+              organization_id: null,
+              organization_name: null,
+              name,
+              email: authInfo?.oauthUser.email ?? '',
+            }}
+            validationSchema={schema}
+            onSubmit={register}
+            isSubmitting={registerMutation.isPending}
+          >
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              errors,
+              isValid,
+              touched,
+              dirty,
+              setValues,
+            }) => (
+              <>
+                <View style={styles.inputsContainer}>
+                  <Input
+                    style={styles.input}
+                    label="Name"
+                    value={values.name}
+                    onChangeText={handleChange('name')}
+                    disabled={
+                      authInfo?.oauthUser.given_name ||
+                      authInfo?.oauthUser.family_name
+                    }
+                  />
+                  <Input
+                    style={styles.input}
+                    label="Email"
+                    value={values.email}
+                    disabled={authInfo?.oauthUser.email}
+                    onChangeText={handleChange('email')}
+                  />
+                  {organizationIsRequired ? (
+                    <>
+                      <Text
+                        category="label"
+                        appearance="hint"
+                        style={styles.label}
+                      >
+                        Organization
+                      </Text>
+                      <SearchList
+                        value={{
+                          id: values.organization_id,
+                          name:
+                            values.organization_id === commonConfig.otherOrg.id
+                              ? commonConfig.otherOrg.name
+                              : values.organization_name,
+                        }}
+                        onChange={(item) => {
+                          setValues({
+                            ...values,
+                            organization_id: item?.id,
+                            organization_name:
+                              item?.id === commonConfig.otherOrg.id
+                                ? null
+                                : item?.name,
+                          });
+                        }}
+                        items={organizationsLookup}
+                        placeholder="Organization"
+                        itemToString={(item) => item?.name}
+                        itemToKey={(item) => item?.id}
+                        displayPhotos={false}
+                        forceModal={true}
                       />
-                    ) : null}
-                  </>
-                ) : null}
-                <MyPhoneInput
-                  accessibilityRole="text"
+                      {values.organization_id === commonConfig.otherOrg.id ? (
+                        <Input
+                          accessibilityRole="text"
+                          style={styles.input}
+                          label="Add New Organization"
+                          caption={
+                            errors.organization_name &&
+                            touched.organization_name
+                              ? errors.organization_name
+                              : null
+                          }
+                          textContentType="organizationName"
+                          value={
+                            values.organization_name !==
+                            commonConfig.otherOrg.name
+                              ? values.organization_name
+                              : ''
+                          }
+                          onChangeText={handleChange('organization_name')}
+                          onBlur={handleBlur('organization_name')}
+                          status={errors.organization_name ? 'danger' : null}
+                        />
+                      ) : null}
+                    </>
+                  ) : null}
+                  <MyPhoneInput
+                    accessibilityRole="text"
+                    style={styles.input}
+                    label="Phone"
+                    accessibilityLabel="phone"
+                    caption={
+                      errors.phone && touched.phone ? errors.phone : null
+                    }
+                    keyboardType="phone-pad"
+                    textContentType="telephoneNumber"
+                    value={values.phone}
+                    onChange={handleChange('phone')}
+                    onBlur={handleBlur('phone')}
+                    status={errors.phone ? 'danger' : null}
+                  />
+                </View>
+                <Button
+                  onPress={handleSubmit}
                   style={styles.input}
-                  label="Phone"
-                  accessibilityLabel="phone"
-                  caption={errors.phone && touched.phone ? errors.phone : null}
-                  keyboardType="phone-pad"
-                  textContentType="telephoneNumber"
-                  value={values.phone}
-                  onChange={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  status={errors.phone ? 'danger' : null}
-                />
-              </View>
-              <Button
-                onPress={handleSubmit}
-                style={styles.input}
-                disabled={!dirty || !isValid || registerMutation.isPending}
-                status="info"
-              >
-                Register
-              </Button>
-              <Button onPress={cancel} style={styles.input} appearance="ghost">
-                Cancel
-              </Button>
-              {__DEV__ ? (
+                  disabled={!dirty || !isValid || registerMutation.isPending}
+                  status="info"
+                >
+                  Register
+                </Button>
+                <Button
+                  onPress={cancel}
+                  style={styles.input}
+                  appearance="ghost"
+                >
+                  Cancel
+                </Button>
+                {/* {__DEV__ ? (
                 <>
                   <Text category="c1">
                     [The below text is only for debugging the values sent to the
@@ -251,11 +269,12 @@ export default function NewUserScreen() {
                   <Text>values: {JSON.stringify(values, null, '  ')}</Text>
                   <Text>touched: {JSON.stringify(touched, null, '  ')}</Text>
                 </>
-              ) : null}
-            </>
-          )}
-        </Formik>
-      </ScrollView>
+              ) : null} */}
+              </>
+            )}
+          </Formik>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </RootView>
   );
 }
