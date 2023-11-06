@@ -35,7 +35,10 @@ export function AuthContextProvider({ children, onReady }) {
   //    registered: boolean
   // }
 
-  const [userType, setUserType] = useSecureState(config.USER_TYPE_KEY);
+  const [userType, setUserType] = useSecureState(
+    config.USER_TYPE_KEY,
+    config.USER_TYPES.public,
+  );
   const [status, setStatus] = React.useState(STATUS.idle);
   const facebookProvider = useFacebookProvider();
   const googleProvider = useGoogleProvider();

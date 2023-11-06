@@ -18,7 +18,7 @@ export function useMounted() {
   return isMounted.current;
 }
 
-export function useSecureState(key) {
+export function useSecureState(key, defaultValue) {
   // state will be undefined until is has been initialized,
   // then it will be the value or null
   const [state, setInternalState] = React.useState();
@@ -32,6 +32,10 @@ export function useSecureState(key) {
         console.error('error secure state get', key, error);
       }
 
+      if (!value) {
+        value = defaultValue;
+      }
+
       try {
         setInternalState(JSON.parse(value));
       } catch (e) {
@@ -40,7 +44,7 @@ export function useSecureState(key) {
     };
 
     init();
-  }, [key]);
+  }, [defaultValue, key]);
 
   const setState = (value) => {
     // value could be string or object
