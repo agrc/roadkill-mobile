@@ -89,7 +89,7 @@ export default function useAppleProvider() {
     try {
       signInResult = await AppleAuthentication.signInAsync(appleOptions);
     } catch (error) {
-      if (error.code === 'ERR_CANCELED') {
+      if (error.code === 'ERR_REQUEST_CANCELED') {
         return null;
       } else {
         throwAsyncError(error);

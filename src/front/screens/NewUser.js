@@ -74,7 +74,7 @@ export default function NewUserScreen() {
   }
 
   // add name/email, if not provided by oauth
-  if (!authInfo.oauthUser.given_name || !authInfo.oauthUser.family_name) {
+  if (!authInfo?.oauthUser.given_name || !authInfo?.oauthUser.family_name) {
     shape.name = string().required();
   }
   const schema = object().shape(shape);
