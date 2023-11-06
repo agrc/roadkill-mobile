@@ -115,7 +115,9 @@ export default function NewUserScreen() {
   };
 
   const name = authInfo?.oauthUser.given_name
-    ? `${authInfo?.oauthUser.given_name} ${authInfo?.oauthUser.family_name}`
+    ? `${authInfo?.oauthUser.given_name || ''} ${
+        authInfo?.oauthUser.family_name || ''
+      }`
     : '';
 
   return (
