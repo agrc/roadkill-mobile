@@ -1,3 +1,16 @@
+## [v3.0.7-612](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-611...v3.0.7-612) (2023-11-07)
+
+
+### Bug Fixes
+
+* **front:** better loading screen ([2cefb01](https://github.com/agrc/roadkill-mobile/commit/2cefb014dda2c321d893b559a1b1121b7ae097df))
+* **front:** fix regression preventing blank loading screen ([3890ec5](https://github.com/agrc/roadkill-mobile/commit/3890ec56aab9c70293f6713cf41421a36f48e18e))
+* **front:** fix syntax error with google auth ([038c209](https://github.com/agrc/roadkill-mobile/commit/038c20944110ecacd8756da5a266329da25188ec))
+* **front:** include response in custom fetch errors ([28f1d2e](https://github.com/agrc/roadkill-mobile/commit/28f1d2ecbd8c578e24a9733379042c3b7a4ba403))
+* **front:** simplify browser warming on android ([f036362](https://github.com/agrc/roadkill-mobile/commit/f036362f00f1c5ed7e36ea4149f8315952931bdd))
+
+
+
 ## [v3.0.7-609](https://github.com/agrc/roadkill-mobile/compare/v3.0.6-607...v3.0.7-609) (2023-11-03)
 
 
