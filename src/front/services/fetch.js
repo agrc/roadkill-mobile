@@ -12,7 +12,13 @@
  * @returns object
  */
 export default async function myFetch(url, options, parseJson) {
-  class HTTPError extends Error {}
+  class HTTPError extends Error {
+    constructor(message, response) {
+      super(message);
+      this.name = 'HTTPError';
+      this.response = response;
+    }
+  }
 
   const fetchOptions = { ...options };
   if (options.json) {
@@ -41,6 +47,7 @@ export default async function myFetch(url, options, parseJson) {
     }
     throw new HTTPError(
       `Fetch error: status code: ${response.status} text: ${errorText}`,
+      response,
     );
   }
 
