@@ -1,3 +1,13 @@
+## [v3.0.7-613](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-612...v3.0.7-613) (2023-11-07)
+
+
+### Bug Fixes
+
+* **front:** fix bug preventing selected species border in search list ([fe4f8c8](https://github.com/agrc/roadkill-mobile/commit/fe4f8c8dec62bb3115e7fe93a11b8fe32211a771))
+* **front:** remove pinned version of react dev tools ([6a6aee6](https://github.com/agrc/roadkill-mobile/commit/6a6aee6616366ceea4c5b68b8b459d70ba996f46))
+
+
+
 ## [v3.0.7-612](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-611...v3.0.7-612) (2023-11-07)
 
 
