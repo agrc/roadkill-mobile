@@ -1,3 +1,12 @@
+## [v3.0.7-614](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-613...v3.0.7-614) (2023-11-07)
+
+
+### Bug Fixes
+
+* **front:** switch to native base maps ([ffa8ed3](https://github.com/agrc/roadkill-mobile/commit/ffa8ed3055d246d43f7a7a387f3244bb2997c612))
+
+
+
 ## [v3.0.7-613](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-612...v3.0.7-613) (2023-11-07)
 
 
