@@ -4,7 +4,7 @@ import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../auth/context';
@@ -81,6 +81,7 @@ export default function ReportInfoScreen() {
 }
 
 function Photo({ photo_id, offlinePhoto, date, bearerToken }) {
+  const navigation = useNavigation();
   const commonStyles = useStyles();
 
   if (!photo_id && !offlinePhoto) {
@@ -106,16 +107,22 @@ function Photo({ photo_id, offlinePhoto, date, bearerToken }) {
             divider={false}
           />
         </View>
-        <Image
-          source={{
-            uri,
-            headers: {
-              Authorization: bearerToken,
-              [commonConfig.versionHeaderName]: commonConfig.apiVersion,
-            },
+        <Pressable
+          onPress={() => {
+            navigation.navigate('Image', { uri: uri.replace('/thumb', '') });
           }}
-          style={[commonStyles.image, styles.thumbnail]}
-        />
+        >
+          <Image
+            source={{
+              uri,
+              headers: {
+                Authorization: bearerToken,
+                [commonConfig.versionHeaderName]: commonConfig.apiVersion,
+              },
+            }}
+            style={[commonStyles.image, styles.thumbnail]}
+          />
+        </Pressable>
       </View>
       <Divider />
     </>

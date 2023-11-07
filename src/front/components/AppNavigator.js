@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../auth/context';
 import AboutScreen from '../screens/About';
 import ChooseTypeScreen from '../screens/ChooseType';
+import ImageScreen from '../screens/Image';
 import MainScreen from '../screens/Main';
 import MyReportsScreen from '../screens/MyReports';
 import NewUserScreen from '../screens/NewUser';
@@ -179,6 +180,7 @@ const ReportsNavigator = () => {
         component={RouteInfoScreen}
         options={{ title: 'Route Info' }}
       />
+      <Screen name="Image" component={ImageScreen} />
     </Navigator>
   );
 };
