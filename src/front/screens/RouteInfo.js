@@ -6,12 +6,12 @@ import React from 'react';
 import {
   PixelRatio,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
 import { Marker, Polyline } from 'react-native-maps';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Map from '../components/Map';
 import ReportListItem from '../components/ReportListItem';
 import Spinner from '../components/Spinner';

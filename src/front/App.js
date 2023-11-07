@@ -10,6 +10,7 @@ import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { enableLatestRenderer } from 'react-native-maps';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Sentry from 'sentry-expo';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
@@ -65,26 +66,28 @@ export default function App() {
 
   return (
     <ErrorBoundary onError={onError}>
-      <IconRegistry icons={[EvaIconsPack, ...packs]} />
-      <ApplicationProvider
-        {...eva}
-        customMapping={mapping}
-        theme={{ ...eva.light, ...theme }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <AuthContextProvider onReady={() => setAuthIsReady(true)}>
-            {authIsReady ? (
-              <View onLayout={onReady} style={{ flex: 1 }}>
-                <OfflineCacheContextProvider>
-                  <AppNavigator />
-                </OfflineCacheContextProvider>
-              </View>
-            ) : (
-              <Text>Loading...</Text>
-            )}
-          </AuthContextProvider>
-        </QueryClientProvider>
-      </ApplicationProvider>
+      <SafeAreaProvider>
+        <IconRegistry icons={[EvaIconsPack, ...packs]} />
+        <ApplicationProvider
+          {...eva}
+          customMapping={mapping}
+          theme={{ ...eva.light, ...theme }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <AuthContextProvider onReady={() => setAuthIsReady(true)}>
+              {authIsReady ? (
+                <View onLayout={onReady} style={{ flex: 1 }}>
+                  <OfflineCacheContextProvider>
+                    <AppNavigator />
+                  </OfflineCacheContextProvider>
+                </View>
+              ) : (
+                <Text>Loading...</Text>
+              )}
+            </AuthContextProvider>
+          </QueryClientProvider>
+        </ApplicationProvider>
+      </SafeAreaProvider>
       <StatusBar style="dark" />
     </ErrorBoundary>
   );

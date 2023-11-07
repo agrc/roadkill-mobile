@@ -4,14 +4,9 @@ import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
