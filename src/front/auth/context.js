@@ -69,29 +69,12 @@ export function AuthContextProvider({ children, onReady }) {
       return;
     }
 
-    let browserPackage;
-    const giddyUp = async () => {
-      // best practice to speed up browser for android
-      // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
-      const tabsSupportingBrowsers =
-        await WebBrowser.getCustomTabsSupportingBrowsersAsync();
-      browserPackage = tabsSupportingBrowsers?.preferredBrowserPackage;
-
-      try {
-        WebBrowser.warmUpAsync(browserPackage);
-      } catch (error) {
-        console.log('error warming up browser', error);
-      }
-    };
-
-    giddyUp();
+    // best practice to speed up browser for android
+    // ref: https://docs.expo.io/guides/authentication/#warming-the-browser
+    WebBrowser.warmUpAsync();
 
     return () => {
-      try {
-        WebBrowser.coolDownAsync(browserPackage);
-      } catch (error) {
-        console.log('error cooling down browser', error);
-      }
+      WebBrowser.coolDownAsync();
     };
   }, []);
 
