@@ -13,16 +13,8 @@ import { Image } from 'expo-image';
 import a from 'indefinite';
 import propTypes from 'prop-types';
 import React, { useCallback } from 'react';
-import {
-  PixelRatio,
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { PixelRatio, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
@@ -216,13 +208,10 @@ export default function SearchList({
     size: 24,
   });
 
-  const windowDimensions = useWindowDimensions();
+  const { width, height } = useSafeAreaFrame();
   const modalStyle = {
-    height: Platform.select({
-      ios: '100%',
-      android: windowDimensions.height - StatusBar.currentHeight * 2,
-    }),
-    width: windowDimensions.width - PADDING * 2,
+    height: height,
+    width: width - PADDING * 2,
   };
 
   const onValuePress = () => {
@@ -267,28 +256,28 @@ export default function SearchList({
           </Card>
 
           <Modal
+            animationType="fade"
             visible={showModal}
             backdropStyle={{
               backgroundColor: theme['color-basic-transparent-600'],
             }}
-            style={modalStyle}
+            style={[styles.modal, modalStyle]}
           >
-            <SafeAreaView style={styles.container}>
-              <Input
-                accessoryRight={clearable ? renderClearIcon : null}
-                value={inputValue}
-                placeholder={placeholder}
-                onChangeText={onChangeText}
-                ref={searchInputRef}
-              />
-              <List
-                data={filteredItems}
-                ItemSeparatorComponent={Divider}
-                renderItem={renderItem}
-                keyboardShouldPersistTaps="always"
-                style={{ backgroundColor: theme['color-basic-100'] }}
-              />
-            </SafeAreaView>
+            <Input
+              accessoryRight={clearable ? renderClearIcon : null}
+              value={inputValue}
+              placeholder={placeholder}
+              onChangeText={onChangeText}
+              ref={searchInputRef}
+              style={styles.input}
+            />
+            <List
+              data={filteredItems}
+              ItemSeparatorComponent={Divider}
+              renderItem={renderItem}
+              keyboardShouldPersistTaps="always"
+              style={{ backgroundColor: theme['color-basic-100'] }}
+            />
           </Modal>
         </>
       ) : (
@@ -319,15 +308,13 @@ const styles = StyleSheet.create({
   },
   // eslint-disable-next-line react-native/no-color-literals
   listItem: {
-    borderStyle: 'solid',
-    borderWidth: 2,
     borderColor: 'transparent',
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
+  input: { marginBottom: PADDING },
   // eslint-disable-next-line react-native/no-color-literals
-  container: {
-    flex: 1,
+  modal: {
     padding: PADDING,
     backgroundColor: 'white',
     borderRadius: PADDING,
