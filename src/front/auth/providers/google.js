@@ -121,10 +121,10 @@ export default function useGoogleProvider() {
       return prefix + authentication.current.accessToken;
     }
 
-    const { accessToken } = await getAuthentication();
+    const auth = await getAuthentication();
 
-    if (accessToken) {
-      return prefix + accessToken;
+    if (auth?.accessToken) {
+      return prefix + auth.accessToken;
     } else {
       throwAsyncError(new Error('No access token'));
     }
