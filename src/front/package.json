@@ -80,6 +80,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mime": "^3.0.0",
+    "p-timeout": "^6.1.2",
     "pretty-bytes": "^6.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

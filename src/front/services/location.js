@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import pTimeout from 'p-timeout';
 import React from 'react';
 import { Platform } from 'react-native';
 import config from './config';
@@ -11,7 +12,7 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
     if (accuracy <= Location.Accuracy.Balanced) {
       console.log('getting last known location');
       location = await Location.getLastKnownPositionAsync({
-        maxAge: 1000 * 60 * 2, // minutes
+        maxAge: 1000 * 60 * 1, // minutes
       });
 
       if (location) {
@@ -20,12 +21,15 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
     }
 
     console.log('getting current position', accuracy);
-    location = await Location.getCurrentPositionAsync({
-      accuracy,
-      timeout: 8000,
-    });
+    location = await pTimeout(
+      Location.getCurrentPositionAsync({
+        accuracy,
+        timeout: 8000,
+      }),
+      { milliseconds: 8000 },
+    );
   } catch (error) {
-    console.log(
+    console.warn(
       `getCurrentPositionAsync: ${error}, falling back to last known position`,
     );
 
