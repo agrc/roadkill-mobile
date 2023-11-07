@@ -32,7 +32,7 @@ export function useSecureState(key, defaultValue) {
         console.error('error secure state get', key, error);
       }
 
-      if (!value) {
+      if (!value && defaultValue !== undefined) {
         value = defaultValue;
       }
 
