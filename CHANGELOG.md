@@ -1,3 +1,17 @@
+## [v3.0.7-615](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-614...v3.0.7-615) (2023-11-07)
+
+
+### Bug Fixes
+
+* **front:** prevent hanging when getting location in android ([b7dac41](https://github.com/agrc/roadkill-mobile/commit/b7dac411fa0b3c99dd18802c2ee21c4a045c5c3c))
+
+
+### Features
+
+* **front:** add image screen for viewing larger version of images ([1d3c815](https://github.com/agrc/roadkill-mobile/commit/1d3c815d04ea90ec12215a6ee2d9a322ed3a156a))
+
+
+
 ## [v3.0.7-614](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-613...v3.0.7-614) (2023-11-07)
 
 
