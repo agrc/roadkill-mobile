@@ -1,6 +1,6 @@
 import * as eva from '@eva-design/eva';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ApplicationProvider, IconRegistry, Text } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import Constants from 'expo-constants';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,6 +14,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Sentry from 'sentry-expo';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
+import Spinner from './components/Spinner';
 import theme from './custom-theme.json';
 import mapping from './mapping.json';
 import packs from './services/icons';
@@ -82,7 +83,7 @@ export default function App() {
                   </OfflineCacheContextProvider>
                 </View>
               ) : (
-                <Text>Loading...</Text>
+                <Spinner show={true} message="Initializing application" />
               )}
             </AuthContextProvider>
           </QueryClientProvider>
