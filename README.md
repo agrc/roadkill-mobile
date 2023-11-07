@@ -12,7 +12,7 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 
 ### Debugging
 
-There's not a great solution at the moment...
+Press "j" in console after starting expo project. See [Expo Debugging & Profiling docs](https://docs.expo.dev/debugging/tools/) for more details.
 
 ### Testing Deep Links
 
