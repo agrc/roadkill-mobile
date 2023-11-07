@@ -25,8 +25,8 @@ const getStory = (initialAbleToIdentify) => {
         <ScrollView style={{ paddingHorizontal: 25 }}>
           <Text category="c1">{JSON.stringify(value, null, 2)}</Text>
           <Species
-            onChange={setValue}
-            values={value}
+            setValues={setValue}
+            setResetSpecies={console.log}
             ableToIdentify={ableToIdentify}
             setAbleToIdentify={setAbleToIdentify}
             reset={false}

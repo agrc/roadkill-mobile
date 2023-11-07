@@ -93,9 +93,8 @@ const reducer = (draft, action) => {
         draft.value.scientific_name = config.UNKNOWN;
         draft.value.species_type = config.UNKNOWN;
       } else {
-        const selectedItem = { ...action.payload };
-
-        if (selectedItem) {
+        if (action.payload) {
+          const selectedItem = { ...action.payload };
           draft.value = selectedItem;
 
           if (selectedItem.rare) {
