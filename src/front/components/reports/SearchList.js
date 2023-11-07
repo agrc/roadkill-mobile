@@ -220,19 +220,17 @@ export default function SearchList({
   };
 
   const renderItem = React.useCallback(
-    ({ item }) => {
-      return (
-        <MyListItem
-          key={itemToKey(item)}
-          item={item}
-          onSelectItem={onSelectItem}
-          selected={itemToKey(item) === itemToKey(value)}
-          itemToString={itemToString}
-          itemToKey={itemToKey}
-          displayPhoto={displayPhotos}
-        />
-      );
-    },
+    ({ item }) => (
+      <MyListItem
+        key={itemToKey(item)}
+        item={item}
+        onSelectItem={onSelectItem}
+        selected={itemToKey(item) === itemToKey(value)}
+        itemToString={itemToString}
+        itemToKey={itemToKey}
+        displayPhoto={displayPhotos}
+      />
+    ),
     [displayPhotos, itemToKey, itemToString, onSelectItem, value],
   );
 
@@ -309,6 +307,7 @@ const styles = StyleSheet.create({
   // eslint-disable-next-line react-native/no-color-literals
   listItem: {
     borderColor: 'transparent',
+    borderWidth: 2,
     paddingVertical: 0,
     paddingHorizontal: 0,
   },
