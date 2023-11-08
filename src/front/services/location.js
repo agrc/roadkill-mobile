@@ -6,13 +6,13 @@ import config from './config';
 import myFetch from './fetch';
 
 export const ACCURACY = Location.Accuracy;
-export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
+export const getLocation = async (accuracy = Location.Accuracy.Low) => {
   let location;
   try {
-    if (accuracy <= Location.Accuracy.Balanced) {
+    if (accuracy <= Location.Accuracy.Low) {
       console.log('getting last known location');
       location = await Location.getLastKnownPositionAsync({
-        maxAge: 1000 * 60 * 1, // minutes
+        maxAge: 1000 * 60 * 2, // minutes
       });
 
       if (location) {
@@ -26,7 +26,7 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
         accuracy,
         timeout: 8000,
       }),
-      { milliseconds: 8000 },
+      { milliseconds: 15000 },
     );
   } catch (error) {
     console.warn(
@@ -36,6 +36,20 @@ export const getLocation = async (accuracy = Location.Accuracy.Balanced) => {
     location = await Location.getLastKnownPositionAsync({
       requiredAccuracy: accuracy,
     });
+
+    if (!location && accuracy <= Location.Accuracy.Low) {
+      console.warn(
+        'getLastKnownPositionAsync failed, falling back to point in capital building',
+      );
+
+      return {
+        coords: {
+          // capital building
+          latitude: 40.777,
+          longitude: -111.888,
+        },
+      };
+    }
   }
 
   return location;
@@ -45,6 +59,7 @@ const REGION_BUFFER = {
   latitudeDelta: 0.1,
   longitudeDelta: 0.05,
 };
+
 export function locationToRegion(location) {
   return {
     latitude: location.coords.latitude,
