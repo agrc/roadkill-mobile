@@ -43,6 +43,10 @@ export default function useUtahIDProvider() {
   const getTokens = async () => {
     console.log('getTokens');
 
+    if (!request) {
+      throwAsyncError(new Error('auth request has not yet finished!'));
+    }
+
     try {
       const response = await promptAsync({ showInRecents: true });
       console.log('response', response);
@@ -204,5 +208,11 @@ export default function useUtahIDProvider() {
     );
   };
 
-  return { logIn, logOut, getBearerToken, hasValidToken: hasValidRefreshToken };
+  return {
+    logIn,
+    logOut,
+    getBearerToken,
+    hasValidToken: hasValidRefreshToken,
+    isReady: !!request,
+  };
 }

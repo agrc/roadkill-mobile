@@ -98,7 +98,7 @@ export function OfflineCacheContextProvider({ children }) {
   const { isInternetReachable } = useNetInfo();
   const [cachedSubmissionIds, setCachedSubmissionIds] = useState([]);
   const { postReport, postRoute } = useAPI();
-  const { authInfo } = useAuth();
+  const { authInfo, isReady } = useAuth();
 
   useEffect(() => {
     const giddyUp = async () => {
@@ -192,7 +192,8 @@ export function OfflineCacheContextProvider({ children }) {
       isInternetReachable &&
       authInfo?.user &&
       cachedSubmissionIds.length > 0 &&
-      !mutation.isPending
+      !mutation.isPending &&
+      isReady
     ) {
       lastTry.current = Date.now();
       mutation.mutate();
@@ -202,6 +203,7 @@ export function OfflineCacheContextProvider({ children }) {
     authInfo?.user,
     cachedSubmissionIds.length,
     mutation,
+    isReady,
   ]);
 
   useEffect(() => {

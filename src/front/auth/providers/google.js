@@ -133,5 +133,5 @@ export default function useGoogleProvider() {
   const hasValidToken = () =>
     authentication.current && !isAuthenticationExpired(authentication.current);
 
-  return { logIn, logOut, getBearerToken, hasValidToken };
+  return { logIn, logOut, getBearerToken, hasValidToken, isReady: !!request };
 }

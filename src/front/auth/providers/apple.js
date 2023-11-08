@@ -18,6 +18,7 @@ const appleOptions = {
 export default function useAppleProvider() {
   const throwAsyncError = useAsyncError();
   const cachedUserInfo = React.useRef(null);
+  const [isReady, setIsReady] = React.useState(false);
 
   const refreshToken = React.useCallback(
     async (identityToken, authorizationCode, isRetry) => {
@@ -65,6 +66,8 @@ export default function useAppleProvider() {
       if (cachedUserInfo.current?.identityToken) {
         await refreshToken(cachedUserInfo.current.identityToken);
       }
+
+      setIsReady(true);
     };
 
     giddyUp();
@@ -184,5 +187,5 @@ export default function useAppleProvider() {
     return isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken));
   };
 
-  return { logIn, logOut, getBearerToken, hasValidToken };
+  return { logIn, logOut, getBearerToken, hasValidToken, isReady };
 }

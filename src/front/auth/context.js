@@ -79,11 +79,11 @@ export function AuthContextProvider({ children, onReady }) {
   }, []);
 
   React.useEffect(() => {
-    if (authInfo === null || authInfo) {
+    if (authInfo === null || authInfo || currentProvider?.isReady) {
       console.log('authInfo', JSON.stringify(authInfo, null, 2));
       onReady();
     }
-  }, [authInfo, onReady]);
+  }, [authInfo, currentProvider?.isReady, onReady]);
 
   const logIn = async (providerName) => {
     setStatus(STATUS.loading);
@@ -275,6 +275,7 @@ export function AuthContextProvider({ children, onReady }) {
         setUserType,
         userType,
         registerUser,
+        isReady: currentProvider?.isReady,
       }}
     >
       {children}
