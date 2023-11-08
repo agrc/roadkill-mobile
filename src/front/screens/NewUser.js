@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
-import { Button, Input, Text } from '@ui-kitten/components';
+import { Button, Card, Input, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
 import { Formik } from 'formik';
 import React from 'react';
@@ -127,7 +127,24 @@ export default function NewUserScreen() {
         style={{ flex: 1 }}
       >
         <ScrollView style={styles.layout}>
-          <Text category="h1">Please complete your profile</Text>
+          <Text category="h1">Profile</Text>
+
+          <Card status="danger" style={{ marginTop: PADDING * 2 }}>
+            <Text category="h6">Please note!</Text>
+            <Text>
+              Using your mobile phone while driving can be extremely dangerous
+              and is against the law in Utah. Distracted driving significantly
+              increases the risk of accidents and can lead to serious
+              consequences. It&apos;s crucial to prioritize safety on the road
+              by refraining from using this app while behind the wheel. Please
+              remember that your focus should always be on the road and your
+              surroundings to protect both yourself and others.
+            </Text>
+          </Card>
+
+          <Text style={{ marginTop: PADDING }}>
+            Please fill out any missing information in your profile.
+          </Text>
 
           <Formik
             initialValues={{
@@ -283,7 +300,7 @@ export default function NewUserScreen() {
 
 const styles = StyleSheet.create({
   layout: { flex: 1, padding: 25 },
-  inputsContainer: { marginVertical: 25 },
+  inputsContainer: { marginBottom: 25 },
   input: { marginVertical: PADDING / 2 },
   label: { marginBottom: PADDING / 2 },
 });
