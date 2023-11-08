@@ -13,7 +13,6 @@ import {
 } from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import lodash from 'lodash';
-import prettyBytes from 'pretty-bytes';
 import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
@@ -42,17 +41,6 @@ function ensureDirectory(path) {
 
 ensureDirectory(tileCacheDirectory);
 ensureDirectory(offlineDataStorageDirectory);
-
-export async function getBaseMapCacheSize() {
-  const { size } = await getInfoAsync(tileCacheDirectory);
-
-  return prettyBytes(size || 0);
-}
-
-export async function clearBaseMapCache() {
-  await deleteAsync(tileCacheDirectory);
-  await ensureDirectory(tileCacheDirectory);
-}
 
 const OfflineCacheContext = createContext();
 

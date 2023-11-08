@@ -1,4 +1,3 @@
-import { useFocusEffect } from '@react-navigation/native';
 import { Button, Divider, Layout, Text } from '@ui-kitten/components';
 import { nativeApplicationVersion } from 'expo-application';
 import Constants from 'expo-constants';
@@ -18,16 +17,13 @@ import 'yup-phone-lite';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import config from '../services/config';
-import { clearBaseMapCache, getBaseMapCacheSize } from '../services/offline';
 import { PADDING } from '../services/styles';
 
-const deleteCacheMessage = 'Deleting cache files...';
 const updateMessage = 'Checking for updates...';
 console.log('manifest from Updates', JSON.stringify(manifest, null, 2));
 
 export default function AppInfoScreen() {
   const [loaderMessage, setLoaderMessage] = useState(null);
-  const [cacheSize, setCacheSize] = useState('calculating...');
 
   async function forceUpdate() {
     setLoaderMessage(updateMessage);
@@ -62,22 +58,6 @@ export default function AppInfoScreen() {
 
     setLoaderMessage(null);
   }
-
-  useFocusEffect(() => {
-    const getSize = async () => {
-      const size = await getBaseMapCacheSize();
-      setCacheSize(size);
-    };
-    getSize();
-  });
-
-  const handleClearCache = async () => {
-    setLoaderMessage(deleteCacheMessage);
-    await clearBaseMapCache();
-
-    setCacheSize(await getBaseMapCacheSize());
-    setLoaderMessage(null);
-  };
 
   return (
     <Layout style={styles.container}>
@@ -116,15 +96,6 @@ export default function AppInfoScreen() {
         <ValueContainer label="Brand" value={brand} />
         <ValueContainer label="Model" value={modelName} />
         <ValueContainer label="OS Version" value={osVersion} />
-
-        <Text category="h5" style={styles.header}>
-          Offline Base Map Cache
-        </Text>
-        <Divider />
-        <ValueContainer label="Size" value={cacheSize} />
-        <View style={styles.buttonContainer}>
-          <Button onPress={handleClearCache}>Clear Cache</Button>
-        </View>
 
         {/* Facebook requires a link to the privacy policy in the app */}
         <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
