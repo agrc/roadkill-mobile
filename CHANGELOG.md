@@ -1,3 +1,20 @@
+## [v3.0.7-617](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-615...v3.0.7-617) (2023-11-21)
+
+
+### Bug Fixes
+
+* **front:** handle rare case of cancelling login when submitting offline data ([a2567db](https://github.com/agrc/roadkill-mobile/commit/a2567dba03bee11640d532f94a91cdc317982084))
+* **front:** more attempts to handle get location issues on android ([b767b06](https://github.com/agrc/roadkill-mobile/commit/b767b0619deac190e3d700899a10766d423dbd5c))
+
+
+### Features
+
+* **front:** add distracted driving message to new user form ([f71f218](https://github.com/agrc/roadkill-mobile/commit/f71f218581253b84c4ba026d34ca05e7e1e974aa))
+* **front:** add offline maps caching note ([4bb2b58](https://github.com/agrc/roadkill-mobile/commit/4bb2b5842cfd377346a9050c5f6f019cc2a532b8)), closes [#149](https://github.com/agrc/roadkill-mobile/issues/149)
+* **front:** implement Spanish translation ([f283b89](https://github.com/agrc/roadkill-mobile/commit/f283b8906dcb026e03feebf83a5ef43180f53a92)), closes [#67](https://github.com/agrc/roadkill-mobile/issues/67)
+
+
+
 ## [v3.0.7-615](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-614...v3.0.7-615) (2023-11-07)
 
 

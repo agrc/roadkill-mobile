@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 615;
+const buildNumber = 617;
 
 export default {
   name,
@@ -141,7 +141,7 @@ export default {
   /* required for eas update command
     bump major version when upgrading expo version
   */
-  runtimeVersion: '2.0.0',
+  runtimeVersion: '2.1.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
