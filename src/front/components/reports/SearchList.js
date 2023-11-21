@@ -14,7 +14,10 @@ import a from 'indefinite';
 import propTypes from 'prop-types';
 import React, { useCallback } from 'react';
 import { PixelRatio, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import {
+  useSafeAreaFrame,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import { PADDING } from '../../services/styles';
@@ -208,9 +211,11 @@ export default function SearchList({
     size: 24,
   });
 
-  const { width, height } = useSafeAreaFrame();
+  const { width } = useSafeAreaFrame();
+  const { top, bottom } = useSafeAreaInsets();
   const modalStyle = {
-    height: height,
+    top,
+    bottom,
     width: width - PADDING * 2,
   };
 
