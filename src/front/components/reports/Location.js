@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Autolink from 'react-native-autolink';
 import { getIcon } from '../../services/icons';
+import t from '../../services/localization';
 import { getAssistancePrompt } from '../../services/location';
 import useStyles from '../../services/styles';
 
@@ -25,10 +26,7 @@ function Location({ onSetLocation, onCancel }) {
 
   return (
     <View>
-      <Text>
-        Move the map to place the crosshair at the location of the animal
-        carcass.
-      </Text>
+      <Text>{t('components.reports.location.crosshairPrompt')}</Text>
       <Button
         accessoryLeft={getIcon({
           pack: 'font-awesome-5',
@@ -39,10 +37,10 @@ function Location({ onSetLocation, onCancel }) {
         style={commonStyles.margin}
         onPress={onSetLocation}
       >
-        Set Location
+        {t('components.reports.location.setLocation')}
       </Button>
       <Button appearance="ghost" onPress={onCancel}>
-        Cancel
+        {t('cancel')}
       </Button>
       {assistancePrompt ? (
         <Text appearance="hint" style={styles.note}>

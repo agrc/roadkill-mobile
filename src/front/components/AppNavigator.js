@@ -21,6 +21,7 @@ import ReportInfoScreen from '../screens/ReportInfo';
 import RouteInfoScreen from '../screens/RouteInfo';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import t from '../services/localization';
 import { useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
 import { sendEmailToSupport } from '../services/utilities';
@@ -96,7 +97,7 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
       >
         <DrawerItem title="Main" style={{ display: 'none' }} />
         <DrawerItem
-          title="My Reports"
+          title={t('screens.myReports.title')}
           accessoryLeft={() => (
             <DrawerIcon
               name="list"
@@ -105,19 +106,19 @@ const getDrawContent = ({ navigation, state, logOut, cachedSubmissionIds }) => {
           )}
         />
         <DrawerItem
-          title="Profile"
+          title={t('screens.profile.title')}
           accessoryLeft={() => <DrawerIcon name="person" />}
         />
         <DrawerItem
-          title="About"
+          title={t('screens.about.title')}
           accessoryLeft={() => <DrawerIcon name="info" />}
         />
         <DrawerItem
-          title="Contact"
+          title={t('contact')}
           accessoryLeft={() => <DrawerIcon name="email" />}
         />
         <DrawerItem
-          title="Logout"
+          title={t('logout')}
           accessoryLeft={() => <DrawerIcon name="log-out" />}
         />
         {config.SHOW_STORYBOOK ? <DrawerItem title="Storybook" /> : null}
@@ -178,9 +179,9 @@ const ReportsNavigator = () => {
       <Screen
         name="Route Info"
         component={RouteInfoScreen}
-        options={{ title: 'Route Info' }}
+        options={{ title: t('screens.routeInfo.title') }}
       />
-      <Screen name="Image" component={ImageScreen} />
+      <Screen name={t('image')} component={ImageScreen} />
     </Navigator>
   );
 };

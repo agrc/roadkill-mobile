@@ -32,6 +32,7 @@ function Pill({ option, value, onChange }) {
   let optionValue;
   let optionLabel;
   if (typeof option === 'string') {
+    // after i18n, is this format used anymore?
     optionValue = option;
     optionLabel = option;
   } else {

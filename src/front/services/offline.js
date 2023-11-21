@@ -20,6 +20,7 @@ import * as Sentry from 'sentry-expo';
 import useAuth from '../auth/context';
 import { useAPI } from './api';
 import config from './config';
+import t from './localization';
 import { isPickupReport } from './utilities';
 
 // tiles are put into the cache directory to allow the OS to clean them up if the device gets low on space
@@ -149,11 +150,11 @@ export function OfflineCacheContextProvider({ children }) {
 
     if (failedSubmissionIds.length === 0) {
       Alert.alert(
-        'Offline Submission',
-        'Your offline data was successfully submitted.',
+        t('services.offline.offlineSubmission'),
+        t('services.offline.offlineSuccess'),
       );
     } else {
-      Alert.alert('Offline Submission Error', lastError);
+      Alert.alert(t('services.offline.offlineError'), lastError);
     }
 
     if (failedSubmissionIds.length !== cachedSubmissionIds.length) {
@@ -248,11 +249,11 @@ export function OfflineCacheContextProvider({ children }) {
   const showAlert = async function (error) {
     await new Promise((resolve) => {
       Alert.alert(
-        'Offline Report',
+        t('services.offline.offlineReport'),
         (error ? `${errorMessage} \n\n ${error.message}` : offlineMessage) +
           '\n\n' +
           commonMessage,
-        [{ text: 'OK', onPress: resolve }],
+        [{ text: t('ok'), onPress: resolve }],
       );
     });
   };

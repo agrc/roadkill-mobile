@@ -18,6 +18,7 @@ import Spinner from './components/Spinner';
 import theme from './custom-theme.json';
 import mapping from './mapping.json';
 import packs from './services/icons';
+import t from './services/localization';
 import { OfflineCacheContextProvider } from './services/offline';
 
 // https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#using-the-new-google-maps-renderer
@@ -83,7 +84,7 @@ export default function App() {
                   </OfflineCacheContextProvider>
                 </View>
               ) : (
-                <Spinner show={true} message="Initializing application" />
+                <Spinner show={true} message={t('loading.initializingApp')} />
               )}
             </AuthContextProvider>
           </QueryClientProvider>

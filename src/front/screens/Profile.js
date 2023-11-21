@@ -29,6 +29,7 @@ import SearchList from '../components/reports/SearchList';
 import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getConstants } from '../services/constants';
+import t from '../services/localization';
 import { PADDING } from '../services/styles';
 import { booleanToYesNo, dateToString } from '../services/utilities';
 
@@ -72,7 +73,7 @@ export default function ProfileScreen() {
   const updateMutation = useMutation({
     mutationFn: updateProfileData,
     onSuccess: () => {
-      Alert.alert('Success', 'Profile updated successfully!');
+      Alert.alert(t('success'), t('screens.profile.updateSuccessful'));
 
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
 
@@ -83,39 +84,35 @@ export default function ProfileScreen() {
     onError: (error) => {
       Sentry.Native.captureException(error);
 
-      Alert.alert('Error', 'Error updating profile!');
+      Alert.alert(t('error'), t('screens.profile.updateError'));
     },
   });
 
   const deleteAccountMutation = useMutation({
     mutationFn: deleteAccount,
     onSuccess: () => {
-      Alert.alert('Success', 'Your account has successfully deleted!');
+      Alert.alert(t('success'), t('screens.profile.deleteSuccessful'));
 
       logOut(true);
     },
     onError: (error) => {
       Sentry.Native.captureEvent(error);
 
-      Alert.alert('Error', 'There was an error deleting your account!');
+      Alert.alert(t('error'), t('screens.profile.deleteError'));
     },
   });
 
   const handleDeleteAccountButton = () => {
-    Alert.alert(
-      'Are you sure?',
-      'Deleting your account will delete all of your personal information and prevent you from submitting data in the future.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete my account',
-          onPress: () => deleteAccountMutation.mutate(),
-        },
-      ],
-    );
+    Alert.alert(t('areYouSure'), t('screens.profile.deleteAccountWarning'), [
+      {
+        text: t('cancel'),
+        style: 'cancel',
+      },
+      {
+        text: t('screens.profile.deleteAccountButton'),
+        onPress: () => deleteAccountMutation.mutate(),
+      },
+    ]);
   };
 
   const shape = {
@@ -132,9 +129,7 @@ export default function ProfileScreen() {
       <ScrollView style={styles.container}>
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>
-              There was an error retrieving your profile from the server!
-            </Text>
+            <Text>{t('screens.profile.errorLoadingProfile')}</Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}
@@ -144,13 +139,13 @@ export default function ProfileScreen() {
           >
             <View style={{ padding: PADDING }}>
               <Input
-                label="Name (from sign-in provider)"
+                label={t('screens.profile.name')}
                 value={`${data.first_name} ${data.last_name}`}
                 disabled
                 style={styles.padded}
               />
               <Input
-                label="Email (from sign-in provider)"
+                label={t('screens.profile.email')}
                 value={`${data.email}`}
                 disabled
                 style={styles.padded}
@@ -182,10 +177,10 @@ export default function ProfileScreen() {
                   <>
                     <MyPhoneInput
                       accessibilityRole="text"
-                      accessibilityLabel="phone"
+                      accessibilityLabel={t('phone')}
                       keyboardType="phone-pad"
                       textContentType="telephoneNumber"
-                      label="Phone"
+                      label={t('phone')}
                       value={values.phone}
                       style={styles.padded}
                       onChange={handleChange('phone')}
@@ -199,7 +194,7 @@ export default function ProfileScreen() {
                           appearance="hint"
                           style={styles.label}
                         >
-                          Organization
+                          {t('organization')}
                         </Text>
                         <SearchList
                           value={{
@@ -222,7 +217,7 @@ export default function ProfileScreen() {
                             setValues(newValues);
                           }}
                           items={organizationsLookup}
-                          placeholder="Organization"
+                          placeholder={t('organization')}
                           itemToString={(item) => item?.name}
                           itemToKey={(item) => item?.id}
                           displayPhotos={false}
@@ -234,7 +229,7 @@ export default function ProfileScreen() {
                           <Input
                             accessibilityRole="text"
                             style={[styles.input, styles.padded]}
-                            label="Add New Organization"
+                            label={t('screens.profile.addOrganization')}
                             caption={
                               errors.organization_name &&
                               touched.organization_name
@@ -261,7 +256,7 @@ export default function ProfileScreen() {
                       disabled={!dirty || !isValid || updateMutation.isPending}
                       status="info"
                     >
-                      Update
+                      {t('update')}
                     </Button>
                     {/* {__DEV__ ? (
                       <>
@@ -278,30 +273,30 @@ export default function ProfileScreen() {
                 )}
               </Formik>
 
-              <Text category="h5">Other Information</Text>
+              <Text category="h5">{t('screens.profile.otherInformation')}</Text>
             </View>
             <Divider />
             <ValueContainer
-              label="Approved"
+              label={t('screens.profile.approved')}
               value={booleanToYesNo(data.approved)}
             />
             <ValueContainer
-              label="Registered Date"
+              label={t('screens.profile.registeredDate')}
               value={dateToString(data.registered_date)}
             />
             <ValueContainer label="Role" value={data.role} />
             <ValueContainer
-              label="Sign-in Provider"
+              label={t('screens.profile.authProvider')}
               value={data.auth_provider}
             />
             <ValueContainer
-              label="Total Reports Submitted"
+              label={t('screens.profile.reportsSubmitted')}
               value={data.reports_submitted}
             />
 
             <View style={styles.deleteButtonContainer}>
               <Text category="h5" style={{ marginBottom: PADDING }}>
-                Danger Zone
+                {t('screens.profile.dangerZone')}
               </Text>
               <Button
                 style={styles.button}
@@ -309,13 +304,13 @@ export default function ProfileScreen() {
                 status="danger"
                 disabled={deleteAccountMutation.isPending}
               >
-                Delete Account
+                {t('screens.profile.deleteAccount')}
               </Button>
             </View>
           </KeyboardAvoidingView>
         ) : null}
       </ScrollView>
-      <Spinner show={isPending} message={'Loading profile...'} />
+      <Spinner show={isPending} message={t('screens.profile.loadingProfile')} />
     </Layout>
   );
 }

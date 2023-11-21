@@ -17,9 +17,10 @@ import 'yup-phone-lite';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import config from '../services/config';
+import t from '../services/localization';
 import { PADDING } from '../services/styles';
 
-const updateMessage = 'Checking for updates...';
+const updateMessage = t('screens.about.checkingForUpdates');
 console.log('manifest from Updates', JSON.stringify(manifest, null, 2));
 
 export default function AppInfoScreen() {
@@ -36,8 +37,8 @@ export default function AppInfoScreen() {
         updateCheckResult = await checkForUpdateAsync();
       } catch (e) {
         Alert.alert(
-          'No update available',
-          'No over-the-air updates have been published for this version.',
+          t('screens.about.noUpdateAvailable'),
+          t('screens.about.noUpdateDescription'),
         );
 
         setLoaderMessage(null);
@@ -50,8 +51,8 @@ export default function AppInfoScreen() {
         await reloadAsync();
       } else {
         Alert.alert(
-          'No update available',
-          'You are already running the latest version of the app.',
+          t('screens.about.noUpdateAvailable'),
+          t('screens.about.alreadyLatest'),
         );
       }
     }
@@ -63,39 +64,46 @@ export default function AppInfoScreen() {
     <Layout style={styles.container}>
       <ScrollView style={styles.container}>
         <Text style={styles.paragraph} category="p1">
-          The Utah Roadkill Reporter app is a smartphone-based system for
-          reporting animals that have been involved in vehicle collisions. Data
-          collected from this app will allow UDWR and UDOT to reduce
-          wildlife-vehicle collisions and make highways safer for drivers and
-          wildlife.
+          {t('screens.about.description')}
         </Text>
 
         <Text category="h5" style={styles.header}>
-          App
+          {t('screens.about.app')}
         </Text>
         <Divider />
         <ValueContainer
-          label="Application Version"
+          label={t('screens.about.appVersion')}
           value={nativeApplicationVersion}
         />
-        <ValueContainer label="Runtime Version" value={runtimeVersion} />
         <ValueContainer
-          label="Build Number"
+          label={t('screens.about.runtimeVersion')}
+          value={runtimeVersion}
+        />
+        <ValueContainer
+          label={t('screens.about.buildNumber')}
           value={Constants.expoConfig.ios.buildNumber || ''}
         />
-        <ValueContainer label="Release Channel" value={channel || 'dev'} />
+        <ValueContainer
+          label={t('screens.about.releaseChannel')}
+          value={channel || 'dev'}
+        />
 
         <View style={styles.buttonContainer}>
-          <Button onPress={forceUpdate}>Force App Update</Button>
+          <Button onPress={forceUpdate}>
+            {t('screens.about.forceUpdate')}
+          </Button>
         </View>
 
         <Text category="h5" style={styles.header}>
-          Device
+          {t('screens.about.device')}
         </Text>
         <Divider />
-        <ValueContainer label="Brand" value={brand} />
-        <ValueContainer label="Model" value={modelName} />
-        <ValueContainer label="OS Version" value={osVersion} />
+        <ValueContainer label={t('screens.about.brand')} value={brand} />
+        <ValueContainer label={t('screens.about.model')} value={modelName} />
+        <ValueContainer
+          label={t('screens.about.osVersion')}
+          value={osVersion}
+        />
 
         {/* Facebook requires a link to the privacy policy in the app */}
         <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
@@ -105,7 +113,7 @@ export default function AppInfoScreen() {
               WebBrowser.openBrowserAsync(`${config.WEBSITE}/privacy-policy`)
             }
           >
-            Privacy Policy
+            {t('screens.about.privacyPolicy')}
           </Button>
         </View>
       </ScrollView>

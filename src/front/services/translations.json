@@ -1,0 +1,478 @@
+{
+  "en": {
+    "areYouSure": "Are you sure?",
+    "cancel": "Cancel",
+    "carcass": "Carcass",
+    "components": {
+      "cachedData": {
+        "sendReports": "Send unsubmitted reports",
+        "submittingData": "Submitting data"
+      },
+      "reports": {
+        "form": {
+          "additionalComments": "Additional comments",
+          "adult": "adult",
+          "age": "Animal age?",
+          "female": "female",
+          "juvenile": "juvenile",
+          "male": "male",
+          "sex": "Animal sex?",
+          "submitReport": "Submit report"
+        },
+        "location": {
+          "crosshairPrompt": "Move the map to place the crosshair at the location of the animal carcass.",
+          "setLocation": "Set Location"
+        },
+        "photoCapture": {
+          "chooseExisting": "Choose existing",
+          "openCameraFailedMessage": "Restarting the app can solve this issue. Restart now?",
+          "openCameraFailedTitle": "The app is not able to open your camera.",
+          "pleaseTake": "If possible and safe, please take a photo.",
+          "takeNewPhoto": "Take new photo"
+        },
+        "repeatSubmission": {
+          "alertText": "Please understand that it may take up to two weeks for a reported animal to be removed.",
+          "cancel": "Cancel submission",
+          "continue": "Continue with repeat submission",
+          "reportedBefore": "Have you reported this animal before?"
+        },
+        "species": {
+          "ableToIdentify": "Are you able to identify the species?",
+          "class": "class",
+          "common": "common name",
+          "doesAnimalHave": "Does the animal have",
+          "doesAnimalLook": "Does the animal look like a",
+          "family": "family",
+          "feathers": "feathers",
+          "frequent": "often reported",
+          "hair": "hair",
+          "high": "high",
+          "howConfident": "How confident are you in your species identification?",
+          "low": "low",
+          "medium": "medium",
+          "order": "order",
+          "rareSpeciesWarning": "The species you selected is rare in this area. Please consider this selection carefully before submitting your report, or select a different species.",
+          "scales": "scales",
+          "selectSpecies": "Select a species",
+          "slime": "slime"
+        }
+      },
+      "vehicleTracking": {
+        "atLeast": "You must have tracked at least two positions to submit a route!",
+        "cancel": "Cancel route",
+        "canceledRouteWarning": "Canceled routes are deleted and can't be submitted.",
+        "discardRoute": "Discard route",
+        "distance": "Distance",
+        "finishAndSubmit": "Finish and submit route",
+        "miles": "miles",
+        "pauseRoute": "Pause route",
+        "pickups": "Pickups",
+        "resume": "Resume",
+        "start": "Start",
+        "status": "Status",
+        "stopTracking": "Are you sure that you want to stop tracking and submit this route with %{length} pickups?",
+        "submissionError": "Your route has been submitted successfully, but there were errors submitting your pickups. They have been cached on your device for later submission.",
+        "submit": "Submit route",
+        "submittingPickup": "Submitting pickup %{num} of %{total}",
+        "submittingRoute": "Submitting route",
+        "success": "Your route has been submitted successfully."
+      }
+    },
+    "contact": "Contact",
+    "email": "Email",
+    "error": "Error",
+    "errors": {
+      "userCancelledLogin": "User cancelled the login process"
+    },
+    "image": "Image",
+    "loading": {
+      "gettingCurrentLocation": "Getting current location",
+      "initializingApp": "Initializing application"
+    },
+    "logout": "Logout",
+    "name": "Name",
+    "no": "No",
+    "ok": "OK",
+    "organization": "Organization",
+    "phone": "Phone",
+    "pickup": "Pickup",
+    "report": "Report",
+    "route": "Route",
+    "screens": {
+      "about": {
+        "alreadyLatest": "You are already running the latest version of the app.",
+        "app": "App",
+        "appVersion": "Application Version",
+        "brand": "Brand",
+        "buildNumber": "Build Number",
+        "checkingForUpdates": "Checking for updates...",
+        "description": "The Utah Roadkill Reporter app is a smartphone-based system for reporting animals that have been involved in vehicle collisions. Data collected from this app will allow UDWR and UDOT to reduce wildlife-vehicle collisions and make highways safer for drivers and wildlife.",
+        "device": "Device",
+        "forceUpdate": "Force App Update",
+        "model": "Model",
+        "noUpdateAvailable": "No update available",
+        "noUpdateDescription": "No over-the-air updates have been published for this version.",
+        "osVersion": "OS Version",
+        "privacyPolicy": "Privacy Policy",
+        "releaseChannel": "Release Channel",
+        "runtimeVersion": "Runtime Version",
+        "title": "About"
+      },
+      "chooseType": {
+        "agency": "State agency employee",
+        "contractor": "State contractor",
+        "iam": "I am a...",
+        "public": "Member of the public",
+        "signInWith": "Sign in with",
+        "utahid": "Sign in with UtahID",
+        "welcome": "Welcome to the Utah Roadkill Reporter"
+      },
+      "main": {
+        "iWouldLike": "I would like to...",
+        "locationPermissionsRequired": "Location permissions are required to submit reports.",
+        "locationServicesRequired": "Location services are required to submit reports.",
+        "noRouteStarted": "No vehicle tracking route found",
+        "pickup": "Report and pick up a carcass",
+        "report": "Report a carcass",
+        "resumeRoute": "Resume tracking",
+        "resumeRouteQuestion": "A vehicle tracking route has been started but it is currently paused.\n\nWould you to resume?",
+        "routePaused": "Paused vehicle tracking route",
+        "startRoute": "Start route",
+        "startRouteQuestion": "A vehicle tracking route must be started to report a carcass.\n\nWould you like to start a route?",
+        "title": "Main",
+        "trackingNotificationBody": "Tracking your vehicle",
+        "trackingNotificationTitle": "Vehicle Tracking"
+      },
+      "myReports": {
+        "errorLoadingSubmissions": "There was an error retrieving your previously submitted data from the server!",
+        "loadingSubmissions": "Loading your submissions...",
+        "noSubmissions": "You have no submissions.",
+        "offlineMessage": "Only cached reports will show up when you are offline.",
+        "title": "My Reports"
+      },
+      "newUser": {
+        "addNewOrg": "Add new organization",
+        "completeProfile": "Complete Profile",
+        "distractedDrivingNote": "Using your mobile phone while driving can be extremely dangerous and is against the law in Utah. Distracted driving significantly increases the risk of accidents and can lead to serious consequences. It's crucial to prioritize safety on the road by refraining from using this app while behind the wheel. Please remember that your focus should always be on the road and your surroundings to protect both yourself and others.",
+        "pleaseFillOut": "Please fill out any missing information in your profile.",
+        "pleaseNote": "Please note!",
+        "register": "Register",
+        "registrationError": "Error submitting registration. Please try again later.",
+        "registrationSuccess": "Thank you for registering! Your registration has been sent to system administrators for approval. You will get an email once your account has been approved. Please note that you may still collect and submit data before your account is approved."
+      },
+      "profile": {
+        "addOrganization": "Add New Organization",
+        "approved": "Approved",
+        "authProvider": "Sign-in Provider",
+        "dangerZone": "Danger Zone",
+        "deleteAccount": "Delete Account",
+        "deleteAccountButton": "Delete my account",
+        "deleteAccountWarning": "Deleting your account will delete all of your personal information and prevent you from submitting data in the future.",
+        "deleteError": "There was an error deleting your account!",
+        "deleteSuccessful": "Your account has been successfully deleted!",
+        "email": "Email (from sign-in provider)",
+        "errorLoadingProfile": "There was an error retrieving your profile from the server!",
+        "loadingProfile": "Loading profile...",
+        "name": "Name (from sign-in provider)",
+        "otherInformation": "Other Information",
+        "registeredDate": "Registered Date",
+        "reportsSubmitted": "Reports Submitted",
+        "title": "Profile",
+        "updateError": "Error updating profile!",
+        "updateSuccessful": "Profile updated successfully!"
+      },
+      "report": {
+        "discardReport": "Discard Report",
+        "discardWarning": "All in-progress report data will be lost.",
+        "pickupSuccess": "Your report has been submitted successfully.",
+        "publicReportSuccess": "Your report has been submitted and a notification has been sent to remove the animal. We appreciate your patience while we work to schedule the removal of the animal.",
+        "routeReportSubmissionSuccess": "Your report has been recorded and is ready to be submitted with your vehicle tracking route.",
+        "whenDiscovered": "When was the animal discovered?",
+        "whenPickedUp": "When was the animal picked up?"
+      },
+      "reportInfo": {
+        "errorLoadingReport": "There was an error retrieving your report from the server!",
+        "loading": "Loading report details...",
+        "title": "Report Info"
+      },
+      "routeInfo": {
+        "distance": "Distance",
+        "end": "End",
+        "error": "There was an error retrieving your route from the server!",
+        "loading": "Loading route details...",
+        "pickups": "Pickups",
+        "start": "Start",
+        "submitted": "Submitted",
+        "title": "Route Info",
+        "unsubmitted": "not submitted"
+      }
+    },
+    "services": {
+      "backgroundLocation": {
+        "allowAll": "All the time",
+        "always": "Always",
+        "backgroundLocationRequired": "This app collects location data to enable the tracking of vehicle routes even when the app is closed or not in use. Data is only collected when a tracking session is active. Data submitted to the server is only used for billing purposes and is not shared with any third parties. Please select the **%{option}** option in the location settings dialog",
+        "goToSettings": "Go to Settings",
+        "required": "Location services are required to record vehicle routes."
+      },
+      "location": {
+        "liveAnimal": "If you encounter a live animal that needs assistance, please call %{name} at %{phone}.",
+        "liveAnimalLocalLaw": "If you encounter a live animal please contact your local law enforcement."
+      },
+      "offline": {
+        "offlineError": "Offline Submission Error",
+        "offlineReport": "Offline Report",
+        "offlineSubmission": "Offline Submission",
+        "offlineSuccess": "Your offline data was successfully submitted."
+      },
+      "utilities": {
+        "pleaseSendEmail": "Please send an email to\n%{email}\nfor support.",
+        "support": "Support"
+      }
+    },
+    "success": "Success",
+    "track": "Track",
+    "unknown": "Unknown",
+    "unsubmitted": "unsubmitted",
+    "update": "Update",
+    "yes": "Yes"
+  },
+  "es": {
+    "areYouSure": "¿Estás seguro?",
+    "cancel": "Cancelar",
+    "carcass": "Carcasa",
+    "components": {
+      "cachedData": {
+        "sendReports": "Enviar informes no enviados",
+        "submittingData": "Enviando datos"
+      },
+      "reports": {
+        "form": {
+          "additionalComments": "Comentarios adicionales",
+          "adult": "adulto",
+          "age": "¿Edad del animal?",
+          "juvenile": "juvenil",
+          "sex": "¿Sexo del animal?",
+          "submitReport": "Enviar informe",
+          "male": "masculino",
+          "female": "femenina"
+        },
+        "location": {
+          "crosshairPrompt": "Mueva el mapa para colocar la mira en la ubicación de la carcasa del animal.",
+          "setLocation": "Establecer ubicación"
+        },
+        "photoCapture": {
+          "chooseExisting": "Elegir existente",
+          "openCameraFailedMessage": "Reiniciar la aplicación puede resolver este problema. ¿Reiniciar ahora?",
+          "openCameraFailedTitle": "La aplicación no puede abrir tu cámara.",
+          "pleaseTake": "Si es posible y seguro, por favor toma una foto.",
+          "takeNewPhoto": "Tomar nueva foto"
+        },
+        "repeatSubmission": {
+          "alertText": "Por favor comprenda que puede tomar hasta dos semanas para que se retire un animal reportado.",
+          "cancel": "Cancelar envío",
+          "continue": "Continuar con la repetición de envío",
+          "reportedBefore": "¿Has reportado este animal antes?"
+        },
+        "species": {
+          "ableToIdentify": "¿Puedes identificar la especie?",
+          "class": "clase",
+          "common": "nombre común",
+          "doesAnimalHave": "¿El animal tiene",
+          "doesAnimalLook": "¿El animal se parece a un",
+          "family": "familia",
+          "feathers": "plumas",
+          "frequent": "a menudo reportado",
+          "hair": "pelo",
+          "high": "alto",
+          "howConfident": "¿Qué tan seguro estás de tu identificación de especies?",
+          "low": "bajo",
+          "medium": "medio",
+          "order": "orden",
+          "rareSpeciesWarning": "La especie que seleccionaste es rara en esta área. Por favor considera cuidadosamente esta selección antes de enviar tu informe, o selecciona una especie diferente.",
+          "scales": "escamas",
+          "selectSpecies": "Selecciona una especie",
+          "slime": "baba"
+        }
+      },
+      "vehicleTracking": {
+        "atLeast": "¡Debes haber rastreado al menos dos posiciones para enviar una ruta!",
+        "cancel": "Cancelar ruta",
+        "canceledRouteWarning": "Las rutas canceladas se eliminan y no se pueden enviar.",
+        "discardRoute": "Descartar ruta",
+        "distance": "Distancia",
+        "finishAndSubmit": "Finalizar y enviar ruta",
+        "miles": "millas",
+        "pauseRoute": "Pausar ruta",
+        "pickups": "Recogidas",
+        "resume": "Continuar",
+        "start": "Iniciar",
+        "status": "Estado",
+        "stopTracking": "¿Estás seguro de que quieres dejar de rastrear y enviar esta ruta con %{length} recogidas?",
+        "submissionError": "Tu ruta ha sido enviada con éxito, pero hubo errores al enviar tus recogidas. Se han almacenado en tu dispositivo para su posterior envío.",
+        "submit": "Enviar ruta",
+        "submittingPickup": "Enviando recogida %{num} de %{total}",
+        "submittingRoute": "Enviando ruta",
+        "success": "Tu ruta ha sido enviada con éxito."
+      }
+    },
+    "contact": "Contacto",
+    "email": "Correo electrónico",
+    "error": "Error",
+    "errors": {
+      "userCancelledLogin": "El usuario canceló el proceso de inicio de sesión"
+    },
+    "image": "Imagen",
+    "loading": {
+      "gettingCurrentLocation": "Obteniendo ubicación actual",
+      "initializingApp": "Inicializando aplicación"
+    },
+    "logout": "Cerrar sesión",
+    "name": "Nombre",
+    "no": "No",
+    "ok": "OK",
+    "organization": "Organización",
+    "phone": "Teléfono",
+    "pickup": "Recogida",
+    "report": "Informe",
+    "route": "Ruta",
+    "screens": {
+      "about": {
+        "alreadyLatest": "Ya estás utilizando la última versión de la aplicación.",
+        "app": "Aplicación",
+        "appVersion": "Versión de la aplicación",
+        "brand": "Marca",
+        "buildNumber": "Número de compilación",
+        "checkingForUpdates": "Buscando actualizaciones...",
+        "description": "La aplicación Utah Roadkill Reporter es un sistema basado en smartphones para reportar animales que han estado involucrados en colisiones de vehículos. Los datos recopilados de esta aplicación permitirán a UDWR y UDOT reducir las colisiones de vida silvestre y vehículos y hacer las carreteras más seguras para los conductores y la vida silvestre.",
+        "device": "Dispositivo",
+        "forceUpdate": "Forzar actualización de la aplicación",
+        "model": "Modelo",
+        "noUpdateAvailable": "No hay actualizaciones disponibles",
+        "noUpdateDescription": "No se han publicado actualizaciones para esta versión.",
+        "osVersion": "Versión del sistema operativo",
+        "privacyPolicy": "Política de privacidad",
+        "releaseChannel": "Canal de lanzamiento",
+        "runtimeVersion": "Versión de tiempo de ejecución",
+        "title": "Acerca de"
+      },
+      "chooseType": {
+        "agency": "Empleado de la agencia estatal",
+        "contractor": "Contratista del estado",
+        "iam": "Soy un...",
+        "public": "Miembro del público",
+        "signInWith": "Iniciar sesión con",
+        "utahid": "Iniciar sesión con UtahID",
+        "welcome": "Bienvenido al Utah Roadkill Reporter"
+      },
+      "main": {
+        "iWouldLike": "Me gustaría...",
+        "locationPermissionsRequired": "Se requieren permisos de ubicación para enviar informes.",
+        "locationServicesRequired": "Se requieren servicios de ubicación para enviar informes.",
+        "noRouteStarted": "No se encontró ninguna ruta de seguimiento de vehículos",
+        "pickup": "Reportar y recoger un cadáver",
+        "report": "Reportar un cadáver",
+        "resumeRoute": "Reanudar seguimiento",
+        "resumeRouteQuestion": "Se ha iniciado una ruta de seguimiento de vehículos pero actualmente está en pausa.\n\n¿Deseas reanudar?",
+        "routePaused": "Ruta de seguimiento de vehículos en pausa",
+        "startRoute": "Iniciar ruta",
+        "startRouteQuestion": "Debe iniciarse una ruta de seguimiento de vehículos para reportar un cadáver.\n\n¿Te gustaría iniciar una ruta?",
+        "title": "Principal",
+        "trackingNotificationBody": "Rastreando tu vehículo",
+        "trackingNotificationTitle": "Seguimiento de vehículos"
+      },
+      "myReports": {
+        "errorLoadingSubmissions": "¡Hubo un error al recuperar tus datos previamente enviados desde el servidor!",
+        "loadingSubmissions": "Cargando tus envíos...",
+        "noSubmissions": "No tienes envíos.",
+        "offlineMessage": "Solo los informes en caché aparecerán cuando estés desconectado.",
+        "title": "Mis informes"
+      },
+      "newUser": {
+        "addNewOrg": "Agregar nueva organización",
+        "completeProfile": "Completar perfil",
+        "distractedDrivingNote": "Usar tu teléfono móvil mientras conduces puede ser extremadamente peligroso y es ilegal en Utah. La conducción distraída aumenta significativamente el riesgo de accidentes y puede llevar a consecuencias graves. Es crucial priorizar la seguridad en la carretera evitando usar esta aplicación mientras estás al volante. Por favor, recuerda que tu enfoque siempre debe estar en la carretera y en tu entorno para proteger tanto a ti mismo como a los demás.",
+        "pleaseFillOut": "Por favor, completa cualquier información faltante en tu perfil.",
+        "pleaseNote": "¡Por favor, ten en cuenta!",
+        "register": "Registrarse",
+        "registrationError": "Error al enviar el registro. Por favor, inténtalo de nuevo más tarde.",
+        "registrationSuccess": "¡Gracias por registrarte! Tu registro ha sido enviado a los administradores del sistema para su aprobación. Recibirás un correo electrónico una vez que tu cuenta haya sido aprobada. Ten en cuenta que aún puedes recopilar y enviar datos antes de que tu cuenta sea aprobada."
+      },
+      "profile": {
+        "addOrganization": "Agregar nueva organización",
+        "approved": "Aprobado",
+        "authProvider": "Proveedor de autenticación",
+        "dangerZone": "Zona de peligro",
+        "deleteAccount": "Eliminar cuenta",
+        "deleteAccountButton": "Eliminar mi cuenta",
+        "deleteAccountWarning": "Eliminar tu cuenta borrará toda tu información personal y te impedirá enviar datos en el futuro.",
+        "deleteError": "¡Hubo un error al eliminar tu cuenta!",
+        "deleteSuccessful": "¡Tu cuenta ha sido eliminada exitosamente!",
+        "email": "Correo electrónico (del proveedor de autenticación)",
+        "errorLoadingProfile": "¡Hubo un error al recuperar tu perfil del servidor!",
+        "loadingProfile": "Cargando perfil...",
+        "name": "Nombre (del proveedor de autenticación)",
+        "otherInformation": "Otra información",
+        "registeredDate": "Fecha de registro",
+        "reportsSubmitted": "Informes enviados",
+        "title": "Perfil",
+        "updateError": "¡Error al actualizar el perfil!",
+        "updateSuccessful": "¡Perfil actualizado con éxito!"
+      },
+      "report": {
+        "discardReport": "Descartar informe",
+        "discardWarning": "Se perderán todos los datos de informe en progreso.",
+        "pickupSuccess": "Tu informe ha sido enviado con éxito.",
+        "publicReportSuccess": "Tu informe ha sido enviado y se ha enviado una notificación para eliminar el animal. Agradecemos tu paciencia mientras trabajamos para programar la eliminación del animal.",
+        "routeReportSubmissionSuccess": "Tu informe ha sido registrado y está listo para ser enviado con tu ruta de seguimiento de vehículos.",
+        "whenDiscovered": "¿Cuándo se descubrió el animal?",
+        "whenPickedUp": "¿Cuándo se recogió el animal?"
+      },
+      "reportInfo": {
+        "errorLoadingReport": "¡Hubo un error al recuperar tu informe del servidor!",
+        "loading": "Cargando detalles del informe...",
+        "title": "Información del informe"
+      },
+      "routeInfo": {
+        "distance": "Distancia",
+        "end": "Fin",
+        "error": "¡Hubo un error al recuperar tu ruta del servidor!",
+        "loading": "Cargando detalles de la ruta...",
+        "pickups": "Recogidas",
+        "start": "Inicio",
+        "submitted": "Enviado",
+        "title": "Información de la ruta",
+        "unsubmitted": "no enviado"
+      }
+    },
+    "services": {
+      "backgroundLocation": {
+        "allowAll": "Todo el tiempo",
+        "always": "Siempre",
+        "backgroundLocationRequired": "Esta aplicación recopila datos de ubicación para habilitar el seguimiento de rutas de vehículos incluso cuando la aplicación está cerrada o no está en uso. Los datos solo se recopilan cuando una sesión de seguimiento está activa. Los datos enviados al servidor solo se utilizan para fines de facturación y no se comparten con terceros. Por favor, selecciona la opción **%{option}** en el cuadro de diálogo de configuración de ubicación",
+        "goToSettings": "Ir a Configuración",
+        "required": "Se requieren servicios de ubicación para registrar rutas de vehículos."
+      },
+      "location": {
+        "liveAnimal": "Si encuentras un animal vivo que necesita ayuda, por favor llama a %{name} al %{phone}.",
+        "liveAnimalLocalLaw": "Si encuentras un animal vivo, por favor contacta a tu policía local."
+      },
+      "offline": {
+        "offlineError": "Error de envío sin conexión",
+        "offlineReport": "Informe sin conexión",
+        "offlineSubmission": "Envío sin conexión",
+        "offlineSuccess": "Tus datos sin conexión se enviaron correctamente."
+      },
+      "utilities": {
+        "pleaseSendEmail": "Por favor envía un correo electrónico a\n%{email}\npara soporte.",
+        "support": "Soporte"
+      }
+    },
+    "success": "Éxito",
+    "track": "Rastrear",
+    "unknown": "Desconocido",
+    "unsubmitted": "no enviado",
+    "update": "Actualizar",
+    "yes": "Sí"
+  }
+}

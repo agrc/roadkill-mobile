@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { getArrowIcon } from '../services/icons';
+import t from '../services/localization';
 import useStyles from '../services/styles';
 import { dateToString } from '../services/utilities';
 
@@ -12,7 +13,9 @@ export default function ReportListItem({ item, offlineRouteId, offlineIndex }) {
 
   return (
     <ListItem
-      title={`${item.common_name}${!item.report_id ? ' (unsubmitted)' : ''}`}
+      title={`${item.common_name}${
+        !item.report_id ? ` (${t('unsubmitted')})` : ''
+      }`}
       description={`${dateToString(item.submit_date)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>

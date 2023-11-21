@@ -17,6 +17,7 @@ import ReportListItem from '../components/ReportListItem';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { useAPI } from '../services/api';
+import t from '../services/localization';
 import { coordsToLocation } from '../services/location';
 import { getOfflineSubmission } from '../services/offline';
 import { PADDING } from '../services/styles';
@@ -53,15 +54,13 @@ export default function RouteInfoScreen() {
       <ScrollView style={styles.container}>
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>
-              There was an error retrieving your route from the server!
-            </Text>
+            <Text>{t('screens.routeInfo.error')}</Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}
         {data ? <RouteInfo data={data} /> : null}
       </ScrollView>
-      <Spinner show={isPending} message={'Loading route details...'} />
+      <Spinner show={isPending} message={t('screens.routeInfo.loading')} />
     </Layout>
   );
 }
@@ -128,19 +127,28 @@ export function RouteInfo({ data }) {
       <Divider />
       <ValueContainer
         label="Route ID"
-        value={data.route_id || '(unsubmitted)'}
+        value={data.route_id || `(${t('screens.routeInfo.unsubmitted')})`}
       />
       <ValueContainer
-        label="Submitted"
+        label={t('screens.routeInfo.submitted')}
         value={dateToString(data.submit_date)}
       />
-      <ValueContainer label="Start" value={dateToString(data.start_time)} />
-      <ValueContainer label="End" value={dateToString(data.end_time)} />
       <ValueContainer
-        label="Distance"
+        label={t('screens.routeInfo.start')}
+        value={dateToString(data.start_time)}
+      />
+      <ValueContainer
+        label={t('screens.routeInfo.end')}
+        value={dateToString(data.end_time)}
+      />
+      <ValueContainer
+        label={t('screens.routeInfo.distance')}
         value={`${(data.distance / METERS_IN_MILES).toFixed(2)} miles`}
       />
-      <ValueContainer label="Pickups" value={data.pickups.length} />
+      <ValueContainer
+        label={t('screens.routeInfo.pickups')}
+        value={data.pickups.length}
+      />
       <Divider />
       {data.pickups.map((pickup, index) => (
         <View key={pickup.report_id || index}>

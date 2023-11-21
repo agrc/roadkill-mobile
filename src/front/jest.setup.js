@@ -11,3 +11,8 @@ jest.mock('expo-constants', () => {
     },
   };
 });
+jest.mock('expo-localization', () => {
+  return {
+    getLocales: () => [{ languageCode: 'en' }],
+  };
+});

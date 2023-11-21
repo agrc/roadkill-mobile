@@ -13,7 +13,7 @@ const InnerPhoneInput = forwardRef(({ onChangeText, value, ...props }, ref) => {
   return (
     <Input
       ref={ref}
-      label="test"
+      label=""
       onChangeText={innerOnChangeText}
       value={value}
       {...props}

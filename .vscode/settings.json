@@ -83,6 +83,7 @@
     "tanstack",
     "tappable",
     "UDWR",
+    "unsubmitted",
     "Unsubmitted",
     "upsert",
     "utahid",
@@ -91,6 +92,7 @@
     "wvcr",
     "xargs"
   ],
+  "cSpell.language": "en,es",
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.codeActionsOnSave": {

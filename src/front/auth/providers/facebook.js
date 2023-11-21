@@ -2,6 +2,7 @@ import commonConfig from 'common/config';
 import React from 'react';
 import { AccessToken, LoginManager, Settings } from 'react-native-fbsdk-next';
 import myFetch from '../../services/fetch';
+import t from '../../services/localization';
 import { useAsyncError } from '../../services/utilities';
 
 Settings.initializeSDK();
@@ -10,7 +11,7 @@ export const isAuthenticationExpired = (auth) => {
   return new Date(auth.expirationDate) < Date.now();
 };
 
-const cancelledMessage = 'User cancelled the login process';
+const cancelledMessage = t('errors.userCancelledLogin');
 
 export default function useFacebookProvider() {
   const authentication = React.useRef(null);

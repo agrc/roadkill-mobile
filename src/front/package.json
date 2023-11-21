@@ -11,9 +11,10 @@
     "storybook-watch": "sb-rn-watcher",
     "test": "env-cmd -f .env.test jest --watch --coverage=false",
     "test:debug": "env-cmd -f .env.test jest -o --watch --coverage=false",
-    "test:final": "npm run lint && env-cmd -f .env.test jest",
+    "test:final": "npm run lint && env-cmd -f .env.test jest && npm run validate-translations",
     "update-constants": "env-cmd -f .env node scripts/updateConstants.mjs",
-    "update-snapshots": "jest -u --coverage=false"
+    "update-snapshots": "jest -u --coverage=false",
+    "validate-translations": "node scripts/validateTranslations.mjs"
   },
   "jest": {
     "preset": "jest-expo",
@@ -24,7 +25,7 @@
       "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@sentry/.*|autolinker|@ui-kitten/.*|p-timeout)"
+      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base|@sentry/.*|autolinker|@ui-kitten/.*|p-timeout|i18n-js)"
     ]
   },
   "dependencies": {
@@ -64,6 +65,7 @@
     "expo-image-picker": "~14.3.2",
     "expo-intent-launcher": "~10.7.0",
     "expo-linking": "~5.0.2",
+    "expo-localization": "~14.3.0",
     "expo-location": "~16.1.0",
     "expo-mail-composer": "~12.3.0",
     "expo-notifications": "~0.20.1",
@@ -74,6 +76,7 @@
     "expo-updates": "~0.18.17",
     "expo-web-browser": "~12.3.2",
     "formik": "^2.4.5",
+    "i18n-js": "^4.3.2",
     "immer": "^10.0.3",
     "indefinite": "^2.4.3",
     "jwt-decode": "^3.1.2",

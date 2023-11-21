@@ -21,6 +21,7 @@ import RootView from '../components/RootView';
 import SearchList from '../components/reports/SearchList';
 import config from '../services/config';
 import { getConstants } from '../services/constants';
+import t from '../services/localization';
 import { PADDING } from '../services/styles';
 
 // TODO: A lot of this code could be shared with Profile.js
@@ -32,19 +33,13 @@ export default function NewUserScreen() {
     mutationFn: registerUser,
     onSuccess: () => {
       if (userType !== config.USER_TYPES.public) {
-        Alert.alert(
-          'Success',
-          'Thank you for registering! Your registration has been sent to system administrators for approval. You will get an email once your account has been approved. Please note that you may still collect and submit data before your account is approved.',
-        );
+        Alert.alert(t('success'), t('screens.newUser.registrationSuccess'));
       }
     },
     onError: (error) => {
       Sentry.Native.captureException(error);
 
-      Alert.alert(
-        'Error',
-        'Error submitting registration. Please try again later.',
-      );
+      Alert.alert(t('error'), t('screens.newUser.registrationError'));
     },
   });
   const [organizationsLookup, setOrganizationsLookup] = React.useState([]);
@@ -127,23 +122,15 @@ export default function NewUserScreen() {
         style={{ flex: 1 }}
       >
         <ScrollView style={styles.layout}>
-          <Text category="h1">Profile</Text>
+          <Text category="h1">{t('screens.newUser.completeProfile')}</Text>
 
           <Card status="danger" style={{ marginTop: PADDING * 2 }}>
-            <Text category="h6">Please note!</Text>
-            <Text>
-              Using your mobile phone while driving can be extremely dangerous
-              and is against the law in Utah. Distracted driving significantly
-              increases the risk of accidents and can lead to serious
-              consequences. It&apos;s crucial to prioritize safety on the road
-              by refraining from using this app while behind the wheel. Please
-              remember that your focus should always be on the road and your
-              surroundings to protect both yourself and others.
-            </Text>
+            <Text category="h6">{t('screens.newUser.pleaseNote')}</Text>
+            <Text>{t('screens.newUser.distractedDrivingNote')}</Text>
           </Card>
 
           <Text style={{ marginTop: PADDING }}>
-            Please fill out any missing information in your profile.
+            {t('screens.newUser.pleaseFillOut')}
           </Text>
 
           <Formik
@@ -173,7 +160,7 @@ export default function NewUserScreen() {
                 <View style={styles.inputsContainer}>
                   <Input
                     style={styles.input}
-                    label="Name"
+                    label={t('name')}
                     value={values.name}
                     onChangeText={handleChange('name')}
                     disabled={
@@ -183,7 +170,7 @@ export default function NewUserScreen() {
                   />
                   <Input
                     style={styles.input}
-                    label="Email"
+                    label={t('email')}
                     value={values.email}
                     disabled={authInfo?.oauthUser.email}
                     onChangeText={handleChange('email')}
@@ -195,7 +182,7 @@ export default function NewUserScreen() {
                         appearance="hint"
                         style={styles.label}
                       >
-                        Organization
+                        {t('organization')}
                       </Text>
                       <SearchList
                         value={{
@@ -216,7 +203,7 @@ export default function NewUserScreen() {
                           });
                         }}
                         items={organizationsLookup}
-                        placeholder="Organization"
+                        placeholder={t('organization')}
                         itemToString={(item) => item?.name}
                         itemToKey={(item) => item?.id}
                         displayPhotos={false}
@@ -226,7 +213,7 @@ export default function NewUserScreen() {
                         <Input
                           accessibilityRole="text"
                           style={styles.input}
-                          label="Add New Organization"
+                          label={t('screens.newUser.addNewOrg')}
                           caption={
                             errors.organization_name &&
                             touched.organization_name
@@ -250,8 +237,8 @@ export default function NewUserScreen() {
                   <MyPhoneInput
                     accessibilityRole="text"
                     style={styles.input}
-                    label="Phone"
-                    accessibilityLabel="phone"
+                    label={t('phone')}
+                    accessibilityLabel={t('phone')}
                     caption={
                       errors.phone && touched.phone ? errors.phone : null
                     }
@@ -269,14 +256,14 @@ export default function NewUserScreen() {
                   disabled={!dirty || !isValid || registerMutation.isPending}
                   status="info"
                 >
-                  Register
+                  {t('screens.newUser.register')}
                 </Button>
                 <Button
                   onPress={cancel}
                   style={styles.input}
                   appearance="ghost"
                 >
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 {/* {__DEV__ ? (
                 <>

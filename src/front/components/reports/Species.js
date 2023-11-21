@@ -6,16 +6,17 @@ import { Alert, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useImmerReducer } from 'use-immer';
 import config from '../../services/config';
 import { getConstants } from '../../services/constants';
+import t from '../../services/localization';
 import { PADDING } from '../../services/styles';
 import { useMounted } from '../../services/utilities';
 import RadioPills from './RadioPills';
 import SearchList from './SearchList';
 
-const FREQUENT = 'often reported';
-const COMMON = 'common name';
-const ORDER = 'order';
-const CLASS = 'class';
-const FAMILY = 'family';
+const FREQUENT = t('components.reports.species.frequent');
+const COMMON = t('components.reports.species.common');
+const ORDER = t('components.reports.species.order');
+const CLASS = t('components.reports.species.class');
+const FAMILY = t('components.reports.species.family');
 const SEARCH_TYPES = [FREQUENT, COMMON, CLASS, ORDER, FAMILY];
 const SEARCH_TYPE_TO_FIELD = {
   [COMMON]: 'common_name',
@@ -23,16 +24,28 @@ const SEARCH_TYPE_TO_FIELD = {
   [CLASS]: 'species_class',
   [FAMILY]: 'family',
 };
-const CONFIDENCE_LEVELS = ['high', 'medium', 'low'];
+const CONFIDENCE_LEVELS = [
+  {
+    label: t('components.reports.species.high'),
+    value: 'high',
+  },
+  {
+    label: t('components.reports.species.medium'),
+    value: 'medium',
+  },
+  {
+    label: t('components.reports.species.low'),
+    value: 'low',
+  },
+];
 const CLASS_DESCRIPTION_TO_VALUE = {
-  hair: 'mammals',
-  feathers: 'birds',
-  scales: 'reptiles',
-  slime: 'amphibians',
-  [config.UNKNOWN]: config.UNKNOWN,
+  [t('components.reports.species.hair')]: 'mammals',
+  [t('components.reports.species.feathers')]: 'birds',
+  [t('components.reports.species.scales')]: 'reptiles',
+  [t('components.reports.species.slime')]: 'amphibians',
+  [t('unknown').toLowerCase()]: config.UNKNOWN,
 };
-const RARE_SPECIES_WARNING =
-  'The species you selected is rare in this area. Please consider this selection carefully before submitting your report, or select a different species.';
+const RARE_SPECIES_WARNING = t('components.reports.species.rareSpeciesWarning');
 
 // utility functions
 function dedupe(array) {
@@ -264,7 +277,9 @@ function Species({
             />
             {state.filterValue ? (
               <>
-                <Text category="h6">Select a species:</Text>
+                <Text category="h6">
+                  {t('components.reports.species.selectSpecies')}:
+                </Text>
                 <SearchList
                   value={state.value}
                   onChange={onSelectionChange}
@@ -303,7 +318,7 @@ function Species({
   return state.constants.species ? (
     <View style={style}>
       <Text category="h6" style={{ marginTop: PADDING }}>
-        Are you able to identify the species?
+        {t('components.reports.species.ableToIdentify')}
       </Text>
       <View style={styles.toggleContainer}>
         <Toggle
@@ -314,7 +329,7 @@ function Species({
           }}
           style={styles.toggle}
         >
-          {ableToIdentify ? 'Yes' : 'No'}
+          {ableToIdentify ? t('yes') : t('no')}
         </Toggle>
       </View>
       {ableToIdentify ? (
@@ -346,7 +361,7 @@ function Species({
           {state.value.species_id ? (
             <>
               <Text category="h6">
-                How confident are you in your species identification?
+                {t('components.reports.species.howConfident')}
               </Text>
               <RadioPills
                 value={state.value.species_confidence_level}
@@ -360,7 +375,9 @@ function Species({
         </>
       ) : (
         <>
-          <Text category="h6">Does the animal have...</Text>
+          <Text category="h6">
+            {t('components.reports.species.doesAnimalHave')}...
+          </Text>
           <SearchList
             value={
               Object.keys(CLASS_DESCRIPTION_TO_VALUE).filter(
@@ -381,7 +398,9 @@ function Species({
           {state.value.species_class &&
           state.value.species_class !== config.UNKNOWN ? (
             <View style={styles.marginTop}>
-              <Text category="h6">Does the animal look like a...</Text>
+              <Text category="h6">
+                {t('components.reports.species.doesAnimalLook')}...
+              </Text>
               <SearchList
                 value={state.value.family}
                 onChange={(value) =>
@@ -409,7 +428,9 @@ function Species({
           state.value.family &&
           state.value.family !== config.UNKNOWN ? (
             <View style={styles.marginTop}>
-              <Text category="h6">Select a species:</Text>
+              <Text category="h6">
+                {t('components.reports.species.selectSpecies')}:
+              </Text>
               <SearchList
                 value={
                   state.value.common_name?.toLowerCase() ===
@@ -426,7 +447,7 @@ function Species({
                   )
                   .sort(sortBy('common_name'))
                   .concat([config.UNKNOWN])}
-                placeholder="common name"
+                placeholder={t('components.reports.species.common')}
               />
             </View>
           ) : null}

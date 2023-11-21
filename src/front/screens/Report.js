@@ -27,6 +27,7 @@ import RepeatSubmission from '../components/reports/RepeatSubmission';
 import { useAPI } from '../services/api';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import t, { locale } from '../services/localization';
 import { ACCURACY, getLocation } from '../services/location';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
@@ -78,7 +79,10 @@ const formSchemas = {
   report: yup.object().shape(formShapes.report),
   pickup: yup.object().shape(formShapes.pickup),
 };
-const localDateService = new NativeDateService('en', { format: 'MM/DD/YYYY' });
+const localDateService =
+  locale === 'en'
+    ? new NativeDateService('en', { format: 'MM/DD/YYYY' })
+    : new NativeDateService('es');
 
 const today = new Date();
 
@@ -124,11 +128,11 @@ const Report = ({
       vehicleTrackingDispatch({ type: 'ADD_PICKUP', payload: submitValues });
 
       Alert.alert(
-        'Success!',
-        'Your report has been recorded and is ready to be submitted with your vehicle tracking route.',
+        t('success'),
+        t('screens.report.routeReportSubmissionSuccess'),
         [
           {
-            text: 'OK',
+            text: t('ok'),
             onPress: () => onClose(true),
           },
         ],
@@ -161,14 +165,13 @@ const Report = ({
     console.log('responseJson.report_id', responseJson.report_id);
 
     const successMessages = {
-      pickup: 'Your report has been submitted.',
-      report:
-        'Your report has been submitted and a notification has been sent to remove the animal. We appreciate your patience while we work to schedule the removal of the animal.',
+      pickup: t('screens.report.pickupSuccess'),
+      report: t('screens.report.publicReportSuccess'),
     };
 
-    Alert.alert('Success!', successMessages[reportType], [
+    Alert.alert(t('success'), successMessages[reportType], [
       {
-        text: 'OK',
+        text: t('ok'),
         onPress: () => onClose(true),
       },
     ]);
@@ -182,7 +185,7 @@ const Report = ({
       queryClient.invalidateQueries(config.QUERY_KEYS.profile);
     },
     onError: (error) => {
-      Alert.alert('Error', error);
+      Alert.alert(t('error'), error);
     },
   });
 
@@ -199,20 +202,16 @@ const Report = ({
     };
 
     if (!force && isDirty()) {
-      Alert.alert(
-        'Are you sure?',
-        'All in-progress report data will be lost.',
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {
-            text: 'Discard report',
-            onPress: () => close(),
-          },
-        ],
-      );
+      Alert.alert(t('areYouSure'), t('screens.report.discardWarning'), [
+        {
+          text: t('cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('screens.report.discardReport'),
+          onPress: () => close(),
+        },
+      ]);
     } else {
       close();
     }
@@ -306,7 +305,9 @@ const Report = ({
                       cancelReport={onClose}
                       style={styles.bumpBottom}
                     />
-                    <Text category="h6">When was the animal discovered?</Text>
+                    <Text category="h6">
+                      {t('screens.report.whenDiscovered')}
+                    </Text>
                     <Datepicker
                       accessoryRight={dateIcon}
                       date={values.discovery_date}
@@ -331,7 +332,9 @@ const Report = ({
               >
                 {({ values }) => (
                   <>
-                    <Text category="h6">When was the animal picked up?</Text>
+                    <Text category="h6">
+                      {t('screens.report.whenPickedUp')}
+                    </Text>
                     <Datepicker
                       accessoryRight={dateIcon}
                       date={values.pickup_date}

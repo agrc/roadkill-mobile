@@ -9,5 +9,6 @@ defaultConfig.resolver.extraNodeModules.common = commonDir;
 defaultConfig.watchFolders.push(commonDir);
 defaultConfig.resolver.assetExts.push('lazy');
 defaultConfig.resolver.resolverMainFields.unshift('sbmodern');
+defaultConfig.resolver.sourceExts.push('mjs');
 
 module.exports = defaultConfig;

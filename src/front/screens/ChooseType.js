@@ -16,6 +16,7 @@ import useAuth, { STATUS } from '../auth/context';
 import RootView from '../components/RootView';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import t from '../services/localization';
 
 const carrotRight = getIcon({
   pack: 'font-awesome',
@@ -91,7 +92,9 @@ export default function ChooseTypeScreen({ navigation }) {
         onPressIn={() => setPressed(true)}
         onPressOut={() => setPressed(false)}
         accessible={true}
-        accessibilityLabel={`sign in with ${providerName}`}
+        accessibilityLabel={`${t(
+          'screens.chooseType.signInWith',
+        )} ${providerName}`}
         style={styles.oauthButton}
       >
         <Image
@@ -116,10 +119,10 @@ export default function ChooseTypeScreen({ navigation }) {
     <RootView showSpinner={showSpinner}>
       <Layout style={styles.layout}>
         <Text category="h3" style={styles.center}>
-          Welcome to the Utah Roadkill Reporter
+          {t('screens.chooseType.welcome')}
         </Text>
         <Text category="h3" style={styles.center}>
-          I am a...
+          {t('screens.chooseType.iam')}
         </Text>
 
         <View style={styles.optionsContainer}>
@@ -127,7 +130,7 @@ export default function ChooseTypeScreen({ navigation }) {
             onPress={() => setShowAuthButtons(!showAuthButtons)}
             accessoryLeft={showAuthButtons ? carrotDown : carrotRight}
           >
-            Member of the public
+            {t('screens.chooseType.public')}
           </Option>
           <Collapsible
             collapsed={!showAuthButtons}
@@ -163,9 +166,9 @@ export default function ChooseTypeScreen({ navigation }) {
               appearance="outline"
               style={styles.oauthButton}
               accessible={true}
-              accessibilityLabel="sign in with utahid"
+              accessibilityLabel={t('screens.chooseType.utahid')}
             >
-              Sign in with UtahID
+              {t('screens.chooseType.utahid')}
             </Button>
             <SocialButton
               providerName={commonConfig.authProviderNames.google}
@@ -188,7 +191,7 @@ export default function ChooseTypeScreen({ navigation }) {
               )
             }
           >
-            State contractor
+            {t('screens.chooseType.contractor')}
           </Option>
           <Option
             onPress={() =>
@@ -198,7 +201,7 @@ export default function ChooseTypeScreen({ navigation }) {
               )
             }
           >
-            State agency employee
+            {t('screens.chooseType.agency')}
           </Option>
           {config.SHOW_STORYBOOK ? (
             <Button onPress={() => navigation.navigate('storybook')}>

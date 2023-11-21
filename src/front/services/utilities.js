@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-
 import { applicationName } from 'expo-application';
 import * as Linking from 'expo-linking';
 import * as MailComposer from 'expo-mail-composer';
@@ -7,6 +6,7 @@ import * as SecureStorage from 'expo-secure-store';
 import React from 'react';
 import { Alert } from 'react-native';
 import config from './config';
+import t from './localization';
 
 export function useMounted() {
   const isMounted = React.useRef(true);
@@ -148,8 +148,8 @@ export async function sendEmailToSupport() {
   } catch (error) {
     // user may not have email app installed
     Alert.alert(
-      'Support',
-      `Please send an email to\n${config.SUPPORT_EMAIL}\nfor support.`,
+      t('services.utilities.support'),
+      t('services.utilities.pleaseSendEmail', { email: config.SUPPORT_EMAIL }),
     );
   }
 }

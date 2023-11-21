@@ -13,6 +13,7 @@ import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { useAPI } from '../services/api';
 import config from '../services/config';
+import t from '../services/localization';
 import { coordsToLocation } from '../services/location';
 import { getOfflineSubmission } from '../services/offline';
 import useStyles, { PADDING } from '../services/styles';
@@ -55,7 +56,9 @@ export default function ReportInfoScreen() {
   React.useEffect(() => {
     if (data) {
       navigation.setOptions({
-        title: `${isPickupReport(data) ? 'Pickup' : 'Carcass'} Report Info`,
+        title: `${isPickupReport(data) ? t('pickup') : t('carcass')} ${t(
+          'screens.reportInfo.title',
+        )}`,
       });
     }
   }, [data, navigation]);
@@ -66,16 +69,14 @@ export default function ReportInfoScreen() {
         <ScrollView style={styles.container}>
           {isError ? (
             <Card status="danger" style={styles.errorCard}>
-              <Text>
-                There was an error retrieving your report from the server!
-              </Text>
+              <Text>{t('screens.reportInfo.errorLoadingReport')}</Text>
               <Text>{error?.message}</Text>
             </Card>
           ) : null}
           <ReportInfo data={data} />
         </ScrollView>
       </SafeAreaView>
-      <Spinner show={isPending} message={'Loading report details...'} />
+      <Spinner show={isPending} message={t('screens.reportInfo.loading')} />
     </Layout>
   );
 }

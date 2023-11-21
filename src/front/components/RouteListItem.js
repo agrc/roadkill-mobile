@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ListItem, useTheme } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { getArrowIcon } from '../services/icons';
+import t from '../services/localization';
 import useStyles from '../services/styles';
 import { dateToString } from '../services/utilities';
 
@@ -12,7 +13,7 @@ export default function RouteListItem({ item }) {
 
   return (
     <ListItem
-      title={`Route ${item.route_id || '(unsubmitted)'}`}
+      title={`${t('route')} ${item.route_id || `(${t('unsubmitted')})`}`}
       description={`${dateToString(item.start_time)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>

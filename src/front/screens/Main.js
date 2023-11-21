@@ -22,6 +22,7 @@ import backgroundLocationService, {
 } from '../services/backgroundLocation';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import t from '../services/localization';
 import {
   getLocation,
   locationToRegion,
@@ -107,8 +108,8 @@ export default function MainScreen() {
         activityType: Location.ActivityType.AutomotiveNavigation,
         deferredUpdatesInterval: 2500, // milliseconds
         foregroundService: {
-          notificationTitle: 'Vehicle Tracking',
-          notificationBody: 'Tracking your vehicle',
+          notificationTitle: t('screens.main.trackingNotificationTitle'),
+          notificationBody: t('screens.main.trackingNotificationBody'),
         },
         showsBackgroundLocationIndicator: true,
       },
@@ -152,22 +153,18 @@ export default function MainScreen() {
 
     const result = await Location.requestForegroundPermissionsAsync();
     if (!result.granted) {
-      Alert.alert(
-        'Error',
-        'Location permissions are required to submit reports.',
-        [{ text: 'OK', onPress: () => Linking.openSettings() }],
-      );
+      Alert.alert(t('error'), t('screens.main.locationPermissionsRequired'), [
+        { text: t('ok'), onPress: () => Linking.openSettings() },
+      ]);
 
       return;
     }
 
     const enabled = await Location.hasServicesEnabledAsync();
     if (!enabled) {
-      Alert.alert(
-        'Error',
-        'Location services are required to submit reports.',
-        [{ text: 'OK', onPress: () => Linking.openSettings() }],
-      );
+      Alert.alert(t('error'), t('screens.main.locationServicesRequired'), [
+        { text: t('ok'), onPress: () => Linking.openSettings() },
+      ]);
 
       return;
     }
@@ -210,17 +207,17 @@ export default function MainScreen() {
       authInfo.user.role === config.USER_TYPES.agency ||
       authInfo.user.role === config.USER_TYPES.admin
     ) {
-      Alert.alert('I would like to...', null, [
+      Alert.alert(t('screens.main.iWouldLike'), null, [
         {
-          text: 'Report and pick up a carcass',
+          text: t('screens.main.pickup'),
           onPress: () => displayReport(config.REPORT_TYPES.pickup),
         },
         {
-          text: 'Report a carcass',
+          text: t('screens.main.report'),
           onPress: () => displayReport(config.REPORT_TYPES.report),
         },
         {
-          text: 'Cancel',
+          text: t('cancel'),
           style: 'cancel',
         },
       ]);
@@ -228,15 +225,15 @@ export default function MainScreen() {
       // contractor
       if (!vehicleTrackingState.isTracking) {
         Alert.alert(
-          'No vehicle tracking route found',
-          'A vehicle tracking route must be started to report a carcass.\n\nWould you like to start a route?',
+          t('screens.main.noRouteStarted'),
+          t('screens.main.startRouteQuestion'),
           [
             {
-              text: 'Cancel',
+              text: t('cancel'),
               style: 'cancel',
             },
             {
-              text: 'Start route',
+              text: t('screens.main.startRoute'),
               onPress: () => {
                 startRoute();
 
@@ -251,15 +248,15 @@ export default function MainScreen() {
 
       if (vehicleTrackingState.isTracking && vehicleTrackingState.isPaused) {
         Alert.alert(
-          'Paused vehicle tracking route',
-          'A vehicle tracking route has been started but it is currently paused.\n\nWould you to resume?',
+          t('screens.main.routePaused'),
+          t('screens.main.resumeRouteQuestion'),
           [
             {
-              text: 'Cancel',
+              text: t('cancel'),
               style: 'cancel',
             },
             {
-              text: 'Resume tracking',
+              text: t('screens.main.resumeRoute'),
               onPress: () => {
                 resumeRoute();
 
@@ -331,7 +328,7 @@ export default function MainScreen() {
   return (
     <RootView
       showSpinner={showSpinner}
-      spinnerMessage="getting current location"
+      spinnerMessage={t('loading.gettingCurrentLocation')}
       style={styles.root}
     >
       <FocusAwareStatusBar style={'light'} />
@@ -433,7 +430,7 @@ export default function MainScreen() {
               status={vehicleTrackingState.buttonStatus}
               color={theme['color-basic-800']}
             >
-              Track
+              {t('track')}
             </MapButton>
           )}
         </View>
@@ -455,7 +452,7 @@ export default function MainScreen() {
             status="primary"
             color={theme['color-basic-800']}
           >
-            Report
+            {t('report')}
           </MapButton>
         </View>
         <View></View>

@@ -2,6 +2,7 @@ import { Button, Divider } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
+import t from '../services/localization';
 import { useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
 import ReportListItem from './ReportListItem';
@@ -29,7 +30,7 @@ export default function CachedData({ data }) {
         onPress={submit}
         disabled={!isConnected || isSubmitting}
       >
-        Send Unsubmitted Reports
+        {t('components.cachedData.sendReports')}
       </Button>
       <Divider />
       {data.map((item) => (
@@ -42,7 +43,10 @@ export default function CachedData({ data }) {
           <Divider />
         </View>
       ))}
-      <Spinner show={isSubmitting} message="Submitting data..." />
+      <Spinner
+        show={isSubmitting}
+        message={`${t('components.cachedData.submittingData')}...`}
+      />
     </>
   );
 }

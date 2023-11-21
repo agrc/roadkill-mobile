@@ -4,6 +4,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import config from './config';
 import myFetch from './fetch';
+import t from './localization';
 
 export const ACCURACY = Location.Accuracy;
 export const getLocation = async (accuracy = Location.Accuracy.Low) => {
@@ -152,8 +153,7 @@ const cache = {};
 export async function getAssistancePrompt() {
   const existingPermissions = await Location.getForegroundPermissionsAsync();
 
-  let prompt =
-    'If you encounter a live animal please contact your local law enforcement.';
+  let prompt = t('services.location.liveAnimalLocalLaw');
   if (!existingPermissions.granted) {
     return prompt;
   }
@@ -198,7 +198,10 @@ export async function getAssistancePrompt() {
     if (response.features?.length) {
       const attributes = response.features[0].attributes;
 
-      prompt = `If you encounter a live animal that needs assistance, please call ${attributes.DsplayName} at ${attributes.PHONE_NUMBER}.`;
+      prompt = t('services.location.liveAnimal', {
+        name: attributes.DsplayName,
+        phone: attributes.PHONE_NUMBER,
+      });
 
       cache[cacheKey] = prompt;
     }

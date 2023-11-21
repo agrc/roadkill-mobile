@@ -20,6 +20,7 @@ import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
 import { getIcon } from '../services/icons';
+import t from '../services/localization';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
 import {
@@ -150,7 +151,7 @@ const getDistance = (coords) => {
 
   const miles = length(line, { units: 'miles' });
 
-  return `${miles.toFixed(2)} miles`;
+  return `${miles.toFixed(2)} ${t('components.vehicleTracking.miles')}`;
 };
 
 export default function VehicleTracking({
@@ -219,15 +220,15 @@ export default function VehicleTracking({
     console.log('cancelRoute');
 
     Alert.alert(
-      'Are you sure?',
-      "Canceled routes are deleted and can't be submitted.",
+      t('areYouSure'),
+      t('components.vehicleTracking.canceledRouteWarning'),
       [
         {
-          text: 'Cancel',
+          text: t('cancel'),
           style: 'cancel',
         },
         {
-          text: 'Discard route',
+          text: t('components.vehicleTracking.discardRoute'),
           onPress: async () => {
             await stopTracking();
 
@@ -251,23 +252,23 @@ export default function VehicleTracking({
 
   const confirmCompleteRoute = () => {
     if (state.routeCoordinates.length < 2) {
-      Alert.alert(
-        'You must have tracked at least two positions to submit a route!',
-      );
+      Alert.alert(t('components.vehicleTracking.atLeast'));
 
       return;
     }
 
     Alert.alert(
-      'Are you sure?',
-      `Are you sure that you want to stop tracking and submit this route with ${state.pickups.length} pickups?`,
+      t('areYouSure'),
+      t('components.vehicleTracking.stopTracking', {
+        length: state.pickups.length,
+      }),
       [
         {
-          text: 'Cancel',
+          text: t('cancel'),
           style: 'cancel',
         },
         {
-          text: 'Submit route',
+          text: t('components.vehicleTracking.submit'),
           onPress: completeRoute,
         },
       ],
@@ -292,7 +293,7 @@ export default function VehicleTracking({
       return;
     }
 
-    setSpinnerMessage('submitting route...');
+    setSpinnerMessage(`${t('components.vehicleTracking.submittingRoute')}...`);
 
     let responseJson;
     try {
@@ -314,7 +315,10 @@ export default function VehicleTracking({
       };
 
       setSpinnerMessage(
-        `submitting pickup ${index + 1} of ${state.pickups.length}...`,
+        `${t('components.vehicleTracking.submittingPickup', {
+          num: index + 1,
+          total: state.pickups.length,
+        })}...`,
       );
 
       try {
@@ -327,13 +331,13 @@ export default function VehicleTracking({
 
     if (submitErrors.length) {
       Alert.alert(
-        'Error',
-        `Your route has been submitted successfully, but there were errors submitting your pickups. They have been cached on your device for later submission. \n\n${submitErrors
+        t('error'),
+        `${t('components.vehicleTracking.submissionError')}\n\n${submitErrors
           .map((error) => error.message)
           .join('\n')}`,
       );
     } else {
-      Alert.alert('Success!', 'Your route has been submitted successfully.');
+      Alert.alert(`${t('success')}!`, t('components.vehicleTracking.success'));
     }
   };
 
@@ -347,7 +351,7 @@ export default function VehicleTracking({
       dispatch({ type: 'RESET' });
     },
     onError: (error) => {
-      Alert.alert('Error', error.message);
+      Alert.alert(t('error'), error.message);
     },
   });
 
@@ -388,18 +392,28 @@ export default function VehicleTracking({
         style={styles.modal}
       >
         <Card disabled={true} header={getHeader('Route')} style={styles.modal}>
-          <Text>Start: {state.start ? dateToString(state.start) : null}</Text>
-          <Text>Status: {state.status}</Text>
-          <Text>Distance: {getDistance(state.routeCoordinates)}</Text>
-          <Text>Pickups: {state.pickups?.length}</Text>
+          <Text>
+            {t('components.vehicleTracking.start')}:{' '}
+            {state.start ? dateToString(state.start) : null}
+          </Text>
+          <Text>
+            {t('components.vehicleTracking.status')}: {state.status}
+          </Text>
+          <Text>
+            {t('components.vehicleTracking.distance')}:{' '}
+            {getDistance(state.routeCoordinates)}
+          </Text>
+          <Text>
+            {t('components.vehicleTracking.pickups')}: {state.pickups?.length}
+          </Text>
           <Divider style={styles.divider} />
           {state.isPaused ? (
             <Button style={styles.button} onPress={resumeRoute}>
-              Resume
+              {t('components.vehicleTracking.resume')}
             </Button>
           ) : (
             <Button style={styles.button} onPress={pauseRoute} status="danger">
-              Pause Route
+              {t('components.vehicleTracking.pauseRoute')}
             </Button>
           )}
           <Button
@@ -407,14 +421,14 @@ export default function VehicleTracking({
             onPress={confirmCompleteRoute}
             status="info"
           >
-            Finish and Submit Route
+            {t('components.vehicleTracking.finishAndSubmit')}
           </Button>
           <Button
             style={styles.button}
             onPress={cancelRoute}
             appearance="ghost"
           >
-            Cancel Route
+            {t('components.vehicleTracking.cancel')}
           </Button>
         </Card>
       </Modal>

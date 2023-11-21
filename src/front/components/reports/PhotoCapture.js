@@ -10,6 +10,7 @@ import { Alert, Image, StyleSheet, View } from 'react-native';
 import * as Sentry from 'sentry-expo';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
+import t from '../../services/localization';
 import { ACCURACY, getLocation } from '../../services/location';
 import useStyles, { PADDING } from '../../services/styles';
 import {
@@ -23,14 +24,14 @@ const THUMBNAIL_SIZE = 110;
 
 const displayCameraActivityFailedAlert = () => {
   Alert.alert(
-    'The app is not able to open your camera.',
-    'Restarting the app can solve this issue. Restart now?',
+    t('components.reports.photoCapture.openCameraFailedTitle'),
+    t('components.reports.photoCapture.openCameraFailedMessage'),
     [
       {
-        text: 'Cancel',
+        text: t('cancel'),
       },
       {
-        text: 'Ok',
+        text: t('ok'),
         onPress: async () => {
           await unregisterAllTasksAsync();
           await reloadAsync();
@@ -82,7 +83,7 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Error', `status: ${status}`);
+      Alert.alert(t('error'), `status: ${status}`);
       // 'Media library permissions are required chose a photo.'
 
       return;
@@ -123,7 +124,7 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
       // 'Cameral permissions are required to take a new photo.'
-      Alert.alert('Error', `status: ${status}`);
+      Alert.alert(t('error'), `status: ${status}`);
 
       return;
     }
@@ -196,7 +197,7 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
               });
             }}
           >
-            Take new photo
+            {t('components.reports.photoCapture.takeNewPhoto')}
           </Button>
           <Button
             accessoryLeft={getIcon({
@@ -212,7 +213,7 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
             }}
             style={{ marginTop: PADDING }}
           >
-            Choose existing
+            {t('components.reports.photoCapture.chooseExisting')}
           </Button>
         </View>
 
@@ -250,7 +251,9 @@ function PhotoCapture({ onChange, uri, style, setPhotoIsProcessing }) {
         )}
         <Spinner show={showLoader} />
       </View>
-      <Text appearance="hint">If possible and safe, please take a photo.</Text>
+      <Text appearance="hint">
+        {t('components.reports.photoCapture.pleaseTake')}
+      </Text>
     </View>
   );
 }

@@ -4,16 +4,40 @@ import propTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import config from '../../services/config';
+import t from '../../services/localization';
 import { PADDING } from '../../services/styles';
 import PhotoCapture from './PhotoCapture';
 import RadioPills from './RadioPills';
 import Species from './Species';
 
-const GENDERS = ['female', 'male'];
-const AGES = ['adult', 'juvenile'];
-
-const ageOptions = AGES.concat([config.UNKNOWN]);
-const genderOptions = GENDERS.concat([config.UNKNOWN]);
+const ageOptions = [
+  {
+    label: t('components.reports.form.adult'),
+    value: 'adult',
+  },
+  {
+    label: t('components.reports.form.juvenile'),
+    value: 'juvenile',
+  },
+  {
+    label: t('unknown').toLowerCase(),
+    value: config.UNKNOWN,
+  },
+];
+const genderOptions = [
+  {
+    label: t('components.reports.form.female'),
+    value: 'female',
+  },
+  {
+    label: t('components.reports.form.male'),
+    value: 'male',
+  },
+  {
+    label: t('unknown').toLowerCase(),
+    value: config.UNKNOWN,
+  },
+];
 
 export default function Form({
   formikRef,
@@ -98,14 +122,14 @@ export default function Form({
           />
           {ableToIdentify ? (
             <>
-              <Text category="h6">Animal age?</Text>
+              <Text category="h6">{t('components.reports.form.age')}</Text>
               <RadioPills
                 value={values.age_class}
                 onChange={onAgeChange}
                 options={ageOptions}
                 style={styles.bottomBump}
               />
-              <Text category="h6">Animal sex?</Text>
+              <Text category="h6">{t('components.reports.form.sex')}</Text>
               <RadioPills
                 value={values.sex}
                 onChange={onGenderChange}
@@ -121,7 +145,9 @@ export default function Form({
             style={styles.bottomBump}
             setPhotoIsProcessing={setPhotoIsProcessing}
           />
-          <Text category="h6">Additional comments:</Text>
+          <Text category="h6">
+            {t('components.reports.form.additionalComments')}:
+          </Text>
           <Input
             multiline
             textStyle={{ minHeight: 64 }}
@@ -130,7 +156,7 @@ export default function Form({
           />
           <View style={styles.buttonContainer}>
             <Button appearance="ghost" onPress={onClose} style={styles.button}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               status="info"
@@ -140,7 +166,7 @@ export default function Form({
               }
               style={styles.button}
             >
-              Submit Report
+              {t('components.reports.form.submitReport')}
             </Button>
           </View>
           {__DEV__ ? (

@@ -9,6 +9,7 @@ import RouteListItem from '../components/RouteListItem';
 import Spinner from '../components/Spinner';
 import { useAPI } from '../services/api';
 import config from '../services/config';
+import t from '../services/localization';
 import { getOfflineSubmission, useOfflineCache } from '../services/offline';
 import { PADDING } from '../services/styles';
 
@@ -61,15 +62,12 @@ export default function MyReportsScreen() {
         <CachedData data={offlineSubmissions} />
         {!isConnected ? (
           <View style={{ margin: PADDING }}>
-            <Text>Only cached reports will show up when you are offline.</Text>
+            <Text>{t('screens.myReports.offlineMessage')}</Text>
           </View>
         ) : null}
         {isError ? (
           <Card status="danger" style={styles.errorCard}>
-            <Text>
-              There was an error retrieving your previously submitted data from
-              the server!
-            </Text>
+            <Text>{t('screens.myReports.errorLoadingSubmissions')}</Text>
             <Text>{error?.message}</Text>
           </Card>
         ) : null}
@@ -93,12 +91,15 @@ export default function MyReportsScreen() {
             ))
           ) : (
             <View style={{ margin: PADDING }}>
-              <Text>You have no submissions.</Text>
+              <Text>{t('screens.myReports.noSubmissions')}</Text>
             </View>
           )
         ) : null}
       </ScrollView>
-      <Spinner show={isPending} message={'Loading your submissions...'} />
+      <Spinner
+        show={isPending}
+        message={t('screens.myReports.loadingSubmissions')}
+      />
     </Layout>
   );
 }

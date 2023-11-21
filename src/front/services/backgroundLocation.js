@@ -2,6 +2,7 @@ import { applicationId } from 'expo-application';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import { Alert, Platform } from 'react-native';
+import t from './localization';
 
 // got this idea from: https://forums.expo.dev/t/how-to-setstate-from-within-taskmanager/26630/5?u=agrc
 function BackgroundLocationService() {
@@ -27,23 +28,21 @@ export async function verifyPermissions() {
 
   if (!existingPermissions.granted) {
     await new Promise((resolve) => {
-      let buttons = [{ text: 'OK', onPress: resolve }];
+      let buttons = [{ text: t('ok'), onPress: resolve }];
       if (!existingPermissions.canAskAgain) {
         buttons.push({
-          text: 'Go To Settings',
+          text: t('services.backgroundLocation.goToSettings'),
           onPress: () => Linking.openSettings(),
         });
       }
       Alert.alert(
-        'Background Location Permissions',
-        [
-          'This app collects location data to enable the tracking of vehicle routes even when the app is closed or',
-          'not in use. Data is only collected when a tracking session is active. Data submitted to the server is only',
-          'used for billing purposes and is not shared with any third parties.',
-          `Please select the **${
-            Platform.OS === 'android' ? 'Allow all the time' : 'Always'
-          }** option in the location settings dialog`,
-        ].join(' '),
+        t('services.backgroundLocation.goToSettings'),
+        t('services.backgroundLocation.backgroundLocationRequired', {
+          option:
+            Platform.OS === 'android'
+              ? t('services.backgroundLocation.allowAll')
+              : t('services.backgroundLocation.always'),
+        }),
         buttons,
       );
     });
@@ -59,11 +58,9 @@ export async function verifyPermissions() {
   console.log('enabled', enabled);
 
   if (!enabled) {
-    Alert.alert(
-      'Error',
-      'Location services are required to record vehicle routes.',
-      [{ text: 'OK', onPress: () => Linking.openSettings() }],
-    );
+    Alert.alert(t('error'), t('services.backgroundLocation.required'), [
+      { text: t('ok'), onPress: () => Linking.openSettings() },
+    ]);
 
     return false;
   }
