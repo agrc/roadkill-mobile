@@ -81,11 +81,15 @@ export default function useAppleProvider() {
 
   const logIn = async () => {
     console.log('apple logIn');
-    if (
-      cachedUserInfo.current?.identityToken &&
-      !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))
-    ) {
-      return cachedUserInfo.current;
+    try {
+      if (
+        cachedUserInfo.current?.identityToken &&
+        !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))
+      ) {
+        return cachedUserInfo.current;
+      }
+    } catch (error) {
+      console.error('error checking token', error);
     }
 
     let signInResult;
@@ -114,7 +118,7 @@ export default function useAppleProvider() {
     //   user: string, (user id)
     // }
     if (!signInResult) {
-      return null;
+      throwAsyncError(new Error('signInResult is null!'));
     }
 
     // this returns a 1 when running in the dev client on my real device, not sure how helpful this is

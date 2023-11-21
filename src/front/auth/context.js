@@ -125,6 +125,7 @@ export function AuthContextProvider({ children, onReady }) {
         },
         true,
       );
+      console.log('loginResponse', loginResponse);
 
       if (loginResponse.errors) {
         throw new Error(loginResponse.errors[0].message);
@@ -148,6 +149,8 @@ export function AuthContextProvider({ children, onReady }) {
       console.log(`error logging in: ${error?.message}`);
       Sentry.Native.captureException(error);
       setStatus(STATUS.failure);
+
+      setAuthInfo(null);
 
       throw error;
     }
