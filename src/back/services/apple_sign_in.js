@@ -35,10 +35,13 @@ async function verifyIdToken(identityToken) {
 async function getTokens(authorizationCode) {
   // exchange authorization code for tokens
   // this is really just to validate the authorization code
-  const tokenResponse = await appleSignIn.getAuthorizationToken(authorizationCode, {
-    clientID,
-    clientSecret: getClientSecret(),
-  });
+  const tokenResponse = await appleSignIn.getAuthorizationToken(
+    authorizationCode,
+    {
+      clientID,
+      clientSecret: getClientSecret(),
+    },
+  );
 
   // response looks like this
   // {
@@ -51,7 +54,9 @@ async function getTokens(authorizationCode) {
   console.log('tokenResponse', tokenResponse);
 
   if (tokenResponse.error) {
-    throw new Error(`${tokenResponse.error}: ${tokenResponse.error_description}`);
+    throw new Error(
+      `${tokenResponse.error}: ${tokenResponse.error_description}`,
+    );
   }
 
   return {
@@ -67,6 +72,10 @@ async function validateRefreshToken(refreshToken) {
     clientSecret: getClientSecret(),
   });
   console.log('refreshAuthorizationToken response', response);
+
+  if (response.error) {
+    throw new Error(`${response.error}: ${response.error_description}`);
+  }
 
   return response.id_token;
 }
