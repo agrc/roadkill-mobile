@@ -19,7 +19,9 @@ export async function getToken(request, response) {
     return response.status(400).send('invalid client_id');
   } else if (!grantTypes.includes(request.body.grant_type)) {
     return response.status(400).json({
-      error_description: `invalid grant_type: ${request.body.grant_type}, must be one of ${grantTypes.join(', ')}`,
+      error_description: `invalid grant_type: ${
+        request.body.grant_type
+      }, must be one of ${grantTypes.join(', ')}`,
       error: 'invalid_request',
     });
   }
@@ -42,24 +44,31 @@ export async function getToken(request, response) {
       }
     });
   } catch (error) {
-    return response.status(400).json({ error_description: error.message, error: 'invalid_request' });
+    return response
+      .status(400)
+      .json({ error_description: error.message, error: 'invalid_request' });
   }
 
   try {
-    const tokenRequest = await got.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', {
-      form: body,
-      responseType: 'json',
-      headers: {
-        authorization: request.headers.authorization,
-        accept: request.headers.accept,
+    const tokenRequest = await got.post(
+      'https://login.dts.utah.gov:443/sso/oauth2/access_token',
+      {
+        form: body,
+        responseType: 'json',
+        headers: {
+          authorization: request.headers.authorization,
+          accept: request.headers.accept,
+        },
       },
-    });
+    );
 
     return response.send(tokenRequest.body);
   } catch (error) {
     const errorMessage = error.body || error.message || error;
 
-    return response.status(500).json({ error_description: errorMessage, error: 'server_error' });
+    return response
+      .status(500)
+      .json({ error_description: errorMessage, error: 'server_error' });
   }
 }
 
@@ -70,7 +79,12 @@ export async function verifyAppleTokenAndCode(request, response) {
   try {
     sub = await appleSignIn.verifyIdToken(identityToken);
   } catch (error) {
-    return response.status(401).json({ error_description: error.message, error: 'invalid identityToken' });
+    return response
+      .status(401)
+      .json({
+        error_description: error.message,
+        error: 'invalid identityToken',
+      });
   }
 
   // check for cached refresh token and use that rather than getTokens
@@ -78,14 +92,25 @@ export async function verifyAppleTokenAndCode(request, response) {
 
   let newIdToken;
   if (refreshToken) {
-    newIdToken = await appleSignIn.validateRefreshToken(refreshToken);
+    try {
+      newIdToken = await appleSignIn.validateRefreshToken(refreshToken);
+    } catch (error) {
+      return response
+        .status(401)
+        .json({
+          error_description: error.message,
+          error: 'invalid refresh token',
+        });
+    }
   } else {
     try {
       const tokens = await appleSignIn.getTokens(authorizationCode);
       refreshToken = tokens.refreshToken;
       newIdToken = tokens.identityToken;
     } catch (error) {
-      return response.status(401).json({ error_description: error.message, error: 'invalid_request' });
+      return response
+        .status(401)
+        .json({ error_description: error.message, error: 'invalid_request' });
     }
   }
 
@@ -95,7 +120,9 @@ export async function verifyAppleTokenAndCode(request, response) {
 }
 
 export async function logout(request, response) {
-  const { token, authProvider } = getTokenFromHeader(request.headers.authorization);
+  const { token, authProvider } = getTokenFromHeader(
+    request.headers.authorization,
+  );
 
   if (!token) {
     return response.status(401).send('empty token');
@@ -121,7 +148,9 @@ export function getTokenFromHeader(authorization) {
 
 export async function authenticate(request, response, next) {
   if (request.headers.authorization) {
-    const { token, authProvider, authToken } = getTokenFromHeader(request.headers.authorization);
+    const { token, authProvider, authToken } = getTokenFromHeader(
+      request.headers.authorization,
+    );
 
     if (!token) {
       return response.status(401).send('empty token');
@@ -180,7 +209,9 @@ export async function authenticate(request, response, next) {
     } catch (error) {
       const errorMessage = error.body || error.message || error;
 
-      return response.status(500).json({ error_description: errorMessage, error: 'server_error' });
+      return response
+        .status(500)
+        .json({ error_description: errorMessage, error: 'server_error' });
     }
 
     if (userResponse.statusCode === 200 && userResponse.body) {
