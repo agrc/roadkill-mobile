@@ -105,6 +105,17 @@ export default function AppInfoScreen() {
           value={osVersion}
         />
 
+        <Text category="h5" style={styles.header}>
+          {t('screens.about.offlineMaps')}
+        </Text>
+        <Text
+          style={[styles.paragraph, { paddingTop: 0, paddingBottom: PADDING }]}
+          category="p1"
+        >
+          {t('screens.about.offlineMapsDescription')}
+        </Text>
+        <Divider />
+
         {/* Facebook requires a link to the privacy policy in the app */}
         <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
           <Button

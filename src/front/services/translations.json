@@ -112,6 +112,8 @@
         "model": "Model",
         "noUpdateAvailable": "No update available",
         "noUpdateDescription": "No over-the-air updates have been published for this version.",
+        "offlineMaps": "Offline Maps",
+        "offlineMapsDescription": "If you are going to be in an area with poor or no cell service, browse to that area on the map and zoom in to the desired level of detail while you have service. The map will then be cached on your device and be available for offline use.",
         "osVersion": "OS Version",
         "privacyPolicy": "Privacy Policy",
         "releaseChannel": "Release Channel",
@@ -251,11 +253,11 @@
           "additionalComments": "Comentarios adicionales",
           "adult": "adulto",
           "age": "¿Edad del animal?",
+          "female": "femenina",
           "juvenile": "juvenil",
-          "sex": "¿Sexo del animal?",
-          "submitReport": "Enviar informe",
           "male": "masculino",
-          "female": "femenina"
+          "sex": "¿Sexo del animal?",
+          "submitReport": "Enviar informe"
         },
         "location": {
           "crosshairPrompt": "Mueva el mapa para colocar la mira en la ubicación de la carcasa del animal.",
@@ -350,6 +352,8 @@
         "model": "Modelo",
         "noUpdateAvailable": "No hay actualizaciones disponibles",
         "noUpdateDescription": "No se han publicado actualizaciones para esta versión.",
+        "offlineMaps": "Mapas sin conexión",
+        "offlineMapsDescription": "Si vas a estar en un área con servicio celular deficiente o nulo, navega a esa área en el mapa y haz zoom al nivel de detalle deseado mientras tienes servicio. El mapa se almacenará en caché en tu dispositivo y estará disponible para su uso sin conexión.",
         "osVersion": "Versión del sistema operativo",
         "privacyPolicy": "Política de privacidad",
         "releaseChannel": "Canal de lanzamiento",
