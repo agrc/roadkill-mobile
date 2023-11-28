@@ -38,6 +38,7 @@ export default function useAppleProvider() {
           true,
         );
       } catch (error) {
+        console.log('refresh token error', error);
         if (error.response.status === 401 && !isRetry) {
           console.log('refresh token failed, refresh credentials');
           const refreshedCredentials =
@@ -48,6 +49,8 @@ export default function useAppleProvider() {
             refreshedCredentials.authorizationCode,
             true,
           );
+        } else {
+          throw error;
         }
       }
 
@@ -80,12 +83,11 @@ export default function useAppleProvider() {
   };
 
   const logIn = async () => {
-    console.log('apple logIn');
+    console.log('apple logIn, cachedUserInfo.current', cachedUserInfo.current);
     try {
-      if (
-        cachedUserInfo.current?.identityToken &&
-        !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken))
-      ) {
+      if (cachedUserInfo.current?.identityToken && hasValidToken()) {
+        console.log('returning cached user info');
+
         return cachedUserInfo.current;
       }
     } catch (error) {
