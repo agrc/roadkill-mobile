@@ -22,7 +22,6 @@ export const STATUS = {
   idle: 'idle',
 };
 
-WebBrowser.maybeCompleteAuthSession();
 const AuthContext = React.createContext();
 
 export function AuthContextProvider({ children, onReady }) {
