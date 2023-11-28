@@ -19,6 +19,7 @@
     "featurelayer",
     "featureset",
     "fillna",
+    "firestore",
     "Firestore",
     "formik",
     "formurlencoded",

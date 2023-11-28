@@ -57,7 +57,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 
 ### Cutting a New Release
 
-1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `staging`)
+1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `dev`)
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
 1. Determine if app version (`version` in [app.config.js](src/front/app.config.js)) needs to be bumped. Apple requires it to be bumped after every production release.

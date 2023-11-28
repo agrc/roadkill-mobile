@@ -5,7 +5,7 @@ module.exports = {
   reportPhotoThumbnailSize: 75,
   otherOrg: { id: -1, name: 'Other' },
   versionHeaderName: 'x-api-version',
-  apiVersion: '1.0.2',
+  apiVersion: '1.0.3',
   authProviderNames: {
     apple: 'apple',
     facebook: 'facebook',

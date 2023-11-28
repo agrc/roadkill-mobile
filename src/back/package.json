@@ -1,6 +1,6 @@
 {
   "name": "roadkill-reporter-api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "API for Utah Roadkill Reporter mobile app.",
   "license": "MIT",

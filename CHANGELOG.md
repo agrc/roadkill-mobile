@@ -1,3 +1,17 @@
+## [v3.0.7-635](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-617...v3.0.7-635) (2023-11-28)
+
+
+### Bug Fixes
+
+* **back:** hand invalid apple refresh tokens ([b19d342](https://github.com/agrc/roadkill-mobile/commit/b19d342fbd0a1f13bbf9dd2bc9824c5159f574f6))
+* **back:** handle expired apple refresh tokens ([2f29a9b](https://github.com/agrc/roadkill-mobile/commit/2f29a9b87826ea5458a45b31addc439fbff0067d))
+* **front:** bump sentry-related packages ([bc42d15](https://github.com/agrc/roadkill-mobile/commit/bc42d15c4fbd9bd9a5c50ff383d11fad7114aebf))
+* **front:** fix overflowing search list in species component ([57b1c24](https://github.com/agrc/roadkill-mobile/commit/57b1c245e156ea6f7779882d38e6333856108f0e))
+* **front:** make apple auth more reliable ([d59766b](https://github.com/agrc/roadkill-mobile/commit/d59766bdd55bf597fd21222ce9b3fa310b7e292e))
+* **front:** prevent apple auth for asking for login more than necessary ([49c1332](https://github.com/agrc/roadkill-mobile/commit/49c13325759dd2f3c222949bf2945e989acb43e5))
+
+
+
 ## [v3.0.7-624](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-617...v3.0.7-624) (2023-11-21)
 
 
