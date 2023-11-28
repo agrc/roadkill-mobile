@@ -188,7 +188,7 @@ export default function useAppleProvider() {
   };
 
   const hasValidToken = () => {
-    return isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken));
+    return !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken));
   };
 
   return { logIn, logOut, getBearerToken, hasValidToken, isReady };
