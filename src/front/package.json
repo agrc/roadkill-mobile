@@ -73,7 +73,7 @@
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-task-manager": "~11.3.0",
-    "expo-updates": "~0.18.17",
+    "expo-updates": "~0.18.19",
     "expo-web-browser": "~12.3.2",
     "formik": "^2.4.5",
     "i18n-js": "^4.3.2",
