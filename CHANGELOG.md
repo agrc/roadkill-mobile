@@ -1,3 +1,13 @@
+## [v3.0.7-636](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-635...v3.0.7-636) (2024-01-03)
+
+
+### Bug Fixes
+
+* **front:** add missing translations ([957f53b](https://github.com/agrc/roadkill-mobile/commit/957f53b28c555d380316cba329b45e2b739b0bed)), closes [#67](https://github.com/agrc/roadkill-mobile/issues/67)
+* update public report submission message ([4520c92](https://github.com/agrc/roadkill-mobile/commit/4520c92796d3dfa331691132c5028e5588ef1e73)), closes [#295](https://github.com/agrc/roadkill-mobile/issues/295)
+
+
+
 ## [v3.0.7-635](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-617...v3.0.7-635) (2023-11-28)
 
 

@@ -386,6 +386,17 @@
       "frequent": false
     },
     {
+      "species_id": 37,
+      "common_name": "Spotted Shunk",
+      "scientific_name": "Spilogale putorius",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "carnivores",
+      "family": "skunks",
+      "rare": false,
+      "frequent": false
+    },
+    {
       "species_id": 38,
       "common_name": "Cottontail Rabbit",
       "scientific_name": "Sylvilagus spp.",
@@ -1563,17 +1574,6 @@
       "frequent": false
     },
     {
-      "species_id": 37,
-      "common_name": "Spotted Skunk",
-      "scientific_name": "Spilogale putorius",
-      "species_type": "wild",
-      "species_class": "mammals",
-      "species_order": "carnivores",
-      "family": "skunks",
-      "rare": false,
-      "frequent": false
-    },
-    {
       "species_id": 144,
       "common_name": "Peregrine Falcon",
       "scientific_name": "Falco peregrinus",
@@ -1691,6 +1691,56 @@
       "org_type": "agency"
     },
     {
+      "id": 18,
+      "name": "UGRC",
+      "org_type": "agency"
+    },
+    {
+      "id": 19,
+      "name": "UGRC",
+      "org_type": "agency"
+    },
+    {
+      "id": 20,
+      "name": "THE ugrc",
+      "org_type": "agency"
+    },
+    {
+      "id": 21,
+      "name": "THE ugrc",
+      "org_type": "agency"
+    },
+    {
+      "id": 22,
+      "name": "THE ugrc",
+      "org_type": "agency"
+    },
+    {
+      "id": 23,
+      "name": "THE ugrc",
+      "org_type": "contractor"
+    },
+    {
+      "id": 24,
+      "name": "Ugrc",
+      "org_type": "agency"
+    },
+    {
+      "id": 26,
+      "name": "Test Org",
+      "org_type": "contractor"
+    },
+    {
+      "id": 27,
+      "name": "DWR",
+      "org_type": "agency"
+    },
+    {
+      "id": 28,
+      "name": "DWR",
+      "org_type": "contractor"
+    },
+    {
       "id": 1,
       "name": "Redrock Kleanup llc ",
       "org_type": "contractor"
@@ -1711,58 +1761,8 @@
       "org_type": "agency"
     },
     {
-      "id": 18,
-      "name": "Department of Agriculture and Food ",
-      "org_type": "agency"
-    },
-    {
-      "id": 19,
-      "name": "Public",
-      "org_type": "agency"
-    },
-    {
-      "id": 20,
-      "name": "Kearns Improvement District ",
-      "org_type": "agency"
-    },
-    {
-      "id": 21,
-      "name": "N/a",
-      "org_type": "contractor"
-    },
-    {
-      "id": 22,
-      "name": "Springdale Police",
-      "org_type": "agency"
-    },
-    {
-      "id": 23,
-      "name": "Department of health and human services ",
-      "org_type": "agency"
-    },
-    {
-      "id": 24,
-      "name": "Utah Trust Lands Administration ",
-      "org_type": "agency"
-    },
-    {
       "id": 25,
       "name": "Utah Department of Public Safety",
-      "org_type": "agency"
-    },
-    {
-      "id": 26,
-      "name": "Emery School District ",
-      "org_type": "agency"
-    },
-    {
-      "id": 27,
-      "name": "Cottonwood improvement  district ",
-      "org_type": "agency"
-    },
-    {
-      "id": 28,
-      "name": "Dnr state parks ",
       "org_type": "agency"
     },
     {
@@ -1798,56 +1798,6 @@
     {
       "id": 35,
       "name": "UDAF",
-      "org_type": "agency"
-    },
-    {
-      "id": 36,
-      "name": "CWMU Association ",
-      "org_type": "contractor"
-    },
-    {
-      "id": 37,
-      "name": "Department of Enviornmental Quality",
-      "org_type": "agency"
-    },
-    {
-      "id": 38,
-      "name": "Salt Lake County Parks",
-      "org_type": "agency"
-    },
-    {
-      "id": 39,
-      "name": "University of Utah ",
-      "org_type": "agency"
-    },
-    {
-      "id": 40,
-      "name": "Sandy city public utilities ",
-      "org_type": "agency"
-    },
-    {
-      "id": 41,
-      "name": "Draper Police",
-      "org_type": "agency"
-    },
-    {
-      "id": 42,
-      "name": "Weber County Animal Control",
-      "org_type": "agency"
-    },
-    {
-      "id": 43,
-      "name": "Taylorsville City",
-      "org_type": "agency"
-    },
-    {
-      "id": 44,
-      "name": "Hideout",
-      "org_type": "agency"
-    },
-    {
-      "id": 45,
-      "name": "Draper City Public Works",
       "org_type": "agency"
     }
   ]
