@@ -77,7 +77,7 @@ jobs:
           DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
 
       - name: 🚀 Deploy
-        uses: agrc/cloud-run-docker-deploy-composite-action@v1
+        uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
           docker-context: ./src
           docker-file: ./src/back/Dockerfile
@@ -128,7 +128,7 @@ jobs:
           DATABASE_ADMIN_PASSWORD: ${{ secrets.DATABASE_ADMIN_PASSWORD }}
 
       - name: 🚀 Deploy
-        uses: agrc/cloud-run-docker-deploy-composite-action@v1
+        uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
           docker-context: ./src
           docker-file: ./src/back/Dockerfile
