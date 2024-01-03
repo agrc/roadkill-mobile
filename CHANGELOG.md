@@ -1,3 +1,13 @@
+## [v3.0.7-638](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-636...v3.0.7-638) (2024-01-03)
+
+
+### Bug Fixes
+
+* **front:** bump expo library to be compatible with expo doc ([cb15871](https://github.com/agrc/roadkill-mobile/commit/cb15871b61414111234f6d2bf800e9324e77de25))
+* **front:** standardize spanish work for carcass ([a151849](https://github.com/agrc/roadkill-mobile/commit/a1518492dc22067882cdd9f9091aa664f62e1d63)), closes [#67](https://github.com/agrc/roadkill-mobile/issues/67)
+
+
+
 ## [v3.0.7-636](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-635...v3.0.7-636) (2024-01-03)
 
 
