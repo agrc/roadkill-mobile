@@ -242,7 +242,7 @@
   "es": {
     "areYouSure": "¿Estás seguro?",
     "cancel": "Cancelar",
-    "carcass": "Carcasa",
+    "carcass": "Cuerpo",
     "components": {
       "cachedData": {
         "sendReports": "Enviar informes no enviados",
@@ -260,7 +260,7 @@
           "submitReport": "Enviar informe"
         },
         "location": {
-          "crosshairPrompt": "Mueva el mapa para colocar la mira en la ubicación de la carcasa del animal.",
+          "crosshairPrompt": "Mueva el mapa para colocar la mira en la ubicación de la cuerpo del animal.",
           "setLocation": "Establecer ubicación"
         },
         "photoCapture": {
@@ -374,8 +374,8 @@
         "locationPermissionsRequired": "Se requieren permisos de ubicación para enviar informes.",
         "locationServicesRequired": "Se requieren servicios de ubicación para enviar informes.",
         "noRouteStarted": "No se encontró ninguna ruta de seguimiento de vehículos",
-        "pickup": "Reportar y recoger un cadáver",
-        "report": "Reportar un cadáver",
+        "pickup": "Reportar y recoger un cuerpo",
+        "report": "Reportar un cuerpo",
         "resumeRoute": "Reanudar seguimiento",
         "resumeRouteQuestion": "Se ha iniciado una ruta de seguimiento de vehículos pero actualmente está en pausa.\n\n¿Deseas reanudar?",
         "routePaused": "Ruta de seguimiento de vehículos en pausa",
