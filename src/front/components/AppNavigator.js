@@ -171,13 +171,16 @@ const ReportsNavigator = () => {
   return (
     <Navigator screenOptions={{ headerLeft: BackButton }}>
       <Screen
-        name="My Reports"
+        name={t('screens.myReports.title')}
         component={MyReportsScreen}
         options={{ headerLeft: CloseButton }}
       />
-      <Screen name="Report Info" component={ReportInfoScreen} />
       <Screen
-        name="Route Info"
+        name={t('screens.reportInfo.title')}
+        component={ReportInfoScreen}
+      />
+      <Screen
+        name={t('screens.routeInfo.title')}
         component={RouteInfoScreen}
         options={{ title: t('screens.routeInfo.title') }}
       />
@@ -208,8 +211,8 @@ const MainNavigator = () => {
         component={ReportsNavigator}
         options={{ headerShown: false }}
       />
-      <Screen name="Profile" component={ProfileScreen} />
-      <Screen name="About" component={AboutScreen} />
+      <Screen name={t('screens.profile.title')} component={ProfileScreen} />
+      <Screen name={t('screens.about.title')} component={AboutScreen} />
       {config.SHOW_STORYBOOK ? (
         <Screen name="Storybook" component={StorybookUIRoot} />
       ) : null}

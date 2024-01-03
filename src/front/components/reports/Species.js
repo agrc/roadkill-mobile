@@ -257,7 +257,7 @@ function Species({
             value={state.value}
             onChange={onSelectionChange}
             items={state.autoCompleteItems}
-            placeholder="common name"
+            placeholder={t('components.reports.species.common')}
           />
         );
 

@@ -19,7 +19,7 @@ export default function ReportListItem({ item, offlineRouteId, offlineIndex }) {
       description={`${dateToString(item.submit_date)}`}
       accessoryRight={getArrowIcon(theme)}
       onPress={() =>
-        navigation.navigate('Report Info', {
+        navigation.navigate(t('screens.reportInfo.title'), {
           reportId: item.report_id,
           offlineStorageId: item.offlineStorageId,
           offlineRouteId: offlineRouteId,
