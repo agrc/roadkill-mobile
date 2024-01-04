@@ -89,7 +89,7 @@
     "react-native-autolink": "^4.2.0",
     "react-native-collapsible": "^1.6.1",
     "react-native-error-boundary": "^1.2.3",
-    "react-native-fbsdk-next": "^12.1.0",
+    "react-native-fbsdk-next": "^12.1.2",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-get-random-values": "~1.9.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
