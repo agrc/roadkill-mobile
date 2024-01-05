@@ -79,12 +79,10 @@ export async function verifyAppleTokenAndCode(request, response) {
   try {
     sub = await appleSignIn.verifyIdToken(identityToken);
   } catch (error) {
-    return response
-      .status(401)
-      .json({
-        error_description: error.message,
-        error: 'invalid identityToken',
-      });
+    return response.status(401).json({
+      error_description: error.message,
+      error: 'invalid identityToken',
+    });
   }
 
   // check for cached refresh token and use that rather than getTokens
@@ -95,12 +93,20 @@ export async function verifyAppleTokenAndCode(request, response) {
     try {
       newIdToken = await appleSignIn.validateRefreshToken(refreshToken);
     } catch (error) {
-      return response
-        .status(401)
-        .json({
+      if (authorizationCode) {
+        console.warn(
+          `refresh token failed with error: ${error}. Attempting to get new tokens...`,
+        );
+
+        const tokens = await appleSignIn.getTokens(authorizationCode);
+        refreshToken = tokens.refreshToken;
+        newIdToken = tokens.identityToken;
+      } else {
+        return response.status(401).json({
           error_description: error.message,
           error: 'invalid refresh token',
         });
+      }
     }
   } else {
     try {
