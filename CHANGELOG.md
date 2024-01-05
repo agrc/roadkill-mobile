@@ -1,3 +1,12 @@
+## [v3.0.7-639](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-638...v3.0.7-639) (2024-01-05)
+
+
+### Bug Fixes
+
+* **front:** fix regression bug that prevented confirmation alert on report cancel ([e9b68af](https://github.com/agrc/roadkill-mobile/commit/e9b68af0d9164e812c8dd1ba70f718c3decff786))
+
+
+
 ## [v3.0.7-638](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-636...v3.0.7-638) (2024-01-03)
 
 

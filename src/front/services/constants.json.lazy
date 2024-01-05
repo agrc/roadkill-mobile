@@ -155,17 +155,6 @@
       "frequent": false
     },
     {
-      "species_id": 15,
-      "common_name": "Cougar (Mountiain Lion)",
-      "scientific_name": "Puma concolor",
-      "species_type": "wild",
-      "species_class": "mammals",
-      "species_order": "carnivores",
-      "family": "cats",
-      "rare": false,
-      "frequent": false
-    },
-    {
       "species_id": 16,
       "common_name": "Bobcat",
       "scientific_name": "Lynx rufus",
@@ -965,6 +954,17 @@
       "species_class": "reptiles",
       "species_order": null,
       "family": "lizards",
+      "rare": false,
+      "frequent": false
+    },
+    {
+      "species_id": 15,
+      "common_name": "Cougar (Mountain Lion)",
+      "scientific_name": "Puma concolor",
+      "species_type": "wild",
+      "species_class": "mammals",
+      "species_order": "carnivores",
+      "family": "cats",
       "rare": false,
       "frequent": false
     },
@@ -1856,11 +1856,6 @@
       "org_type": "contractor"
     },
     {
-      "id": 47,
-      "name": "Utah Department if Environmental Quality",
-      "org_type": "agency"
-    },
-    {
       "id": 48,
       "name": "Kananb City",
       "org_type": "agency"
@@ -1883,6 +1878,11 @@
     {
       "id": 52,
       "name": "Utah Highway Patrol ",
+      "org_type": "agency"
+    },
+    {
+      "id": 47,
+      "name": "Utah Department of Environmental Quality",
       "org_type": "agency"
     }
   ]
