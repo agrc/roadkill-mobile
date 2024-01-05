@@ -39,7 +39,7 @@ function Location({ onSetLocation, onCancel }) {
       >
         {t('components.reports.location.setLocation')}
       </Button>
-      <Button appearance="ghost" onPress={onCancel}>
+      <Button appearance="ghost" onPress={() => onCancel()}>
         {t('cancel')}
       </Button>
       {assistancePrompt ? (

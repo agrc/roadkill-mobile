@@ -276,7 +276,10 @@ const Report = ({
       >
         <View style={styles.body}>
           {!showMain ? (
-            <Location onSetLocation={onSetLocation} onCancel={onClose} />
+            <Location
+              onSetLocation={onSetLocation}
+              onCancel={() => onClose()}
+            />
           ) : (
             <FocusAwareStatusBar style={'dark'} />
           )}
@@ -302,7 +305,7 @@ const Report = ({
                     <RepeatSubmission
                       checked={values.repeat_submission}
                       onChange={onRepeatChange}
-                      cancelReport={onClose}
+                      cancelReport={() => onClose}
                       style={styles.bumpBottom}
                     />
                     <Text category="h6">

@@ -155,7 +155,13 @@ export default function Form({
             onChangeText={handleChange('comments')}
           />
           <View style={styles.buttonContainer}>
-            <Button appearance="ghost" onPress={onClose} style={styles.button}>
+            <Button
+              appearance="ghost"
+              // onPress passes a default argument so we need to wrap it in
+              // an anonymous function to make sure that force is false in onClose
+              onPress={() => onClose()}
+              style={styles.button}
+            >
               {t('cancel')}
             </Button>
             <Button
