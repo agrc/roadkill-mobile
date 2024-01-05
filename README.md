@@ -91,9 +91,9 @@ After testing in dev client...
 
 1. From `src/front`: `./scripts/deployNewAppBuild.sh`
 1. Generate new screenshots if applicable.
-   - Apple:
+   - [Apple Specs](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/)
       - 5.5" - iPhone 8 Plus
-      - 6.5" - iPhone 13 Pro Max
+      - 6.7" - iPhone 15 Pro Max
       - 12.9" - iPad Pro (2nd Gen)
       - 12.9" - iPad Pro (6th Gen)
    - Android:
