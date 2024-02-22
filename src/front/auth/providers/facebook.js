@@ -8,7 +8,7 @@ import { useAsyncError } from '../../services/utilities';
 Settings.initializeSDK();
 
 export const isAuthenticationExpired = (auth) => {
-  return new Date(auth.expirationDate) < Date.now();
+  return auth.expirationTime < Date.now();
 };
 
 const cancelledMessage = t('errors.userCancelledLogin');
@@ -41,7 +41,7 @@ export default function useFacebookProvider() {
 
     authentication.current = {
       token: accessToken.accessToken.toString(),
-      expirationDate: accessToken.expirationTime,
+      expirationTime: accessToken.expirationTime,
     };
   };
 
@@ -114,6 +114,8 @@ export default function useFacebookProvider() {
 
   const getBearerToken = async () => {
     const prefix = `${commonConfig.authProviderNames.facebook}: Bearer `;
+
+    console.log('authentication.current', authentication.current);
 
     if (!hasValidToken()) {
       await refreshToken();
