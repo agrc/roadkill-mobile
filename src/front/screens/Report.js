@@ -305,7 +305,6 @@ const Report = ({
                     <RepeatSubmission
                       checked={values.repeat_submission}
                       onChange={onRepeatChange}
-                      cancelReport={() => onClose}
                       style={styles.bumpBottom}
                     />
                     <Text category="h6">

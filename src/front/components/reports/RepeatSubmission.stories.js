@@ -8,11 +8,5 @@ export default {
 
 export const Default = () => {
   const [checked, setChecked] = React.useState(false);
-  return (
-    <RepeatSubmission
-      checked={checked}
-      onChange={setChecked}
-      cancelReport={() => console.log('cancelReport')}
-    />
-  );
+  return <RepeatSubmission checked={checked} onChange={setChecked} />;
 };

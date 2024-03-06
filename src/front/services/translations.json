@@ -32,8 +32,6 @@
         },
         "repeatSubmission": {
           "alertText": "Please understand that it may take up to two weeks for a reported animal to be removed.",
-          "cancel": "Cancel submission",
-          "continue": "Continue with repeat submission",
           "reportedBefore": "Have you reported this animal before?"
         },
         "species": {
@@ -272,8 +270,6 @@
         },
         "repeatSubmission": {
           "alertText": "Por favor comprenda que puede tomar hasta dos semanas para que se retire un animal reportado.",
-          "cancel": "Cancelar envío",
-          "continue": "Continuar con la repetición de envío",
           "reportedBefore": "¿Has reportado este animal antes?"
         },
         "species": {
