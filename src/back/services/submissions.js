@@ -1,8 +1,6 @@
 import { db } from './clients.js';
 
 export async function getMySubmissions(user_id) {
-  console.log('user_id', user_id);
-
   if (user_id === undefined) {
     return [];
   }

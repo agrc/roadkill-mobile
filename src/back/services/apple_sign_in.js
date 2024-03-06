@@ -51,7 +51,6 @@ async function getTokens(authorizationCode) {
   //   refresh_token: 'REFRESH_TOKEN', // used to regenerate new access tokens. Store this token securely on your server.
   //   id_token: 'ID_TOKEN' // A JSON Web Token that contains the user’s identity information.
   // }
-  console.log('tokenResponse', tokenResponse);
 
   if (tokenResponse.error) {
     throw new Error(
@@ -71,7 +70,6 @@ async function validateRefreshToken(refreshToken) {
     clientID,
     clientSecret: getClientSecret(),
   });
-  console.log('refreshAuthorizationToken response', response);
 
   if (response.error) {
     throw new Error(`${response.error}: ${response.error_description}`);
