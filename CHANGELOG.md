@@ -1,3 +1,14 @@
+## [v3.0.8-640](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-639...v3.0.8-640) (2024-03-06)
+
+
+### Bug Fixes
+
+* **back:** better handling of invalid apple refresh tokens ([c40a7ee](https://github.com/agrc/roadkill-mobile/commit/c40a7ee7abdc9bf3d8cc3d2583bc4d91c4a1db23))
+* **front:** better token expiration date checking for facebook ([b3ef85d](https://github.com/agrc/roadkill-mobile/commit/b3ef85d4a217f2ae4bc6a69565611ea95bc0bff7))
+* **front:** simplify repeat submission warning ([d81ca0f](https://github.com/agrc/roadkill-mobile/commit/d81ca0f52cde83dd7ed615e72813e6ed2e74762b)), closes [#309](https://github.com/agrc/roadkill-mobile/issues/309)
+
+
+
 ## [v3.0.7-639](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-638...v3.0.7-639) (2024-01-05)
 
 
