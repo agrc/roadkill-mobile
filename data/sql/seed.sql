@@ -133,6 +133,19 @@ INSERT INTO public.notification_areas (geog) VALUES
   ('SRID=4326;POLYGON ((-113.5445979786333 41.38303727457798, -114.19835336083736 40.15421928765741, -113.42353216711405 39.3793980939341, -112.54580503359935 40.269231808600715, -112.54580503359935 40.269231808600715, -113.5445979786333 41.38303727457798))'::geography),
   ('SRID=4326;POLYGON ((-111.17170807285567 40.03920676671411, -111.51069234510962 39.016200659376295, -110.20923487127749 38.12636694470967, -109.33150773776279 40.00894031383429, -111.17170807285567 40.03920676671411))'::geography);
 
+INSERT INTO public.organizations (name, org_type) VALUES
+  ('Allstar Advantage Services', 'contractor'),
+  ('Bill Frandsen', 'contractor'),
+  ('Brigham Young University', 'agency'),
+  ('Christensen Catfish', 'contractor'),
+  ('EcoLife', 'contractor'),
+  ('Epix Enterprises', 'contractor'),
+  ('Roxanne Randall', 'contractor'),
+  ('Superiorgov Services', 'contractor'),
+  ('Utah Department of Transportation', 'agency'),
+  ('Utah Division of Wildlife Resources', 'agency'),
+  ('Utah State University', 'agency');
+ 
 INSERT INTO public.users (organization_id, "role", approved, auth_provider, auth_id, email, first_name, last_name, registered_date, last_logged_in, phone) VALUES
   (1,'admin'::roles::roles,true,'utahid'::auth_providers::auth_providers,'123456789','scott@utah.gov','Scott','Davis','2021-07-20 00:00:00','2021-07-20 00:00:00','801-699-7187'),
   (NULL,'reporter'::roles::roles,NULL,'google'::auth_providers::auth_providers,'234567891','dscottus@gmail.com','Dave','Scottus','2021-07-20 00:00:00','2021-07-20 00:00:00','801-123-4567'),
@@ -159,16 +172,3 @@ INSERT INTO public.pickup_reports (report_id, pickup_date, route_id) VALUES
 
 INSERT INTO public.public_reports (report_id, repeat_submission, discovery_date) VALUES
   (2, true, '2021-07-18 00:00:00');
-
-INSERT INTO public.organizations (name, org_type) VALUES
-  ('Allstar Advantage Services', 'contractor'),
-  ('Bill Frandsen', 'contractor'),
-  ('Brigham Young University', 'agency'),
-  ('Christensen Catfish', 'contractor'),
-  ('EcoLife', 'contractor'),
-  ('Epix Enterprises', 'contractor'),
-  ('Roxanne Randall', 'contractor'),
-  ('Superiorgov Services', 'contractor'),
-  ('Utah Department of Transportation', 'agency'),
-  ('Utah Division of Wildlife Resources', 'agency'),
-  ('Utah State University', 'agency');
