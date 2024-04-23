@@ -1,5 +1,5 @@
 import commonConfig from 'common/config.js';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { firestore } from './clients.js';
 
 // datastore doc shape:
@@ -13,9 +13,11 @@ value: {
 }
 */
 export async function getCachedUser(token, authProvider) {
-  const decodedInputToken = jwt_decode(token);
+  const decodedInputToken = jwtDecode(token);
 
-  const document = await firestore.doc(`${authProvider}_users/${decodedInputToken.sub}`).get();
+  const document = await firestore
+    .doc(`${authProvider}_users/${decodedInputToken.sub}`)
+    .get();
   const data = document.data();
 
   if (!data || token !== data.token) return null;
@@ -31,14 +33,18 @@ export async function getCachedUser(token, authProvider) {
 }
 
 export async function cacheAppleTokens(sub, idToken, refreshToken) {
-  await firestore.doc(`${commonConfig.authProviderNames.apple}_users/${sub}`).set({
-    token: idToken,
-    refreshToken,
-  });
+  await firestore
+    .doc(`${commonConfig.authProviderNames.apple}_users/${sub}`)
+    .set({
+      token: idToken,
+      refreshToken,
+    });
 }
 
 export async function getCachedAppleRefreshToken(sub) {
-  const document = await firestore.doc(`${commonConfig.authProviderNames.apple}_users/${sub}`).get();
+  const document = await firestore
+    .doc(`${commonConfig.authProviderNames.apple}_users/${sub}`)
+    .get();
   const data = document.data();
 
   if (!data) return null;
@@ -47,7 +53,7 @@ export async function getCachedAppleRefreshToken(sub) {
 }
 
 export async function setCachedUser(token, authProvider, userId) {
-  const decodedToken = jwt_decode(token);
+  const decodedToken = jwtDecode(token);
   const ref = firestore.doc(`${authProvider}_users/${decodedToken.sub}`);
   const document = await ref.get();
   const data = document.data();
@@ -63,12 +69,15 @@ export async function setCachedUser(token, authProvider, userId) {
 }
 
 export async function deleteCachedUser(token, authProvider) {
-  const decodedToken = jwt_decode(token);
+  const decodedToken = jwtDecode(token);
   const document = firestore.doc(`${authProvider}_users/${decodedToken.sub}`);
 
   await document.delete();
 }
 
 export function shouldCacheUser(authProvider) {
-  return [commonConfig.authProviderNames.apple, commonConfig.authProviderNames.utahid].includes(authProvider);
+  return [
+    commonConfig.authProviderNames.apple,
+    commonConfig.authProviderNames.utahid,
+  ].includes(authProvider);
 }

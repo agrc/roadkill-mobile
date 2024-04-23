@@ -1,5 +1,5 @@
 import formurlencoded from 'form-urlencoded';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, it } from 'vitest';
@@ -7,9 +7,9 @@ import app from './app';
 import getSecret from './services/secrets';
 
 const utahIdServer = setupServer(
-  rest.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', (request, response, context) => {
-    return response(context.json({ token: 'blah' }));
-  })
+  http.post('https://login.dts.utah.gov:443/sso/oauth2/access_token', () => {
+    return HttpResponse.json({ token: 'blah' });
+  }),
 );
 
 beforeAll(() => utahIdServer.listen());
