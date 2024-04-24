@@ -12,7 +12,10 @@ const connection = {
 module.exports = {
   development: {
     client,
-    connection,
+    connection: {
+      ...connection,
+      user: 'postgres'
+    },
   },
   // this needs to match the GitHub environment name
   Staging: {

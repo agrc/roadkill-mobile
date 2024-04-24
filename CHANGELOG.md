@@ -1,3 +1,14 @@
+## [v3.0.9-643](https://github.com/agrc/roadkill-mobile/compare/v3.0.8-640...v3.0.9-643) (2024-04-24)
+
+
+### Bug Fixes
+
+* **back:** fix invalid lock file ([21932b1](https://github.com/agrc/roadkill-mobile/commit/21932b1db1a0a14b0585d234b7cceab981046ff4))
+* **back:** remove logs ([504ffc7](https://github.com/agrc/roadkill-mobile/commit/504ffc722a24d39619250b0f240f7ce294e525db))
+* **website:** update prod serve command ([ffbce2c](https://github.com/agrc/roadkill-mobile/commit/ffbce2c9ea64a9b3b82d49ce96ad60c4b3d26c82))
+
+
+
 ## [v3.0.8-640](https://github.com/agrc/roadkill-mobile/compare/v3.0.7-639...v3.0.8-640) (2024-03-06)
 
 
