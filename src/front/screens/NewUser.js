@@ -12,7 +12,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
@@ -37,7 +37,7 @@ export default function NewUserScreen() {
       }
     },
     onError: (error) => {
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
 
       Alert.alert(t('error'), t('screens.newUser.registrationError'));
     },

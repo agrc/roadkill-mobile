@@ -5,7 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Alert, Platform } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';
 import myFetch from '../services/fetch';
@@ -146,7 +146,7 @@ export function AuthContextProvider({ children, onReady }) {
       return { success: true, registered };
     } catch (error) {
       console.log(`error logging in: ${error?.message}`);
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
       setStatus(STATUS.failure);
 
       setAuthInfo(null);

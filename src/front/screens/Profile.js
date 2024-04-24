@@ -18,7 +18,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
@@ -82,7 +82,7 @@ export default function ProfileScreen() {
       });
     },
     onError: (error) => {
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
 
       Alert.alert(t('error'), t('screens.profile.updateError'));
     },
@@ -96,7 +96,7 @@ export default function ProfileScreen() {
       logOut(true);
     },
     onError: (error) => {
-      Sentry.Native.captureEvent(error);
+      Sentry.captureEvent(error);
 
       Alert.alert(t('error'), t('screens.profile.deleteError'));
     },

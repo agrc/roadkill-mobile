@@ -1,5 +1,5 @@
 import commonConfig from 'common/config';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import useAuth from '../auth/context';
 import config from '../services/config';
 import myFetch from './fetch';
@@ -26,7 +26,7 @@ export function useAPI() {
     try {
       token = await getBearerToken();
     } catch (error) {
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
       throw error;
     }
 
@@ -49,7 +49,7 @@ export function useAPI() {
     try {
       responseJson = await myFetch(`${config.API}/${route}`, options, true);
     } catch (error) {
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
       throw error;
     }
 

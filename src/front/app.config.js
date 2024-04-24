@@ -81,20 +81,15 @@ export default {
       },
     },
   },
-  hooks: {
-    postPublish: [
-      {
-        file: 'sentry-expo/upload-sourcemaps',
-        config: {
-          organization: 'utah-ugrc',
-          project: 'roadkill',
-        },
-      },
-    ],
-  },
   plugins: [
     'expo-apple-authentication',
-    'sentry-expo',
+    [
+      '@sentry/react-native/expo',
+      {
+        organization: 'utah-ugrc',
+        project: 'roadkill',
+      },
+    ],
     'expo-notifications',
     [
       'expo-image-picker',
@@ -111,11 +106,9 @@ export default {
         appID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
         clientToken: process.env.FACEBOOK_OAUTH_CLIENT_TOKEN,
         displayName: `${name} Reporter`,
-        advertiserIDCollectionEnabled: false,
-        autoLogAppEventsEnabled: false,
+        scheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
       },
     ],
-    './react-native-maps-plugin',
     [
       'expo-build-properties',
       {
