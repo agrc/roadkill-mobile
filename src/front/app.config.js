@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 642;
+const buildNumber = 643;
 
 export default {
   name,
@@ -22,7 +22,7 @@ export default {
   owner: 'ugrc',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.0.8',
+  version: '3.0.9',
   orientation: 'portrait',
   icon:
     process.env.ENVIRONMENT === 'production'
@@ -81,20 +81,15 @@ export default {
       },
     },
   },
-  hooks: {
-    postPublish: [
-      {
-        file: 'sentry-expo/upload-sourcemaps',
-        config: {
-          organization: 'utah-ugrc',
-          project: 'roadkill',
-        },
-      },
-    ],
-  },
   plugins: [
     'expo-apple-authentication',
-    'sentry-expo',
+    [
+      '@sentry/react-native/expo',
+      {
+        organization: 'utah-ugrc',
+        project: 'roadkill',
+      },
+    ],
     'expo-notifications',
     [
       'expo-image-picker',
@@ -111,11 +106,9 @@ export default {
         appID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
         clientToken: process.env.FACEBOOK_OAUTH_CLIENT_TOKEN,
         displayName: `${name} Reporter`,
-        advertiserIDCollectionEnabled: false,
-        autoLogAppEventsEnabled: false,
+        scheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
       },
     ],
-    './react-native-maps-plugin',
     [
       'expo-build-properties',
       {
@@ -141,7 +134,7 @@ export default {
   /* required for eas update command
     bump major version when upgrading expo version
   */
-  runtimeVersion: '2.1.0',
+  runtimeVersion: '3.1.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },

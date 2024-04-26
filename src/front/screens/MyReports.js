@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, Divider, Layout, Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import CachedData from '../components/CachedData';
 import ReportListItem from '../components/ReportListItem';
 import RouteListItem from '../components/RouteListItem';
@@ -26,7 +26,7 @@ export default function MyReportsScreen() {
 
       return null;
     } catch (error) {
-      Sentry.Native.captureException(error);
+      Sentry.captureException(error);
 
       return null;
     }

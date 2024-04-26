@@ -6,7 +6,7 @@ import {
   useAuthRequest,
 } from 'expo-auth-session';
 import Constants from 'expo-constants';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import config from '../../services/config';
 import myFetch from '../../services/fetch';
 import {
@@ -85,7 +85,7 @@ export default function useUtahIDProvider() {
 
     if (!tokens) return null;
 
-    return jwt_decode(tokens.idToken);
+    return jwtDecode(tokens.idToken);
   };
 
   const logOut = async () => {
@@ -104,7 +104,7 @@ export default function useUtahIDProvider() {
 
     if (
       accessToken.current &&
-      !isTokenExpired(jwt_decode(accessToken.current))
+      !isTokenExpired(jwtDecode(accessToken.current))
     ) {
       await revokeAsync(
         {
@@ -115,7 +115,7 @@ export default function useUtahIDProvider() {
       );
     }
 
-    if (idToken.current && !isTokenExpired(jwt_decode(idToken.current))) {
+    if (idToken.current && !isTokenExpired(jwtDecode(idToken.current))) {
       const response = await myFetch(
         `https://login.dts.utah.gov/sso/oauth2/connect/endSession`,
         {
@@ -141,7 +141,7 @@ export default function useUtahIDProvider() {
     const prefix = `${commonConfig.authProviderNames.utahid}:Bearer `;
     if (
       accessToken.current &&
-      !isTokenExpired(jwt_decode(accessToken.current))
+      !isTokenExpired(jwtDecode(accessToken.current))
     ) {
       console.log('returning cached token');
 
@@ -204,7 +204,7 @@ export default function useUtahIDProvider() {
 
   const hasValidRefreshToken = () => {
     return (
-      refreshToken.current && !isTokenExpired(jwt_decode(refreshToken.current))
+      refreshToken.current && !isTokenExpired(jwtDecode(refreshToken.current))
     );
   };
 

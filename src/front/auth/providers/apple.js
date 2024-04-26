@@ -1,7 +1,7 @@
 import commonConfig from 'common/config';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as SecureStore from 'expo-secure-store';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import React from 'react';
 import config from '../../services/config';
 import myFetch from '../../services/fetch';
@@ -190,7 +190,7 @@ export default function useAppleProvider() {
   };
 
   const hasValidToken = () => {
-    return !isTokenExpired(jwt_decode(cachedUserInfo.current.identityToken));
+    return !isTokenExpired(jwtDecode(cachedUserInfo.current.identityToken));
   };
 
   return { logIn, logOut, getBearerToken, hasValidToken, isReady };

@@ -38,6 +38,7 @@
     "inblow",
     "isin",
     "isna",
+    "jwks",
     "key",
     "keychain",
     "knex",

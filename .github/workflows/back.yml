@@ -103,6 +103,7 @@ jobs:
             /secrets/database_password/value=database-password:latest,
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
             /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
+            /secrets/facebook_oauth_client_id/value=facebook-oauth-client-id:latest
 
   deploy-prod:
     name: Migration DB, Build, and Deploy to Production
@@ -154,3 +155,4 @@ jobs:
             /secrets/database_password/value=database-password:latest,
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
             /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
+            /secrets/facebook_oauth_client_id/value=facebook-oauth-client-id:latest

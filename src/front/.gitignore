@@ -30,4 +30,4 @@ credentials.json
 /android
 /ios
 
-/.storybook/storybook.requires.js
+/.storybook/storybook.requires.ts

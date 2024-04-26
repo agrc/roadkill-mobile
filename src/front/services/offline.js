@@ -16,7 +16,7 @@ import lodash from 'lodash';
 import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import useAuth from '../auth/context';
 import { useAPI } from './api';
 import config from './config';
@@ -79,7 +79,7 @@ async function deleteOfflineSubmission(id) {
     console.error(
       `Error attempting to delete offline submission with id: ${id}: \n\n ${error}`,
     );
-    Sentry.Native.captureException(error);
+    Sentry.captureException(error);
   }
 }
 
@@ -142,7 +142,7 @@ export function OfflineCacheContextProvider({ children }) {
         await deleteOfflineSubmission(cachedSubmissionIds[i]);
       } catch (error) {
         failedSubmissionIds.push(cachedSubmissionIds[i]);
-        Sentry.Native.captureException(error);
+        Sentry.captureException(error);
         console.error(error);
         lastError = error.message;
       }

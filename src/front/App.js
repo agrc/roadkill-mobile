@@ -11,7 +11,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
 import { enableLatestRenderer } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
 import Spinner from './components/Spinner';
@@ -27,16 +27,12 @@ enableLatestRenderer();
 console.log('starting up...');
 const queryClient = new QueryClient();
 
-// https://github.com/expo/sentry-expo/issues/347#issuecomment-1712008457
 Sentry.init({
   dsn: 'https://2a36299ed52445d3b8c2817800c39dc7@o297301.ingest.sentry.io/5880366',
   environment: Constants.expoConfig.extra.ENVIRONMENT,
 });
-if (__DEV__ && !global.sentryInit) {
-  global.sentryInit = true;
-}
 
-export default function App() {
+function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
   const splashIsHidden = React.useRef(false);
 
@@ -55,7 +51,7 @@ export default function App() {
   };
 
   const onError = (error) => {
-    Sentry.Native.captureException(error);
+    Sentry.captureException(error);
     SplashScreen.hideAsync();
   };
 
@@ -87,3 +83,5 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
+export default Sentry.wrap(App);

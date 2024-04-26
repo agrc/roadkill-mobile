@@ -15,7 +15,7 @@ import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';

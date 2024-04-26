@@ -7,7 +7,7 @@ import mime from 'mime';
 import propTypes from 'prop-types';
 import { memo, useState } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
-import * as Sentry from 'sentry-expo';
+import * as Sentry from '@sentry/react-native';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import t from '../../services/localization';
