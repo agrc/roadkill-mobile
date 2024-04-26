@@ -28,7 +28,7 @@ Press "j" in console after starting expo project. See [Expo Debugging & Profilin
 |------------|-------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
 | dev        | 3.0.9       | 3.1.0           | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon (dev clients for for physical devices can be installed directly from the expo build website)                                                                                            | default         | 50           |
 | staging    | 3.0.9       | 3.1.0           | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging         | 50           |
-| production | 3.0.8       | 2.1.0           | App Stores                                                                                                                                                                                                                                                                       | production      | 49           |
+| production | 3.0.9       | 3.1.0           | App Stores                                                                                                                                                                                                                                                                       | production      | 50           |
 
 These three environments are three separate bundle IDs (see `src/front/app.config.js`) and can all be installed on the same device simultaneously.
 
@@ -57,7 +57,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 
 ### Cutting a New Release
 
-1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `dev`)
+1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `dev`) (This need so to be done for each environment per release!)
 1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
 1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
 1. Determine if app version (`version` in [app.config.js](src/front/app.config.js)) needs to be bumped. Apple requires it to be bumped after every production release.
