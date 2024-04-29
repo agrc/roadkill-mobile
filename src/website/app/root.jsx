@@ -1,7 +1,14 @@
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-import styles from './tailwind.css';
-import * as gtag from "~/utils/gtags.client";
+import {
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from '@remix-run/react';
 import { useEffect } from 'react';
+import * as gtag from '~/utils/gtags.client';
+import styles from './tailwind.css';
 
 export function meta() {
   return [{ title: 'Utah Roadkill Reporter' }];
@@ -14,11 +21,8 @@ export function links() {
 const gaTrackingId = 'G-P135E0DCLT';
 
 export default function App() {
-
   useEffect(() => {
-    if (gaTrackingId?.length) {
-      gtag.pageview(location.pathname, gaTrackingId);
-    }
+    gtag.pageview(location.pathname, gaTrackingId);
   }, []);
 
   return (
@@ -29,7 +33,8 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
+      <body className="p-10 font-sans text-gray-700">
+        {process.env.NODE_ENV === 'development' ? null : (
           <>
             <script
               async
@@ -40,19 +45,18 @@ export default function App() {
               id="gtag-init"
               dangerouslySetInnerHTML={{
                 __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
 
-                gtag('config', '${gaTrackingId}', {
-                  page_path: window.location.pathname,
-                });
-              `,
+                  gtag('config', '${gaTrackingId}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
               }}
             />
           </>
         )}
-      <body className="p-10 font-sans text-gray-700">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
