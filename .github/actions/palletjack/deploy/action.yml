@@ -19,7 +19,7 @@ runs:
   steps:
     - name: 🗝️ Authenticate to Google Cloud
       id: auth
-      uses: google-github-actions/auth@v1
+      uses: google-github-actions/auth@v2
       with:
         create_credentials_file: true
         token_format: access_token
@@ -28,7 +28,7 @@ runs:
 
     - name: 🚀 Deploy to Cloud Function
       id: deploy
-      uses: google-github-actions/deploy-cloud-functions@v1
+      uses: google-github-actions/deploy-cloud-functions@v2
       with:
         name: roadkill-skid
         runtime: python39
@@ -38,7 +38,7 @@ runs:
         event_trigger_type: providers/cloud.pubsub/eventTypes/topic.publish
         event_trigger_resource: projects/${{ inputs.project_id }}/topics/palletjack-topic
         deploy_timeout: 600
-        memory_mb: 2048
+        memory_mb: 4096
         timeout: 540 # this is the max allowed
         secret_volumes: |
           /secrets/app/secrets.json=${{inputs.project_id}}/skid-secrets
