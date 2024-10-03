@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # * coding: utf8 *
 """
-Run the roadkill skid script as a cloud function.
+Run the roadkill skid
 """
 import datetime
 import json
@@ -185,9 +185,11 @@ def process():
         skid_supervisor = _initialize(log_path, secrets.SENDGRID_API_KEY)
         module_logger = logging.getLogger(config.SKID_NAME)
 
+        module_logger.info("initializing AGOL connection...")
         gis = arcgis.gis.GIS(
             username=secrets.AGOL_USER,
             password=secrets.AGOL_PASSWORD,
+            url=secrets.AGOL_ORG,
             # proxy_host="127.0.0.1",
             # proxy_port=8080,
             # verify_cert=False,
@@ -197,6 +199,7 @@ def process():
         except AttributeError:
             port = 5432
 
+        module_logger.info("initializing Postgres connection...")
         loader = extract.PostgresLoader(
             secrets.HOST,
             secrets.DATABASE,
@@ -281,36 +284,6 @@ def process():
         #: Remove file handler so the tempdir will close properly
         loggers = [logging.getLogger(config.SKID_NAME), logging.getLogger("palletjack")]
         _remove_log_file_handlers(log_name, loggers)
-
-
-def main(event, context):  # pylint: disable=unused-argument
-    """Entry point for Google Cloud Function triggered by pub/sub event
-
-    Args:
-         event (dict):  The dictionary with data specific to this type of
-                        event. The `@type` field maps to
-                         `type.googleapis.com/google.pubsub.v1.PubsubMessage`.
-                        The `data` field maps to the PubsubMessage data
-                        in a base64-encoded string. The `attributes` field maps
-                        to the PubsubMessage attributes if any is present.
-         context (google.cloud.functions.Context): Metadata of triggering event
-                        including `event_id` which maps to the PubsubMessage
-                        messageId, `timestamp` which maps to the PubsubMessage
-                        publishTime, `event_type` which maps to
-                        `google.pubsub.topic.publish`, and `resource` which is
-                        a dictionary that describes the service API endpoint
-                        pubsub.googleapis.com, the triggering topic's name, and
-                        the triggering event type
-                        `type.googleapis.com/google.pubsub.v1.PubsubMessage`.
-    Returns:
-        None. The output is written to Cloud Logging.
-    """
-
-    #: This function must be called 'main' to act as the Google Cloud Function entry point. It must accept the two
-    #: arguments listed, but doesn't have to do anything with them (I haven't used them in anything yet).
-
-    #: Call process() and any other functions you want to be run as part of the skid here.
-    process()
 
 
 #: Putting this here means you can call the file via `python main.py` and it will run. Useful for pre-GCF testing.

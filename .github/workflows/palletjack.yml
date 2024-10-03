@@ -1,4 +1,4 @@
-name: Palletjack - Deploy to GCP Function
+name: Palletjack - Deploy to Cloud Run Job
 
 on:
   push:
@@ -34,14 +34,17 @@ jobs:
       - name: ⬇️ Set up code
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
+      - name: 📥 Download extra dependencies
         run: |
-          sudo apt install -y libkrb5-dev
-          pip install -r src/roadkill/requirements.txt
-          pip install -r src/roadkill/requirements.dev.txt
+          sudo apt-get update
+          sudo apt-get install -y libkrb5-dev
 
-      - name: Test with pytest
+      - name: 🏗 Install module
+        run: pip install .[tests]
+
+      - name: 🧪 Run tests
         run: pytest
+
 
   deploy-dev:
     name: Deploy Staging to GCF
@@ -58,10 +61,12 @@ jobs:
       - name: 🚀 Deploy
         uses: ./.github/actions/palletjack/deploy
         with:
+          project_id: ${{ secrets.PROJECT_ID }}
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-          project_id: ${{ secrets.PROJECT_ID }}
-          schedule: 0 6 * * *
+          pause_schedule_job: 'yes'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
 
   deploy-prod:
     name: Deploy Production to GCF
@@ -78,7 +83,8 @@ jobs:
       - name: 🚀 Deploy
         uses: ./.github/actions/palletjack/deploy
         with:
+          project_id: ${{ secrets.PROJECT_ID }}
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-          project_id: ${{ secrets.PROJECT_ID }}
-          schedule: 0 6,12,18,0 * * *
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}

@@ -1,2 +1,0 @@
-ugrc-palletjack==5.*
-agrc-supervisor==3.*
