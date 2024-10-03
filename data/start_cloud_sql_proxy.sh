@@ -11,4 +11,4 @@ fi
 
 echo "Starting Cloud SQL Proxy for $ENV environment on port $PORT"
 
-cloud_sql_proxy "ut-dts-agrc-roadkill-$ENV:us-central1:app" --port $PORT
+cloud-sql-proxy "ut-dts-agrc-roadkill-$ENV:us-central1:app" --port $PORT

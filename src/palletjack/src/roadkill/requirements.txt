@@ -1,3 +1,2 @@
-ugrc-palletjack==3.0.*
-agrc-supervisor==3.0.*
-pandas==1.5.*
+ugrc-palletjack==5.*
+agrc-supervisor==3.*

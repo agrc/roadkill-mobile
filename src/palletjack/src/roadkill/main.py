@@ -246,16 +246,14 @@ def process():
                     prepared_df["repeat_submission"] = prepared_df[
                         "repeat_submission"
                     ].astype("int")
-                updates = load.FeatureServiceUpdater.add_features(
-                    gis, item.id, prepared_df
-                )
+                updater = load.ServiceUpdater(gis, item.id)
+                updates = updater.add(prepared_df)
                 module_logger.info("Added %s records", updates)
 
             if len(deleted_ids) > 0:
                 module_logger.info("Deleting records...")
-                deleted = load.FeatureServiceUpdater.remove_features(
-                    gis, item.id, deleted_ids
-                )
+                updater = load.ServiceUpdater(gis, item.id)
+                deleted = updater.remove(deleted_ids)
                 module_logger.info("Deleted %s records", deleted)
 
             additional_summary_rows.append(
