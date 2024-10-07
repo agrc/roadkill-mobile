@@ -29,13 +29,13 @@ TABLES = [
         "report_id",
         "animal_location",
         ["report_id", "species_id", "user_id"],
-        ["submit_date"],
+        ["submit_date", "discovery_date"],
     ),
     (
         "agol_routes",
         "route_id",
         "geog",
         ["route_id", "user_id"],
-        ["start_time", "end_time"],
+        ["start_time", "end_time", "submit_date"],
     ),
 ]

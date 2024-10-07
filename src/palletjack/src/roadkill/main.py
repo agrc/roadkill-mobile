@@ -138,7 +138,7 @@ def _get_new_and_deleted_records(database_records, agol_records):
     new_records = database_records[
         ~database_records.index.isin(agol_records.index)
     ].copy()
-    new_records["OBJECTID"] = range(-1, -len(new_records) - 1, -1)
+    new_records["OBJECTID"] = range(1, len(new_records) + 1)
 
     deleted_records = agol_records[
         ~agol_records.index.isin(database_records.index)
@@ -249,13 +249,13 @@ def process():
                     prepared_df["repeat_submission"] = prepared_df[
                         "repeat_submission"
                     ].astype("int")
-                updater = load.ServiceUpdater(gis, item.id)
+                updater = load.ServiceUpdater(gis, item.id, working_dir=tempdir_path)
                 updates = updater.add(prepared_df)
                 module_logger.info("Added %s records", updates)
 
             if len(deleted_ids) > 0:
                 module_logger.info("Deleting records...")
-                updater = load.ServiceUpdater(gis, item.id)
+                updater = load.ServiceUpdater(gis, item.id, working_dir=tempdir_path)
                 deleted = updater.remove(deleted_ids)
                 module_logger.info("Deleted %s records", deleted)
 
