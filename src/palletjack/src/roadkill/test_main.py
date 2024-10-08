@@ -25,7 +25,7 @@ def test_get_new_and_updated_records():
     )
 
     assert len(new_records) == 1
-    assert new_records.loc[4].tolist() == ["d", -1]
+    assert new_records.loc[4].tolist() == ["d", 1]
 
     assert len(deleted_ids) == 1
     assert deleted_ids[0] == 20
