@@ -1,5 +1,5 @@
-import commonConfig from 'common/config';
 import * as Sentry from '@sentry/react-native';
+import commonConfig from 'common/config';
 import useAuth from '../auth/context';
 import config from '../services/config';
 import myFetch from './fetch';

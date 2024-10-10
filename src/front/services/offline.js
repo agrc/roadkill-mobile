@@ -1,4 +1,5 @@
 import { useNetInfo } from '@react-native-community/netinfo';
+import * as Sentry from '@sentry/react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   cacheDirectory,
@@ -16,7 +17,6 @@ import lodash from 'lodash';
 import propTypes from 'prop-types';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Alert, Platform } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import useAuth from '../auth/context';
 import { useAPI } from './api';
 import config from './config';
@@ -51,7 +51,14 @@ export async function getOfflineSubmission(id, pickupIndex) {
     // if data.json doesn't exist, remove the folder
     const fileInfo = await getInfoAsync(filePath);
     if (!fileInfo.exists) {
-      await deleteAsync(`${offlineDataStorageDirectory}/${id}`);
+      try {
+        await deleteAsync(`${offlineDataStorageDirectory}/${id}`);
+      } catch (error) {
+        // this should never happen but if it does, we don't want to throw an error
+        console.error(
+          `Error attempting to delete ${offlineDataStorageDirectory}/${id}: \n\n ${error}`,
+        );
+      }
 
       throw new Error(`${filePath} does not exist. Folder deleted.`);
     }
@@ -89,17 +96,17 @@ export function OfflineCacheContextProvider({ children }) {
   const { postReport, postRoute } = useAPI();
   const { authInfo, isReady } = useAuth();
 
+  const refreshCachedSubmissionIds = async () => {
+    const folderNames = await readDirectoryAsync(offlineDataStorageDirectory);
+
+    // filter out any weird stuff like .DS_Store
+    setCachedSubmissionIds(
+      folderNames.filter((folderName) => folderName.match(/^\d+$/)),
+    );
+  };
+
   useEffect(() => {
-    const giddyUp = async () => {
-      const folderNames = await readDirectoryAsync(offlineDataStorageDirectory);
-
-      // filter out any weird stuff like .DS_Store
-      setCachedSubmissionIds(
-        folderNames.filter((folderName) => folderName.match(/^\d+$/)),
-      );
-    };
-
-    giddyUp();
+    refreshCachedSubmissionIds();
   }, []);
 
   const submit = async function () {
@@ -110,7 +117,6 @@ export function OfflineCacheContextProvider({ children }) {
     }
 
     console.log('submitting offline submissions...');
-    const failedSubmissionIds = [];
     let lastError;
     for (let i = 0; i < cachedSubmissionIds.length; i++) {
       try {
@@ -135,20 +141,29 @@ export function OfflineCacheContextProvider({ children }) {
             delete pickup.offlineStorageId;
             pickup.route_id = routeResponse.route_id;
 
-            await postReport(pickup, config.REPORT_TYPES.pickup);
+            /*
+              If the postReport fails, we cache the report and still delete the route since it was submitted successfully above, otherwise this creates a duplicate route when it attempts to submit again
+            */
+            try {
+              await postReport(pickup, config.REPORT_TYPES.pickup);
+            } catch (error) {
+              await cacheReport(pickup);
+              Sentry.captureException(error);
+              console.error(error);
+              lastError = error.message;
+            }
           }
         }
 
         await deleteOfflineSubmission(cachedSubmissionIds[i]);
       } catch (error) {
-        failedSubmissionIds.push(cachedSubmissionIds[i]);
         Sentry.captureException(error);
         console.error(error);
         lastError = error.message;
       }
     }
 
-    if (failedSubmissionIds.length === 0) {
+    if (!lastError) {
       Alert.alert(
         t('services.offline.offlineSubmission'),
         t('services.offline.offlineSuccess'),
@@ -157,9 +172,7 @@ export function OfflineCacheContextProvider({ children }) {
       Alert.alert(t('services.offline.offlineError'), lastError);
     }
 
-    if (failedSubmissionIds.length !== cachedSubmissionIds.length) {
-      setCachedSubmissionIds(failedSubmissionIds);
-    }
+    await refreshCachedSubmissionIds();
 
     return lastError;
   };
@@ -273,7 +286,7 @@ export function OfflineCacheContextProvider({ children }) {
         JSON.stringify(submitValues),
       );
 
-      setCachedSubmissionIds((existing) => [...existing, id]);
+      await refreshCachedSubmissionIds();
     } catch (error) {
       console.warning(
         `error caching report, deleting directory ${reportDirectory}`,
@@ -283,7 +296,9 @@ export function OfflineCacheContextProvider({ children }) {
       throw error;
     }
 
-    await showAlert(error);
+    if (error) {
+      await showAlert(error);
+    }
   };
 
   const cacheRoute = async function (submitValues, pickups, error) {
@@ -307,9 +322,11 @@ export function OfflineCacheContextProvider({ children }) {
       JSON.stringify({ ...submitValues, pickups: newPickups }),
     );
 
-    setCachedSubmissionIds((existing) => [...existing, id]);
+    await refreshCachedSubmissionIds();
 
-    await showAlert(error);
+    if (error) {
+      await showAlert(error);
+    }
   };
 
   return (
