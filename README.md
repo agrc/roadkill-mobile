@@ -5,6 +5,7 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 ## Setup for local development
 
 1. create `.env` files in `<root>`, `src/front`, and `src/back`
+1. from root: `docker compose up`
 1. in both `src/front` and `src/back`:
    1. `npm install`
    1. `npm start`
