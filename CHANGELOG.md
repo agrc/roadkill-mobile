@@ -1,3 +1,24 @@
+## [v3.0.9-645](https://github.com/agrc/roadkill-mobile/compare/v3.0.9-643...v3.0.9-645) (2024-10-14)
+
+
+### Bug Fixes
+
+* **data:** use arm64-compatible docker image ([a49744c](https://github.com/agrc/roadkill-mobile/commit/a49744cbb74394f200fb861c90ec677f24840747))
+* more reliable offline submissions ([c3962a0](https://github.com/agrc/roadkill-mobile/commit/c3962a022d7636a56a790054fd6db6e089c39dd5))
+* **palletjack:** add additional date fields to be transformed ([0f9977e](https://github.com/agrc/roadkill-mobile/commit/0f9977e3f134f094415d91ab361bc0a45c1e8dc2))
+* **palletjack:** handle date issues and other palletjack fixes ([a34bd45](https://github.com/agrc/roadkill-mobile/commit/a34bd45deb57a626c709155d8a773ec63a7d82c2))
+* **palletjack:** increase function memory ([a0db00c](https://github.com/agrc/roadkill-mobile/commit/a0db00c792652db3bf54a5a240d7e3e5d3df34bd))
+* **palletjack:** update test to match new oid scheme ([0904f34](https://github.com/agrc/roadkill-mobile/commit/0904f346e71649c075602147a9995787d52e3ea9))
+* **website:** fix gtag errors ([0b6bfbe](https://github.com/agrc/roadkill-mobile/commit/0b6bfbea79e7e3ca8bb5278e96bd3d4f1281cd4c))
+* **website:** update prod serve command ([5dbf3cd](https://github.com/agrc/roadkill-mobile/commit/5dbf3cd33e4042bf18f1e631036efd9317a438a6))
+
+
+### Features
+
+* **website:** add google analytics ([29d2de3](https://github.com/agrc/roadkill-mobile/commit/29d2de381ca5eb7f8d9dd7c73eb51cdb42e24153))
+
+
+
 ## [v3.0.9-643](https://github.com/agrc/roadkill-mobile/compare/v3.0.8-640...v3.0.9-643) (2024-04-24)
 
 

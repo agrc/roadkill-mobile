@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 644;
+const buildNumber = 645;
 
 export default {
   name,
@@ -82,6 +82,15 @@ export default {
     },
   },
   plugins: [
+    // [
+    //   'expo-location',
+    //   {
+    //     isAndroidBackgroundLocationEnabled: true,
+    //     isIosBackgroundLocationEnabled: true,
+    //     isAndroidForegroundServiceEnabled: true,
+    //     isIosForegroundServiceEnabled: true,
+    //   },
+    // ],
     'expo-apple-authentication',
     [
       '@sentry/react-native/expo',

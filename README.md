@@ -68,7 +68,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 1. From root: `npm run changelog`
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
-1. Tag `git tag v3.0.0-123`
+1. Tag `git tag v3.0.0-123 (staging)` or `git tag v3.0.0-123 (production)`
 1. Pushing to `staging` or `production` will push a new image to the cloud run back end.
 
 Do one of the following from `src/front`:
