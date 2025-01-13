@@ -28,8 +28,8 @@ Press "j" in console after starting expo project. See [Expo Debugging & Profilin
 | git branch | app version | runtime version | deployed                                                                                                                                                                                                                                                                         | release-channel | expo version |
 |------------|-------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
 | dev        | 3.0.9       | 3.1.0           | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon (dev clients for for physical devices can be installed directly from the expo build website)                                                                                            | default         | 50           |
-| staging    | 3.0.9       | 3.1.0           | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging         | 50           |
-| production | 3.0.9       | 3.1.0           | App Stores                                                                                                                                                                                                                                                                       | production      | 50           |
+| dev        | 3.0.9       | 3.1.0           | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging         | 50           |
+| main       | 3.0.9       | 3.1.0           | App Stores                                                                                                                                                                                                                                                                       | production      | 50           |
 
 These three environments are three separate bundle IDs (see `src/front/app.config.js`) and can all be installed on the same device simultaneously.
 
@@ -46,12 +46,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 ### One-time Setup
 
 1. Create the following repo secrets in GitHub for each environment:
-   - `PROJECT_ID`
-   - `IDENTITY_PROVIDER` & `SERVICE_ACCOUNT_EMAIL`
-     - Commands for creating these are exported by terraform.
-   - `EXPO_USERNAME` / `EXPO_PASSWORD`
-   - Mirror environment variables found in the `.env.*` files in their corresponding repo environments as secrets for the back end. Do the same thing for the front end only the secrets go in Expo EAS.
-     - base64 encode the google service file contents (e.g. `base64 -i GoogleService-Info.plist`)
+   Do the same thing for the front end only the secrets go in Expo EAS. It would be great to get these out of EAS and managed entirely in GitHub.
 1. The firebase project is created via terraform, but the apps need to be created manually via the firebase console. Follow [these steps](https://docs.expo.io/guides/setup-native-firebase/#android) from the expo docs.
    1. Enable analytics in Firebase
    1. Create a web app just to get the `measurementId` config for the `FIREBASE_MEASUREMENT_ID` env variable.
@@ -69,7 +64,7 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
 1. Tag `git tag v3.0.0-123 (staging)` or `git tag v3.0.0-123 (production)`
-1. Pushing to `staging` or `production` will push a new image to the cloud run back end.
+1. Pushing to `dev` or `main` branches will push a new image to the cloud run back end.
 
 Do one of the following from `src/front`:
 
@@ -104,7 +99,7 @@ After testing in dev client...
 
 ### Secrets
 
-Because app builds initiate from both the developer's machine (new native builds) and GitHub Actions (over-the-air updates), secrets need to be managed in both places. `.env.sample` should be duplicated and populated to `.env`, `.env.staging`, `.env.production`. Corresponding secrets are also stored in environments in the GitHub repository.
+Because app builds initiate from both the developer's machine (new native builds) and GitHub Actions (over-the-air updates), secrets need to be managed in both places. `.env.sample` should be duplicated and populated to `.env`, `.env.staging`, `.env.production`. Corresponding secrets are also stored in environments in the GitHub repository and EAS. These values can be found in the terraform repo.
 
 ### Test User Links
 

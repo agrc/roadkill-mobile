@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-ENV_FILE=".env.$RELEASE_BRANCH"
+. ./scripts/setChannel.sh
+
+ENV_FILE=".env.$CHANNEL"
 echo "getting environment variables from $ENV_FILE"
 set -o allexport
 source $ENV_FILE
@@ -14,16 +15,16 @@ else
   PLATFORM="$1"
 fi
 
-echo "Building and deploying new app builds for release channel: $RELEASE_BRANCH"
+echo "Building and deploying new app builds for release channel: $CHANNEL"
 
 rm -rf ./dist
 
 ./scripts/removeArtifacts.sh $PLATFORM
 
 echo "building $PLATFORM platform(s)"
-eas build --platform $PLATFORM --profile $RELEASE_BRANCH
+eas build --platform $PLATFORM --profile $CHANNEL
 
-./scripts/downloadArtifacts.sh $PLATFORM $RELEASE_BRANCH $RELEASE_BRANCH
+./scripts/downloadArtifacts.sh $PLATFORM $CHANNEL $CHANNEL
 
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's

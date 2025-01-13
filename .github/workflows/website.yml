@@ -46,8 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     environment:
-      name: Staging
-    if: github.ref == 'refs/heads/staging'
+      name: dev
 
     steps:
       - name: 🚀 Deploy
@@ -69,8 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     environment:
-      name: Production
-    if: github.ref == 'refs/heads/production'
+      name: prod
 
     steps:
       - name: 🚀 Deploy

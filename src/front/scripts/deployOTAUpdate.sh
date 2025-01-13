@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+. ./scripts/setChannel.sh
 
-echo "Publishing new app builds for release channel: $RELEASE_BRANCH"
+echo "Publishing new app builds for release channel: $CHANNEL"
 
-ENV_FILE="./.env.$RELEASE_BRANCH"
+ENV_FILE="./.env.$CHANNEL"
 echo "getting environment variables from $ENV_FILE"
 
 rm -rf ./dist
