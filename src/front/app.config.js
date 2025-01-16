@@ -82,15 +82,6 @@ export default {
     },
   },
   plugins: [
-    // [
-    //   'expo-location',
-    //   {
-    //     isAndroidBackgroundLocationEnabled: true,
-    //     isIosBackgroundLocationEnabled: true,
-    //     isAndroidForegroundServiceEnabled: true,
-    //     isIosForegroundServiceEnabled: true,
-    //   },
-    // ],
     'expo-apple-authentication',
     [
       '@sentry/react-native/expo',
@@ -127,6 +118,9 @@ export default {
       },
     ],
     '@react-native-firebase/app',
+    'expo-asset',
+    'expo-localization',
+    'expo-secure-store',
   ],
   extra: {
     eas: {

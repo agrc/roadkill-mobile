@@ -1,4 +1,5 @@
 import * as eva from '@eva-design/eva';
+import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
@@ -9,9 +10,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
-import { enableLatestRenderer } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as Sentry from '@sentry/react-native';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
 import Spinner from './components/Spinner';
@@ -21,9 +20,6 @@ import packs from './services/icons';
 import t from './services/localization';
 import { OfflineCacheContextProvider } from './services/offline';
 
-// https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md#using-the-new-google-maps-renderer
-enableLatestRenderer();
-
 console.log('starting up...');
 const queryClient = new QueryClient();
 
@@ -32,15 +28,11 @@ Sentry.init({
   environment: Constants.expoConfig.extra.ENVIRONMENT,
 });
 
+SplashScreen.preventAutoHideAsync();
+
 function App() {
   const [authIsReady, setAuthIsReady] = React.useState(false);
   const splashIsHidden = React.useRef(false);
-
-  React.useEffect(() => {
-    if (!splashIsHidden.current) {
-      SplashScreen.preventAutoHideAsync();
-    }
-  }, []);
 
   const onReady = () => {
     console.log('onReady', authIsReady, splashIsHidden.current);
