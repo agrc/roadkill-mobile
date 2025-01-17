@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 645;
+const buildNumber = 646;
 
 export default {
   name,
@@ -22,7 +22,7 @@ export default {
   owner: 'ugrc',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.0.10',
+  version: '3.0.11',
   orientation: 'portrait',
   icon:
     process.env.ENVIRONMENT === 'production'
@@ -137,7 +137,7 @@ export default {
   /* required for eas update command
     bump major version when upgrading expo version
   */
-  runtimeVersion: '3.1.0',
+  runtimeVersion: '4.0.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },
