@@ -45,6 +45,7 @@ jobs:
     name: Build, and Deploy to Staging
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref_name == 'dev'
     environment:
       name: dev
 
@@ -67,6 +68,7 @@ jobs:
     name: Build, and Deploy to Production
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref_name == 'main'
     environment:
       name: prod
 

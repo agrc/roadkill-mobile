@@ -50,6 +50,7 @@ jobs:
     name: Deploy Staging to GCF
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref_name == 'dev'
     environment:
       name: dev
 
@@ -71,6 +72,7 @@ jobs:
     name: Deploy Production to GCF
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref_name == 'main'
     environment:
       name: prod
 
