@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from '@sentry/react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { length, lineString } from '@turf/turf';
+import { lineString } from '@turf/helpers';
+import { length } from '@turf/length';
 import {
   Button,
   Card,
@@ -15,7 +17,6 @@ import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
