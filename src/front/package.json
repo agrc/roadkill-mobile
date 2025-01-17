@@ -92,7 +92,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
     "react-native-autolink": "^4.2.0",
-    "react-native-collapsible": "^1.6.2",
+    "react-native-collapsible": "^1.6.1",
     "react-native-error-boundary": "^1.2.7",
     "react-native-fbsdk-next": "^13.4.0",
     "react-native-gesture-handler": "~2.16.1",
