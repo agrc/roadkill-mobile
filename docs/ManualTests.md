@@ -61,9 +61,7 @@ Setup: open the report and select a location
 
 | set up                               | action                         | assertion |
 |--------------------------------------|--------------------------------|------|
-|                                      | set repeat submission to "Yes" | alert is presented with cancel and continue options |
-| set repeat submission to "Yes"       | click on cancel                | report is closed |
-| set repeat submission to "Yes"       | click on continue              | report remains open |
+|                                      | set repeat submission to "Yes" | "Please understand..." text is displayed |
 |                                      | click on date picker           | controls are shown and future dates are greyed out |
 |                                      | submit report with no photo    | success dialog should show and report should be reset and closed |
 |                                      | submit report with photo       | success dialog should show and report should be reset and closed |
@@ -73,7 +71,7 @@ Setup: open the report and select a location
 
 | set up | action          | assertion           |
 |--------|-----------------|---------------------|
-|        | tap plus button | pickup report shows |
+|        | tap plus button | "No vehicle tracking route found..." dialog shows up |
 
 ### Routes
 
@@ -81,7 +79,7 @@ Setup: log in as contractor or agency
 
 | set up                      | action                                      | assertion |
 |-----------------------------|---------------------------------------------|-----|
-|                             | tap on "Track" button                       | button turns green and vehicle icon shows on map with track displaying, and polygon begins to display |
+|                             | tap on "Track" button                       | button turns green and vehicle icon shows on map with track displaying, and polyline begins to display |
 | active tracking             | tap on "track" button                       | modal shows up with buttons and current state |
 | active tracking, open modal | tap on pause                                | "Track" button and route polyline turn red and modal closes |
 | paused tracking             | tap on "Track" button                       | tracking is resumed |
