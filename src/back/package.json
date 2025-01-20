@@ -16,6 +16,7 @@
     "test:ci": "firebase emulators:exec --only firestore,storage \"npm test\""
   },
   "dependencies": {
+    "@google-cloud/cloud-sql-connector": "^1.6.0",
     "@google-cloud/firestore": "^7.11.0",
     "@google-cloud/logging-winston": "^6.0.0",
     "@google-cloud/storage": "^7.15.0",

@@ -94,7 +94,7 @@ jobs:
           env-vars: |
             ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
             API=${{ secrets.API }}
-            DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+            CLOUDSQL_INSTANCE=${{ secrets.CLOUDSQL_INSTANCE }}
             ENVIRONMENT=staging
             PROJECT_ID=${{ secrets.PROJECT_ID }}
             WEBSITE=${{ secrets.WEBSITE }}
@@ -146,7 +146,7 @@ jobs:
           env-vars: |
             ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
             API=${{ secrets.API }}
-            DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+            CLOUDSQL_INSTANCE=${{ secrets.CLOUDSQL_INSTANCE }}
             ENVIRONMENT=production
             PROJECT_ID=${{ secrets.PROJECT_ID }}
             WEBSITE=${{ secrets.WEBSITE }}
