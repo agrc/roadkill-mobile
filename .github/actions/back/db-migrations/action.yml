@@ -34,7 +34,7 @@ runs:
         URL="https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.14.3"
         curl "$URL/cloud-sql-proxy.linux.amd64" -o cloud-sql-proxy
         chmod +x cloud-sql-proxy
-        ./cloud-sql-proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 &
+        ./cloud-sql-proxy ${{ inputs.cloudsql_instance }} --port 5432 &
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
