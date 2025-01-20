@@ -31,9 +31,10 @@ runs:
     - name: Initialize Cloud SQL Auth Proxy
       shell: bash
       run: |
-        wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
-        chmod +x cloud_sql_proxy
-        ./cloud_sql_proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 &
+        URL="https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.14.3"
+        curl "$URL/cloud-sql-proxy.linux-amd64" -o cloud-sql-proxy
+        chmod +x cloud-sql-proxy
+        ./cloud-sql-proxy -instances=${{ inputs.cloudsql_instance }}=tcp:5432 &
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
