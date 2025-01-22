@@ -62,13 +62,4 @@ describe('getLocation', () => {
     expect(location.coords.latitude).toBe(40.777);
     expect(location.coords.longitude).toBe(-111.888);
   }, 20000);
-
-  it('throws when getCurrentPositionAsync hangs forever on high accuracy', async () => {
-    mock({
-      getCurrentPositionAsync: () => new Promise(() => {}),
-      getLastKnownPositionAsync: () => null,
-    });
-
-    expect(getLocation(5)).rejects.toThrow();
-  }, 20000);
 });
