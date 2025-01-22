@@ -1,3 +1,15 @@
+## [v3.0.12-647](https://github.com/agrc/roadkill-mobile/compare/v3.0.9-645...v3.0.12-647) (2025-01-22)
+
+
+### Bug Fixes
+
+* **back:** implement cloud sql connector ([a1faa33](https://github.com/agrc/roadkill-mobile/commit/a1faa33256ac4c3f2ef5cabdc89b02a72758ee72))
+* **back:** type in file name download ([21f22c5](https://github.com/agrc/roadkill-mobile/commit/21f22c5d7494d642d1a4757887f338919d0f06cb))
+* **back:** update cloud sql params ([9730f62](https://github.com/agrc/roadkill-mobile/commit/9730f6274ad7e8d7255eb8c3a80ffaba22862768))
+* **front:** add missing service permission as of android 14 ([56990ff](https://github.com/agrc/roadkill-mobile/commit/56990ff5c288d97fd2c7bc4148e31b75af5258ae))
+
+
+
 ## [v3.0.11-646](https://github.com/agrc/roadkill-mobile/compare/v3.0.9-645...v3.0.11-646) (2025-01-17)
 
 
