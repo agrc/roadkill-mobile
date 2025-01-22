@@ -68,9 +68,10 @@ export default {
       backgroundColor: '#FFFFFF',
     },
     permissions: [
-      'ACCESS_FINE_LOCATION',
-      'ACCESS_COARSE_LOCATION',
       'ACCESS_BACKGROUND_LOCATION',
+      'ACCESS_COARSE_LOCATION',
+      'ACCESS_FINE_LOCATION',
+      'FOREGROUND_SERVICE_LOCATION',
       'FOREGROUND_SERVICE',
       'READ_EXTERNAL_STORAGE',
       'WRITE_EXTERNAL_STORAGE',
