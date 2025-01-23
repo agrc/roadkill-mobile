@@ -19,7 +19,7 @@ updates:
         update-types: ['major']
 
   - package-ecosystem: pip
-    directory: src/palletjack/src/roadkill
+    directory: src/palletjack
     schedule:
       interval: monthly
     groups:
