@@ -38,7 +38,7 @@ setup(
             "pytest-instafail~=0.4",
             "pytest-isort~=2.0",
             "pytest-pylint~=0.18",
-            "pytest~=6.0",
+            "pytest>=6,<9",
             "black~=22.12",
             "pandas==2.*",
         ]
