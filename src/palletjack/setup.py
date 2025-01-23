@@ -39,7 +39,7 @@ setup(
             "pytest-isort~=2.0",
             "pytest-pylint~=0.18",
             "pytest~=6.0",
-            "black~=22.12",
+            "black>=22.12,<25.0",
             "pandas==2.*",
         ]
     },
