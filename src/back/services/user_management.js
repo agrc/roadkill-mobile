@@ -48,7 +48,10 @@ export const loginSchema = yup.object().shape({
 });
 
 export async function isExistingUser({ auth_provider, auth_id }) {
-  const rows = await db.select('*').from('users').where({ auth_provider, auth_id });
+  const rows = await db
+    .select('*')
+    .from('users')
+    .where({ auth_provider, auth_id });
 
   return rows.length > 0;
 }
@@ -61,7 +64,7 @@ async function ensureOrganization(organization, transaction) {
         name: organization.name,
         org_type: organization.org_type,
       },
-      'id'
+      'id',
     );
     orgId = orgInsertResult[0].id;
   }
@@ -98,6 +101,13 @@ export async function registerUser(organization, user) {
 }
 
 const APPROVAL_DOC_TYPE = 'approvals';
+const admins = [
+  'aehrhart@utah.gov',
+  'danielolson@utah.gov',
+  'ericedgley@utah.gov',
+  'makedatrujillo@utah.gov',
+  'stdavis@utah.gov',
+];
 export async function sendApprovalEmail(user, organization) {
   const guid = randomUUID();
 
@@ -108,26 +118,30 @@ export async function sendApprovalEmail(user, organization) {
     approvalExpiration,
   });
 
-  const data = {
-    user,
-    organization,
-    guid,
-    api: process.env.API,
-    environment: process.env.ENVIRONMENT,
-  };
+  for (const admin of admins) {
+    const data = {
+      user,
+      organization,
+      guid,
+      api: process.env.API,
+      environment: process.env.ENVIRONMENT,
+      admin,
+    };
 
-  const email = {
-    to: process.env.ADMIN_EMAIL,
-    from: NO_REPLY_EMAIL,
-    templateId: 'd-021d5c287a1d4295a7ade35724bd2994', // roadkill-new-user
-    dynamicTemplateData: data,
-    trackingSettings: getTrackingSettings(),
-  };
+    console.log('Sending approval email to:', admin);
+    const email = {
+      to: admin,
+      from: NO_REPLY_EMAIL,
+      templateId: 'd-021d5c287a1d4295a7ade35724bd2994', // roadkill-new-user
+      dynamicTemplateData: data,
+      trackingSettings: getTrackingSettings(),
+    };
 
-  try {
-    await mail.send(email);
-  } catch (error) {
-    console.error(error);
+    try {
+      await mail.send(email);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
@@ -192,7 +206,7 @@ export function checkExpiration(user) {
     const error = new Error(
       `It has been more than ${humanizeDuration(config.APPROVAL_EXPIRATION_PERIOD)} since ${user.first_name} ${
         user.last_name
-      } (${user.email}) registered. Their approval has expired. Approval will need to be done in the database directly.`
+      } (${user.email}) registered. Their approval has expired. Approval will need to be done in the database directly.`,
     );
     error.code = EXPIRED_APPROVAL;
 
@@ -206,11 +220,13 @@ export async function approveUser(guid, role) {
 
   checkExpiration(user);
 
-  await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
-    role,
-    approved_date: new Date(),
-    approved: true,
-  });
+  await db('users')
+    .where({ auth_id: user.auth_id, auth_provider: user.auth_provider })
+    .update({
+      role,
+      approved_date: new Date(),
+      approved: true,
+    });
 
   await sendApproveRejectAdminNotificationEmail({ ...user, role }, false);
   await sendApproveRejectUserNotificationEmail({ ...user, role }, false);
@@ -234,10 +250,12 @@ export async function rejectUser(guid) {
 
   checkExpiration(user);
 
-  await db('users').where({ auth_id: user.auth_id, auth_provider: user.auth_provider }).update({
-    approved_date: new Date(),
-    approved: false,
-  });
+  await db('users')
+    .where({ auth_id: user.auth_id, auth_provider: user.auth_provider })
+    .update({
+      approved_date: new Date(),
+      approved: false,
+    });
 
   await sendApproveRejectAdminNotificationEmail(user, true);
   await sendApproveRejectUserNotificationEmail(user, true);
@@ -245,7 +263,13 @@ export async function rejectUser(guid) {
   return `${user.first_name} ${user.last_name} (${user.email}) has been rejected`;
 }
 
-export async function updateUser({ auth_id, auth_provider, email, first_name, last_name }) {
+export async function updateUser({
+  auth_id,
+  auth_provider,
+  email,
+  first_name,
+  last_name,
+}) {
   await db('users').where({ auth_id, auth_provider }).update({
     email,
     first_name,
@@ -273,12 +297,14 @@ export async function getProfile(userId) {
       'u.approved',
       'u.registered_date',
       { organization_name: 'o.name' },
-      'u.organization_id'
+      'u.organization_id',
     )
     .where({ 'u.id': userId })
     .first();
 
-  const reportsSubmitted = await db('report_infos').count('report_id').where({ user_id: userId });
+  const reportsSubmitted = await db('report_infos')
+    .count('report_id')
+    .where({ user_id: userId });
 
   return {
     ...profileData,
@@ -287,12 +313,17 @@ export async function getProfile(userId) {
 }
 
 export async function updateProfile(userId, profile) {
-  const { phone, organization_id, organization_name, organization_type } = profile;
+  const { phone, organization_id, organization_name, organization_type } =
+    profile;
 
   await db.transaction(async (transaction) => {
     const orgId = await ensureOrganization(
-      { id: organization_id, name: organization_name, org_type: organization_type },
-      transaction
+      {
+        id: organization_id,
+        name: organization_name,
+        org_type: organization_type,
+      },
+      transaction,
     );
 
     await transaction('users').where({ id: userId }).update({
