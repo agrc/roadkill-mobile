@@ -190,6 +190,7 @@ def process():
             username=secrets.AGOL_USER,
             password=secrets.AGOL_PASSWORD,
             url=secrets.AGOL_ORG,
+            expiration=9999,
             # proxy_host="127.0.0.1",
             # proxy_port=8080,
             # verify_cert=False,
