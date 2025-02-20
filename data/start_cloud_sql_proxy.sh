@@ -11,4 +11,6 @@ fi
 
 echo "Starting Cloud SQL Proxy for $ENV environment on port $PORT"
 
+gcloud auth application-default set-quota-project "ut-dts-agrc-roadkill-$ENV"
+
 cloud-sql-proxy "ut-dts-agrc-roadkill-$ENV:us-central1:app" --port $PORT
