@@ -233,7 +233,10 @@ def process():
 
             item = [r for r in search_results if r.title == table][0]
             layer = item.layers[0]
-            agol_records = layer.query().sdf
+            #: strip off the last part of the url to get the service url
+            service_url = "/".join(layer.url.split("/")[:-1])
+            extractor = extract.RESTServiceLoader(service_url, 60, token=gis.session.auth.token)
+            agol_records = extractor.get_features(extract.ServiceLayer(layer.url, 60, token=gis.session.auth.token))
             agol_records.set_index(id_column, inplace=True)
             module_logger.info("AGOL records count: %s", len(agol_records))
 
