@@ -236,7 +236,8 @@ def process():
             #: strip off the last part of the url to get the service url
             service_url = "/".join(layer.url.split("/")[:-1])
             extractor = extract.RESTServiceLoader(service_url, 60, token=gis.session.auth.token)
-            agol_records = extractor.get_features(extract.ServiceLayer(layer.url, 60, token=gis.session.auth.token), 10000)
+            service_layer = extract.ServiceLayer(layer.url, 60, token=gis.session.auth.token)
+            agol_records = extractor.get_features(service_layer, 200)
             agol_records.set_index(id_column, inplace=True)
             module_logger.info("AGOL records count: %s", len(agol_records))
 
