@@ -89,6 +89,7 @@ export default {
       {
         organization: 'utah-ugrc',
         project: 'roadkill',
+        url: 'https://sentry.io',
       },
     ],
     'expo-notifications',
