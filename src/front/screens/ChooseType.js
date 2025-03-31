@@ -5,9 +5,9 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
-import facebookBtnDisabled from '../assets/facebook/btn_light_disabled.png';
-import facebookBtn from '../assets/facebook/btn_light_normal.png';
-import facebookBtnPressed from '../assets/facebook/btn_light_pressed.png';
+// import facebookBtnDisabled from '../assets/facebook/btn_light_disabled.png';
+// import facebookBtn from '../assets/facebook/btn_light_normal.png';
+// import facebookBtnPressed from '../assets/facebook/btn_light_pressed.png';
 import googleBtnDisabled from '../assets/google/btn_google_signin_light_disabled_web.png';
 import googleBtn from '../assets/google/btn_google_signin_light_normal_web.png';
 import googleBtnPressed from '../assets/google/btn_google_signin_light_pressed_web.png';
@@ -176,12 +176,12 @@ export default function ChooseTypeScreen({ navigation }) {
               disabledImage={googleBtnDisabled}
               pressedImage={googleBtnPressed}
             />
-            <SocialButton
+            {/* <SocialButton
               providerName={commonConfig.authProviderNames.facebook}
               normalImage={facebookBtn}
               disabledImage={facebookBtnDisabled}
               pressedImage={facebookBtnPressed}
-            />
+            /> */}
           </Collapsible>
           <Option
             onPress={() =>
