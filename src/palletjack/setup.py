@@ -36,7 +36,7 @@ setup(
             "pylint-quotes~=0.2",
             "pylint~=2.11",
             "pytest-instafail~=0.4",
-            "pytest-isort~=2.0",
+            "pytest-isort>=2,<5",
             "pytest-pylint~=0.18",
             "pytest~=6.0",
             "black~=22.12",
