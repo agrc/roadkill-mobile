@@ -89,7 +89,7 @@ runs:
         env_vars: |-
           PROJECT_ID=${{ inputs.project_id }}
         flags: |
-          --memory=4G
+          --memory=8G
           --service-account=palletjack-sa@${{ inputs.project_id }}.iam.gserviceaccount.com
           --max-retries=1
           --task-timeout=60m
