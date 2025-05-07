@@ -158,7 +158,7 @@ def _transform(dataframe, int_fields, date_fields):
     """
     dataframe.reset_index(inplace=True)
     dataframe.spatial.set_geometry("SHAPE")
-    dataframe.spatial.project(4326)
+    dataframe.spatial.project({"wkid": 4326})
     dataframe.spatial.sr = {"wkid": 4326}
     dataframe.spatial.set_geometry("SHAPE")
 
