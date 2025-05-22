@@ -6,7 +6,7 @@ import {
 import { Firestore } from '@google-cloud/firestore';
 import { Storage } from '@google-cloud/storage';
 import sgMail from '@sendgrid/mail';
-import knex from 'knex';
+import { default as knexLib } from 'knex';
 import getSecret from './secrets.js';
 
 sgMail.setApiKey(getSecret('sendgrid-api-key'));
@@ -24,7 +24,7 @@ const clientOpts = isTestOrLocalDev
       authType: AuthTypes.PASSWORD,
     });
 console.log('clientOpts', JSON.stringify(clientOpts, null, 2));
-export const db = knex({
+export const db = knexLib({
   client: 'pg',
   connection: {
     ...clientOpts,

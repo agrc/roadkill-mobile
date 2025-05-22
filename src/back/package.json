@@ -45,14 +45,11 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.18.0",
+    "@ugrc/eslint-config": "^1.2.2",
     "env-cmd": "^10.1.0",
     "eslint": "^9.18.0",
-    "eslint-config-prettier": "^10.0.1",
     "firebase-tools": "^13.29.1",
     "form-urlencoded": "^6.1.5",
-    "globals": "^15.14.0",
     "msw": "^2.7.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
