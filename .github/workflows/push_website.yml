@@ -33,9 +33,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: src/website/.node-version
+
       - run: |
           npm ci
           cd ../common && npm ci
+
+      - name: Lint common project
+        run: |
+          cd ../common
+          npm run lint
 
       - name: Test
         run: |
