@@ -3,6 +3,7 @@
 """
 Run the roadkill skid
 """
+
 import datetime
 import json
 import logging
@@ -135,14 +136,10 @@ def _get_new_and_deleted_records(database_records, agol_records):
         (updated_records, deleted_ids): A tuple of the updated records and deleted objectids (DataFrame, List<int>)
     """
 
-    new_records = database_records[
-        ~database_records.index.isin(agol_records.index)
-    ].copy()
+    new_records = database_records[~database_records.index.isin(agol_records.index)].copy()
     new_records["OBJECTID"] = range(1, len(new_records) + 1)
 
-    deleted_records = agol_records[
-        ~agol_records.index.isin(database_records.index)
-    ].copy()
+    deleted_records = agol_records[~agol_records.index.isin(database_records.index)].copy()
     deleted_ids = deleted_records["OBJECTID"].tolist()
 
     return (new_records, deleted_ids)
@@ -179,7 +176,7 @@ def process():
 
     with TemporaryDirectory() as tempdir:
         tempdir_path = Path(tempdir)
-        log_name = f'{config.LOG_FILE_NAME}_{start.strftime("%Y%m%d-%H%M%S")}.txt'
+        log_name = f"{config.LOG_FILE_NAME}_{start.strftime('%Y%m%d-%H%M%S')}.txt"
         log_path = tempdir_path / log_name
 
         skid_supervisor = _initialize(log_path, secrets.SENDGRID_API_KEY)
@@ -214,9 +211,7 @@ def process():
             module_logger.info("Processing %s ...", table)
 
             #: get data from database
-            database_records = loader.read_table_into_dataframe(
-                f"public.{table}", id_column, "4326", geog_column
-            )
+            database_records = loader.read_table_into_dataframe(f"public.{table}", id_column, "4326", geog_column)
             database_records.rename(columns={geog_column: "SHAPE"}, inplace=True)
             module_logger.info("Database records count: %s", len(database_records))
 
@@ -241,9 +236,7 @@ def process():
             agol_records.set_index(id_column, inplace=True)
             module_logger.info("AGOL records count: %s", len(agol_records))
 
-            new_records, deleted_ids = _get_new_and_deleted_records(
-                database_records, agol_records
-            )
+            new_records, deleted_ids = _get_new_and_deleted_records(database_records, agol_records)
             module_logger.info("New records count: %s", len(new_records))
             module_logger.info("Deleted records count: %s", len(deleted_ids))
 
@@ -251,9 +244,7 @@ def process():
                 module_logger.info("Adding new records to AGOL...")
                 prepared_df = _transform(new_records, int_fields, date_fields)
                 if table == "agol_public_reports":
-                    prepared_df["repeat_submission"] = prepared_df[
-                        "repeat_submission"
-                    ].astype("int")
+                    prepared_df["repeat_submission"] = prepared_df["repeat_submission"].astype("int")
                 updater = load.ServiceUpdater(gis, item.id, working_dir=tempdir_path)
                 updates = updater.add(prepared_df)
                 module_logger.info("Added %s records", updates)
@@ -273,12 +264,12 @@ def process():
         summary_message = MessageDetails()
         summary_message.subject = f"{config.SKID_NAME} Update Summary"
         summary_rows = [
-            f'{config.SKID_NAME} update {start.strftime("%Y-%m-%d")}',
+            f"{config.SKID_NAME} update {start.strftime('%Y-%m-%d')}",
             "=" * 20,
             "",
-            f'Start time: {start.strftime("%H:%M:%S")}',
-            f'End time: {end.strftime("%H:%M:%S")}',
-            f"Duration: {str(end-start)}",
+            f"Start time: {start.strftime('%H:%M:%S')}",
+            f"End time: {end.strftime('%H:%M:%S')}",
+            f"Duration: {str(end - start)}",
         ] + additional_summary_rows
 
         summary_message.message = "\n".join(summary_rows)

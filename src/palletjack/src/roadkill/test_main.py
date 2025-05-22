@@ -20,9 +20,7 @@ def test_get_new_and_updated_records():
     )
     agol_records.set_index("report_id", inplace=True)
 
-    new_records, deleted_ids = main._get_new_and_deleted_records(
-        database_records, agol_records
-    )
+    new_records, deleted_ids = main._get_new_and_deleted_records(database_records, agol_records)
 
     assert len(new_records) == 1
     assert new_records.loc[4].tolist() == ["d", 1]

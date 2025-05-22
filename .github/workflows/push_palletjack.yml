@@ -26,13 +26,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: ⬇️ Set up code
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
-
-      - name: ⬇️ Set up code
-        uses: actions/checkout@v4
+          cache: pip
+          cache-dependency-path: src/palletjack/setup.py
 
       - name: 📥 Download extra dependencies
         run: |
@@ -41,6 +42,9 @@ jobs:
 
       - name: 🏗 Install module
         run: pip install .[tests]
+
+      - name: 🧶 Lint
+        run: ruff check --output-format=github .
 
       - name: 🧪 Run tests
         run: pytest

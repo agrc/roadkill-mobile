@@ -27,20 +27,15 @@ setup(
     ],
     keywords=["gis"],
     install_requires=[
+        "agrc-supervisor==3.*",
         "ugrc-palletjack==5.*",
-        "requests<2.33",
-        "agrc-supervisor==3.0.*",
     ],
     extras_require={
         "tests": [
-            "pylint-quotes~=0.2",
-            "pylint~=2.11",
-            "pytest-instafail~=0.4",
-            "pytest-isort~=2.0",
-            "pytest-pylint~=0.18",
-            "pytest~=6.0",
-            "black~=22.12",
             "pandas==2.*",
+            "pytest-instafail==0.5.*",
+            "pytest==8.*",
+            "ruff==0.*",
         ]
     },
     setup_requires=[

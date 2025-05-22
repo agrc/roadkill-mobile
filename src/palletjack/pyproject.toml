@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 120
+lint.ignore = ["E501"]
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests", "src"]
+norecursedirs = [".env", "data", "maps", ".github", ".vscode"]
+console_output_style = "count"
+addopts = "--instafail"
