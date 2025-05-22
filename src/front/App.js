@@ -10,6 +10,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import 'react-native-get-random-values';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthContextProvider } from './auth/context';
 import AppNavigator from './components/AppNavigator';
@@ -49,29 +50,31 @@ function App() {
 
   return (
     <ErrorBoundary onError={onError}>
-      <SafeAreaProvider>
-        <IconRegistry icons={[EvaIconsPack, ...packs]} />
-        <ApplicationProvider
-          {...eva}
-          customMapping={mapping}
-          theme={{ ...eva.light, ...theme }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <AuthContextProvider onReady={() => setAuthIsReady(true)}>
-              {authIsReady ? (
-                <View onLayout={onReady} style={{ flex: 1 }}>
-                  <OfflineCacheContextProvider>
-                    <AppNavigator />
-                  </OfflineCacheContextProvider>
-                </View>
-              ) : (
-                <Spinner show={true} message={t('loading.initializingApp')} />
-              )}
-            </AuthContextProvider>
-          </QueryClientProvider>
-        </ApplicationProvider>
-      </SafeAreaProvider>
-      <StatusBar style="dark" />
+      <KeyboardProvider>
+        <SafeAreaProvider>
+          <IconRegistry icons={[EvaIconsPack, ...packs]} />
+          <ApplicationProvider
+            {...eva}
+            customMapping={mapping}
+            theme={{ ...eva.light, ...theme }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <AuthContextProvider onReady={() => setAuthIsReady(true)}>
+                {authIsReady ? (
+                  <View onLayout={onReady} style={{ flex: 1 }}>
+                    <OfflineCacheContextProvider>
+                      <AppNavigator />
+                    </OfflineCacheContextProvider>
+                  </View>
+                ) : (
+                  <Spinner show={true} message={t('loading.initializingApp')} />
+                )}
+              </AuthContextProvider>
+            </QueryClientProvider>
+          </ApplicationProvider>
+        </SafeAreaProvider>
+        <StatusBar style="dark" />
+      </KeyboardProvider>
     </ErrorBoundary>
   );
 }

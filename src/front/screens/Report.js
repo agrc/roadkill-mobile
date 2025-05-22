@@ -16,7 +16,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
@@ -269,87 +269,76 @@ const Report = ({
       exiting={SlideOutDown}
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
     >
-      <KeyboardAwareScrollView
-        enableOnAndroid={true}
-        extraScrollHeight={PADDING + 5}
-        scrollEnabled={showMain}
-      >
-        <View style={styles.body}>
-          {!showMain ? (
-            <Location
-              onSetLocation={onSetLocation}
-              onCancel={() => onClose()}
-            />
-          ) : (
-            <FocusAwareStatusBar style={'dark'} />
-          )}
+      <KeyboardAwareScrollView style={styles.body}>
+        {!showMain ? (
+          <Location onSetLocation={onSetLocation} onCancel={() => onClose()} />
+        ) : (
+          <FocusAwareStatusBar style={'dark'} />
+        )}
 
-          {
-            // the Form components are wrapped in a view and hidden via styling
-            // to prevent them from being remounted when they are hidden
-          }
-          <View style={showMain ? null : styles.hidden}>
-            {reportType === config.REPORT_TYPES.report ? (
-              // report form
-              <Form
-                formikRef={reportFormikRef}
-                initialValues={initialFormValues.report}
-                key="report-form"
-                mutation={mutation}
-                onClose={onClose}
-                reportType={reportType}
-                validationSchema={formSchemas.report}
-              >
-                {({ values }) => (
-                  <>
-                    <RepeatSubmission
-                      checked={values.repeat_submission}
-                      onChange={onRepeatChange}
-                      style={styles.bumpBottom}
-                    />
-                    <Text category="h6">
-                      {t('screens.report.whenDiscovered')}
-                    </Text>
-                    <Datepicker
-                      accessoryRight={dateIcon}
-                      date={values.discovery_date}
-                      dateService={localDateService}
-                      max={today}
-                      onSelect={onDiscoveryDateChange}
-                      style={styles.bumpBottom}
-                    />
-                  </>
-                )}
-              </Form>
-            ) : (
-              // pickup form
-              <Form
-                formikRef={pickupFormikRef}
-                initialValues={initialFormValues.pickup}
-                key="pickup-form"
-                mutation={mutation}
-                onClose={onClose}
-                reportType={reportType}
-                validationSchema={formSchemas.pickup}
-              >
-                {({ values }) => (
-                  <>
-                    <Text category="h6">
-                      {t('screens.report.whenPickedUp')}
-                    </Text>
-                    <Datepicker
-                      accessoryRight={dateIcon}
-                      date={values.pickup_date}
-                      dateService={localDateService}
-                      max={today}
-                      onSelect={onPickupDateChange}
-                      style={styles.bumpBottom}
-                    />
-                  </>
-                )}
-              </Form>
-            )}
-          </View>
+        {
+          // the Form components are wrapped in a view and hidden via styling
+          // to prevent them from being remounted when they are hidden
+        }
+        <View style={showMain ? null : styles.hidden}>
+          {reportType === config.REPORT_TYPES.report ? (
+            // report form
+            <Form
+              formikRef={reportFormikRef}
+              initialValues={initialFormValues.report}
+              key="report-form"
+              mutation={mutation}
+              onClose={onClose}
+              reportType={reportType}
+              validationSchema={formSchemas.report}
+            >
+              {({ values }) => (
+                <>
+                  <RepeatSubmission
+                    checked={values.repeat_submission}
+                    onChange={onRepeatChange}
+                    style={styles.bumpBottom}
+                  />
+                  <Text category="h6">
+                    {t('screens.report.whenDiscovered')}
+                  </Text>
+                  <Datepicker
+                    accessoryRight={dateIcon}
+                    date={values.discovery_date}
+                    dateService={localDateService}
+                    max={today}
+                    onSelect={onDiscoveryDateChange}
+                    style={styles.bumpBottom}
+                  />
+                </>
+              )}
+            </Form>
+          ) : (
+            // pickup form
+            <Form
+              formikRef={pickupFormikRef}
+              initialValues={initialFormValues.pickup}
+              key="pickup-form"
+              mutation={mutation}
+              onClose={onClose}
+              reportType={reportType}
+              validationSchema={formSchemas.pickup}
+            >
+              {({ values }) => (
+                <>
+                  <Text category="h6">{t('screens.report.whenPickedUp')}</Text>
+                  <Datepicker
+                    accessoryRight={dateIcon}
+                    date={values.pickup_date}
+                    dateService={localDateService}
+                    max={today}
+                    onSelect={onPickupDateChange}
+                    style={styles.bumpBottom}
+                  />
+                </>
+              )}
+            </Form>
+          )}
         </View>
       </KeyboardAwareScrollView>
       <Spinner show={mutation.isPending} />
