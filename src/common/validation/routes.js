@@ -1,8 +1,8 @@
-const yup = require('yup');
+const { date, object, string } = require('yup');
 
-exports.route = yup.object().shape({
-  geog: yup.string().required(),
-  start_time: yup.date().required(),
-  end_time: yup.date().required(),
-  submit_date: yup.date().required(),
+exports.route = object().shape({
+  geog: string().required(),
+  start_time: date().required(),
+  end_time: date().required(),
+  submit_date: date().required(),
 });

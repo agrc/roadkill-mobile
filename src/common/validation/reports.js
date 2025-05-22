@@ -1,34 +1,34 @@
-const yup = require('yup');
+const { boolean, date, number, object, string } = require('yup');
 
-const location = yup.string();
-const photo = yup.object().shape({
-  uri: yup.string().required(),
-  type: yup.string().required(),
-  name: yup.string().required(),
+const location = string();
+const photo = object().shape({
+  uri: string().required(),
+  type: string().required(),
+  name: string().required(),
 });
 const photo_location = location.nullable();
-const photo_date = yup.date().nullable();
+const photo_date = date().nullable();
 const animal_location = location.required();
 const submit_location = location.required();
-const submit_date = yup.date().required();
-const species_id = yup.number().nullable();
-const common_name = yup.string().required();
-const scientific_name = yup.string().required();
-const species_type = yup.string().required();
-const species_class = yup.string().required();
-const species_order = yup.string().nullable();
-const family = yup.string().required();
-const species_confidence_level = yup.string().nullable();
-const age_class = yup.string().nullable();
-const sex = yup.string().nullable();
-const comments = yup.string().nullable();
+const submit_date = date().required();
+const species_id = number().nullable();
+const common_name = string().required();
+const scientific_name = string().required();
+const species_type = string().required();
+const species_class = string().required();
+const species_order = string().nullable();
+const family = string().required();
+const species_confidence_level = string().nullable();
+const age_class = string().nullable();
+const sex = string().nullable();
+const comments = string().nullable();
 
-exports.report = yup.object().shape({
+exports.report = object().shape({
   animal_location,
   photo: photo.nullable(),
   photo_location,
   photo_date,
-  repeat_submission: yup.boolean().required(),
+  repeat_submission: boolean().required(),
   submit_location,
   submit_date,
   species_id,
@@ -42,10 +42,10 @@ exports.report = yup.object().shape({
   age_class,
   sex,
   comments,
-  discovery_date: yup.date().required(),
+  discovery_date: date().required(),
 });
 
-exports.pickup = yup.object().shape({
+exports.pickup = object().shape({
   animal_location,
   photo: photo.nullable(),
   photo_location,
@@ -63,5 +63,5 @@ exports.pickup = yup.object().shape({
   age_class,
   sex,
   comments,
-  pickup_date: yup.date().required(),
+  pickup_date: date().required(),
 });
