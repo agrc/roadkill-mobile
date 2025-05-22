@@ -11,7 +11,7 @@
     "build": "cross-env NODE_ENV=production npm run build:css && remix build",
     "build:css": "tailwindcss -o ./app/tailwind.css",
     "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
-    "lint": "eslint . --ignore-path .gitignore --ext .js,.jsx",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "serve": "cross-env NODE_ENV=production remix-serve ./build/index.js",
     "start": "cross-env NODE_ENV=development PORT=3002 concurrently \"npm run dev:css\" \"remix dev\""
   },
@@ -25,10 +25,9 @@
   },
   "devDependencies": {
     "@remix-run/dev": "^2.15.2",
-    "@remix-run/eslint-config": "^2.15.2",
+    "@ugrc/eslint-config": "^1.2.2",
     "concurrently": "^9.1.2",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.27.0",
     "prettier": "^3.4.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.6",
