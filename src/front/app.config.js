@@ -1,5 +1,5 @@
-import commonConfig from 'common/config';
-import * as dotenv from 'dotenv';
+const commonConfig = require('common/config');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ const name = names[process.env.ENVIRONMENT];
 // perhaps this bump could be automated using a combo of app.config.json and this file?
 const buildNumber = 649;
 
-export default {
+module.exports = {
   name,
   slug: 'wildlife-vehicle-collision-reporter', // changing this may result in new signing keys being generated (https://forums.expo.dev/t/changed-app-json-slug-and-android-build-keys-changed-can-i-get-them-back/9927/3)
   description:

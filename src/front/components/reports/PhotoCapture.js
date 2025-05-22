@@ -1,5 +1,6 @@
+import * as Sentry from '@sentry/react-native';
 import { Button, Text, useTheme } from '@ui-kitten/components';
-import { manipulateAsync } from 'expo-image-manipulator';
+import { ImageManipulator } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { unregisterAllTasksAsync } from 'expo-task-manager';
 import { reloadAsync } from 'expo-updates';
@@ -7,7 +8,6 @@ import mime from 'mime';
 import propTypes from 'prop-types';
 import { memo, useState } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import config from '../../services/config';
 import { getIcon } from '../../services/icons';
 import t from '../../services/localization';
@@ -45,19 +45,14 @@ async function resizeImage(uri, width, height) {
   let newUri;
   const largestDimension = width > height ? 'width' : 'height';
   try {
-    const result = await manipulateAsync(
-      uri,
-      [
-        {
-          resize: {
-            [largestDimension]: config.IMAGE_MAX_DIMENSION,
-          },
-        },
-      ],
-      {
-        compress: config.IMAGE_COMPRESSION_QUALITY,
-      },
-    );
+    const image = await ImageManipulator.manipulate(uri)
+      .resize({
+        [largestDimension]: config.IMAGE_MAX_DIMENSION,
+      })
+      .renderAsync();
+    const result = await image.saveAsync({
+      compress: config.IMAGE_COMPRESSION_QUALITY,
+    });
 
     newUri = result.uri;
   } catch (error) {

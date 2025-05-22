@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import commonConfig from 'common/config';
-import { Image } from 'expo-image';
+import { Image, useImage } from 'expo-image';
 import a from 'indefinite';
 import propTypes from 'prop-types';
 import React, { useCallback } from 'react';
@@ -63,14 +63,14 @@ function MyListItem({
     style.paddingVertical = PADDING;
   }
 
-  const imageSource = {
+  const imageSource = useImage({
     uri: `${config.API}/reports/id_image/${itemToKey(item)
       .toString()
       .replace('/', '_')}/${pixelRatio}`,
     width: commonConfig.searchListImageSize,
     height: commonConfig.searchListImageSize,
     scale: pixelRatio,
-  };
+  });
 
   const onPress = () => {
     onSelectItem(item);
