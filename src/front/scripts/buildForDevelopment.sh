@@ -26,6 +26,13 @@ echo "installing on android emulator"
 adb install ./dev-clients/*.apk
 adb shell monkey -p gov.dts.ugrc.utahwvcr.dev 1
 
+read -p "Do you want to run builds for local device development as well? (y/n) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+  exit 1
+fi
+
 echo "building ios and android apps for local device development"
 eas build --platform all --profile development --non-interactive
 
