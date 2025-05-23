@@ -3,11 +3,7 @@
 const { getSentryExpoConfig } = require('@sentry/react-native/metro');
 const path = require('path');
 const commonDir = path.resolve(__dirname + '/../common');
-const { generate } = require('@storybook/react-native/scripts/generate');
-
-generate({
-  configPath: path.resolve(__dirname, './.storybook'),
-});
+const withStorybook = require('@storybook/react-native/metro/withStorybook');
 
 const defaultConfig = getSentryExpoConfig(__dirname);
 
@@ -18,4 +14,7 @@ defaultConfig.resolver.resolverMainFields.unshift('sbmodern');
 defaultConfig.resolver.sourceExts.push('mjs');
 defaultConfig.transformer.unstable_allowRequireContext = true; // required for storybook
 
-module.exports = defaultConfig;
+module.exports = withStorybook(defaultConfig, {
+  enabled: true,
+  configPath: path.resolve(__dirname, './.storybook'),
+});
