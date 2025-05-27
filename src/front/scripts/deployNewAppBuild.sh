@@ -15,6 +15,9 @@ else
   PLATFORM="$1"
 fi
 
+echo "Updating mile marker data..."
+node ./scripts/updateMileMarkerData.mjs
+
 echo "Building and deploying new app builds for release channel: $CHANNEL"
 
 rm -rf ./dist
