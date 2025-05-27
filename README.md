@@ -142,3 +142,19 @@ If a matching file in the bucket is not found, a blank gray fallback image is re
 ## Authentication
 
 [Authentication Process Study](https://www.notion.so/stdavis/Roadkill-Auth-Process-Study-624f63c8bc0641da931bac2f240f1d5b)
+
+## Dependency Updates
+
+Expo does [not yet support PNPM](https://github.com/expo/expo/issues/22413).
+
+The [common](./src/common/package.json) package causes the expo build process to fail if it is switched to ESM at Expo v52.
+
+### Updating NPM dependencies in `src/front`
+
+1. Update Expo SDK: `npx expo install expo@^53.0.0 --fix`
+1. `npx expo-doctor@latest`
+1. Commit changes as expo bump
+1. `npx npm-check-updates --color --install always --interactive --format group,repo && p audit fix`
+1. `npx expo install --fix` (to downgrade any packages that are not compatible with the new Expo SDK)
+
+`react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v 1.6.2. It should be kept at 1.6.1 until it is fixed.
