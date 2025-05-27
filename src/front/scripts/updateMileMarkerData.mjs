@@ -36,8 +36,10 @@ async function getMileMarkerFeatures() {
 
 async function main() {
   console.log('Connecting to the database...');
+  const dbPath = new URL('../data/mileMarkers.db', import.meta.url).pathname;
+  console.log(`Database path: ${dbPath}`);
   const db = await open({
-    filename: '../data/mileMarkers.db',
+    filename: dbPath,
     driver: sqlite3.Database,
   });
 
