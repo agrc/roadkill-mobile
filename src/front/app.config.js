@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.ENVIRONMENT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 650;
+const buildNumber = 652;
 
 module.exports = {
   name,
@@ -22,7 +22,7 @@ module.exports = {
   owner: 'ugrc',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.0.14',
+  version: '3.1.0',
   orientation: 'portrait',
   icon:
     process.env.ENVIRONMENT === 'production'

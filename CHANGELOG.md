@@ -1,3 +1,12 @@
+# [v3.1.0-652](https://github.com/agrc/roadkill-mobile/compare/v3.0.14-650.staging...v3.1.0-652) (2025-05-28)
+
+
+### Bug Fixes
+
+* **front:** fix background permission requirements for ios ([094a7db](https://github.com/agrc/roadkill-mobile/commit/094a7db8989e18bfbb1663d29e0dc65ff70ba937))
+
+
+
 ## [v3.0.14-650](https://github.com/agrc/roadkill-mobile/compare/v3.0.12-647...v3.0.14-650) (2025-05-28)
 
 
