@@ -45,7 +45,6 @@ export default function Form({
   validationSchema,
   children = () => null,
   mutation,
-  style,
   onClose,
 }) {
   const onPhotoChange = (newPhotoProps) => {
@@ -99,7 +98,6 @@ export default function Form({
         setAbleToIdentify(true);
         setResetSpecies(true);
       }}
-      style={style}
     >
       {({
         values,
@@ -184,7 +182,9 @@ export default function Form({
               <Text>errors: {JSON.stringify(errors, null, '  ')}</Text>
               <Text>values: {JSON.stringify(values, null, '  ')}</Text>
             </>
-          ) : null}
+          ) : (
+            <View style={{ height: PADDING * 3 }} />
+          )}
         </>
       )}
     </Formik>
@@ -198,7 +198,6 @@ Form.propTypes = {
   mutation: propTypes.object.isRequired,
   onClose: propTypes.func.isRequired,
   reportType: propTypes.string.isRequired,
-  style: propTypes.object,
   validationSchema: propTypes.object.isRequired,
 };
 
