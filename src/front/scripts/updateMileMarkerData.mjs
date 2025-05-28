@@ -1,4 +1,6 @@
 import { queryFeatures } from '@esri/arcgis-rest-feature-service';
+import { mkdir } from 'fs/promises';
+import { dirname } from 'path';
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 
@@ -38,6 +40,7 @@ async function main() {
   console.log('Connecting to the database...');
   const dbPath = new URL('../data/mileMarkers.db', import.meta.url).pathname;
   console.log(`Database path: ${dbPath}`);
+  await mkdir(dirname(dbPath));
   const db = await open({
     filename: dbPath,
     driver: sqlite3.Database,
