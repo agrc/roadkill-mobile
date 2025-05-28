@@ -1,3 +1,25 @@
+## [v3.0.14-650](https://github.com/agrc/roadkill-mobile/compare/v3.0.12-647...v3.0.14-650) (2025-05-28)
+
+
+### Bug Fixes
+
+* **palletjack:** increase chunk size ([800fe6e](https://github.com/agrc/roadkill-mobile/commit/800fe6e4f7f1506cb7ea56716a8ab7eaf499debe))
+* **palletjack:** increase job container memory ([698d163](https://github.com/agrc/roadkill-mobile/commit/698d16303f8dbefee4f8b090899a3ead512a402f))
+* **palletjack:** increase timeout length to help with errors in logs ([21933f7](https://github.com/agrc/roadkill-mobile/commit/21933f7fb4015b34c6177b1f12a761ce3bbce2c0)), closes [/community.esri.com/t5/arcgis-api-for-python-questions/getting-quot-your-request-has-timed-out-quot-504/m-p/1127881#M6932](https://github.com//community.esri.com/t5/arcgis-api-for-python-questions/getting-quot-your-request-has-timed-out-quot-504/m-p/1127881/issues/M6932)
+* **palletjack:** reduce chunk size to prevent max payload error ([754a7af](https://github.com/agrc/roadkill-mobile/commit/754a7afc8eac4837ad9add96dfbc782e2f7e3990))
+* **palletjack:** set chunk number to equal max record count ([b2ca5dd](https://github.com/agrc/roadkill-mobile/commit/b2ca5dd51e188e3c65e12f5f50a31dad2dbd1dc7))
+* **palletjack:** update spatial reference definition ([62cf06b](https://github.com/agrc/roadkill-mobile/commit/62cf06b8bc8fe90c941ba8a6492d05ad1e59a324))
+* **palletjack:** upgrade to using palletjack extra class for loading data from AGOL ([c017adc](https://github.com/agrc/roadkill-mobile/commit/c017adc534d1d0e34983d95691cd65ab51ab0dbc)), closes [#323](https://github.com/agrc/roadkill-mobile/issues/323)
+* temporarily hide login with facebook button ([d4fb236](https://github.com/agrc/roadkill-mobile/commit/d4fb23662cff26789eb46fe48452b27f60228ecf))
+
+
+### Features
+
+* **data:** set quota project for Cloud SQL Proxy authentication ([2934410](https://github.com/agrc/roadkill-mobile/commit/29344103931dbb2aa8191854c35eb064e54f626f))
+* **front:** add mile markers at larger scales ([86d13ec](https://github.com/agrc/roadkill-mobile/commit/86d13ec241b9836adf27b0a8ecabc579e205b07d)), closes [#324](https://github.com/agrc/roadkill-mobile/issues/324)
+
+
+
 ## [v3.0.12-648](https://github.com/agrc/roadkill-mobile/compare/v3.0.12-647...v3.0.12-648) (2025-03-31)
 
 
