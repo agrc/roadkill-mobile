@@ -31,3 +31,5 @@ credentials.json
 /ios
 
 /.storybook/storybook.requires.ts
+
+/data/mileMarkers.db
