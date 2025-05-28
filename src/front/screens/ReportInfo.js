@@ -6,7 +6,6 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
 import Spinner from '../components/Spinner';
@@ -65,17 +64,15 @@ export default function ReportInfoScreen() {
 
   return (
     <Layout style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.container}>
-          {isError ? (
-            <Card status="danger" style={styles.errorCard}>
-              <Text>{t('screens.reportInfo.errorLoadingReport')}</Text>
-              <Text>{error?.message}</Text>
-            </Card>
-          ) : null}
-          <ReportInfo data={data} />
-        </ScrollView>
-      </SafeAreaView>
+      <ScrollView style={styles.container}>
+        {isError ? (
+          <Card status="danger" style={styles.errorCard}>
+            <Text>{t('screens.reportInfo.errorLoadingReport')}</Text>
+            <Text>{error?.message}</Text>
+          </Card>
+        ) : null}
+        <ReportInfo data={data} />
+      </ScrollView>
       <Spinner show={isPending} message={t('screens.reportInfo.loading')} />
     </Layout>
   );
