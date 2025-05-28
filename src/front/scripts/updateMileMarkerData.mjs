@@ -40,7 +40,14 @@ async function main() {
   console.log('Connecting to the database...');
   const dbPath = new URL('../data/mileMarkers.db', import.meta.url).pathname;
   console.log(`Database path: ${dbPath}`);
-  await mkdir(dirname(dbPath));
+  try {
+    await mkdir(dirname(dbPath));
+  } catch (error) {
+    if (error.code !== 'EEXIST') {
+      console.error('Error creating database directory:', error);
+      throw error;
+    }
+  }
   const db = await open({
     filename: dbPath,
     driver: sqlite3.Database,
