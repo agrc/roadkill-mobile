@@ -1,6 +1,5 @@
 # use this command to test this file: eas build:inspect --platform ios --stage archive --output ./temp --profile production
 
-./data/
 .coverage
 .git
 .github/
@@ -10,6 +9,8 @@
 *.apk
 *.gz
 *.ipa
+data/
+!src/front/data/
 docker-compose.yaml
 docs/
 facebook-screen-recording/
