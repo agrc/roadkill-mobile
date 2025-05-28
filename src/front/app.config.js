@@ -47,13 +47,6 @@ module.exports = {
       usesNonExemptEncryption: false,
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
     },
-    infoPlist: {
-      NSLocationAlwaysUsageDescription:
-        'The app uses your location in the background for tracking routes. *Note* this is only applicable for agency employees or contractors. Background location is not used for public users.',
-      NSLocationWhenInUseUsageDescription:
-        'The app uses your location to help record the location of the animal that you are reporting.',
-      UIBackgroundModes: ['location'],
-    },
   },
   android: {
     package: bundleId,
@@ -123,6 +116,17 @@ module.exports = {
     'expo-asset',
     'expo-localization',
     'expo-secure-store',
+    [
+      'expo-location',
+      {
+        isIosBackgroundLocationEnabled: true,
+        isAndroidBackgroundLocationEnabled: true,
+        locationAlwaysAndWhenInUsePermission:
+          'The app uses your location in the background for tracking routes. *Note* this is only applicable for agency employees or contractors. Background location is not used for public users.',
+        locationWhenInUsePermission:
+          'The app uses your location to help record the location of the animal that you are reporting.',
+      },
+    ],
   ],
   extra: {
     eas: {
