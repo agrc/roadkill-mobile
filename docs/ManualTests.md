@@ -1,22 +1,17 @@
 # Manual Tests to perform before release on both iOS and Android
 
-## Facebook Test Credentials
-
-email: `open_vboxopy_user@tfbnw.net`  
-password: `tester`
-
 ## Select Role
 
 | setup | action                       | assertion                             |
 |-------|------------------------------|---------------------------------------|
-|       | select public                | confirm that all three oauth options are presented on the login screen |
+|       | select public                | confirm that all oauth options are presented on the login screen |
 |       | select contractor and agency | you are taken directly to the utahid signin |
 
 ## Auth
 
 | set up              | action                                                       | assertion |
 |---------------------|--------------------------------------------------------------|-----|
-|                     | log in with each provider: utahid, google, facebook, & apple | navigates to new user or main screen |
+|                     | log in with each provider: utahid, google, & apple | navigates to new user or main screen |
 |                     | cancel oauth process                                         | navigates back to login screen |
 | log in successfully | kill app and then restart                                    | automatically logs in and goes to the Main screen |
 |                     | Main -> Menu -> Logout                                       | presents confirmation dialog and then navigates to login screen |
@@ -36,6 +31,7 @@ password: `tester`
 | set up                          | action                               | assertion |
 |---------------------------------|--------------------------------------|-----|
 | pan map                         | click on the zoom to location button | map is panned back to current location |
+| | zoom into a state or federal road | verify that the mile markers are displayed |
 | tap on zoom to location         | pan the map                          | follow user location is disabled |
 |                                 |                                      | verify that drawer navigation works |
 | (doesn't work on iOS simulator) | contact                              | opens mail app with to and subject filled out |
@@ -65,7 +61,7 @@ Setup: open the report and select a location
 |                                      | click on date picker           | controls are shown and future dates are greyed out |
 |                                      | submit report with no photo    | success dialog should show and report should be reset and closed |
 |                                      | submit report with photo       | success dialog should show and report should be reset and closed |
-| login with google, facebook, & apple | submit report                  | success dialog, verify that notification email was sent |
+| login with google, & apple | submit report                  | success dialog, verify that notification email was sent |
 
 ### Contractor Role
 
