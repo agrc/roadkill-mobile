@@ -6,6 +6,7 @@
     "android": "expo run:android",
     "eas-build-pre-install": "bash ./scripts/eas-build-pre-install.sh",
     "format": "prettier --write .",
+    "get-mile-markers": "node scripts/UpdateMileMarkerData.mjs",
     "ios": "expo run:ios",
     "lint": "eslint .",
     "prestart": "sb-rn-get-stories",
