@@ -70,7 +70,6 @@ async function main() {
         ROUTE_ID TEXT
       );
       CREATE INDEX IF NOT EXISTS idx_coordinates ON mile_markers (LONGITUDE, LATITUDE);
-      CREATE INDEX IF NOT EXISTS idx_route_id ON mile_markers (ROUTE_ID);
     `,
   );
 
