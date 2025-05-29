@@ -9,7 +9,7 @@ SKID_NAME = "roadkill"
 
 SENDGRID_SETTINGS = {  #: Settings for SendGridHandler
     "from_address": "noreply@utah.gov",
-    "to_addresses": "stdavis@utah.gov",
+    "to_addresses": "ugrc-developers@utah.gov",
     "prefix": f"{os.getenv('PROJECT_ID')}: ",
 }
 LOG_LEVEL = logging.DEBUG
