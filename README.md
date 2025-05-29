@@ -88,10 +88,8 @@ After testing in dev client...
 1. From `src/front`: `./scripts/deployNewAppBuild.sh`
 1. Generate new screenshots if applicable.
    - [Apple Specs](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/)
-      - 5.5" - iPhone 8 Plus
-      - 6.7" - iPhone 15 Pro Max
-      - 12.9" - iPad Pro (2nd Gen)
-      - 12.9" - iPad Pro (6th Gen)
+      - 6.9" - iPhone 16 Plus
+      - 13" - iPad Pro (M4)
    - Android:
       - Use any simulator
 1. Create new version in iTunes connect and update all relevant information.
