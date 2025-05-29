@@ -57,7 +57,7 @@ export default function MileMarkers({ camera, region }: MileMarkersProps) {
     queryFn: () => {
       return letsDoThis ? getData(db, region) : Promise.resolve([]);
     },
-    staleTime: 1000 * 60 * 60, // 60 minutes
+    staleTime: 1000 * 60, // 60 seconds
   });
 
   const theme = useTheme();
