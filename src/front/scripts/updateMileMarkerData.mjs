@@ -16,7 +16,7 @@ async function getMileMarkerFeatures() {
     const response = await queryFeatures({
       url: FEATURE_SERVICE_URL,
       where: '1=1',
-      outFields: ['OBJECTID', 'LEGEND_NUM'],
+      outFields: ['OBJECTID', 'LEGEND_NUM', 'ROUTE_ID'],
       returnGeometry: true,
       resultOffset: features.length,
       resultRecordCount: 2000,
@@ -66,15 +66,17 @@ async function main() {
         OBJECTID INTEGER PRIMARY KEY,
         LEGEND_NUM TEXT,
         LONGITUDE REAL,
-        LATITUDE REAL
+        LATITUDE REAL,
+        ROUTE_ID TEXT
       );
       CREATE INDEX IF NOT EXISTS idx_coordinates ON mile_markers (LONGITUDE, LATITUDE);
+      CREATE INDEX IF NOT EXISTS idx_route_id ON mile_markers (ROUTE_ID);
     `,
   );
 
   console.log('Inserting features...');
   const insertStmt = await db.prepare(
-    'INSERT OR REPLACE INTO mile_markers (OBJECTID, LEGEND_NUM, LONGITUDE, LATITUDE) VALUES (?, ?, ?, ?)',
+    'INSERT OR REPLACE INTO mile_markers (OBJECTID, LEGEND_NUM, LONGITUDE, LATITUDE, ROUTE_ID) VALUES (?, ?, ?, ?, ?)',
   );
   for (const feature of features) {
     await insertStmt.run(
@@ -82,9 +84,24 @@ async function main() {
       feature.attributes.LEGEND_NUM,
       feature.geometry.x,
       feature.geometry.y,
+      feature.attributes.ROUTE_ID.slice(0, 4),
     );
   }
   await insertStmt.finalize();
+
+  console.log('Deleting duplicates...');
+  const deleteDuplicatesStmt = await db.prepare(
+    `
+      DELETE FROM mile_markers
+      WHERE OBJECTID NOT IN (
+        SELECT MIN(OBJECTID)
+        FROM mile_markers
+        GROUP BY LEGEND_NUM, ROUTE_ID
+      );
+    `,
+  );
+  await deleteDuplicatesStmt.run();
+  await deleteDuplicatesStmt.finalize();
   await db.close();
 
   console.log('Mile marker data updated successfully!');
