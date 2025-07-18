@@ -12,7 +12,7 @@ const names = {
 const name = names[process.env.APP_VARIANT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 660;
+const buildNumber = 661;
 
 module.exports = {
   name,
