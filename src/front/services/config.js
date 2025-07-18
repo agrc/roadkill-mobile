@@ -58,5 +58,5 @@ export default {
     pickup: 'pickup',
   },
   MIN_TRACKING_VERTEX_DISTANCE: 15, // meters
-  WEBSITE: WEBSITES[Constants.expoConfig.extra.ENVIRONMENT],
+  WEBSITE: WEBSITES[Constants.expoConfig.extra.APP_VARIANT],
 };

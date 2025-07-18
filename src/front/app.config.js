@@ -3,16 +3,16 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const bundleId = commonConfig.bundleIds[process.env.ENVIRONMENT];
+const bundleId = commonConfig.bundleIds[process.env.APP_VARIANT];
 const names = {
   development: 'Utah Roadkill Dev',
   staging: 'Utah Roadkill Staging',
   production: 'Utah Roadkill',
 };
-const name = names[process.env.ENVIRONMENT];
+const name = names[process.env.APP_VARIANT];
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 652;
+const buildNumber = 660;
 
 module.exports = {
   name,
@@ -25,14 +25,14 @@ module.exports = {
   version: '3.1.0',
   orientation: 'portrait',
   icon:
-    process.env.ENVIRONMENT === 'production'
+    process.env.APP_VARIANT === 'production'
       ? './assets/icon.png'
-      : `./assets/icon_${process.env.ENVIRONMENT}.png`,
+      : `./assets/icon_${process.env.APP_VARIANT}.png`,
   splash: {
     image:
-      process.env.ENVIRONMENT === 'production'
+      process.env.APP_VARIANT === 'production'
         ? './assets/splash.png'
-        : `./assets/splash_${process.env.ENVIRONMENT}.png`,
+        : `./assets/splash_${process.env.APP_VARIANT}.png`,
     resizeMode: 'contain',
     backgroundColor: '#ffffff',
   },
@@ -55,9 +55,9 @@ module.exports = {
     softwareKeyboardLayoutMode: 'pan',
     adaptiveIcon: {
       foregroundImage:
-        process.env.ENVIRONMENT === 'production'
+        process.env.APP_VARIANT === 'production'
           ? './assets/adaptive-icon.png'
-          : `./assets/adaptive-icon_${process.env.ENVIRONMENT}.png`,
+          : `./assets/adaptive-icon_${process.env.APP_VARIANT}.png`,
       backgroundColor: '#FFFFFF',
     },
     permissions: [
@@ -110,6 +110,11 @@ module.exports = {
         ios: {
           useFrameworks: 'static',
         },
+        android: {
+          compileSdkVersion: 35,
+          targetSdkVersion: 35,
+          buildToolsVersion: '35.0.0',
+        },
       },
     ],
     '@react-native-firebase/app',
@@ -132,7 +137,7 @@ module.exports = {
     eas: {
       projectId: '648c99de-696c-4704-8723-7f8838dc6896',
     },
-    ENVIRONMENT: process.env.ENVIRONMENT,
+    APP_VARIANT: process.env.APP_VARIANT,
     GOOGLE_OAUTH_CLIENT_ID_ANDROID: process.env.GOOGLE_OAUTH_CLIENT_ID_ANDROID,
     GOOGLE_OAUTH_CLIENT_ID_IOS: process.env.GOOGLE_OAUTH_CLIENT_ID_IOS,
     API: process.env.API,

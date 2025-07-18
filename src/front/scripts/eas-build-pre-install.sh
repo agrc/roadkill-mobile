@@ -16,8 +16,8 @@ if [[ $EAS_BUILD_PROFILE == "production" ]]; then
   export GOOGLE_MAPS_API_KEY_IOS="$PRODUCTION_GOOGLE_MAPS_API_KEY_IOS"
   export GOOGLE_OAUTH_CLIENT_ID_ANDROID="$PRODUCTION_GOOGLE_OAUTH_CLIENT_ID_ANDROID"
   export GOOGLE_OAUTH_CLIENT_ID_IOS="$PRODUCTION_GOOGLE_OAUTH_CLIENT_ID_IOS"
-elif [[ $EAS_BUILD_PROFILE == "staging" ]]; then
-  echo "using staging environment variables"
+elif [[ $EAS_BUILD_PROFILE == "preview" ]]; then
+  echo "using preview environment variables"
 
   export CLIENT_ID=$STAGING_CLIENT_ID
   export API=$STAGING_API

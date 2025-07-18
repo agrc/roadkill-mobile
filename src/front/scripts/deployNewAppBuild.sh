@@ -3,12 +3,6 @@ set -e
 
 . ./scripts/setChannel.sh
 
-ENV_FILE=".env.$CHANNEL"
-echo "getting environment variables from $ENV_FILE"
-set -o allexport
-source $ENV_FILE
-set +o allexport
-
 if [ -z "$1" ]; then
   PLATFORM="all"
 else

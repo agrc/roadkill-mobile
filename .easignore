@@ -15,7 +15,7 @@ docker-compose.yaml
 docs/
 facebook-screen-recording/
 src/back/
-src/front/.env
+src/front/.env*
 src/front/.expo*
 src/front/dev-clients/
 src/front/store-assets/

@@ -5,7 +5,7 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ $CURRENT_BRANCH == "main" ]; then
   export CHANNEL="production"
 elif [ $CURRENT_BRANCH == "dev" ]; then
-  export CHANNEL="staging"
+  export CHANNEL="preview"
 fi
 
 echo "Setting channel to: $CHANNEL"
