@@ -1,17 +1,11 @@
-# [v3.1.0-652](https://github.com/agrc/roadkill-mobile/compare/v3.0.14-650.staging...v3.1.0-652) (2025-05-28)
+# [v3.1.0-662](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.0-662) (2025-07-24)
 
 
 ### Bug Fixes
 
+* **front:** remove duplicate mile markers ([9a1a975](https://github.com/agrc/roadkill-mobile/commit/9a1a975ac400c5d7b5599e383480fa1e3eeb2a3e))
+* **front:** sort out some env var issues to get closer to expo recommendations ([9ccd820](https://github.com/agrc/roadkill-mobile/commit/9ccd8207a1e34a663c59fcf9b312396817eb115b))
 * **front:** fix background permission requirements for ios ([094a7db](https://github.com/agrc/roadkill-mobile/commit/094a7db8989e18bfbb1663d29e0dc65ff70ba937))
-
-
-
-## [v3.0.14-650](https://github.com/agrc/roadkill-mobile/compare/v3.0.12-647...v3.0.14-650) (2025-05-28)
-
-
-### Bug Fixes
-
 * **palletjack:** increase chunk size ([800fe6e](https://github.com/agrc/roadkill-mobile/commit/800fe6e4f7f1506cb7ea56716a8ab7eaf499debe))
 * **palletjack:** increase job container memory ([698d163](https://github.com/agrc/roadkill-mobile/commit/698d16303f8dbefee4f8b090899a3ead512a402f))
 * **palletjack:** increase timeout length to help with errors in logs ([21933f7](https://github.com/agrc/roadkill-mobile/commit/21933f7fb4015b34c6177b1f12a761ce3bbce2c0)), closes [/community.esri.com/t5/arcgis-api-for-python-questions/getting-quot-your-request-has-timed-out-quot-504/m-p/1127881#M6932](https://github.com//community.esri.com/t5/arcgis-api-for-python-questions/getting-quot-your-request-has-timed-out-quot-504/m-p/1127881/issues/M6932)

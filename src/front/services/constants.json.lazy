@@ -1945,6 +1945,16 @@
       "id": 62,
       "name": "Virgin Town",
       "org_type": "agency"
+    },
+    {
+      "id": 63,
+      "name": "Iron County Sheriff's Office ",
+      "org_type": "agency"
+    },
+    {
+      "id": 64,
+      "name": "West Jordan Animal Services",
+      "org_type": "agency"
     }
   ]
 }
