@@ -21,7 +21,16 @@ rm -rf ./dist
 echo "building $PLATFORM platform(s)"
 eas build --platform $PLATFORM --profile $CHANNEL
 
-./scripts/downloadArtifacts.sh $PLATFORM $CHANNEL $CHANNEL
+./scripts/downloadArtifacts.sh $PLATFORM $CHANNEL $BRANCH
+
+# apply environment variables from the .env file
+# this is really just for the fastlane app specific password
+if [ -f ./.env ]; then
+  echo "Applying environment variables from .env file"
+  export $(grep -v '^#' ./.env | xargs)
+else
+  echo ".env file not found, skipping environment variable application"
+fi
 
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
   # TODO: switch to eas submit if DTS ever grants me access to the necessary app store/play store api's
