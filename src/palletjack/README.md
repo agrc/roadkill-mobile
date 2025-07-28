@@ -9,5 +9,5 @@ This [palletjack](https://github.com/agrc/palletjack) skid is used to push updat
 
 ## Development
 
-1. `conda create --name roadkill-skid python=3.12`
+1. `conda create --name roadkill-skid python=3.11`
 1. `pip install -e ".[tests]"`
