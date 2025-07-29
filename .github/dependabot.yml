@@ -8,24 +8,40 @@ updates:
       interval: monthly
     groups:
       ci-dependencies:
-        dependency-type: 'production'
-
+        dependency-type: production
+    cooldown:
+      default-days: 10
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: monthly
     groups:
       safe-dependencies:
-        update-types: ['minor', 'patch']
+        update-types:
+          - minor
+          - patch
       major-dependencies:
-        update-types: ['major']
-
+        update-types:
+          - major
+    cooldown:
+      default-days: 10
+      semver-major-days: 60
+      semver-minor-days: 14
+      semver-patch-days: 7
   - package-ecosystem: pip
     directory: src/palletjack
     schedule:
       interval: monthly
     groups:
       safe-dependencies:
-        update-types: ['minor', 'patch']
+        update-types:
+          - minor
+          - patch
       major-dependencies:
-        update-types: ['major']
+        update-types:
+          - major
+    cooldown:
+      default-days: 10
+      semver-major-days: 60
+      semver-minor-days: 14
+      semver-patch-days: 7
