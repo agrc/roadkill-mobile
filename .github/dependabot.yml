@@ -13,6 +13,7 @@ updates:
       default-days: 10
       exclude:
         - agrc/*
+
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -32,6 +33,16 @@ updates:
       semver-patch-days: 7
       exclude:
         - '@ugrc/*'
+
+  # ignore the expo project, this needs to be updated manually using expo tools
+  # this is a workaround until this is implemented: https://github.com/dependabot/dependabot-core/issues/4364
+  - package-ecosystem: npm
+    directory: /src/front
+    schedule:
+      interval: monthly
+    ignore:
+      - dependency-name: '*'
+
   - package-ecosystem: pip
     directory: src/palletjack
     schedule:
