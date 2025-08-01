@@ -1,5 +1,9 @@
 name: 'create reminder'
 
+permissions:
+  issues: write
+  pull-requests: write
+
 on:
   issue_comment:
     types: [created, edited]
@@ -9,5 +13,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: check for reminder
+      - name: 👀 check for reminder
         uses: agrc/create-reminder-action@v1
