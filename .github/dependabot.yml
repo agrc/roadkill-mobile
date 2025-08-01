@@ -3,7 +3,8 @@ updates:
   - package-ecosystem: github-actions
     directories:
       - /
-      - /.github/actions/**
+      - /.github/actions/back/db-migrations
+      - /.github/actions/palletjack/deploy
     schedule:
       interval: monthly
     groups:
