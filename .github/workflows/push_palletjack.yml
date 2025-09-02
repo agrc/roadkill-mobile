@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: ⬇️ Set up code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: ⬇️ Set up code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🚀 Deploy
         uses: ./.github/actions/palletjack/deploy
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: ⬇️ Set up code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🚀 Deploy
         uses: ./.github/actions/palletjack/deploy
