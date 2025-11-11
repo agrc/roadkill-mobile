@@ -6,7 +6,7 @@ updates:
       - /.github/actions/back/db-migrations
       - /.github/actions/palletjack/deploy
     schedule:
-      interval: monthly
+      interval: quarterly
     groups:
       ci-dependencies:
         dependency-type: production
@@ -18,7 +18,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: monthly
+      interval: quarterly
     groups:
       safe-dependencies:
         update-types:
@@ -40,14 +40,14 @@ updates:
   - package-ecosystem: npm
     directory: /src/front
     schedule:
-      interval: monthly
+      interval: quarterly
     ignore:
       - dependency-name: '*'
 
   - package-ecosystem: pip
     directory: src/palletjack
     schedule:
-      interval: monthly
+      interval: quarterly
     groups:
       safe-dependencies:
         update-types:
