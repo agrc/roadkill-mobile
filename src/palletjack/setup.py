@@ -34,7 +34,7 @@ setup(
         "tests": [
             "pandas==2.*",
             "pytest-instafail==0.5.*",
-            "pytest==8.*",
+            "pytest>=8,<10",
             "ruff==0.*",
         ]
     },
