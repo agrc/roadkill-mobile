@@ -156,3 +156,8 @@ The [common](./src/common/package.json) package causes the expo build process to
 1. `npx expo install --fix` (to downgrade any packages that are not compatible with the new Expo SDK)
 
 `react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v1.6.2. It should be kept at 1.6.1 until it is fixed.
+
+## Attribution
+
+This project was developed with the assistance of [GitHub Copilot](https://github.com/features/copilot).
+
