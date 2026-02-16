@@ -48,7 +48,7 @@
     "@ugrc/eslint-config": "^1.2.2",
     "env-cmd": "^10.1.0",
     "eslint": "^9.27.0",
-    "firebase-tools": "^14.4.0",
+    "firebase-tools": "^15.6.0",
     "form-urlencoded": "^6.1.5",
     "msw": "^2.8.4",
     "nodemon": "^3.1.10",

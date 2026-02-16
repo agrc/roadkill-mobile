@@ -16,15 +16,15 @@
     "start": "cross-env NODE_ENV=development PORT=3002 concurrently \"npm run dev:css\" \"remix dev\""
   },
   "dependencies": {
-    "@remix-run/node": "^2.16.7",
+    "@remix-run/node": "^2.17.4",
     "@remix-run/react": "^2.16.7",
-    "@remix-run/serve": "^2.16.7",
+    "@remix-run/serve": "^2.17.4",
     "cross-env": "^7.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.16.7",
+    "@remix-run/dev": "^2.17.4",
     "@tailwindcss/cli": "^4.1.7",
     "@ugrc/eslint-config": "^1.2.2",
     "concurrently": "^9.1.2",
