@@ -32,6 +32,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # required for firebase emulators
+      - name: ⚙️ Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - uses: actions/cache@v5
         with:
           path: ~/.cache/firebase/emulators
