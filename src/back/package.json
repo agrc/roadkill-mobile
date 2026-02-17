@@ -19,7 +19,7 @@
     "@google-cloud/cloud-sql-connector": "^1.8.0",
     "@google-cloud/firestore": "^7.11.1",
     "@google-cloud/logging-winston": "^6.0.1",
-    "@google-cloud/storage": "^7.16.0",
+    "@google-cloud/storage": "^7.19.0",
     "@sendgrid/mail": "^8.1.5",
     "apple-signin-auth": "^2.0.0",
     "common": "file:../common",
