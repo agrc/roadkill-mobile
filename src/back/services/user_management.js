@@ -104,7 +104,6 @@ const APPROVAL_DOC_TYPE = 'approvals';
 const admins = [
   'aehrhart@utah.gov',
   'danielolson@utah.gov',
-  'ericedgley@utah.gov',
   'makedatrujillo@utah.gov',
   'stdavis@utah.gov',
 ];
