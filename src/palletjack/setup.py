@@ -32,7 +32,7 @@ setup(
     ],
     extras_require={
         "tests": [
-            "pandas==2.*",
+            "pandas>=2,<4",
             "pytest-instafail==0.5.*",
             "pytest>=8,<10",
             "ruff==0.*",
