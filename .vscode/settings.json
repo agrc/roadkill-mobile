@@ -137,4 +137,5 @@
   "python.testing.pytestEnabled": true,
   "python.testing.cwd": "src/palletjack",
   "isort.check": true,
+  "python-envs.defaultPackageManager": "ms-python.python:conda",
 }

@@ -13,10 +13,9 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 
 import arcgis
+from palletjack import extract, load, transform
 from supervisor.message_handlers import SendGridHandler
 from supervisor.models import MessageDetails, Supervisor
-
-from palletjack import extract, load, transform
 
 #: This makes it work when calling with just `python <file>`/installing via pip and in the gcf framework, where
 #: the relative imports fail because of how it's calling the function.
