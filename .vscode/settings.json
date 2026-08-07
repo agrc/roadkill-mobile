@@ -89,6 +89,7 @@
     "PSAP",
     "pylint",
     "pyproject",
+    "pytest",
     "Reactotron",
     "Recents",
     "REMOTEDEV",
