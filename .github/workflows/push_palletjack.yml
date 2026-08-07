@@ -3,12 +3,12 @@ name: Palletjack - Deploy to Cloud Run Job
 on:
   push:
     paths:
-      - 'src/palletjack/**'
-      - '.github/workflows/palletjack.yml'
-      - '.github/actions/palletjack/deploy/action.yml'
+      - "src/palletjack/**"
+      - ".github/workflows/palletjack.yml"
+      - ".github/actions/palletjack/deploy/action.yml"
 
 concurrency:
-  group: '${{ github.head_ref || github.ref }}'
+  group: "${{ github.head_ref || github.ref }}"
   cancel-in-progress: true
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           cache: pip
-          cache-dependency-path: src/palletjack/setup.py
+          cache-dependency-path: src/palletjack/pyproject.toml
 
       - name: 📥 Download extra dependencies
         run: |
@@ -48,7 +48,6 @@ jobs:
 
       - name: 🧪 Run tests
         run: pytest
-
 
   deploy-dev:
     name: Deploy Staging to GCF
@@ -68,7 +67,7 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
           service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-          pause_schedule_job: 'yes'
+          pause_schedule_job: "yes"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           cloudsql_instance: ${{ secrets.CLOUDSQL_INSTANCE }}
 
