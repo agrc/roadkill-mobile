@@ -231,7 +231,10 @@ def process():
 
                 continue
 
-            item = next(result for result in search_results if result.title == table)
+            try:
+                item = next(result for result in search_results if result.title == table)
+            except StopIteration:
+                raise RuntimeError(f"Expected a Feature Service titled \"{table}\" but none matched exactly") from None
             layer = item.layers[0]
             #: strip off the last part of the url to get the service url
             service_url = "/".join(layer.url.split("/")[:-1])
