@@ -144,6 +144,13 @@ def _get_new_and_deleted_records(database_records, agol_records):
     return (new_records, deleted_ids)
 
 
+def _ensure_unique_ids(records, table, id_column):
+    """Raise when a source table contains duplicate business keys."""
+
+    if records.index.has_duplicates:
+        raise ValueError(f"{table} contains duplicate {id_column} values")
+
+
 def _transform(dataframe, int_fields, date_fields):
     """A helper function to prepare the dataframe to be loaded into AGOL
 
@@ -212,6 +219,7 @@ def process():
             #: get data from database
             database_records = loader.read_table_into_dataframe(f"public.{table}", id_column, "4326", geog_column)
             database_records.rename(columns={geog_column: "SHAPE"}, inplace=True)
+            _ensure_unique_ids(database_records, table, id_column)
             module_logger.info("Database records count: %s", len(database_records))
 
             search_results = gis.content.search(
@@ -240,13 +248,13 @@ def process():
             module_logger.info("Deleted records count: %s", len(deleted_ids))
 
             if len(new_records) > 0:
-                module_logger.info("Adding new records to AGOL...")
+                module_logger.info("Upserting new records to AGOL...")
                 prepared_df = _transform(new_records, int_fields, date_fields)
                 if table == "agol_public_reports":
                     prepared_df["repeat_submission"] = prepared_df["repeat_submission"].astype("int")
                 updater = load.ServiceUpdater(gis, item.id, working_dir=tempdir_path)
-                updates = updater.add(prepared_df)
-                module_logger.info("Added %s records", updates)
+                updates = updater.update(prepared_df, matching_field=id_column)
+                module_logger.info("Upserted %s records", updates)
 
             if len(deleted_ids) > 0:
                 module_logger.info("Deleting records...")
