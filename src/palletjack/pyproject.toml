@@ -1,6 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "palletjack"
+version = "1.0.0"
+description = "Roadkill skid"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "UGRC Developers", email = "ugrc-developers@utah.gov" }]
+keywords = ["gis"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Topic :: Utilities",
+]
+dependencies = ["ugrc-palletjack==6.*", "ugrc-supervisor==3.*"]
+
+[project.urls]
+Homepage = "https://github.com/agrc/roadkill-mobile"
+
+[project.optional-dependencies]
+tests = ["pandas==2.*", "pytest-instafail==0.5.*", "pytest>=8,<10", "ruff==0.*"]
+
+[project.scripts]
+process = "roadkill.main:process"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/roadkill"]
+
 [tool.ruff]
 line-length = 120
-lint.ignore = ["E501"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+ignore = ["E501"]
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests", "src"]
