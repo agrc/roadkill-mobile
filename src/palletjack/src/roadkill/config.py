@@ -12,7 +12,7 @@ SENDGRID_SETTINGS = {  #: Settings for SendGridHandler
     "to_addresses": "ugrc-developers@utah.gov",
     "prefix": f"{os.getenv('PROJECT_ID')}: ",
 }
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FILE_NAME = "log"
 
 TABLES = [

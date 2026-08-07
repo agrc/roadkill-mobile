@@ -1,4 +1,5 @@
 import pandas as pd
+import pytest
 
 from . import main
 
@@ -27,3 +28,10 @@ def test_get_new_and_updated_records():
 
     assert len(deleted_ids) == 1
     assert deleted_ids[0] == 20
+
+
+def test_ensure_unique_ids_raises_for_duplicates():
+    records = pd.DataFrame({"report_id": [1, 1], "dummy": ["a", "b"]}).set_index("report_id")
+
+    with pytest.raises(ValueError, match="agol_pickup_reports contains duplicate report_id values"):
+        main._ensure_unique_ids(records, "agol_pickup_reports", "report_id")
