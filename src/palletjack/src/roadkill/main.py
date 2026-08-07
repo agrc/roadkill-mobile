@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# * coding: utf8 *
 """
 Run the roadkill skid
 """
@@ -120,7 +118,7 @@ def _remove_log_file_handlers(log_name, loggers):
                 if log_name in handler.stream.name:
                     logger.removeHandler(handler)
                     handler.close()
-            except Exception:
+            except AttributeError:
                 pass
 
 
@@ -176,7 +174,7 @@ def process():
     """The main function that does all the work."""
 
     #: Set up secrets, tempdir, supervisor, and logging
-    start = datetime.datetime.now()
+    start = datetime.datetime.now(datetime.timezone.utc).astimezone()
 
     secrets = SimpleNamespace(**_get_secrets())
 
@@ -233,7 +231,7 @@ def process():
 
                 continue
 
-            item = [r for r in search_results if r.title == table][0]
+            item = next(result for result in search_results if result.title == table)
             layer = item.layers[0]
             #: strip off the last part of the url to get the service url
             service_url = "/".join(layer.url.split("/")[:-1])
@@ -266,7 +264,7 @@ def process():
                 f"{table} database records: {len(database_records)}, agol records: {len(agol_records)}, new records: {len(new_records)}, deleted records: {len(deleted_ids)}"
             )
 
-        end = datetime.datetime.now()
+        end = datetime.datetime.now(datetime.timezone.utc).astimezone()
 
         summary_message = MessageDetails()
         summary_message.subject = f"{config.SKID_NAME} Update Summary"
@@ -276,7 +274,7 @@ def process():
             "",
             f"Start time: {start.strftime('%H:%M:%S')}",
             f"End time: {end.strftime('%H:%M:%S')}",
-            f"Duration: {str(end - start)}",
+            f"Duration: {end - start!s}",
         ] + additional_summary_rows
 
         summary_message.message = "\n".join(summary_rows)
