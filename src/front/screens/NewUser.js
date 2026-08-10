@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import * as Sentry from '@sentry/react-native';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Card, Input, Text } from '@ui-kitten/components';
 import commonConfig from 'common/config';
@@ -12,7 +13,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
@@ -23,6 +23,7 @@ import config from '../services/config';
 import { getConstants } from '../services/constants';
 import t from '../services/localization';
 import { PADDING } from '../services/styles';
+import { getRegistrationNameFields } from '../services/utilities';
 
 // TODO: A lot of this code could be shared with Profile.js
 export default function NewUserScreen() {
@@ -64,7 +65,7 @@ export default function NewUserScreen() {
 
   // add org, if required
   if (organizationIsRequired) {
-    shape.organization_name = string().required();
+    shape.organization_name = string().max(128).required();
     shape.organization_id = number().required();
   }
 
@@ -84,11 +85,7 @@ export default function NewUserScreen() {
     await registerMutation.mutate({
       user: {
         phone,
-        first_name: authInfo.oauthUser.given_name || name.split(' ')[0],
-        last_name:
-          authInfo.oauthUser.family_name ||
-          name.split(' ')[1] ||
-          '<none provided>',
+        ...getRegistrationNameFields(authInfo.oauthUser, name),
         email: authInfo.oauthUser.email || email,
         auth_id: authInfo.oauthUser.sub,
         auth_provider: authInfo.providerName,
@@ -221,6 +218,7 @@ export default function NewUserScreen() {
                               : null
                           }
                           textContentType="organizationName"
+                          maxLength={128}
                           value={
                             values.organization_name !==
                             commonConfig.otherOrg.name

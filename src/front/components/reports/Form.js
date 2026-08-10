@@ -148,6 +148,7 @@ export default function Form({
           </Text>
           <Input
             multiline
+            maxLength={512}
             textStyle={{ minHeight: 64 }}
             value={values.comments}
             onChangeText={handleChange('comments')}

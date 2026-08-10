@@ -4,6 +4,7 @@ import {
   appendCoordinates,
   coordinatesToRegion,
   extentStringToRegion,
+  getRegistrationNameFields,
   getSubmitValues,
   isTokenExpired,
   lineCoordinatesToString,
@@ -13,6 +14,37 @@ import {
   pointStringToCoordinates,
   wrapAsyncWithDelay,
 } from './utilities';
+
+describe('getRegistrationNameFields', () => {
+  it('splits and trims a manually entered name', () => {
+    expect(getRegistrationNameFields({}, '  Jane   Doe  ')).toEqual({
+      first_name: 'Jane',
+      last_name: 'Doe',
+    });
+  });
+
+  it('uses the surname fallback for a single manually entered name', () => {
+    expect(getRegistrationNameFields({}, 'Jane')).toEqual({
+      first_name: 'Jane',
+      last_name: '<none provided>',
+    });
+  });
+
+  it('truncates OAuth name fields to the database limit', () => {
+    expect(
+      getRegistrationNameFields(
+        {
+          given_name: 'a'.repeat(26),
+          family_name: 'b'.repeat(26),
+        },
+        '',
+      ),
+    ).toEqual({
+      first_name: 'a'.repeat(25),
+      last_name: 'b'.repeat(25),
+    });
+  });
+});
 
 describe('isTokenExpired', () => {
   it('correctly checks a future date', () => {

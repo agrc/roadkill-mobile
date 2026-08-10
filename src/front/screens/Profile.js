@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Button,
@@ -18,7 +19,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 import { number, object, string } from 'yup';
 import 'yup-phone-lite';
 import useAuth from '../auth/context';
@@ -119,7 +119,7 @@ export default function ProfileScreen() {
     phone: string().phone('US').required(),
   };
   if (data?.organization_id) {
-    shape.organization_name = string().required();
+    shape.organization_name = string().max(128).required();
     shape.organization_id = number().required();
   }
   const schema = object().shape(shape);
@@ -237,6 +237,7 @@ export default function ProfileScreen() {
                                 : null
                             }
                             textContentType="organizationName"
+                            maxLength={128}
                             value={
                               values.organization_name !==
                               commonConfig.otherOrg.name

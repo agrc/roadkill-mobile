@@ -20,7 +20,7 @@ export const registerSchema = yup.object().shape({
   organization: yup
     .object()
     .shape({
-      name: yup.string().required(),
+      name: yup.string().max(128).required(),
       org_type: yup.string().required(),
       id: yup.number().required(),
     })
@@ -32,19 +32,26 @@ export const registerSchema = yup.object().shape({
       auth_provider: yup.string().required(),
       auth_id: yup.string().required(),
       email: yup.string().email().required(),
-      first_name: yup.string().required(),
-      last_name: yup.string().required(),
+      first_name: yup.string().max(25).required(),
+      last_name: yup.string().max(25).required(),
       phone: yup.string().required(),
     })
     .required(),
+});
+
+export const profileUpdateSchema = yup.object().shape({
+  phone: yup.string().required(),
+  organization_id: yup.number().nullable(),
+  organization_name: yup.string().max(128).nullable(),
+  organization_type: yup.string().required(),
 });
 
 export const loginSchema = yup.object().shape({
   auth_id: yup.string().required(),
   auth_provider: yup.string().required(),
   email: yup.string().email().nullable(), // apple requests may not have this
-  first_name: yup.string().nullable(), // apple requests may not have this
-  last_name: yup.string().nullable(), // apple requests may not have this
+  first_name: yup.string().max(25).nullable(), // apple requests may not have this
+  last_name: yup.string().max(25).nullable(), // apple requests may not have this
 });
 
 export async function isExistingUser({ auth_provider, auth_id }) {

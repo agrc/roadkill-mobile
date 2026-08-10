@@ -21,7 +21,7 @@ const family = string().required();
 const species_confidence_level = string().nullable();
 const age_class = string().nullable();
 const sex = string().nullable();
-const comments = string().nullable();
+const comments = string().max(512).nullable();
 
 exports.report = object().shape({
   animal_location,
