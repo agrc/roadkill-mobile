@@ -119,6 +119,21 @@ export function useAsyncError() {
   return throwAsyncError;
 }
 
+export function getRegistrationNameFields(oauthUser, name) {
+  const nameParts = (name ?? '').trim().split(/\s+/);
+  const firstName = (oauthUser?.given_name || nameParts[0] || '').trim();
+  const lastName = (
+    oauthUser?.family_name ||
+    nameParts[1] ||
+    '<none provided>'
+  ).trim();
+
+  return {
+    first_name: firstName.slice(0, 25),
+    last_name: lastName.slice(0, 25),
+  };
+}
+
 export function isTokenExpired(token) {
   if (typeof token === 'string') {
     throw new Error('token must be an object, did you forget to decode it?');
