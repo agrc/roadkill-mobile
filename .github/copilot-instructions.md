@@ -43,7 +43,8 @@ Always run the matching commands below after edits; changes under `src/common` r
 cd src/common && npm run lint
 
 # API CI-equivalent checks. Java 21 and Firebase emulator downloads are required.
-cd src/back && npm run lint && npm run test:ci
+# CI=1 prevents Vitest from entering watch mode in an interactive local terminal.
+cd src/back && npm run lint && CI=1 npm run test:ci
 
 # Mobile CI-equivalent check. First remove ignored native build output in a reused checkout:
 rm -rf src/front/android/app/build
@@ -56,7 +57,7 @@ cd src/website && npm run lint && npm run build
 cd src/palletjack && pip install '.[tests]' && ruff check --output-format=github . && pytest
 ```
 
-The mobile `test:final` runs ESLint, Jest, then translation validation. A prior local Android build leaves ignored `android/app/build` JavaScript bundles that ESLint does not ignore and causes many `__d is not defined` failures. Always remove that generated directory before the front lint/test command; a fresh GitHub Actions checkout does not have it. The API `test:ci` runs Firebase Firestore and Storage emulators around `npm test`; do not substitute plain `npm test` when reproducing CI. `src/common/package.json` and `data/scripts/package.json` have placeholder `test` scripts that intentionally fail, so do not run them.
+The mobile `test:final` runs ESLint, Jest, then translation validation. A prior local Android build leaves ignored `android/app/build` JavaScript bundles that ESLint does not ignore and causes many `__d is not defined` failures. Always remove that generated directory before the front lint/test command; a fresh GitHub Actions checkout does not have it. The API `test:ci` runs Firebase Firestore and Storage emulators around `npm test`; use `CI=1 npm run test:ci` in an interactive local terminal so Vitest exits after one run, but do not substitute plain `npm test` when reproducing CI. `src/common/package.json` and `data/scripts/package.json` have placeholder `test` scripts that intentionally fail, so do not run them.
 
 Validated locally with Node 22: common lint, API lint, website lint, and website production build pass. The local environment used for this guide lacked Docker, Python 3.11, Python test tools, and Java 21, so database startup, Palletjack tests, and Firebase integration tests must be run in a matching environment rather than inferred from a newer runtime.
 
