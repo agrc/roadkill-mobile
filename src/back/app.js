@@ -36,7 +36,7 @@ import {
   getReject,
   getUpdateProfile,
 } from './api/user.js';
-import validate from './api/validation.js';
+import validate, { truncateOverlongComments } from './api/validation.js';
 import getVersionFromHeader from './api/versioning.js';
 import { getIDImage } from './services/id_images.js';
 import sendReportNotification from './services/notifications.js';
@@ -216,6 +216,7 @@ app.post(
   '/reports/report',
   handleAsyncErrors(authenticate),
   multer.single('photo'),
+  truncateOverlongComments,
   validate(reportSchema.omit(['photo'])),
   handleAsyncErrors(
     getNewReportHandler(upload, createReport, sendReportNotification),
@@ -225,6 +226,7 @@ app.post(
   '/reports/pickup',
   handleAsyncErrors(authenticate),
   multer.single('photo'),
+  truncateOverlongComments,
   validate(pickupSchema.omit(['photo'])),
   handleAsyncErrors(getNewPickupHandler(upload, createPickup)),
 );
