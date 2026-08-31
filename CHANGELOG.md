@@ -1,3 +1,16 @@
+# [v3.1.0-663](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.0-663) (2026-08-31)
+
+
+### Bug Fixes
+
+* enforce character limits for free type text entry fields ([7f46667](https://github.com/agrc/roadkill-mobile/commit/7f46667820832b6205e9e974cba7d9e3e90daba1)), closes [#416](https://github.com/agrc/roadkill-mobile/issues/416)
+* **front:** allow for entering dates in the previous year ([c3dcba3](https://github.com/agrc/roadkill-mobile/commit/c3dcba3498ebe71acbd570d7d4d6f9da654107cb)), closes [#418](https://github.com/agrc/roadkill-mobile/issues/418)
+* **front:** remove duplicate mile markers ([9a1a975](https://github.com/agrc/roadkill-mobile/commit/9a1a975ac400c5d7b5599e383480fa1e3eeb2a3e))
+* **front:** sort out some env var issues to get closer to expo recommendations ([9ccd820](https://github.com/agrc/roadkill-mobile/commit/9ccd8207a1e34a663c59fcf9b312396817eb115b))
+* **palletjack:** add code to help prevent duplicate records ([2ba6a81](https://github.com/agrc/roadkill-mobile/commit/2ba6a81d749357cee8d9469a4ab74d062d5190e7)), closes [#414](https://github.com/agrc/roadkill-mobile/issues/414)
+
+
+
 # [v3.1.0-662](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.0-662) (2025-07-24)
 
 
