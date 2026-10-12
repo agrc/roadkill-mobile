@@ -64,32 +64,67 @@ const secureStoreOptions = {
 
 export function useSecureRef(key) {
   const ref = React.useRef();
+  const hydration = React.useRef(null);
+  const writeQueue = React.useRef(Promise.resolve());
+
+  if (!hydration.current || hydration.current.key !== key) {
+    if (hydration.current) ref.current = undefined;
+    let resolve;
+    hydration.current = {
+      key,
+      promise: new Promise((ready) => {
+        resolve = ready;
+      }),
+      resolve: null,
+    };
+    hydration.current.resolve = resolve;
+  }
+  const currentHydration = hydration.current;
 
   React.useEffect(() => {
+    let active = true;
     const init = async () => {
-      const value = await SecureStorage.getItemAsync(key, secureStoreOptions);
-
       try {
-        ref.current = JSON.parse(value);
-      } catch (e) {
-        ref.current = value;
+        const value = await SecureStorage.getItemAsync(key, secureStoreOptions);
+
+        if (active && ref.current === undefined) {
+          try {
+            ref.current = JSON.parse(value);
+          } catch (error) {
+            ref.current = value;
+          }
+        }
+      } catch (error) {
+        console.error('error secure ref get', key, error);
+        if (active && ref.current === undefined) ref.current = null;
+      } finally {
+        currentHydration.resolve();
       }
     };
 
-    init();
-  }, [key]);
+    void init();
+
+    return () => {
+      active = false;
+    };
+  }, [key, currentHydration]);
 
   const setRef = (value) => {
     // value could be string or object
     ref.current = value;
-    SecureStorage.setItemAsync(
-      key,
-      typeof value === 'object' ? JSON.stringify(value) : value,
-      secureStoreOptions,
-    );
+    const serializedValue =
+      typeof value === 'object' ? JSON.stringify(value) : value;
+    const write = writeQueue.current
+      .catch(() => {})
+      .then(() =>
+        SecureStorage.setItemAsync(key, serializedValue, secureStoreOptions),
+      );
+    writeQueue.current = write;
+
+    return write;
   };
 
-  return [ref, setRef];
+  return [ref, setRef, currentHydration.promise];
 }
 
 // https://github.com/facebook/react/issues/14981#issuecomment-468460187
