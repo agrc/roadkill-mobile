@@ -106,7 +106,6 @@ beforeEach(() => {
   mockSecureValues = {};
   mockProviders = {
     apple: makeProvider('apple'),
-    facebook: makeProvider('facebook'),
     google: makeProvider('google'),
     utahid: makeProvider('utahid'),
   };
@@ -132,7 +131,6 @@ beforeEach(() => {
     default: {
       authProviderNames: {
         apple: 'apple',
-        facebook: 'facebook',
         google: 'google',
         utahid: 'utahid',
       },
@@ -195,10 +193,6 @@ beforeEach(() => {
     __esModule: true,
     default: () => mockProviders.apple,
   }));
-  jest.doMock('./providers/facebook', () => ({
-    __esModule: true,
-    default: () => mockProviders.facebook,
-  }));
   jest.doMock('./providers/google', () => ({
     __esModule: true,
     default: () => mockProviders.google,
@@ -230,6 +224,26 @@ describe('AuthContextProvider session recovery', () => {
     mockRuntime.flushEffects();
 
     expect(mockOnReady).toHaveBeenCalledTimes(1);
+  });
+
+  it('signs out a stored session from a removed provider instead of blocking readiness', async () => {
+    mockSecureValues.USER_INFO = {
+      oauthUser: { sub: 'saved-subject' },
+      providerName: 'facebook',
+      user: { id: 'saved-user' },
+      registered: true,
+    };
+
+    await initializeAuthContext();
+
+    expect(mockOnReady).not.toHaveBeenCalled();
+    expect(mockSecureValues.USER_INFO).toBeNull();
+
+    const auth = renderAuthContext();
+    mockRuntime.flushEffects();
+
+    expect(mockOnReady).toHaveBeenCalledTimes(1);
+    expect(auth.authInfo).toBeNull();
   });
 
   it('preserves signed-out startup and rejects authenticated access without prompting', async () => {

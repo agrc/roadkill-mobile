@@ -8,7 +8,6 @@ module.exports = {
   apiVersion: '1.0.3',
   authProviderNames: {
     apple: 'apple',
-    facebook: 'facebook',
     google: 'google',
     utahid: 'utahid',
   },

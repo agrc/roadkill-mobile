@@ -116,7 +116,6 @@ export default function AppInfoScreen() {
         </Text>
         <Divider />
 
-        {/* Facebook requires a link to the privacy policy in the app */}
         <View style={[styles.buttonContainer, { marginBottom: PADDING * 2 }]}>
           <Button
             status="basic"
