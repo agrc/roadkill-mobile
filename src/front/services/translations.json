@@ -5,6 +5,7 @@
     "carcass": "Carcass",
     "components": {
       "cachedData": {
+        "ownershipIssue": "Some saved reports belong to another account or have no recorded owner. Sign in with the original account, or manually confirm same-identity reassignment or assignment of an unowned report.",
         "sendReports": "Send unsubmitted reports",
         "submittingData": "Submitting data"
       },
@@ -123,6 +124,8 @@
         "contractor": "State contractor",
         "iam": "I am a...",
         "public": "Member of the public",
+        "recoveryRegistration": "This identity needs registration before saved reports can be submitted. Sign in again with the same identity to continue.",
+        "recoverySignIn": "Your sign-in needs to be refreshed. Sign in again to continue. Saved reports remain on this device and are only submitted to the account that created them.",
         "signInWith": "Sign in with",
         "utahid": "Sign in with UtahID",
         "welcome": "Welcome to the Utah Roadkill Reporter"
@@ -223,7 +226,15 @@
         "offlineError": "Offline Submission Error",
         "offlineReport": "Offline Report",
         "offlineSubmission": "Offline Submission",
-        "offlineSuccess": "Your offline data was successfully submitted."
+        "offlineSuccess": "Your offline data was successfully submitted.",
+        "ownerMismatch": "Some saved reports belong to a different sign-in and were kept on this device.",
+        "ownershipConfirmationCancelled": "No saved reports were reassigned.",
+        "reassignDescription": "These reports were saved under another app account for the same sign-in identity. Submit them as the currently signed-in account?",
+        "reassignTitle": "Confirm account for saved reports",
+        "signInBeforeSubmit": "Sign in to a registered account before submitting saved reports.",
+        "submitAsCurrentUser": "Submit as current user",
+        "unownedDescription": "These reports do not have a recorded account. Submit them as the currently signed-in user?",
+        "unownedTitle": "Confirm account for saved reports"
       },
       "utilities": {
         "pleaseSendEmail": "Please send an email to\n%{email}\nfor support.",
@@ -243,6 +254,7 @@
     "carcass": "Cuerpo",
     "components": {
       "cachedData": {
+        "ownershipIssue": "Algunos informes guardados pertenecen a otra cuenta o no tienen un propietario registrado. Inicia sesión con la cuenta original o confirma manualmente la reasignación de la misma identidad o la asignación de un informe sin propietario.",
         "sendReports": "Enviar informes no enviados",
         "submittingData": "Enviando datos"
       },
@@ -361,6 +373,8 @@
         "contractor": "Contratista del estado",
         "iam": "Soy un...",
         "public": "Miembro del público",
+        "recoveryRegistration": "Esta identidad debe registrarse antes de enviar los informes guardados. Inicia sesión de nuevo con la misma identidad para continuar.",
+        "recoverySignIn": "Debes actualizar tu inicio de sesión. Inicia sesión de nuevo para continuar. Los informes guardados permanecen en este dispositivo y solo se envían a la cuenta que los creó.",
         "signInWith": "Iniciar sesión con",
         "utahid": "Iniciar sesión con UtahID",
         "welcome": "Bienvenido al Utah Roadkill Reporter"
@@ -461,7 +475,15 @@
         "offlineError": "Error de envío sin conexión",
         "offlineReport": "Informe sin conexión",
         "offlineSubmission": "Envío sin conexión",
-        "offlineSuccess": "Tus datos sin conexión se enviaron correctamente."
+        "offlineSuccess": "Tus datos sin conexión se enviaron correctamente.",
+        "ownerMismatch": "Algunos informes guardados pertenecen a otra sesión y se conservaron en este dispositivo.",
+        "ownershipConfirmationCancelled": "No se reasignó ningún informe guardado.",
+        "reassignDescription": "Estos informes se guardaron con otra cuenta de la aplicación para la misma identidad de inicio de sesión. ¿Quieres enviarlos como la cuenta que inició sesión actualmente?",
+        "reassignTitle": "Confirma la cuenta de los informes guardados",
+        "signInBeforeSubmit": "Inicia sesión en una cuenta registrada antes de enviar los informes guardados.",
+        "submitAsCurrentUser": "Enviar como usuario actual",
+        "unownedDescription": "Estos informes no tienen una cuenta registrada. ¿Quieres enviarlos como el usuario que inició sesión?",
+        "unownedTitle": "Confirma la cuenta de los informes guardados"
       },
       "utilities": {
         "pleaseSendEmail": "Por favor envía un correo electrónico a\n%{email}\npara soporte.",

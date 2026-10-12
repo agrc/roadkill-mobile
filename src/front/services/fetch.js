@@ -13,10 +13,12 @@
  */
 export default async function myFetch(url, options, parseJson) {
   class HTTPError extends Error {
-    constructor(message, response) {
+    constructor(message, response, data) {
       super(message);
       this.name = 'HTTPError';
       this.response = response;
+      this.status = response.status;
+      this.data = data;
     }
   }
 
@@ -40,14 +42,17 @@ export default async function myFetch(url, options, parseJson) {
 
   if (!response.ok) {
     let errorText;
+    let errorData;
     try {
       errorText = await response.text();
+      errorData = JSON.parse(errorText);
     } catch {
-      errorText = response.statusText;
+      errorText = errorText || response.statusText;
     }
     throw new HTTPError(
       `Fetch error: status code: ${response.status} text: ${errorText}`,
       response,
+      errorData,
     );
   }
 
