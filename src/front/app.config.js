@@ -37,7 +37,6 @@ module.exports = {
     backgroundColor: '#ffffff',
   },
   assetBundlePatterns: ['**/*'],
-  jsEngine: 'hermes',
   ios: {
     bundleIdentifier: bundleId,
     googleServicesFile: process.env.GOOGLE_SERVICES_IOS,
@@ -112,6 +111,9 @@ module.exports = {
     'expo-asset',
     'expo-localization',
     'expo-secure-store',
+    'expo-mail-composer',
+    'expo-sqlite',
+    'expo-web-browser',
     [
       'expo-location',
       {
