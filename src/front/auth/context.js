@@ -11,7 +11,6 @@ import { updateConstants } from '../services/constants';
 import myFetch from '../services/fetch';
 import { useSecureState } from '../services/utilities';
 import useAppleProvider from './providers/apple';
-import useFacebookProvider from './providers/facebook';
 import useGoogleProvider from './providers/google';
 import useUtahIDProvider from './providers/utahid';
 
@@ -88,7 +87,6 @@ export function AuthContextProvider({ children, onReady }) {
   const explicitlySignedIn = React.useRef(false);
   const readyNotified = React.useRef(false);
   const [status, setStatus] = React.useState(STATUS.idle);
-  const facebookProvider = useFacebookProvider();
   const googleProvider = useGoogleProvider();
   const utahidProvider = useUtahIDProvider();
   const appleProvider = useAppleProvider();
@@ -102,7 +100,6 @@ export function AuthContextProvider({ children, onReady }) {
 
   const PROVIDER_LOOKUP = {
     apple: appleProvider,
-    facebook: facebookProvider,
     google: googleProvider,
     utahid: utahidProvider,
   };
@@ -170,17 +167,17 @@ export function AuthContextProvider({ children, onReady }) {
     if (
       authInfo !== undefined &&
       authInfo !== null &&
-      (!authInfo.providerName || !authInfo.oauthUser?.sub)
+      (!currentProvider || !authInfo.oauthUser?.sub)
     ) {
       authInfoRef.current = null;
       setAuthInfo(null);
     }
-  }, [authInfo, setAuthInfo]);
+  }, [authInfo, currentProvider, setAuthInfo]);
 
   React.useEffect(() => {
     const secureStateIsHydrated = authInfo !== undefined && userType !== undefined;
     const storedAuthInfoIsValid =
-      authInfo === null || Boolean(authInfo?.providerName && authInfo?.oauthUser?.sub);
+      authInfo === null || Boolean(currentProvider && authInfo?.oauthUser?.sub);
     const providerIsReady =
       authInfo === null || (storedAuthInfoIsValid && currentProvider?.isReady);
 
@@ -189,7 +186,7 @@ export function AuthContextProvider({ children, onReady }) {
       console.log('authInfo', JSON.stringify(authInfo, null, 2));
       onReady();
     }
-  }, [authInfo, currentProvider?.isReady, onReady, userType]);
+  }, [authInfo, currentProvider, currentProvider?.isReady, onReady, userType]);
 
   const requestLogin = async (providerName, token, oauthUser) => {
     const loginResponse = await myFetch(

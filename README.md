@@ -105,11 +105,6 @@ Android Devices (Internal Testing): [Production](https://play.google.com/apps/in
 
 iOS Devices (TestFlight): [Production](https://testflight.apple.com/join/66Vul6Jz) | [Staging](https://testflight.apple.com/join/EbfHsLjq)
 
-Facebook Test Account:
-
-email: `open_vboxopy_user@tfbnw.net`  
-password: `tester`
-
 ### Firebase Emulators
 
 The back end of this application uses firebase firestore and storage emulators during local development. Go to [http://localhost:4000](http://localhost:4000) to see the UI for them.
