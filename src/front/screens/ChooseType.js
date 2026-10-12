@@ -40,7 +40,7 @@ export default function ChooseTypeScreen({ navigation }) {
     checkAppleSignIn();
   }, []);
 
-  const { setUserType } = useAuth();
+  const { authInfo, setUserType, logIn, status } = useAuth();
   const Option = ({ children, onPress, accessoryLeft }) => {
     return (
       <Button
@@ -62,7 +62,6 @@ export default function ChooseTypeScreen({ navigation }) {
     accessoryLeft: propTypes.func,
   };
 
-  const { logIn, status } = useAuth();
   const showSpinner = status === STATUS.loading;
   const initLogIn = async (providerName, userType) => {
     setUserType(userType);
@@ -124,6 +123,15 @@ export default function ChooseTypeScreen({ navigation }) {
         <Text category="h3" style={styles.center}>
           {t('screens.chooseType.iam')}
         </Text>
+        {authInfo?.sessionRecovery ? (
+          <Text style={styles.recoveryMessage}>
+            {t(
+              authInfo.sessionRecovery === 'registration'
+                ? 'screens.chooseType.recoveryRegistration'
+                : 'screens.chooseType.recoverySignIn',
+            )}
+          </Text>
+        ) : null}
 
         <View style={styles.optionsContainer}>
           <Option
@@ -234,6 +242,10 @@ const styles = StyleSheet.create({
   },
   center: {
     textAlign: 'center',
+  },
+  recoveryMessage: {
+    textAlign: 'center',
+    marginVertical: 10,
   },
   buttonContainer: {
     alignItems: 'center',
