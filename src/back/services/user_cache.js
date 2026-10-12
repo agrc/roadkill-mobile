@@ -14,31 +14,50 @@ value: {
 */
 export async function getCachedUser(token, authProvider) {
   const decodedInputToken = jwtDecode(token);
+  if (
+    typeof decodedInputToken.sub !== 'string' ||
+    !decodedInputToken.sub.trim() ||
+    !Number.isFinite(decodedInputToken.exp)
+  ) {
+    return null;
+  }
 
   const document = await firestore
     .doc(`${authProvider}_users/${decodedInputToken.sub}`)
     .get();
   const data = document.data();
 
-  if (!data || token !== data.token) return null;
-
-  // return null if expired
-  if (data.exp * 1000 < new Date().getTime()) {
-    if (authProvider === commonConfig.authProviderNames.utahid) {
-      return null;
-    }
+  if (
+    !data ||
+    token !== data.token ||
+    !Number.isFinite(data.exp) ||
+    data.exp !== decodedInputToken.exp ||
+    data.exp * 1000 <= Date.now()
+  ) {
+    return null;
   }
 
   return data;
 }
 
 export async function cacheAppleTokens(sub, idToken, refreshToken) {
-  await firestore
-    .doc(`${commonConfig.authProviderNames.apple}_users/${sub}`)
-    .set({
+  const decodedToken = jwtDecode(idToken);
+  if (decodedToken.sub !== sub || !Number.isFinite(decodedToken.exp)) {
+    throw new Error('Apple identity token subject or expiration is invalid');
+  }
+
+  const reference = firestore.doc(
+    `${commonConfig.authProviderNames.apple}_users/${sub}`,
+  );
+  await firestore.runTransaction(async (transaction) => {
+    const document = await transaction.get(reference);
+    transaction.set(reference, {
+      ...document.data(),
       token: idToken,
+      exp: decodedToken.exp,
       refreshToken,
     });
+  });
 }
 
 export async function getCachedAppleRefreshToken(sub) {
@@ -70,9 +89,25 @@ export async function setCachedUser(token, authProvider, userId) {
 
 export async function deleteCachedUser(token, authProvider) {
   const decodedToken = jwtDecode(token);
-  const document = firestore.doc(`${authProvider}_users/${decodedToken.sub}`);
+  if (
+    typeof decodedToken.sub !== 'string' ||
+    !decodedToken.sub.trim() ||
+    !Number.isFinite(decodedToken.exp)
+  ) {
+    const error = new Error('Authorization token is malformed');
+    error.name = 'InvalidTokenError';
+    throw error;
+  }
 
-  await document.delete();
+  const document = firestore.doc(
+    `${authProvider}_users/${decodedToken.sub}`,
+  );
+  await firestore.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(document);
+    if (snapshot.data()?.token === token) {
+      transaction.delete(document);
+    }
+  });
 }
 
 export function shouldCacheUser(authProvider) {

@@ -8,16 +8,24 @@ import { getTokenFromHeader } from './security.js';
 export function getRegister(isExistingUser, registerUser, getUser) {
   return async function register(request, response) {
     const { user, organization } = request.body;
+    const verifiedUser = {
+      ...user,
+      auth_id: response.locals.authId,
+      auth_provider: response.locals.authProvider,
+    };
 
-    if (await isExistingUser(user)) {
+    if (await isExistingUser(verifiedUser)) {
       return response.status(409).json({
         errors: 'user is already registered',
       });
     }
 
-    await registerUser(organization, user);
+    await registerUser(organization, verifiedUser);
 
-    const newUser = await getUser(user.auth_id, user.auth_provider);
+    const newUser = await getUser(
+      response.locals.authId,
+      response.locals.authProvider,
+    );
 
     return response.status(201).json({ newUser });
   };
@@ -25,10 +33,15 @@ export function getRegister(isExistingUser, registerUser, getUser) {
 
 export function getLogin(getUser, updateUser, getConstants) {
   return async function login(request, response) {
-    const user = await getUser(request.body.auth_id, request.body.auth_provider);
+    const { authId, authProvider } = response.locals;
+    const user = await getUser(authId, authProvider);
 
     if (user?.id && request.body.email && request.body.first_name && request.body.last_name) {
-      await updateUser(request.body);
+      await updateUser({
+        ...request.body,
+        auth_id: authId,
+        auth_provider: authProvider,
+      });
     }
 
     return response.status(200).json({
@@ -116,7 +129,7 @@ export function getDeleteUser(deleteUser) {
           appleSignIn.revokeToken(cachedUser.refreshToken);
         }
 
-        deleteCachedUser(token, authProvider);
+        await deleteCachedUser(token, authProvider);
       }
 
       await deleteUser(response.locals.userId);

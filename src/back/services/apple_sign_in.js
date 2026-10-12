@@ -12,6 +12,17 @@ function getClientSecret() {
   });
 }
 
+function throwOAuthError(response) {
+  const error = new Error(
+    `${response.error}: ${response.error_description}`,
+  );
+  if (['invalid_grant', 'invalid_token'].includes(response.error)) {
+    error.code = response.error;
+  }
+
+  throw error;
+}
+
 async function revokeToken(refreshToken) {
   // revoke refresh token
   const response = await appleSignIn.revokeAuthorizationToken(refreshToken, {
@@ -53,9 +64,7 @@ async function getTokens(authorizationCode) {
   // }
 
   if (tokenResponse.error) {
-    throw new Error(
-      `${tokenResponse.error}: ${tokenResponse.error_description}`,
-    );
+    throwOAuthError(tokenResponse);
   }
 
   return {
@@ -72,7 +81,7 @@ async function validateRefreshToken(refreshToken) {
   });
 
   if (response.error) {
-    throw new Error(`${response.error}: ${response.error_description}`);
+    throwOAuthError(response);
   }
 
   return response.id_token;
