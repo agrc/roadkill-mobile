@@ -11,7 +11,7 @@ import {
   readAsStringAsync,
   readDirectoryAsync,
   writeAsStringAsync,
-} from 'expo-file-system';
+} from 'expo-file-system/legacy';
 import * as Notifications from 'expo-notifications';
 import lodash from 'lodash';
 import propTypes from 'prop-types';
