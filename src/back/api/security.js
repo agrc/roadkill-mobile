@@ -1,6 +1,4 @@
 import commonConfig from 'common/config.js';
-import jwt from 'jsonwebtoken';
-import jwksClient from 'jwks-rsa';
 import { jwtDecode } from 'jwt-decode';
 import ky from 'ky';
 import appleSignIn from '../services/apple_sign_in.js';
@@ -15,9 +13,6 @@ import {
 } from '../services/user_cache.js';
 import { getUser as getAppUser } from '../services/user_management.js';
 
-const facebookJwksClient = jwksClient({
-  jwksUri: 'https://www.facebook.com/.well-known/oauth/openid/jwks/',
-});
 const authProviders = new Set(Object.values(commonConfig.authProviderNames));
 
 function isInvalidCredentialError(error) {
@@ -273,10 +268,6 @@ export function getTokenFromHeader(authorization) {
   return { token, authProvider, authToken };
 }
 
-function isJwt(token) {
-  return typeof token === 'string' && token.split('.').length === 3;
-}
-
 export async function authenticate(request, response, next) {
   const { token, authProvider, authToken } = getTokenFromHeader(
     request.headers.authorization,
@@ -357,24 +348,10 @@ export async function authenticate(request, response, next) {
           return invalidToken(response, 'Apple identity does not match the session');
         }
       }
-    } else if (
-      authProvider === commonConfig.authProviderNames.facebook &&
-      isJwt(token)
-    ) {
-      // Facebook limited-login tokens are used by the iOS app.
-      const header = jwtDecode(token, { header: true });
-      const key = await facebookJwksClient.getSigningKey(header.kid);
-      const decoded = jwt.verify(token, key.getPublicKey(), {
-        algorithms: ['RS256'],
-        audience: getSecret('facebook-oauth-client-id'),
-        issuer: 'https://www.facebook.com',
-      });
-      authId = decoded.sub;
     } else {
       const userInfos = {
         utahid: 'https://login.dts.utah.gov/sso/oauth2/userinfo',
         google: 'https://openidconnect.googleapis.com/v1/userinfo',
-        facebook: `https://graph.facebook.com/me?access_token=${token}`,
       };
 
       let userResponse;

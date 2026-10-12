@@ -13,7 +13,6 @@ data/
 !src/front/data/
 docker-compose.yaml
 docs/
-facebook-screen-recording/
 src/back/
 src/front/.env*
 src/front/.expo*

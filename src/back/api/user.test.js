@@ -17,7 +17,7 @@ describe('login', () => {
     const userId = 1;
     const body = {
       auth_id: 123,
-      auth_provider: 'facebook',
+      auth_provider: 'google',
       email: 'test@test.com',
       first_name: 'Test',
       last_name: 'User',

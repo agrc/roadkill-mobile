@@ -96,15 +96,6 @@ module.exports = {
       },
     ],
     [
-      'react-native-fbsdk-next',
-      {
-        appID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
-        clientToken: process.env.FACEBOOK_OAUTH_CLIENT_TOKEN,
-        displayName: `${name} Reporter`,
-        scheme: `fb${process.env.FACEBOOK_OAUTH_CLIENT_ID}`,
-      },
-    ],
-    [
       'expo-build-properties',
       {
         ios: {
