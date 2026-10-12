@@ -188,7 +188,7 @@ beforeEach(() => {
     }),
     useQueryClient: () => ({ invalidateQueries: jest.fn() }),
   }));
-  jest.doMock('expo-file-system', () => ({
+  jest.doMock('expo-file-system/legacy', () => ({
     cacheDirectory: 'file:///cache/',
     documentDirectory: 'file:///documents/',
     deleteAsync: mockDeleteAsync,
