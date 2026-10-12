@@ -23,13 +23,14 @@ eas build --platform $PLATFORM --profile $CHANNEL
 
 ./scripts/downloadArtifacts.sh $PLATFORM $CHANNEL $BRANCH
 
-# apply environment variables from the .env file
-# this is really just for the fastlane app specific password
-if [ -f ./.env ]; then
-  echo "Applying environment variables from .env file"
-  export $(grep -v '^#' ./.env | xargs)
+# apply environment variables from the .env.local file
+# this is really just for the fastlane app specific password, which expo
+# refuses to load from a non-.local env file
+if [ -f ./.env.local ]; then
+  echo "Applying environment variables from .env.local file"
+  export $(grep -v '^#' ./.env.local | xargs)
 else
-  echo ".env file not found, skipping environment variable application"
+  echo ".env.local file not found, skipping environment variable application"
 fi
 
 if [ "$PLATFORM" == "all" ] || [ "$PLATFORM" == "ios" ]; then
