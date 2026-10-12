@@ -24,6 +24,7 @@ import {
   authenticate,
   getToken,
   logout,
+  requireRegisteredUser,
   verifyAppleTokenAndCode,
 } from './api/security.js';
 import { getGetAllHandler } from './api/submissions.js';
@@ -197,17 +198,20 @@ app.get('/user/reject/:guid', handleAsyncErrors(getReject(rejectUser)));
 app.get(
   '/user/profile',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   handleAsyncErrors(getGetProfile(getProfile)),
 );
 app.post(
   '/user/profile/update',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   validate(profileUpdateSchema),
   handleAsyncErrors(getUpdateProfile(updateProfile)),
 );
 app.delete(
   '/user/delete',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   handleAsyncErrors(getDeleteUser(deleteUser)),
 );
 
@@ -215,6 +219,7 @@ app.delete(
 app.post(
   '/reports/report',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   multer.single('photo'),
   truncateOverlongComments,
   validate(reportSchema.omit(['photo'])),
@@ -225,6 +230,7 @@ app.post(
 app.post(
   '/reports/pickup',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   multer.single('photo'),
   truncateOverlongComments,
   validate(pickupSchema.omit(['photo'])),
@@ -233,6 +239,7 @@ app.post(
 app.post(
   '/routes/route',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   validate(routeSchema),
   handleAsyncErrors(getNewRouteHandler(createRoute)),
 );
@@ -241,20 +248,22 @@ app.post(
 app.get(
   '/submissions',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   handleAsyncErrors(getGetAllHandler(getMySubmissions)),
 );
 app.get(
   '/reports/report/:reportId',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   handleAsyncErrors(getGetReportHandler(getReport)),
 );
 app.get(
   '/routes/route/:routeId',
   handleAsyncErrors(authenticate),
+  handleAsyncErrors(requireRegisteredUser),
   handleAsyncErrors(getGetRouteHandler(getRoute)),
 );
 
-// these endpoints are unsecured to support report notification emails
 app.get(
   '/photos/thumb/:photoId',
   handleAsyncErrors(getGetPhotoHandler(true, getPhoto)),
@@ -264,7 +273,6 @@ app.get(
   handleAsyncErrors(getGetPhotoHandler(false, getPhoto)),
 );
 
-// I don't see any reason to secure this endpoint and am worried that it will just slow it down
 app.get(
   '/reports/id_image/:key/:pixelRatio',
   handleAsyncErrors(getGetIDImageHandler(getIDImage)),
