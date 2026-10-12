@@ -99,11 +99,13 @@ module.exports = {
       {
         ios: {
           useFrameworks: 'static',
+          // prebuilt React Native core does not support use_frameworks
+          buildReactNativeFromSource: true,
         },
         android: {
-          compileSdkVersion: 35,
-          targetSdkVersion: 35,
-          buildToolsVersion: '35.0.0',
+          compileSdkVersion: 36,
+          targetSdkVersion: 36,
+          buildToolsVersion: '36.0.0',
         },
       },
     ],
@@ -114,6 +116,7 @@ module.exports = {
     'expo-mail-composer',
     'expo-sqlite',
     'expo-web-browser',
+    'expo-font',
     [
       'expo-location',
       {
