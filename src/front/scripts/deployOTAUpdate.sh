@@ -11,7 +11,7 @@ echo "getting environment variables from $ENV_FILE"
 rm -rf ./dist
 
 echo "publishing OTA update"
-npx env-cmd -f $ENV_FILE eas update --auto --json --non-interactive --channel $CHANNEL
+npx env-cmd -f $ENV_FILE eas update --auto --json --non-interactive --channel $CHANNEL --environment $CHANNEL
 
 echo "uploading sourcemaps to sentry"
 npx sentry-expo-upload-sourcemaps dist

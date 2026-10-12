@@ -44,7 +44,6 @@ module.exports = {
     supportsTablet: true,
     config: {
       usesNonExemptEncryption: false,
-      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
     },
   },
   android: {
@@ -68,14 +67,16 @@ module.exports = {
       'READ_EXTERNAL_STORAGE',
       'WRITE_EXTERNAL_STORAGE',
     ],
-    config: {
-      googleMaps: {
-        apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
-      },
-    },
   },
   plugins: [
     'expo-apple-authentication',
+    [
+      'react-native-maps',
+      {
+        // iOS uses Apple Maps (no provider is set), so only Android needs a key
+        androidGoogleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
+      },
+    ],
     [
       '@sentry/react-native/expo',
       {
@@ -117,6 +118,7 @@ module.exports = {
     'expo-sqlite',
     'expo-web-browser',
     'expo-font',
+    'expo-image',
     [
       'expo-location',
       {
