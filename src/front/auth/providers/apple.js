@@ -5,9 +5,9 @@ import { jwtDecode } from 'jwt-decode';
 import React from 'react';
 import config from '../../services/config';
 import myFetch from '../../services/fetch';
-import { isTokenExpired, useAsyncError } from '../../services/utilities';
 
 const STORE_KEY = 'roadkill-apple-user-info';
+const REFRESH_MARGIN_MS = 5 * 60 * 1000;
 const appleOptions = {
   requestedScopes: [
     AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
@@ -15,183 +15,473 @@ const appleOptions = {
   ],
 };
 
+function getIdentityTokenClaims(identityToken) {
+  if (typeof identityToken !== 'string') return null;
+
+  try {
+    const claims = jwtDecode(identityToken);
+    if (typeof claims.sub !== 'string' || !Number.isFinite(claims.exp)) {
+      return null;
+    }
+
+    return claims;
+  } catch {
+    return null;
+  }
+}
+
+function createAuthError(code, message, cause) {
+  const error = new Error(message);
+  error.code = code;
+  if (cause) error.cause = cause;
+
+  return error;
+}
+
+function isCancelled(error) {
+  return ['ERR_REQUEST_CANCELED', 'AUTH_CANCELLED'].includes(error?.code);
+}
+
+function toOAuthUser(userInfo) {
+  return {
+    sub: userInfo.sub,
+    email: userInfo.email,
+    given_name: userInfo.given_name,
+    family_name: userInfo.family_name,
+  };
+}
+
 export default function useAppleProvider() {
-  const throwAsyncError = useAsyncError();
   const cachedUserInfo = React.useRef(null);
+  const sessionGeneration = React.useRef(0);
+  const refreshPromise = React.useRef(null);
+  const secureStoreWrites = React.useRef(Promise.resolve());
   const [isReady, setIsReady] = React.useState(false);
 
-  const refreshToken = React.useCallback(
-    async (identityToken, authorizationCode, isRetry) => {
-      console.log('refreshing apple token');
-      let refreshResult;
-      const payload = { identityToken };
-      if (authorizationCode) {
-        payload.authorizationCode = authorizationCode;
-      }
-      try {
-        refreshResult = await myFetch(
-          `${config.API}/user/apple-token`,
-          {
-            method: 'POST',
-            json: payload,
-          },
-          true,
-        );
-      } catch (error) {
-        console.log('refresh token error', error);
-        if (error.response.status === 401 && !isRetry) {
-          console.log('refresh token failed, refresh credentials');
-          const refreshedCredentials =
-            await AppleAuthentication.refreshAsync(appleOptions);
+  const getCachedUserInfo = React.useCallback(async () => {
+    const stringValue = await SecureStore.getItemAsync(STORE_KEY);
+    if (!stringValue) return null;
 
-          return await refreshToken(
-            refreshedCredentials.identityToken,
-            refreshedCredentials.authorizationCode,
-            true,
+    try {
+      const userInfo = JSON.parse(stringValue);
+
+      return userInfo &&
+        typeof userInfo === 'object' &&
+        !Array.isArray(userInfo)
+        ? userInfo
+        : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const persistUserInfo = React.useCallback(
+    (userInfo, generation, updateCache = true) => {
+      const write = async () => {
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed before credentials were saved.',
           );
-        } else {
-          throw error;
         }
-      }
 
-      console.log('refreshResult', JSON.stringify(refreshResult, null, 2));
+        await SecureStore.setItemAsync(STORE_KEY, JSON.stringify(userInfo));
 
-      cachedUserInfo.current.identityToken = refreshResult.identityToken;
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while credentials were being saved.',
+          );
+        }
+
+        if (updateCache) cachedUserInfo.current = userInfo;
+
+        return userInfo;
+      };
+      const operation = secureStoreWrites.current.then(write);
+      secureStoreWrites.current = operation.catch(() => {});
+
+      return operation;
     },
     [],
   );
 
-  React.useEffect(() => {
-    const giddyUp = async () => {
-      cachedUserInfo.current = await getCachedUserInfo();
-
-      // because there is no way to know if this token is valid on the server
-      if (cachedUserInfo.current?.identityToken) {
-        await refreshToken(cachedUserInfo.current.identityToken);
+  const refreshToken = React.useCallback(
+    (identityToken, authorizationCode, generation) => {
+      const pendingRefresh = refreshPromise.current;
+      if (
+        pendingRefresh?.generation === generation &&
+        pendingRefresh.identityToken === identityToken
+      ) {
+        return pendingRefresh.promise;
       }
 
-      setIsReady(true);
+      const currentUserInfo = cachedUserInfo.current;
+      const claims = getIdentityTokenClaims(identityToken);
+      if (
+        generation !== sessionGeneration.current ||
+        !currentUserInfo?.sub ||
+        !claims ||
+        claims.sub !== currentUserInfo.sub ||
+        claims.exp * 1000 <= Date.now()
+      ) {
+        return Promise.reject(
+          createAuthError(
+            'AUTH_REQUIRED',
+            'A valid Apple sign-in is required.',
+          ),
+        );
+      }
+
+      const payload = { identityToken };
+      if (authorizationCode) payload.authorizationCode = authorizationCode;
+
+      const operation = (async () => {
+        let refreshResult;
+        try {
+          refreshResult = await myFetch(
+            `${config.API}/user/apple-token`,
+            {
+              method: 'POST',
+              json: payload,
+            },
+            true,
+          );
+        } catch (error) {
+          if (
+            generation !== sessionGeneration.current ||
+            cachedUserInfo.current?.sub !== currentUserInfo.sub
+          ) {
+            throw createAuthError(
+              'AUTH_REQUIRED',
+              'Apple authentication changed while the token was renewing.',
+              error,
+            );
+          }
+          if (error?.response?.status === 401) {
+            throw createAuthError(
+              'AUTH_REQUIRED',
+              'A valid Apple sign-in is required.',
+              error,
+            );
+          }
+
+          throw error;
+        }
+
+        if (
+          generation !== sessionGeneration.current ||
+          cachedUserInfo.current?.sub !== currentUserInfo.sub
+        ) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while the token was renewing.',
+          );
+        }
+
+        const refreshedToken = refreshResult?.identityToken;
+        const refreshedClaims = getIdentityTokenClaims(refreshedToken);
+        if (
+          !refreshedClaims ||
+          refreshedClaims.sub !== currentUserInfo.sub ||
+          refreshedClaims.exp * 1000 <= Date.now() + REFRESH_MARGIN_MS
+        ) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple did not return a usable identity token.',
+          );
+        }
+
+        const updatedUserInfo = {
+          ...currentUserInfo,
+          identityToken: refreshedToken,
+        };
+        await persistUserInfo(updatedUserInfo, generation);
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while the token was renewing.',
+          );
+        }
+
+        return refreshedToken;
+      })();
+      const pending = { generation, identityToken, promise: null };
+      pending.promise = operation.finally(() => {
+        if (refreshPromise.current === pending) refreshPromise.current = null;
+      });
+      refreshPromise.current = pending;
+
+      return pending.promise;
+    },
+    [persistUserInfo],
+  );
+
+  React.useEffect(() => {
+    let isActive = true;
+    const initialize = async () => {
+      const generation = sessionGeneration.current;
+      try {
+        const hydratedUserInfo = await getCachedUserInfo();
+        if (generation !== sessionGeneration.current) return;
+
+        cachedUserInfo.current = hydratedUserInfo;
+
+        const claims = getIdentityTokenClaims(
+          cachedUserInfo.current?.identityToken,
+        );
+        if (
+          claims &&
+          claims.sub === cachedUserInfo.current?.sub &&
+          claims.exp * 1000 > Date.now() &&
+          claims.exp * 1000 <= Date.now() + REFRESH_MARGIN_MS
+        ) {
+          await refreshToken(
+            cachedUserInfo.current.identityToken,
+            undefined,
+            generation,
+          );
+        }
+      } catch (error) {
+        console.error('Apple provider initialization failed', error);
+      } finally {
+        if (isActive) setIsReady(true);
+      }
     };
 
-    giddyUp();
-  }, [refreshToken]);
+    void initialize();
 
-  const getCachedUserInfo = async () => {
-    const stringValue = await SecureStore.getItemAsync(STORE_KEY);
-
-    return stringValue ? JSON.parse(stringValue) : null;
-  };
+    return () => {
+      isActive = false;
+    };
+  }, [getCachedUserInfo, refreshToken]);
 
   const logIn = async () => {
-    console.log('apple logIn, cachedUserInfo.current', cachedUserInfo.current);
-    try {
-      if (cachedUserInfo.current?.identityToken && hasValidToken()) {
-        console.log('returning cached user info');
+    const generation = ++sessionGeneration.current;
+    await secureStoreWrites.current;
+    if (generation !== sessionGeneration.current) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'Apple authentication changed while sign-in was starting.',
+      );
+    }
 
-        return cachedUserInfo.current;
+    const currentUserInfo = cachedUserInfo.current;
+    const claims = getIdentityTokenClaims(currentUserInfo?.identityToken);
+    const hasUsableToken =
+      claims &&
+      claims.sub === currentUserInfo?.sub &&
+      claims.exp * 1000 > Date.now();
+
+    if (hasUsableToken) {
+      if (claims.exp * 1000 > Date.now() + REFRESH_MARGIN_MS) {
+        return toOAuthUser(currentUserInfo);
       }
-    } catch (error) {
-      console.error('error checking token', error);
+
+      try {
+        await refreshToken(currentUserInfo.identityToken, undefined, generation);
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while sign-in was completing.',
+          );
+        }
+
+        return toOAuthUser(cachedUserInfo.current);
+      } catch (error) {
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while sign-in was completing.',
+            error,
+          );
+        }
+        if (error.code === 'AUTH_CANCELLED') return null;
+        if (error.code !== 'AUTH_REQUIRED') throw error;
+
+        let refreshedCredentials;
+        try {
+          refreshedCredentials = await AppleAuthentication.refreshAsync({
+            ...appleOptions,
+            user: currentUserInfo.sub,
+          });
+        } catch (recoveryError) {
+          if (isCancelled(recoveryError)) {
+            return null;
+          }
+          throw recoveryError;
+        }
+
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while sign-in was completing.',
+          );
+        }
+
+        const refreshedClaims = getIdentityTokenClaims(
+          refreshedCredentials?.identityToken,
+        );
+        if (
+          refreshedCredentials?.user !== currentUserInfo.sub ||
+          !refreshedClaims ||
+          refreshedClaims.sub !== currentUserInfo.sub ||
+          refreshedClaims.exp * 1000 <= Date.now()
+        ) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'A valid Apple sign-in is required.',
+          );
+        }
+
+        await refreshToken(
+          refreshedCredentials.identityToken,
+          refreshedCredentials.authorizationCode,
+          generation,
+        );
+        if (generation !== sessionGeneration.current) {
+          throw createAuthError(
+            'AUTH_REQUIRED',
+            'Apple authentication changed while sign-in was completing.',
+          );
+        }
+
+        return toOAuthUser(cachedUserInfo.current);
+      }
     }
 
     let signInResult;
     try {
       signInResult = await AppleAuthentication.signInAsync(appleOptions);
     } catch (error) {
-      if (error.code === 'ERR_REQUEST_CANCELED') {
+      if (isCancelled(error)) {
         return null;
-      } else {
-        throwAsyncError(error);
       }
+      throw error;
     }
-    console.log('signInResult', signInResult);
-    // auth shape:
-    // {
-    //   authorizationCode: string,
-    //   email: string, (could be forward email, but should work either way),
-    //   fullName: {
-    //     familyName: string,
-    //     givenName: string,
-    //     ...
-    //   },
-    //   identityToken: string,
-    //   realUserStatus: number, (2 - real user),
-    //   state: null,
-    //   user: string, (user id)
-    // }
-    if (!signInResult) {
-      throwAsyncError(new Error('signInResult is null!'));
+    if (generation !== sessionGeneration.current) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'Apple authentication changed while sign-in was completing.',
+      );
+    }
+    if (!signInResult?.user || !signInResult.identityToken) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'Apple did not return valid sign-in credentials.',
+      );
     }
 
-    // this returns a 1 when running in the dev client on my real device, not sure how helpful this is
-    // Ref: https://developer.apple.com/documentation/authenticationservices/asuserdetectionstatus
-    // if (signInResult?.realUserStatus !== 2) {
-    //   throwAsyncError(new Error('Not a real user'));
-    // }
-
-    // user and identityToken are sent every time
-    // only overwrite the cached user if it's populated
-    const existingUserInfo = await getCachedUserInfo();
-
-    cachedUserInfo.current = {
+    const existingUserInfo =
+      currentUserInfo?.sub === signInResult.user ? currentUserInfo : null;
+    const updatedUserInfo = {
       sub: signInResult.user,
       email: signInResult.email || existingUserInfo?.email,
       given_name:
-        signInResult.fullName.givenName || existingUserInfo?.given_name,
+        signInResult.fullName?.givenName || existingUserInfo?.given_name,
       family_name:
-        signInResult.fullName.familyName || existingUserInfo?.family_name,
-      identityToken: signInResult.identityToken,
+        signInResult.fullName?.familyName || existingUserInfo?.family_name,
+      identityToken: null,
     };
-    console.log('cachedUserInfo.current', cachedUserInfo.current);
+    const signInClaims = getIdentityTokenClaims(signInResult.identityToken);
+    if (
+      signInClaims?.sub !== signInResult.user ||
+      signInClaims.exp * 1000 <= Date.now()
+    ) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'Apple returned an invalid identity token.',
+      );
+    }
 
-    // we only get email, and names on the first sign in, so cache them locally
-    await SecureStore.setItemAsync(
-      STORE_KEY,
-      JSON.stringify(cachedUserInfo.current),
-    );
-
+    await persistUserInfo(updatedUserInfo, generation);
     await refreshToken(
       signInResult.identityToken,
       signInResult.authorizationCode,
+      generation,
     );
+    if (generation !== sessionGeneration.current) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'Apple authentication changed while sign-in was completing.',
+      );
+    }
 
-    return {
-      sub: cachedUserInfo.current.sub,
-      email: cachedUserInfo.current.email,
-      given_name: cachedUserInfo.current.given_name,
-      family_name: cachedUserInfo.current.family_name,
-    };
+    return toOAuthUser(cachedUserInfo.current);
   };
 
   const logOut = async () => {
-    // don't ever delete the cached user info because we will need the email and name
-    // if they haven't yet registered
-    // but remove cached identity token so that it doesn't try and log them in the next time
-    // the app loads (see useEffect)
-    cachedUserInfo.current.identityToken = null;
-    await SecureStore.setItemAsync(
-      STORE_KEY,
-      JSON.stringify(cachedUserInfo.current),
-    );
-
+    const generation = ++sessionGeneration.current;
+    const currentUserInfo = cachedUserInfo.current;
+    const storedUserInfo = currentUserInfo
+      ? { ...currentUserInfo, identityToken: null }
+      : null;
     cachedUserInfo.current = null;
+    await persistUserInfo(storedUserInfo, generation, false);
   };
 
   const getBearerToken = async () => {
+    const generation = sessionGeneration.current;
     const prefix = `${commonConfig.authProviderNames.apple}:Bearer `;
-
-    if (hasValidToken()) {
-      console.log('refreshing token');
-
-      await refreshToken(cachedUserInfo.current.identityToken);
+    const userInfo = cachedUserInfo.current;
+    const claims = getIdentityTokenClaims(userInfo?.identityToken);
+    if (
+      !claims ||
+      claims.sub !== userInfo?.sub ||
+      claims.exp * 1000 <= Date.now()
+    ) {
+      throw createAuthError(
+        'AUTH_REQUIRED',
+        'A valid Apple sign-in is required.',
+      );
     }
 
-    return prefix + cachedUserInfo.current.identityToken;
+    if (claims.exp * 1000 <= Date.now() + REFRESH_MARGIN_MS) {
+      const refreshedToken = await refreshToken(
+        userInfo.identityToken,
+        undefined,
+        generation,
+      );
+
+      if (generation !== sessionGeneration.current) {
+        throw createAuthError(
+          'AUTH_REQUIRED',
+          'Apple authentication changed while the token was renewing.',
+        );
+      }
+
+      return prefix + refreshedToken;
+    }
+
+    return prefix + userInfo.identityToken;
   };
 
   const hasValidToken = () => {
-    return !isTokenExpired(jwtDecode(cachedUserInfo.current.identityToken));
+    const userInfo = cachedUserInfo.current;
+    const claims = getIdentityTokenClaims(userInfo?.identityToken);
+
+    return (
+      !!claims && claims.sub === userInfo?.sub && claims.exp * 1000 > Date.now()
+    );
   };
 
-  return { logIn, logOut, getBearerToken, hasValidToken, isReady };
+  const getIdentity = () => {
+    const userInfo = cachedUserInfo.current;
+    const claims = getIdentityTokenClaims(userInfo?.identityToken);
+
+    return claims &&
+      claims.sub === userInfo?.sub &&
+      claims.exp * 1000 > Date.now()
+      ? userInfo.sub
+      : null;
+  };
+
+  return {
+    logIn,
+    logOut,
+    getBearerToken,
+    hasValidToken,
+    getIdentity,
+    isReady,
+  };
 }
