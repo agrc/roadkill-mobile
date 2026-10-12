@@ -1,6 +1,6 @@
 // this should really be an eslint plugin...
 import fs from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import lodash from 'lodash';
 import { basename, join } from 'path';
 
@@ -63,7 +63,7 @@ const ignore = [
 ].map((line) => join(rootFolder, line));
 
 // Search for instances of t('key') in the code in src/front and validate that the key is present in the translations.json file
-const files = glob.sync(join(rootFolder, '**/*.js'), { ignore });
+const files = globSync(join(rootFolder, '**/*.js'), { ignore });
 
 const missingKeysInCode = [];
 const regex = /\bt\('([^']+)',?.|\s*\)/g;

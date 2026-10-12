@@ -28,14 +28,6 @@ module.exports = {
     process.env.APP_VARIANT === 'production'
       ? './assets/icon.png'
       : `./assets/icon_${process.env.APP_VARIANT}.png`,
-  splash: {
-    image:
-      process.env.APP_VARIANT === 'production'
-        ? './assets/splash.png'
-        : `./assets/splash_${process.env.APP_VARIANT}.png`,
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
-  },
   assetBundlePatterns: ['**/*'],
   ios: {
     bundleIdentifier: bundleId,
@@ -119,6 +111,20 @@ module.exports = {
     'expo-web-browser',
     'expo-font',
     'expo-image',
+    'expo-status-bar',
+    [
+      'expo-splash-screen',
+      {
+        image:
+          process.env.APP_VARIANT === 'production'
+            ? './assets/splash.png'
+            : `./assets/splash_${process.env.APP_VARIANT}.png`,
+        resizeMode: 'contain',
+        backgroundColor: '#ffffff',
+        // the splash images are full-screen artwork rather than a centered logo
+        enableFullScreenImage_legacy: true,
+      },
+    ],
     [
       'expo-location',
       {
