@@ -103,7 +103,7 @@ export default function NewUserScreen() {
 
   const cancel = () => {
     navigation.navigate('choose-type');
-    logOut(true);
+    if (!authInfo?.sessionRecovery) logOut(true);
   };
 
   const name = authInfo?.oauthUser.given_name

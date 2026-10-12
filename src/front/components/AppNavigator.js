@@ -251,7 +251,9 @@ const AppNavigator = () => {
       onStateChange={updateRouteName}
       linking={linking}
     >
-      {authInfo?.user && authInfo.registered ? (
+      {authInfo?.user &&
+      authInfo.registered &&
+      !authInfo.sessionRecovery ? (
         <MainNavigator />
       ) : (
         <AuthNavigator />

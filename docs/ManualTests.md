@@ -15,6 +15,10 @@
 |                     | cancel oauth process                                         | navigates back to login screen |
 | log in successfully | kill app and then restart                                    | automatically logs in and goes to the Main screen |
 |                     | Main -> Menu -> Logout                                       | presents confirmation dialog and then navigates to login screen |
+| signed-in session receives `401 invalid_token` | attempt an authenticated action | returns to sign-in with a recovery message; no background sign-in prompt appears |
+| signed-in session receives `403 registration_required` | sign in again with the same identity and complete the profile | registration is shown and saved reports remain queued until registration succeeds |
+| recovery sign-in is shown | cancel the provider sign-in | queued reports remain available and the recovery message is still shown |
+| session receives a server error or loses network access | retry the authenticated action | the session is not logged out solely because of the outage |
 
 ## New User
 
@@ -194,3 +198,8 @@ Setup: turn on airplane mode
 | submit an offline report | go to my reports page                                                   | cached report should show up and be viewable |
 |                          | submit a route with some pickups                                        | offline alert is shown, alert bubble is shown on drawer toggle button on main screen, alert bubble is shown on app icon |
 | submit some offline data | turn off airplane mode                                                  | offline data is submitted automatically |
+| queued report belongs to another account | sign in with a different identity and retry | report and photos remain queued and are not submitted or deleted |
+| queued report belongs to current account | renew or explicitly refresh the same identity | submission resumes under the same app user |
+| same provider identity is registered as a new app user | choose Send unsubmitted reports | require explicit confirmation before reassigning retained reports; background retries and cancellation preserve the original owner and photos |
+| legacy queued report has no reliable owner | choose Send unsubmitted reports | confirm account assignment explicitly before submission; cancel preserves the report and photo |
+| auth expires during a queued batch | allow background retry | no sign-in UI is opened in the background and the queue stops retrying until recovery |

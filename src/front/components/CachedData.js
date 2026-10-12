@@ -1,4 +1,4 @@
-import { Button, Divider } from '@ui-kitten/components';
+import { Button, Divider, Text } from '@ui-kitten/components';
 import propTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { getIcon } from '../services/icons';
@@ -10,8 +10,12 @@ import RouteListItem from './RouteListItem';
 import Spinner from './Spinner';
 
 export default function CachedData({ data }) {
-  const { submitOfflineSubmissions, isSubmitting, isConnected } =
-    useOfflineCache();
+  const {
+    submitOfflineSubmissions,
+    isSubmitting,
+    isConnected,
+    ownershipIssueCount,
+  } = useOfflineCache();
 
   const submit = async () => {
     await submitOfflineSubmissions();
@@ -23,6 +27,11 @@ export default function CachedData({ data }) {
 
   return (
     <>
+      {ownershipIssueCount > 0 ? (
+        <Text style={styles.ownershipMessage}>
+          {t('components.cachedData.ownershipIssue')}
+        </Text>
+      ) : null}
       <Button
         status="info"
         style={styles.button}
@@ -58,5 +67,9 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: PADDING,
     marginHorizontal: PADDING * 2,
+  },
+  ownershipMessage: {
+    marginHorizontal: PADDING * 2,
+    marginTop: PADDING,
   },
 });
