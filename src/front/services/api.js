@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import commonConfig from 'common/config';
+import { File } from 'expo-file-system';
 import useAuth from '../auth/context';
 import config from '../services/config';
 import myFetch from './fetch';
@@ -12,7 +13,13 @@ export function getFormData(submitValues) {
   for (let key in submitValues) {
     const value = submitValues[key];
 
-    formData.append(key, value);
+    // expo/fetch (the global fetch since expo sdk 56) cannot encode react
+    // native's { uri, type, name } file parts, so send the file itself
+    if (value && typeof value === 'object' && typeof value.uri === 'string') {
+      formData.append(key, new File(value.uri));
+    } else {
+      formData.append(key, value);
+    }
   }
 
   return formData;
