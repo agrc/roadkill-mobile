@@ -63,14 +63,21 @@ function MyListItem({
     style.paddingVertical = PADDING;
   }
 
-  const imageSource = useImage({
-    uri: `${config.API}/reports/id_image/${itemToKey(item)
-      .toString()
-      .replace('/', '_')}/${pixelRatio}`,
-    width: commonConfig.searchListImageSize,
-    height: commonConfig.searchListImageSize,
-    scale: pixelRatio,
-  });
+  const imageSource = useImage(
+    {
+      uri: `${config.API}/reports/id_image/${itemToKey(item)
+        .toString()
+        .replace('/', '_')}/${pixelRatio}`,
+      width: commonConfig.searchListImageSize,
+      height: commonConfig.searchListImageSize,
+      scale: pixelRatio,
+    },
+    {
+      // not every species has an id image (the api returns 404); the
+      // placeholder covers it, so don't log the failure as an error
+      onError: () => {},
+    },
+  );
 
   const onPress = () => {
     onSelectItem(item);
