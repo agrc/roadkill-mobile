@@ -94,6 +94,9 @@ module.exports = {
           useFrameworks: 'static',
           // prebuilt React Native core does not support use_frameworks
           buildReactNativeFromSource: true,
+          // the iOS 27 SDK (Xcode 27) requires the UIKit scene lifecycle;
+          // remove once on SDK 58, where it is the default
+          enableSceneSupport: true,
         },
         android: {
           compileSdkVersion: 36,
@@ -152,7 +155,7 @@ module.exports = {
   /* required for eas update command
     bump major version when upgrading expo version
   */
-  runtimeVersion: '5.0.0',
+  runtimeVersion: '6.0.0',
   updates: {
     url: 'https://u.expo.dev/648c99de-696c-4704-8723-7f8838dc6896',
   },

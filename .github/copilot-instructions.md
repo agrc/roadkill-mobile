@@ -6,14 +6,14 @@ This is Utah's Roadkill Reporter monorepo. It contains an Expo/React Native mobi
 
 | Area | Location | Stack / entry points |
 | --- | --- | --- |
-| Mobile app | `src/front/` | Expo 52, React Native, React 18; `App.js`, screens in `screens/`, UI in `components/`, auth in `auth/`, API/offline/location services in `services/` |
+| Mobile app | `src/front/` | Expo 57, React Native, React 19; `App.js`, screens in `screens/`, UI in `components/`, auth in `auth/`, API/offline/location services in `services/` |
 | API | `src/back/` | Node 22, Express 5, Firebase Firestore/Storage, PostgreSQL/Knex; `server.js` starts `app.js`, endpoints are in `api/`, logic in `services/` |
 | Shared code | `src/common/` | **CommonJS only**; Yup schemas in `validation/`, shared app/version/bundle config in `config.js`, database constants in `constants.js` |
 | Website | `src/website/` | Remix 2, React 18, Tailwind; routes in `app/routes/`, root layout in `app/root.jsx` |
 | Database | `data/` | PostgreSQL/PostGIS Docker image, Knex config/migrations, SQL schema/seed files |
 | Data publisher | `src/palletjack/` | Python 3.11 `roadkill` package; `src/roadkill/main.py` is the Cloud Run Job entry point |
 
-The root is not an npm workspace. Every Node project owns a `package-lock.json`; use `npm`, never pnpm. When working in front, back, or website, install `src/common` too because it is a local `file:../common` dependency. Do not convert `src/common` to ESM: Expo 52 fails to build it.
+The root is not an npm workspace. Every Node project owns a `package-lock.json`; use `npm`, never pnpm. When working in front, back, or website, install `src/common` too because it is a local `file:../common` dependency. Do not convert `src/common` to ESM: the Expo build failed with it (last verified on Expo 52).
 
 ## Toolchain and setup
 
