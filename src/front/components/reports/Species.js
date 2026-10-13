@@ -58,7 +58,7 @@ function sortBy(key) {
   };
 }
 
-const initialState = {
+export const initialState = {
   searchType: SEARCH_TYPES[0],
   autoCompleteItems: null,
   filterValue: null,
@@ -78,7 +78,7 @@ const initialState = {
   },
 };
 
-const reducer = (draft, action) => {
+export const reducer = (draft, action) => {
   const reset = () => {
     draft.filterValue = initialState.filterValue;
 
@@ -114,7 +114,7 @@ const reducer = (draft, action) => {
             Alert.alert('Warning', RARE_SPECIES_WARNING);
           }
         } else {
-          draft.value = initialState.value;
+          draft.value = { ...initialState.value };
         }
       }
 
