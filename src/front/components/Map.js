@@ -4,6 +4,11 @@ import { useRef, useState } from 'react';
 import MapView from 'react-native-maps';
 import MileMarkers, { MapViewStateContext } from './MileMarkers';
 
+// every Map renders its own provider for the same database, and a provider
+// closes its database when it unmounts. Without a separate connection, closing
+// a static map (e.g. report info) closed the main map's shared connection too.
+const SQLITE_OPTIONS = { useNewConnection: true };
+
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
   if (isStatic) {
     mapViewProps = {
@@ -45,6 +50,7 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       <MapViewStateContext.Provider value={mapViewState}>
         <SQLiteProvider
           databaseName="mileMarkers.db"
+          options={SQLITE_OPTIONS}
           assetSource={{ assetId: require('../data/mileMarkers.db') }}
         >
           <MileMarkers />
