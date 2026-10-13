@@ -144,13 +144,13 @@ The [common](./src/common/package.json) package causes the expo build process to
 
 ### Updating NPM dependencies in `src/front`
 
-1. Update Expo SDK: `npx expo install expo@^53.0.0 --fix`
+1. Update Expo SDK one major version at a time: `npx expo install expo@^<next SDK>.0.0 --fix`
 1. `npx expo-doctor@latest`
 1. Commit changes as expo bump
-1. `npx npm-check-updates --color --install always --interactive --format group,repo && p audit fix`
+1. `npx npm-check-updates --color --install always --interactive --format group,repo --reject react-native-collapsible && p audit fix`
 1. `npx expo install --fix` (to downgrade any packages that are not compatible with the new Expo SDK)
 
-`react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v1.6.2. It should be kept at 1.6.1 until it is fixed.
+`react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v1.6.2: a `Collapsible` that mounts expanded renders hidden, so the public sign-in options on the choose type screen need two taps to open. It is pinned to exactly `1.6.1` (no `^`) in `package.json`. Keep the exact pin when updating dependencies or regenerating `package-lock.json`; a caret range lets npm resolve 1.6.2 again.
 
 ## Attribution
 
