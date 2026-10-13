@@ -2,7 +2,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 import propTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import MapView from 'react-native-maps';
-import MileMarkers from './MileMarkers';
+import MileMarkers, { MapViewStateContext } from './MileMarkers';
 
 export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
   if (isStatic) {
@@ -15,13 +15,14 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
     };
   }
 
-  const [camera, setCamera] = useState(null);
-  const [region, setRegion] = useState(null);
+  const [mapViewState, setMapViewState] = useState({
+    camera: null,
+    region: null,
+  });
   const mapViewRef = useRef(null);
   const onRegionChange = async (region) => {
-    const newCamera = await (innerRef || mapViewRef).current.getCamera();
-    setCamera(newCamera);
-    setRegion(region);
+    const camera = await (innerRef || mapViewRef).current.getCamera();
+    setMapViewState({ camera, region });
   };
 
   return (
@@ -41,12 +42,14 @@ export default function Map({ innerRef, children, isStatic, ...mapViewProps }) {
       onRegionChangeComplete={!isStatic ? onRegionChange : null}
       {...mapViewProps}
     >
-      <SQLiteProvider
-        databaseName="mileMarkers.db"
-        assetSource={{ assetId: require('../data/mileMarkers.db') }}
-      >
-        <MileMarkers camera={camera} region={region} />
-      </SQLiteProvider>
+      <MapViewStateContext.Provider value={mapViewState}>
+        <SQLiteProvider
+          databaseName="mileMarkers.db"
+          assetSource={{ assetId: require('../data/mileMarkers.db') }}
+        >
+          <MileMarkers />
+        </SQLiteProvider>
+      </MapViewStateContext.Provider>
       {children}
     </MapView>
   );
