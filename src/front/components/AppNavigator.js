@@ -8,7 +8,10 @@ import propTypes from 'prop-types';
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import useAuth from '../auth/context';
 import AboutScreen from '../screens/About';
 import ChooseTypeScreen from '../screens/ChooseType';
@@ -165,19 +168,27 @@ const BackButton = () => {
     </TouchableOpacity>
   );
 };
+// Android draws edge-to-edge since expo sdk 54, so scrolling screens without
+// their own SafeAreaView need room for the navigation bar
+const useBottomInsetStyle = () => ({
+  paddingBottom: useSafeAreaInsets().bottom,
+});
+
 const ReportsNavigator = () => {
   const { Navigator, Screen } = createStackNavigator();
+  const bottomInsetStyle = useBottomInsetStyle();
 
   return (
     <Navigator screenOptions={{ headerLeft: BackButton }}>
       <Screen
         name={t('screens.myReports.title')}
         component={MyReportsScreen}
-        options={{ headerLeft: CloseButton }}
+        options={{ headerLeft: CloseButton, cardStyle: bottomInsetStyle }}
       />
       <Screen
         name={t('screens.reportInfo.title')}
         component={ReportInfoScreen}
+        options={{ cardStyle: bottomInsetStyle }}
       />
       <Screen
         name={t('screens.routeInfo.title')}
@@ -193,6 +204,7 @@ const MainNavigator = () => {
   const { Navigator, Screen } = createDrawerNavigator();
   const { logOut } = useAuth();
   const { cachedSubmissionIds } = useOfflineCache();
+  const bottomInsetStyle = useBottomInsetStyle();
 
   return (
     <Navigator
@@ -211,8 +223,16 @@ const MainNavigator = () => {
         component={ReportsNavigator}
         options={{ headerShown: false }}
       />
-      <Screen name={t('screens.profile.title')} component={ProfileScreen} />
-      <Screen name={t('screens.about.title')} component={AboutScreen} />
+      <Screen
+        name={t('screens.profile.title')}
+        component={ProfileScreen}
+        options={{ sceneStyle: bottomInsetStyle }}
+      />
+      <Screen
+        name={t('screens.about.title')}
+        component={AboutScreen}
+        options={{ sceneStyle: bottomInsetStyle }}
+      />
       {config.SHOW_STORYBOOK ? (
         <Screen name="Storybook" component={StorybookUIRoot} />
       ) : null}
