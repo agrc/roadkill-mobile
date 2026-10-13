@@ -31,8 +31,49 @@ beforeEach(() => {
   }));
   jest.doMock('./fetch', () => ({ __esModule: true, default: mockFetch }));
   jest.doMock('@sentry/react-native', () => mockSentry);
+  jest.doMock('expo-file-system', () => ({
+    File: class {
+      constructor(uri) {
+        this.uri = uri;
+      }
+    },
+  }));
 
   useAPI = require('./api').useAPI;
+});
+
+describe('getFormData', () => {
+  const OriginalFormData = global.FormData;
+
+  beforeEach(() => {
+    global.FormData = class {
+      constructor() {
+        this.parts = {};
+      }
+      append(key, value) {
+        this.parts[key] = value;
+      }
+    };
+  });
+
+  afterEach(() => {
+    global.FormData = OriginalFormData;
+  });
+
+  it('sends photos as files and other values as-is', () => {
+    const { File } = require('expo-file-system');
+    const { getFormData } = require('./api');
+    const { parts } = getFormData({
+      photo: { uri: 'file:///cache/photo.jpg', type: 'image/jpeg', name: 'photo' },
+      species: 'Mule Deer',
+      photo_date: null,
+    });
+
+    expect(parts.photo).toBeInstanceOf(File);
+    expect(parts.photo.uri).toBe('file:///cache/photo.jpg');
+    expect(parts.species).toBe('Mule Deer');
+    expect(parts.photo_date).toBeNull();
+  });
 });
 
 describe('useAPI session recovery', () => {
