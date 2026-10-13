@@ -96,7 +96,7 @@
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
     "react-native-autolink": "^4.2.0",
-    "react-native-collapsible": "^1.6.1",
+    "react-native-collapsible": "1.6.1",
     "react-native-error-boundary": "^1.2.7",
     "react-native-gesture-handler": "~2.32.0",
     "react-native-get-random-values": "~1.11.0",
