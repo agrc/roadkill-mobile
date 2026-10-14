@@ -115,13 +115,14 @@ if (process.env.ENVIRONMENT === 'development') {
       transports: [new LoggingWinston()],
       metaField: null, //this causes the metadata to be stored at the root of the log entry
       responseField: null, // this prevents the response from being included in the metadata (including body and status code)
+      // request bodies are intentionally not logged: they carry credentials
+      // (refresh tokens, auth codes, Apple identity tokens) and user PII
       requestWhitelist: [
         'url',
         'method',
         'httpVersion',
         'originalUrl',
         'query',
-        'body',
       ],
       responseWhitelist: ['body'], // this populates the `res.body` so we can get the response size (not required)
       format: winston.format.json(),
