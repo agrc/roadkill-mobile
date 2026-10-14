@@ -15,8 +15,6 @@
 |                     | cancel oauth process                                         | navigates back to login screen |
 | log in successfully | kill app and then restart                                    | automatically logs in and goes to the Main screen |
 |                     | Main -> Menu -> Logout                                       | presents confirmation dialog and then navigates to login screen |
-| signed-in session receives `401 invalid_token` | attempt an authenticated action | returns to sign-in with a recovery message; no background sign-in prompt appears |
-| signed-in session receives `403 registration_required` | sign in again with the same identity and complete the profile | registration is shown and saved reports remain queued until registration succeeds |
 | recovery sign-in is shown | cancel the provider sign-in | queued reports remain available and the recovery message is still shown |
 | session receives a server error or loses network access | retry the authenticated action | the session is not logged out solely because of the outage |
 
@@ -48,7 +46,7 @@
 | set up                                    | action                                | assertion |
 |-------------------------------------------|---------------------------------------|-----|
 |                                           | tap plus button                       | report drawer slides open so that you can see everything down to the "If you encounter...", shows public report form |
-|                                           | tap plus button                       | crosshair icon is displayed in the center of the remaining map |
+|                                           | tap plus button                       | crosshair icon is displayed in the center of the screen |
 |                                           | tap plus button                       | the map zooms into the highest zoom level and follow user location is enabled |
 | open the report drawer                    | tap on map button to zoom to location | map is centered on user's location |
 | open the report drawer                    | tap on the please call phone number   | verify that a call is initiated (doesn't work on ios emulator) |
