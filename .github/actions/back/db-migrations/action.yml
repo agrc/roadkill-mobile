@@ -36,20 +36,23 @@ runs:
         chmod +x cloud-sql-proxy
         ./cloud-sql-proxy ${{ inputs.cloudsql_instance }} --port 5432 &
 
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+      with:
+        version: 12
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version-file: data/.node-version
 
-    - name: Install npm dependencies
+    - name: Install dependencies
       shell: bash
       working-directory: data
-      run: |
-        npm ci
-        npm install -g knex
+      run: pnpm install --frozen-lockfile --filter roadkill-data
 
     - name: Run knex migrations
       shell: bash
       working-directory: data
       run: |
-        knex migrate:latest --env ${{ inputs.environment }}
+        pnpm exec knex migrate:latest --env ${{ inputs.environment }}

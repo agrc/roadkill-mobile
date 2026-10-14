@@ -1,4 +1,6 @@
 {
+  "name": "roadkill-mobile",
+  "private": true,
   "scripts": {
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -c changelog_context.json"
   },

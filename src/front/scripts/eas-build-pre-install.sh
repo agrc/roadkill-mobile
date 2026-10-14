@@ -48,7 +48,3 @@ echo "GOOGLE_OAUTH_CLIENT_ID_ANDROID=$GOOGLE_OAUTH_CLIENT_ID_ANDROID" >> .env
 echo "APP_QUAD_WORD=$APP_QUAD_WORD" >> .env
 echo ".env file contents:\n\n"
 cat .env
-
-echo "installing npm deps for the common package"
-cd ../common
-npm i
