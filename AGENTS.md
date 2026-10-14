@@ -6,7 +6,7 @@ This is Utah's Roadkill Reporter monorepo. It contains an Expo/React Native mobi
 
 | Area | Location | Stack / entry points |
 | --- | --- | --- |
-| Mobile app | `src/front/` | Expo 57, React Native, React 19; `App.js`, screens in `screens/`, UI in `components/`, auth in `auth/`, API/offline/location services in `services/` |
+| Mobile app | `src/front/` | Node 24, Expo 57, React Native, React 19; `App.js`, screens in `screens/`, UI in `components/`, auth in `auth/`, API/offline/location services in `services/` |
 | API | `src/back/` | Node 22, Express 5, Firebase Firestore/Storage, PostgreSQL/Knex; `server.js` starts `app.js`, endpoints are in `api/`, logic in `services/` |
 | Shared code | `src/common/` | **CommonJS only**; Yup schemas in `validation/`, shared app/version/bundle config in `config.js`, database constants in `constants.js` |
 | Website | `src/website/` | Remix 2, React 18, Tailwind; routes in `app/routes/`, root layout in `app/root.jsx` |
@@ -17,12 +17,12 @@ The root is not an npm workspace. Every Node project owns a `package-lock.json`;
 
 ## Toolchain and setup
 
-Always use the version pinned by each service's `.node-version`: Node 22. CI uses Node 22. Python work in `src/palletjack` requires Python 3.11 (also its Docker base). Backend Firebase emulator tests require Java 21. Docker/Compose is required for the local PostgreSQL/PostGIS database. CI runs on Ubuntu; native iOS/Android builds additionally need EAS, platform tooling, credentials, and EAS secrets.
+Always use the version pinned by each service's `.node-version`: Node 24 for `src/front`, Node 22 for `src/back`, `src/common`, and `src/website`. CI reads these same files. Python work in `src/palletjack` requires Python 3.11 (also its Docker base). Backend Firebase emulator tests require Java 21. Docker/Compose is required for the local PostgreSQL/PostGIS database. CI runs on Ubuntu; native iOS/Android builds additionally need EAS, platform tooling, credentials, and EAS secrets.
 
 For a clean Node setup, run this from the repository root before the relevant validation:
 
 ```sh
-# Select Node 22 by your version manager, then install only affected projects.
+# Select each project's .node-version with your version manager, then install only affected projects.
 cd src/common && npm ci
 cd ../front && npm ci       # mobile work
 cd ../back && npm ci        # API work
