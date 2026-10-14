@@ -46,7 +46,7 @@ export function getNewPickupHandler(upload, createPickup) {
 
 export function getGetReportHandler(getReport) {
   return async function getReportHandler(request, response) {
-    const report = await getReport(request.params.reportId);
+    const report = await getReport(request.params.reportId, response.locals.userId);
 
     if (report) {
       return response.status(200).json({
