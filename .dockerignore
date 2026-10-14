@@ -1,0 +1,26 @@
+# the docker context is the repo root so that the pnpm workspace lockfile is available
+**/node_modules
+**/.env
+**/.env.*
+.git
+.github
+.cache_ggshield
+.coverage
+.pytest_cache
+.ruff_cache
+CLAUDE-SECURITY-*
+docs
+src/palletjack
+src/back/secrets/*/value
+src/website/.cache
+src/website/build
+src/website/public/build
+
+# only workspace package manifests are needed from projects that are not built in docker
+data/*
+!data/package.json
+!data/scripts
+data/scripts/*
+!data/scripts/package.json
+src/front/*
+!src/front/package.json

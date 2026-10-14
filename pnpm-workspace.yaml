@@ -1,0 +1,61 @@
+packages:
+  - data
+  - data/scripts
+  - src/back
+  - src/common
+  - src/front
+  - src/website
+
+# Enforce a 7-day (10,080 minutes) quarantine
+minimumReleaseAge: 10080
+
+# auto-prune superfluous exclusions
+minimumReleaseAgeExcludePrune: true
+
+# Fail the build if metadata/timestamps are missing
+minimumReleaseAgeStrict: true
+
+# EXCLUSIONS: Critical to prevent 7-day delays on stable tools
+minimumReleaseAgeExclude:
+  - '@ugrc/*'
+  - '@expo/cli@57.0.30'
+  - '@expo/fingerprint@0.20.14'
+  - '@expo/inline-modules@0.1.8'
+  - '@expo/local-build-cache-provider@57.0.9'
+  - '@expo/prebuild-config@57.0.19'
+  - 'babel-preset-expo@57.0.15'
+  - 'expo-asset@57.0.20'
+  - 'expo-auth-session@57.0.16'
+  - 'expo-constants@57.0.22'
+  - 'expo-crypto@57.0.4'
+  - 'expo-dev-client@57.0.20'
+  - 'expo-dev-launcher@57.0.21'
+  - 'expo-dev-menu@57.0.20'
+  - 'expo-linking@57.0.13'
+  - 'expo-location@57.0.21'
+  - 'expo-modules-autolinking@57.0.16'
+  - 'expo-modules-core@57.0.23'
+  - 'expo-modules-jsi@57.1.2'
+  - 'expo-notifications@57.0.23'
+  - 'expo-splash-screen@57.0.10'
+  - 'expo-updates@57.0.26'
+  - 'expo@57.0.29'
+  - 'jest-expo@57.0.6'
+
+# keep these in sync with the versions in src/front/package.json
+overrides:
+  '@firebase/auth>@react-native-async-storage/async-storage': 2.2.0
+  'react-native-eva-icons>react': 19.2.3
+
+allowBuilds:
+  '@firebase/util': false
+  '@parcel/watcher': false
+  # downloads the sentry-cli binary used to upload sourcemaps during front builds/updates
+  '@sentry/cli': true
+  esbuild: false
+  msw: false
+  protobufjs: false
+  re2: false
+  sharp: false
+  sqlite3: false
+  sse4_crc32: false
