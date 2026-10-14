@@ -8,12 +8,12 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_ENV=production npm run build:css && remix build",
-    "build:css": "npx @tailwindcss/cli -o ./app/tailwind.css",
-    "dev:css": "npx @tailwindcss/cli -o ./app/tailwind.css --watch",
+    "build": "cross-env NODE_ENV=production pnpm run build:css && remix build",
+    "build:css": "tailwindcss -o ./app/tailwind.css",
+    "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "serve": "cross-env NODE_ENV=production remix-serve ./build/index.js",
-    "start": "cross-env NODE_ENV=development PORT=3002 concurrently \"npm run dev:css\" \"remix dev\""
+    "start": "cross-env NODE_ENV=development PORT=3002 concurrently \"pnpm run dev:css\" \"remix dev\""
   },
   "dependencies": {
     "@remix-run/node": "^2.17.4",

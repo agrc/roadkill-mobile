@@ -15,7 +15,7 @@
     "storybook-watch": "sb-rn-watcher",
     "test": "env-cmd -f .env.test jest --watch --coverage=false",
     "test:debug": "env-cmd -f .env.test jest -o --watch --coverage=false",
-    "test:final": "npm run lint && env-cmd -f .env.test jest && npm run validate-translations",
+    "test:final": "pnpm run lint && env-cmd -f .env.test jest && pnpm run validate-translations",
     "update-constants": "env-cmd -f .env node scripts/updateConstants.mjs",
     "update-snapshots": "jest -u --coverage=false",
     "validate-translations": "node scripts/validateTranslations.mjs"
@@ -26,16 +26,8 @@
       "./jest.setup.js"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|native-base|@sentry/.*|autolinker|@ui-kitten/.*|p-timeout|i18n-js|cheap-ruler|immer)"
+      "node_modules/(?!\\.pnpm|(jest-)?react-native|@react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|native-base|@sentry/.*|autolinker|@ui-kitten/.*|p-timeout|i18n-js|cheap-ruler|immer)"
     ]
-  },
-  "overrides": {
-    "@firebase/auth": {
-      "@react-native-async-storage/async-storage": "$@react-native-async-storage/async-storage"
-    },
-    "react-native-eva-icons": {
-      "react": "$react"
-    }
   },
   "dependencies": {
     "@eva-design/eva": "^2.2.0",
@@ -56,7 +48,7 @@
     "@ui-kitten/eva-icons": "^5.3.1",
     "base-64": "^1.0.0",
     "cheap-ruler": "^4.0.0",
-    "common": "file:../common",
+    "common": "workspace:*",
     "date-fns": "^4.1.0",
     "expo": "~57.0.29",
     "expo-apple-authentication": "~57.0.2",
@@ -95,6 +87,7 @@
     "mime": "^4.0.7",
     "p-timeout": "^6.1.4",
     "promise": "^8.3.0",
+    "prop-types": "^15.8.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -151,14 +144,5 @@
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "typescript": "~6.0.3"
-  },
-  "allowScripts": {
-    "sqlite3@5.1.7": true,
-    "@firebase/util@1.12.1": true,
-    "@sentry/cli@2.58.6": true,
-    "@sentry/cli@2.58.4": true,
-    "esbuild@0.25.12": true,
-    "fsevents@2.3.3": true,
-    "protobufjs@7.6.6": true
   }
 }

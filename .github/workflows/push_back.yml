@@ -3,13 +3,15 @@ name: Back - Test, Build, and Deploy to GCP
 on:
   push:
     paths:
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'src/back/**'
       - '.github/workflows/back.yml'
       - '.github/actions/back/**'
       - 'src/common/**'
       - 'data/migrations/**'
       - 'data/knexfile.js'
-      - 'data/package*.json'
+      - 'data/package.json'
 
 defaults:
   run:
@@ -44,25 +46,31 @@ jobs:
           path: ~/.cache/firebase/emulators
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: src/back/.node-version
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: |
-          npm ci
-          cd ../common && npm ci
+          pnpm install --frozen-lockfile --filter roadkill-reporter-api...
 
       - name: Lint common project
         run: |
           cd ../common
-          npm run lint
+          pnpm run lint
 
       - name: Test
         run: |
-          npm run lint
-          npm run test:ci
+          pnpm run lint
+          pnpm run test:ci
 
   deploy-staging:
     name: Migration DB, Build, and Deploy to Staging
@@ -90,7 +98,7 @@ jobs:
       - name: 🚀 Deploy
         uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
-          docker-context: ./src
+          docker-context: .
           docker-file: ./src/back/Dockerfile
           identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
@@ -141,7 +149,7 @@ jobs:
       - name: 🚀 Deploy
         uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
-          docker-context: ./src
+          docker-context: .
           docker-file: ./src/back/Dockerfile
           identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}

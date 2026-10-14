@@ -11,9 +11,9 @@
     "lint": "eslint .",
     "serve": "env-cmd nodemon server.js",
     "setup:emulator": "firebase emulators:start --import=../../data/emulator-data --export-on-exit --only firestore,storage",
-    "start": "firebase emulators:exec --import=../../data/emulator-data --only firestore,storage --ui \"npm run serve\"",
+    "start": "firebase emulators:exec --import=../../data/emulator-data --only firestore,storage --ui \"pnpm run serve\"",
     "test": "env-cmd -f .env.test vitest",
-    "test:ci": "firebase emulators:exec --only firestore,storage \"npm test\""
+    "test:ci": "firebase emulators:exec --only firestore,storage \"pnpm test\""
   },
   "dependencies": {
     "@google-cloud/cloud-sql-connector": "^1.8.0",
@@ -22,7 +22,7 @@
     "@google-cloud/storage": "^7.19.0",
     "@sendgrid/mail": "^8.1.5",
     "apple-signin-auth": "^2.0.0",
-    "common": "file:../common",
+    "common": "workspace:*",
     "compression": "^1.8.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",

@@ -9,14 +9,20 @@
 *.apk
 *.gz
 *.ipa
-data/
-!src/front/data/
+/data/*
+!/data/package.json
+!/data/scripts
+/data/scripts/*
+!/data/scripts/package.json
 docker-compose.yaml
 docs/
-src/back/
+# workspace package manifests are required for pnpm install --frozen-lockfile
+src/back/*
+!src/back/package.json
 src/front/.env*
 src/front/.expo*
 src/front/dev-clients/
 src/front/store-assets/
 src/palletjack/
-src/website/
+src/website/*
+!src/website/package.json

@@ -6,10 +6,10 @@ A mobile application build for DWR & UDOT for users to submit reports about road
 
 1. create `.env` files in `<root>`, `src/front`, and `src/back`
 1. from root: `docker compose up`
+1. from root: `pnpm install`
 1. in both `src/front` and `src/back`:
-   1. `npm install`
-   1. `npm start`
-   1. `npm test`
+   1. `pnpm start`
+   1. `pnpm test`
 
 ### Debugging
 
@@ -17,9 +17,9 @@ Press "j" in console after starting expo project. See [Expo Debugging & Profilin
 
 ### Testing Deep Links
 
-`npx uri-scheme open exp://127.0.0.1:19000/--/main --ios`
+`pnpm dlx uri-scheme open exp://127.0.0.1:19000/--/main --ios`
 
-`npx uri-scheme open exp://127.0.0.1:19000/--/main --android`
+`pnpm dlx uri-scheme open exp://127.0.0.1:19000/--/main --android`
 
 ## Deployment
 
@@ -54,13 +54,13 @@ These values are managed in GCP Secrets Manager. After running the terraform, ma
 ### Cutting a New Release
 
 1. From `/data`: `./start_cloud_sql_proxy.sh prod` (or `dev`) (This need so to be done for each environment per release!)
-1. From `src/front`: `npm run update-constants` (may need to update the db connection props in `.env`)
+1. From `src/front`: `pnpm run update-constants` (may need to update the db connection props in `.env`)
 1. Determine if the api version needs to be bumped and update [src/common/config.js](src/common/config.js) and [src/back/package.json](src/back/package.json) accordingly.
 1. Determine if app version (`version` in [app.config.js](src/front/app.config.js)) needs to be bumped. Apple requires it to be bumped after every production release.
 1. Determine if `runtimeVersion` needs to be bumped (if any native code has changed).
 1. Bump build number in [src/front/app.config.js](src/front/app.config.js).
 1. Update value in [changelog_context.json](changelog_context.json) to match new version and build number.
-1. From root: `npm run changelog`
+1. From root: `pnpm run changelog`
 1. Clean up change log entries, if needed.
 1. Create release commit (e.g. `release: v3.0.0 (123)`)
 1. Tag `git tag v3.0.0-123.staging` or `git tag v3.0.0-123` (production)
@@ -138,19 +138,19 @@ If a matching file in the bucket is not found, a blank gray fallback image is re
 
 ## Dependency Updates
 
-Expo does [not yet support PNPM](https://github.com/expo/expo/issues/22413).
+The repo is a single [pnpm](https://pnpm.io) workspace (`data`, `data/scripts`, `src/back`, `src/common`, `src/front`, `src/website`) with one root `pnpm-lock.yaml`; all pnpm settings live in the root `pnpm-workspace.yaml`. Run `pnpm install` from the root. Dependency build scripts are denied by default; only approve them in `allowBuilds` when they are required for deployment. `sqlite3` builds are denied, so run `pnpm approve-builds` (locally, without committing) before running `pnpm run get-mile-markers`.
 
 The [common](./src/common/package.json) package causes the expo build process to fail if it is switched to ESM at Expo v52.
 
-### Updating NPM dependencies in `src/front`
+### Updating dependencies in `src/front`
 
-1. Update Expo SDK one major version at a time: `npx expo install expo@^<next SDK>.0.0 --fix`
-1. `npx expo-doctor@latest`
+1. Update Expo SDK one major version at a time: `pnpm exec expo install expo@^<next SDK>.0.0 --fix`
+1. `pnpm dlx expo-doctor@latest`
 1. Commit changes as expo bump
-1. `npx npm-check-updates --color --install always --interactive --format group,repo --reject react-native-collapsible && p audit fix`
-1. `npx expo install --fix` (to downgrade any packages that are not compatible with the new Expo SDK)
+1. `pnpm dlx npm-check-updates --color --install always --interactive --format group,repo --cooldown 7 --reject react-native-collapsible && pnpm audit --fix`
+1. `pnpm exec expo install --fix` (to downgrade any packages that are not compatible with the new Expo SDK)
 
-`react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v1.6.2: a `Collapsible` that mounts expanded renders hidden, so the public sign-in options on the choose type screen need two taps to open. It is pinned to exactly `1.6.1` (no `^`) in `package.json`. Keep the exact pin when updating dependencies or regenerating `package-lock.json`; a caret range lets npm resolve 1.6.2 again.
+`react-native-collapsible` has a [bug](https://github.com/oblador/react-native-collapsible/issues/485) in v1.6.2: a `Collapsible` that mounts expanded renders hidden, so the public sign-in options on the choose type screen need two taps to open. It is pinned to exactly `1.6.1` (no `^`) in `package.json`. Keep the exact pin when updating dependencies or regenerating `pnpm-lock.yaml`; a caret range lets pnpm resolve 1.6.2 again.
 
 ## Attribution
 

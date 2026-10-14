@@ -3,10 +3,11 @@ name: Website - Test, Build, and Deploy to GCP
 on:
   push:
     paths:
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - 'src/website/**'
       - '.github/workflows/website.yml'
       - '.github/actions/website/**'
-      - 'src/common/**'
 
 defaults:
   run:
@@ -29,23 +30,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: src/website/.node-version
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
-      - run: |
-          npm ci
-          cd ../common && npm ci
-
-      - name: Lint common project
+      - name: Install dependencies
         run: |
-          cd ../common
-          npm run lint
+          pnpm install --frozen-lockfile --filter roadkill-reporter-website...
 
       - name: Test
         run: |
-          npm run lint
+          pnpm run lint
 
   deploy-staging:
     name: Build, and Deploy to Staging
@@ -59,7 +62,7 @@ jobs:
       - name: 🚀 Deploy
         uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
-          docker-context: ./src
+          docker-context: .
           docker-file: ./src/website/Dockerfile
           identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
@@ -82,7 +85,7 @@ jobs:
       - name: 🚀 Deploy
         uses: agrc/cloud-run-docker-deploy-composite-action@v2
         with:
-          docker-context: ./src
+          docker-context: .
           docker-file: ./src/website/Dockerfile
           identity-provider: ${{ secrets.IDENTITY_PROVIDER }}
           service-account-email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
