@@ -95,7 +95,7 @@ export async function createPickup({
   });
 }
 
-export async function getReport(reportId) {
+export async function getReport(reportId, userId) {
   return await db('report_infos as r')
     .leftJoin('photos as p', 'p.id', 'r.photo_id')
     .leftJoin('public_reports as pub', 'pub.report_id', 'r.report_id')
@@ -124,6 +124,6 @@ export async function getReport(reportId) {
       'pub.repeat_submission',
       'pub.discovery_date'
     )
-    .where({ 'r.report_id': reportId })
+    .where({ 'r.report_id': reportId, 'r.user_id': userId })
     .first();
 }
