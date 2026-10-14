@@ -118,8 +118,8 @@ jobs:
             PROJECT_ID=${{ secrets.PROJECT_ID }}
             WEBSITE=${{ secrets.WEBSITE }}
           mounted-secrets: |
-            /secrets/client_id/value=client-id:latest,
-            /secrets/database_password/value=database-password:latest,
+            /secrets/client_id/value=client-id:latest
+            /secrets/database_password/value=database-password:latest
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
             /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
 
@@ -169,7 +169,7 @@ jobs:
             PROJECT_ID=${{ secrets.PROJECT_ID }}
             WEBSITE=${{ secrets.WEBSITE }}
           mounted-secrets: |
-            /secrets/client_id/value=client-id:latest,
-            /secrets/database_password/value=database-password:latest,
+            /secrets/client_id/value=client-id:latest
+            /secrets/database_password/value=database-password:latest
             /secrets/sendgrid_api_key/value=sendgrid-api-key:latest
             /secrets/apple_sign_in_props/value=apple-sign-in-props:latest
