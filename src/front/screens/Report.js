@@ -17,7 +17,12 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import Animated, {
+  SlideOutDown,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
@@ -266,14 +271,13 @@ const Report = ({
     formikRef.current.setFieldValue('pickup_date', newValue);
 
   return show ? (
-    <Animated.View
-      entering={SlideInDown}
+    <SlideIn
       exiting={SlideOutDown}
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
     >
       {!showMain ? (
         // rendered outside of the scroll view so that the drawer sizes to fit
-        // the async-loaded assistance prompt and clears the home indicator
+        // its content
         <View style={styles.body}>
           <Location onSetLocation={onSetLocation} onCancel={() => onClose()} />
         </View>
@@ -352,8 +356,34 @@ const Report = ({
         </View>
       </KeyboardAwareScrollView>
       <Spinner show={mutation.isPending} />
-    </Animated.View>
+    </SlideIn>
   ) : null;
+};
+
+// The SlideInDown entering layout animation keeps the drawer at the height it
+// had when the animation started, which cuts off content that loads after
+// mount (e.g. the assistance prompt). Animating a transform instead lets the
+// drawer resize normally.
+const SlideIn = ({ children, ...props }) => {
+  const { height } = useWindowDimensions();
+  const translateY = useSharedValue(height);
+  React.useEffect(() => {
+    translateY.value = withTiming(0, { duration: 300 });
+  }, [translateY]);
+  const slideStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
+
+  return (
+    <Animated.View {...props} style={[props.style, slideStyle]}>
+      {children}
+    </Animated.View>
+  );
+};
+
+SlideIn.propTypes = {
+  children: propTypes.node,
+  style: propTypes.oneOfType([propTypes.array, propTypes.object]),
 };
 
 Report.propTypes = {
