@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@ui-kitten/components';
+import * as Sentry from '@sentry/react-native';
 import * as Linking from 'expo-linking';
 import * as Location from 'expo-location';
 import { pick } from 'lodash';
@@ -21,6 +22,12 @@ import backgroundLocationService, {
   verifyPermissions,
 } from '../services/backgroundLocation';
 import config from '../services/config';
+import {
+  beginVehicleTrackingSession,
+  clearVehicleTrackingSession,
+  restoreVehicleTrackingSession,
+  setVehicleTrackingSessionStatus,
+} from '../services/vehicleTrackingStorage';
 import { getIcon } from '../services/icons';
 import t from '../services/localization';
 import {
@@ -79,27 +86,23 @@ export default function MainScreen() {
   // these three functions had to be hoisted from VehicleTracking
   // so that they could be used in the alerts for contractors in the
   // showAddReport function
-  const startTracking = async () => {
+  const startTracking = async (
+    startTime = vehicleTrackingState.start || new Date(),
+    routeCoordinates = vehicleTrackingState.routeCoordinates,
+  ) => {
     console.log('startTracking');
 
-    const startTime = vehicleTrackingState.start?.getTime() || Date.now();
-    backgroundLocationService.subscribe((locations) => {
-      if (Date.now() > startTime + config.MAX_TRACKING_TIME) {
-        vehicleTrackingDispatch({ type: 'PAUSE' });
-        vehicleTrackingDispatch({ type: 'SHOW' });
-        backgroundLocationService.unsubscribe();
+    await restoreVehicleTrackingSession(
+      startTime,
+      'tracking',
+      routeCoordinates,
+    );
+    await setVehicleTrackingSessionStatus('tracking');
 
-        Location.stopLocationUpdatesAsync(backgroundLocationService.taskName);
-      }
-
-      vehicleTrackingDispatch({
-        type: 'ADD_ROUTE_COORDINATES',
-        payload: locations
-          // make sure that we don't get any old locations
-          .filter((location) => location.timestamp >= startTime)
-          .map((location) => pick(location.coords, 'latitude', 'longitude')),
-      });
-    });
+    const hasStarted = await Location.hasStartedLocationUpdatesAsync(
+      backgroundLocationService.taskName,
+    );
+    if (hasStarted) return;
 
     await Location.startLocationUpdatesAsync(
       backgroundLocationService.taskName,
@@ -119,18 +122,48 @@ export default function MainScreen() {
   const startRoute = async () => {
     console.log('startRoute');
     if (await verifyPermissions()) {
-      await startTracking();
-
-      vehicleTrackingDispatch({ type: 'START' });
+      const startTime = new Date();
+      try {
+        await beginVehicleTrackingSession(startTime);
+        await startTracking(startTime, []);
+        vehicleTrackingDispatch({ type: 'START', payload: startTime });
+      } catch (error) {
+        console.error('Unable to start vehicle tracking:', error);
+        Sentry.captureException(error);
+        try {
+          await clearVehicleTrackingSession();
+        } catch (cleanupError) {
+          console.error(
+            'Unable to clear the failed vehicle-tracking session:',
+            cleanupError,
+          );
+          Sentry.captureException(cleanupError);
+        }
+        Alert.alert(t('error'), error.message);
+      }
     }
   };
 
   const resumeRoute = async () => {
     console.log('resumeRoute');
 
-    await startTracking();
-
-    vehicleTrackingDispatch({ type: 'RESUME' });
+    try {
+      await startTracking(
+        vehicleTrackingState.start,
+        vehicleTrackingState.routeCoordinates,
+      );
+      vehicleTrackingDispatch({ type: 'RESUME' });
+    } catch (error) {
+      console.error('Unable to resume vehicle tracking:', error);
+      Sentry.captureException(error);
+      try {
+        await setVehicleTrackingSessionStatus('paused');
+      } catch (statusError) {
+        console.error('Unable to pause the failed tracking session:', statusError);
+        Sentry.captureException(statusError);
+      }
+      Alert.alert(t('error'), error.message);
+    }
   };
 
   const onRouteButtonPress = async () => {
