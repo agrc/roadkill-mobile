@@ -9,7 +9,15 @@ function BackgroundLocationService() {
   let subscriber;
 
   return {
-    subscribe: (callback) => (subscriber = callback),
+    subscribe: (callback) => {
+      subscriber = callback;
+
+      return () => {
+        if (subscriber === callback) {
+          subscriber = null;
+        }
+      };
+    },
     unsubscribe: () => {
       subscriber = null;
     },
