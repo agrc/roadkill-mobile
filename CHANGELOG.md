@@ -1,3 +1,34 @@
+## [v3.1.1-664](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.1-664) (2026-10-15)
+
+
+### Bug Fixes
+
+* **api:** guard registered accounts and harden token caches ([63d7c22](https://github.com/agrc/roadkill-mobile/commit/63d7c22f52519812edc1da71799484b86ef26445)), closes [#421](https://github.com/agrc/roadkill-mobile/issues/421)
+* **auth:** correct Apple token renewal and session transitions ([c889ff0](https://github.com/agrc/roadkill-mobile/commit/c889ff0110fe5ca35c5379f40fc4f3192867ae55))
+* **auth:** make secure credential hydration and writes race-safe ([32132da](https://github.com/agrc/roadkill-mobile/commit/32132da6b2bdfe29e84b947d72bdda87286556e9))
+* **auth:** persist Google sessions and renew tokens silently ([9f06d0a](https://github.com/agrc/roadkill-mobile/commit/9f06d0ab28405a10848166d5d596016de9e2a8fe))
+* **auth:** preserve UtahID refresh rotation and serialize sign-in ([a4f1a5d](https://github.com/agrc/roadkill-mobile/commit/a4f1a5da7b13ca0f6e1c6961611c15f57e38e72e))
+* **auth:** reconcile sessions and retain account-owned offline reports ([802d055](https://github.com/agrc/roadkill-mobile/commit/802d0558596a5a90c2e0d50304ad4356a87b393e)), closes [#421](https://github.com/agrc/roadkill-mobile/issues/421)
+* **back:** scope report lookup to the requesting user ([f57a376](https://github.com/agrc/roadkill-mobile/commit/f57a376b923e7c6c850862f0aa0eec84cddd0cbb))
+* **back:** stop logging request bodies in production ([9d1fbd8](https://github.com/agrc/roadkill-mobile/commit/9d1fbd84124631530cd9e5e81e84c7714304e3a4))
+* enforce character limits for free type text entry fields ([7f46667](https://github.com/agrc/roadkill-mobile/commit/7f46667820832b6205e9e974cba7d9e3e90daba1)), closes [#416](https://github.com/agrc/roadkill-mobile/issues/416)
+* **front:** allow for entering dates in the previous year ([dd9af99](https://github.com/agrc/roadkill-mobile/commit/dd9af99f00e26e511d76da3b257325e050c9b21a)), closes [#418](https://github.com/agrc/roadkill-mobile/issues/418)
+* **front:** copy the initial species value when clearing a selection ([2d23930](https://github.com/agrc/roadkill-mobile/commit/2d23930ba91d5f477e70e8f60ca2412f971001d1))
+* **front:** don't log missing species id images as errors ([1ed63fe](https://github.com/agrc/roadkill-mobile/commit/1ed63fe63a4dd159a5c33567a928e4b09f0da908))
+* **front:** fix set location drawer padding issue ([aaf7149](https://github.com/agrc/roadkill-mobile/commit/aaf714946f59e8d93bdb5fb326926a0bb8e1b82e))
+* **front:** give each map its own mile marker database connection ([ad958ea](https://github.com/agrc/roadkill-mobile/commit/ad958eaaf73290eec7d2d704026bd6c289cd4407))
+* **front:** harden vehicle tracking ([d74f9f0](https://github.com/agrc/roadkill-mobile/commit/d74f9f043d35421f50f48a0889ca196833763f1c))
+* **front:** improve assistance prompt handling and animation in Location component ([75ca2eb](https://github.com/agrc/roadkill-mobile/commit/75ca2ebd6bf29e0c2b6c823212e2bbd1416fec65))
+* **front:** keep stack screen content above the android navigation bar ([9dc204d](https://github.com/agrc/roadkill-mobile/commit/9dc204d14532d34d3842cf3107e645c02492fecf))
+* **front:** modernize splash screen ([5a03497](https://github.com/agrc/roadkill-mobile/commit/5a0349739474283c4e9387678806f9696daf0d2a)), closes [#422](https://github.com/agrc/roadkill-mobile/issues/422)
+* **front:** more reliable positioning for crosshair ([b294a8d](https://github.com/agrc/roadkill-mobile/commit/b294a8d5c9af41068095d3eb29b0de8ab930f222))
+* **front:** pin react-native-collapsible to 1.6.1 so the public options start open ([10fcdc6](https://github.com/agrc/roadkill-mobile/commit/10fcdc6ee1f3d9abed4cca4d7a4e37b5f1cf7efb))
+* **front:** remove duplicate mile markers ([9a1a975](https://github.com/agrc/roadkill-mobile/commit/9a1a975ac400c5d7b5599e383480fa1e3eeb2a3e))
+* **front:** send report photos as files so expo/fetch can upload them ([a6b9d6d](https://github.com/agrc/roadkill-mobile/commit/a6b9d6da518a53eb78363a3a8198a9406708b0e3))
+* **front:** show mile markers again after the map moves ([a9a41b9](https://github.com/agrc/roadkill-mobile/commit/a9a41b96fed86e8b25a51d8221e5b33b6cbc1f41))
+* **front:** sort out some env var issues to get closer to expo recommendations ([9ccd820](https://github.com/agrc/roadkill-mobile/commit/9ccd8207a1e34a663c59fcf9b312396817eb115b))
+* **front:** stop inline-dotenv from masking process.env.EXPO_OS ([35c87eb](https://github.com/agrc/roadkill-mobile/commit/35c87eb5916503541dfeeae30dbfc8aaedfba028))
+* **palletjack:** add code to help prevent duplicate records ([2ba6a81](https://github.com/agrc/roadkill-mobile/commit/2ba6a81d749357cee8d9469a4ab74d062d5190e7)), closes [#414](https://github.com/agrc/roadkill-mobile/issues/414)
 # [v3.1.0-663](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.0-663) (2026-08-31)
 
 
