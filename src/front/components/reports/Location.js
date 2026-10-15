@@ -11,18 +11,26 @@ import useStyles from '../../services/styles';
 function Location({ onSetLocation, onCancel }) {
   const commonStyles = useStyles();
   const theme = useTheme();
-  const [assistancePrompt, setAssistancePrompt] = React.useState(null);
+  // show the generic prompt right away (and when offline) and swap in the
+  // local dispatch center if the lookup succeeds
+  const [assistancePrompt, setAssistancePrompt] = React.useState(() =>
+    t('services.location.liveAnimalLocalLaw'),
+  );
 
   React.useEffect(() => {
-    const init = async () => {
-      const prompt = await getAssistancePrompt();
-      setAssistancePrompt(prompt);
-    };
+    let isCurrent = true;
+    getAssistancePrompt()
+      .then((prompt) => {
+        if (isCurrent) {
+          setAssistancePrompt(prompt);
+        }
+      })
+      .catch((error) => console.error(error));
 
-    if (!assistancePrompt) {
-      init();
-    }
-  }, [assistancePrompt]);
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
 
   return (
     <View>
@@ -42,11 +50,9 @@ function Location({ onSetLocation, onCancel }) {
       <Button appearance="ghost" onPress={() => onCancel()}>
         {t('cancel')}
       </Button>
-      {assistancePrompt ? (
-        <Text appearance="hint" style={styles.note}>
-          <Autolink phone text={assistancePrompt} />
-        </Text>
-      ) : null}
+      <Text appearance="hint" style={styles.note}>
+        <Autolink phone text={assistancePrompt} />
+      </Text>
     </View>
   );
 }
