@@ -48,14 +48,14 @@ overrides:
   'react-native-eva-icons>react': 19.2.3
 
 allowBuilds:
-  '@firebase/util': false
-  '@parcel/watcher': false
+  '@firebase/util': true
+  '@parcel/watcher': true
   # downloads the sentry-cli binary used to upload sourcemaps during front builds/updates
   '@sentry/cli': true
-  esbuild: false
-  msw: false
-  protobufjs: false
-  re2: false
-  sharp: false
-  sqlite3: false
-  sse4_crc32: false
+  esbuild: true
+  msw: true
+  protobufjs: true
+  re2: true
+  sharp: true
+  sqlite3: true
+  sse4_crc32: true
