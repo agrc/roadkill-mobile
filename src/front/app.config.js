@@ -10,6 +10,11 @@ const names = {
   production: 'Utah Roadkill',
 };
 const name = names[process.env.APP_VARIANT];
+const splashBackgroundColors = {
+  development: '#fa703d',
+  staging: '#3d69fa',
+  production: '#ffffff',
+};
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
 const buildNumber = 663;
@@ -118,14 +123,10 @@ module.exports = {
     [
       'expo-splash-screen',
       {
-        image:
-          process.env.APP_VARIANT === 'production'
-            ? './assets/splash.png'
-            : `./assets/splash_${process.env.APP_VARIANT}.png`,
-        resizeMode: 'contain',
-        backgroundColor: '#ffffff',
-        // the splash images are full-screen artwork rather than a centered logo
-        enableFullScreenImage_legacy: true,
+        image: './assets/splash-icon.png',
+        imageWidth: 240,
+        // match the app icon background for each variant
+        backgroundColor: splashBackgroundColors[process.env.APP_VARIANT],
       },
     ],
     [
