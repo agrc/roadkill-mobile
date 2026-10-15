@@ -184,11 +184,11 @@ export default function MainScreen() {
   }, []);
 
   const setMarker = async () => {
-    const points = { ...crosshairPoints };
+    // the crosshair is centered over the map so the camera center is the
+    // location that it points at
+    const camera = await mapView.current.getCamera();
 
-    const coordinates = await mapView.current.coordinateForPoint(points);
-
-    setCarcassCoordinates(coordinates);
+    setCarcassCoordinates(pick(camera.center, 'latitude', 'longitude'));
   };
 
   const showAddReport = () => {
@@ -299,21 +299,6 @@ export default function MainScreen() {
     color: theme['color-basic-900'],
   });
 
-  const [crosshairPoints, setCrosshairPoints] = React.useState(null);
-  React.useEffect(() => {
-    const giddyUp = async () => {
-      const camera = await mapView.current.getCamera();
-      const newPoints = await mapView.current.pointForCoordinate(camera.center);
-      setCrosshairPoints(newPoints);
-    };
-
-    if (reportState.showReport) {
-      giddyUp();
-    } else {
-      setCrosshairPoints(null);
-    }
-  }, [reportState.showReport]);
-
   const VehicleIcon = getIcon({
     pack: 'material',
     name: 'drive-eta',
@@ -399,13 +384,10 @@ export default function MainScreen() {
               />
             ) : null}
           </Map>
-          {crosshairPoints ? (
+          {reportState.showReport ? (
             <View
               pointerEvents="none"
-              style={[
-                styles.crosshairContainer,
-                { top: crosshairPoints.y, left: crosshairPoints.x },
-              ]}
+              style={[styles.map, mapSizeStyle, styles.crosshairContainer]}
             >
               <CrosshairIcon />
             </View>
@@ -500,8 +482,7 @@ const styles = StyleSheet.create({
     paddingBottom: MAP_PADDING,
   },
   crosshairContainer: {
-    position: 'absolute',
-    marginLeft: -CROSSHAIR_SIZE / 2,
-    marginTop: -CROSSHAIR_SIZE / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
