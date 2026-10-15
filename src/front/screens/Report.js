@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Spinner from '../components/Spinner';
@@ -96,6 +97,7 @@ const Report = ({
   vehicleTrackingState,
 }) => {
   const windowDimensions = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const theme = useTheme();
   const [showMain, setShowMain] = React.useState(false);
   const { cacheReport } = useOfflineCache();
@@ -269,12 +271,18 @@ const Report = ({
       exiting={SlideOutDown}
       style={[containerStyle, { paddingTop: showMain ? 50 : null }]}
     >
-      <KeyboardAwareScrollView style={styles.body}>
-        {!showMain ? (
+      {!showMain ? (
+        // rendered outside of the scroll view so that the drawer sizes to fit
+        // the async-loaded assistance prompt and clears the home indicator
+        <View style={styles.body}>
           <Location onSetLocation={onSetLocation} onCancel={() => onClose()} />
-        ) : (
-          <FocusAwareStatusBar style={'dark'} />
-        )}
+        </View>
+      ) : null}
+      <KeyboardAwareScrollView
+        style={showMain ? styles.body : styles.hidden}
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
+      >
+        {showMain ? <FocusAwareStatusBar style={'dark'} /> : null}
 
         {
           // the Form components are wrapped in a view and hidden via styling
