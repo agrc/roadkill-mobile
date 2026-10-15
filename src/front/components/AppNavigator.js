@@ -1,4 +1,4 @@
-import analytics from '@react-native-firebase/analytics';
+import { getAnalytics, logEvent } from '@react-native-firebase/analytics';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -256,7 +256,7 @@ const AppNavigator = () => {
     const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
     if (previousRouteName !== currentRouteName) {
-      await analytics().logEvent('screen_view', {
+      await logEvent(getAnalytics(), 'screen_view', {
         screen_name: currentRouteName,
       });
     }
