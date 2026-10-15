@@ -77,7 +77,27 @@ async function main() {
   const insertStmt = await db.prepare(
     'INSERT OR REPLACE INTO mile_markers (OBJECTID, LEGEND_NUM, LONGITUDE, LATITUDE, ROUTE_ID) VALUES (?, ?, ?, ?, ?)',
   );
+  const featuresWithoutGeometry = features.filter(
+    ({ geometry }) =>
+      !Number.isFinite(geometry?.x) || !Number.isFinite(geometry?.y),
+  );
+  if (featuresWithoutGeometry.length > 0) {
+    const objectIds = featuresWithoutGeometry
+      .map(({ attributes }) => attributes?.OBJECTID ?? 'unknown')
+      .join(', ');
+    console.warn(
+      `Skipping ${featuresWithoutGeometry.length} features without valid geometry (OBJECTIDs: ${objectIds})`,
+    );
+  }
+
   for (const feature of features) {
+    if (
+      !Number.isFinite(feature.geometry?.x) ||
+      !Number.isFinite(feature.geometry?.y)
+    ) {
+      continue;
+    }
+
     await insertStmt.run(
       feature.attributes.OBJECTID,
       feature.attributes.LEGEND_NUM,
