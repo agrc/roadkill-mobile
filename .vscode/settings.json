@@ -97,6 +97,7 @@
     "Screencast",
     "sendgrid",
     "signin",
+    "simctl",
     "sourcemaps",
     "sqlalchemy",
     "sqlite",
@@ -119,7 +120,8 @@
     "utahwvcr",
     "wildlifecollisions",
     "wvcr",
-    "xargs"
+    "xargs",
+    "xcrun"
   ],
   "cSpell.language": "en,es",
   "[python]": {
