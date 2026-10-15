@@ -13,10 +13,9 @@ import {
 } from '@ui-kitten/components';
 import CheapRuler from 'cheap-ruler';
 import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, AppState, StyleSheet, View } from 'react-native';
 import { useAPI } from '../services/api';
 import backgroundLocationService from '../services/backgroundLocation';
 import config from '../services/config';
@@ -25,6 +24,15 @@ import t from '../services/localization';
 import { useOfflineCache } from '../services/offline';
 import { PADDING, RADIUS } from '../services/styles';
 import {
+  clearVehicleTrackingSession,
+  flushVehicleTrackingLocationWrites,
+  getVehicleTrackingPoints,
+  getVehicleTrackingSession,
+  MAX_TRACKING_DURATION_REASON,
+  restoreVehicleTrackingSession,
+  setVehicleTrackingSessionStatus,
+} from '../services/vehicleTrackingStorage';
+import {
   appendCoordinates,
   dateToString,
   lineCoordinatesToString,
@@ -32,26 +40,6 @@ import {
 import Spinner from './Spinner';
 
 const STORAGE_KEY = 'wvcr-vehicle-tracking-state';
-
-TaskManager.defineTask(
-  backgroundLocationService.taskName,
-  async ({ data, error }) => {
-    if (error) {
-      console.log(error);
-      Sentry.captureException(error);
-
-      return;
-    }
-
-    if (data) {
-      const { locations } = data;
-
-      if (locations) {
-        backgroundLocationService.notify(locations);
-      }
-    }
-  },
-);
 
 const buttonStatuses = {
   idle: 'basic',
@@ -86,7 +74,7 @@ export const vehicleTrackingReducer = (draft, action) => {
 
     case 'START':
       draft.status = 'tracking';
-      draft.start = new Date();
+      draft.start = action.payload || new Date();
 
       break;
 
@@ -117,12 +105,18 @@ export const vehicleTrackingReducer = (draft, action) => {
       }
 
       break;
+    case 'REPLACE_ROUTE_COORDINATES':
+      draft.routeCoordinates = action.payload;
+
+      break;
     case 'RESET':
       AsyncStorage.removeItem(STORAGE_KEY);
 
       return initialVehicleTrackingState;
 
     case 'RESTORE_FROM_STORAGE':
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(action.payload));
+
       return action.payload;
 
     default:
@@ -162,36 +156,172 @@ export default function VehicleTracking({
   resumeRoute,
 }) {
   const theme = useTheme();
+  const lastPointId = React.useRef(0);
+  const isHydrated = React.useRef(false);
+  const maxDurationHandled = React.useRef(false);
+  const restoreStarted = React.useRef(false);
+  const syncQueue = React.useRef(Promise.resolve());
+  const startTrackingRef = React.useRef(startTracking);
+  startTrackingRef.current = startTracking;
 
-  useEffect(() => {
-    return () => {
-      backgroundLocationService.unsubscribe();
-    };
-  }, []);
+  const syncStoredPoints = React.useCallback(() => {
+    if (!isHydrated.current) {
+      return Promise.resolve();
+    }
 
-  useEffect(() => {
-    const checkStorage = async () => {
-      const backup = await AsyncStorage.getItem(STORAGE_KEY);
+    const sync = syncQueue.current.then(async () => {
+      const points = await getVehicleTrackingPoints(lastPointId.current);
 
-      if (backup && JSON.stringify(state) !== backup) {
-        const parsedBackup = JSON.parse(backup);
-        parsedBackup.start = new Date(parsedBackup.start);
-
-        dispatch({ type: 'RESTORE_FROM_STORAGE', payload: parsedBackup });
-
-        if (parsedBackup.isTracking && !parsedBackup.isPaused) {
-          startTracking();
-        }
+      if (points.length > 0) {
+        lastPointId.current = points[points.length - 1].id;
+        dispatch({
+          type: 'ADD_ROUTE_COORDINATES',
+          payload: points.map(({ latitude, longitude }) => ({
+            latitude,
+            longitude,
+          })),
+        });
       }
+
+      const session = await getVehicleTrackingSession();
+      if (
+        session?.pause_reason === MAX_TRACKING_DURATION_REASON &&
+        !maxDurationHandled.current
+      ) {
+        maxDurationHandled.current = true;
+        dispatch({ type: 'PAUSE' });
+        dispatch({ type: 'SHOW' });
+      }
+    });
+
+    syncQueue.current = sync.catch((error) => {
+      console.error('Unable to restore saved vehicle-tracking points:', error);
+      Sentry.captureException(error);
+      Alert.alert(t('error'), error.message);
+    });
+
+    return syncQueue.current;
+  }, [dispatch]);
+
+  useEffect(() => {
+    const unsubscribe = backgroundLocationService.subscribe(syncStoredPoints);
+    const appStateSubscription = AppState.addEventListener(
+      'change',
+      (nextAppState) => {
+        if (nextAppState === 'active') {
+          syncStoredPoints();
+        }
+      },
+    );
+
+    return () => {
+      unsubscribe();
+      appStateSubscription.remove();
+    };
+  }, [syncStoredPoints]);
+
+  useEffect(() => {
+    if (restoreStarted.current) return;
+    restoreStarted.current = true;
+
+    let mounted = true;
+    const restore = async () => {
+      const backup = await AsyncStorage.getItem(STORAGE_KEY);
+      let restoredState = backup
+        ? JSON.parse(backup)
+        : initialVehicleTrackingState;
+
+      if (restoredState.start) {
+        restoredState.start = new Date(restoredState.start);
+      }
+
+      let session = await getVehicleTrackingSession();
+      if (!session && restoredState.start) {
+        await restoreVehicleTrackingSession(
+          restoredState.start,
+          restoredState.isPaused ? 'paused' : 'tracking',
+          restoredState.routeCoordinates || [],
+        );
+        session = await getVehicleTrackingSession();
+      } else if (session) {
+        const matchesSession =
+          restoredState.start &&
+          Number(restoredState.start) === Number(session.started_at);
+        await restoreVehicleTrackingSession(
+          new Date(Number(session.started_at)),
+          session.status,
+          matchesSession ? restoredState.routeCoordinates || [] : [],
+        );
+        session = await getVehicleTrackingSession();
+      }
+
+      if (session && ['tracking', 'paused'].includes(session.status)) {
+        const matchesSession =
+          restoredState.start &&
+          Number(restoredState.start) === Number(session.started_at);
+        if (!matchesSession) {
+          restoredState = { ...initialVehicleTrackingState };
+        }
+
+        const points = await getVehicleTrackingPoints();
+        restoredState = {
+          ...restoredState,
+          status: session.status,
+          start: new Date(Number(session.started_at)),
+          routeCoordinates: points.map(({ latitude, longitude }) => ({
+            latitude,
+            longitude,
+          })),
+          isPaused: session.status === 'paused',
+          isTracking: true,
+          buttonStatus: buttonStatuses[session.status],
+          isModalVisible:
+            session.pause_reason === MAX_TRACKING_DURATION_REASON ||
+            restoredState.isModalVisible,
+        };
+        lastPointId.current =
+          points.length > 0 ? points[points.length - 1].id : 0;
+        maxDurationHandled.current =
+          session.pause_reason === MAX_TRACKING_DURATION_REASON;
+
+        if (mounted) {
+          dispatch({ type: 'RESTORE_FROM_STORAGE', payload: restoredState });
+        }
+        isHydrated.current = true;
+        await syncStoredPoints();
+
+        if (session.status === 'tracking') {
+          await startTrackingRef.current(
+            restoredState.start,
+            restoredState.routeCoordinates,
+          );
+        }
+
+        return;
+      }
+
+      if (backup && mounted) {
+        dispatch({ type: 'RESTORE_FROM_STORAGE', payload: restoredState });
+      }
+      isHydrated.current = true;
+      await syncStoredPoints();
     };
 
-    checkStorage();
-  }, [dispatch, startTracking, state]);
+    restore().catch((error) => {
+      console.error('Unable to restore vehicle-tracking session:', error);
+      Sentry.captureException(error);
+      if (mounted) {
+        Alert.alert(t('error'), error.message);
+      }
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch, syncStoredPoints]);
 
   const stopTracking = async () => {
     console.log('stopTracking');
-
-    backgroundLocationService.unsubscribe();
 
     try {
       const hasStarted = await Location.hasStartedLocationUpdatesAsync(
@@ -203,18 +333,24 @@ export default function VehicleTracking({
           backgroundLocationService.taskName,
         );
       }
+      await flushVehicleTrackingLocationWrites();
     } catch (error) {
       console.log(error);
       Sentry.captureException(error);
+      throw error;
     }
   };
 
   const pauseRoute = async () => {
     console.log('pauseRoute');
 
-    await stopTracking();
-
-    dispatch({ type: 'PAUSE' });
+    try {
+      await stopTracking();
+      await setVehicleTrackingSessionStatus('paused');
+      dispatch({ type: 'PAUSE' });
+    } catch (error) {
+      Alert.alert(t('error'), error.message);
+    }
   };
 
   const cancelRoute = () => {
@@ -231,9 +367,13 @@ export default function VehicleTracking({
         {
           text: t('components.vehicleTracking.discardRoute'),
           onPress: async () => {
-            await stopTracking();
-
-            dispatch({ type: 'RESET' });
+            try {
+              await stopTracking();
+              await clearVehicleTrackingSession();
+              dispatch({ type: 'RESET' });
+            } catch (error) {
+              Alert.alert(t('error'), error.message);
+            }
           },
         },
       ],
@@ -244,50 +384,70 @@ export default function VehicleTracking({
   const completeRoute = async () => {
     console.log('completeRoute');
 
-    await stopTracking();
+    try {
+      await stopTracking();
+    } catch (error) {
+      Alert.alert(t('error'), error.message);
+
+      return;
+    }
 
     dispatch({ type: 'HIDE' });
 
     mutation.mutate();
   };
 
-  const confirmCompleteRoute = () => {
-    if (state.routeCoordinates.length < 2) {
-      Alert.alert(t('components.vehicleTracking.atLeast'));
+  const confirmCompleteRoute = async () => {
+    try {
+      const points = await getVehicleTrackingPoints();
+      if (points.length < 2 && state.routeCoordinates.length < 2) {
+        Alert.alert(t('components.vehicleTracking.atLeast'));
 
-      return;
+        return;
+      }
+
+      Alert.alert(
+        t('areYouSure'),
+        t('components.vehicleTracking.stopTracking', {
+          length: state.pickups.length,
+        }),
+        [
+          {
+            text: t('cancel'),
+            style: 'cancel',
+          },
+          {
+            text: t('components.vehicleTracking.submit'),
+            onPress: completeRoute,
+          },
+        ],
+      );
+    } catch (error) {
+      Alert.alert(t('error'), error.message);
     }
-
-    Alert.alert(
-      t('areYouSure'),
-      t('components.vehicleTracking.stopTracking', {
-        length: state.pickups.length,
-      }),
-      [
-        {
-          text: t('cancel'),
-          style: 'cancel',
-        },
-        {
-          text: t('components.vehicleTracking.submit'),
-          onPress: completeRoute,
-        },
-      ],
-    );
   };
   const [spinnerMessage, setSpinnerMessage] = React.useState('');
 
   const { isConnected, cacheRoute, cacheReport } = useOfflineCache();
   const submitRoute = async () => {
+    const savedPoints = await getVehicleTrackingPoints();
+    const routeCoordinates =
+      savedPoints.length > 0
+        ? savedPoints.map(({ latitude, longitude }) => ({
+            latitude,
+            longitude,
+          }))
+        : state.routeCoordinates;
     const submitValues = {
       start_time: state.start,
       end_time: new Date(),
-      geog: lineCoordinatesToString(state.routeCoordinates),
+      geog: lineCoordinatesToString(routeCoordinates),
       submit_date: new Date().toISOString(),
     };
 
     if (!isConnected) {
       await cacheRoute(submitValues, state.pickups);
+      await clearVehicleTrackingSession();
 
       dispatch({ type: 'RESET' });
 
@@ -301,6 +461,7 @@ export default function VehicleTracking({
       responseJson = await postRoute(submitValues);
     } catch (error) {
       await cacheRoute(submitValues, state.pickups, error);
+      await clearVehicleTrackingSession();
 
       dispatch({ type: 'RESET' });
 
@@ -340,6 +501,8 @@ export default function VehicleTracking({
     } else {
       Alert.alert(`${t('success')}!`, t('components.vehicleTracking.success'));
     }
+
+    await clearVehicleTrackingSession();
   };
 
   const queryClient = useQueryClient();
