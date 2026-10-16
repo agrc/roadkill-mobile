@@ -5,9 +5,9 @@ import commonConfig from 'common/config';
 import propTypes from 'prop-types';
 import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Marker } from 'react-native-maps';
 import useAuth from '../auth/context';
 import Map from '../components/Map';
+import PinMarker from '../components/PinMarker';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
 import { useAPI } from '../services/api';
@@ -159,7 +159,7 @@ export function ReportInfo({ data }) {
           altitude: 2500,
         }}
       >
-        <Marker coordinate={animalCoords} />
+        <PinMarker coordinate={animalCoords} />
       </Map>
       <Divider />
       <ValueContainer
