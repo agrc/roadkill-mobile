@@ -171,7 +171,14 @@ export default function Form({
               }
               style={styles.button}
             >
-              {t('components.reports.form.submitReport')}
+              {(evaProps) => (
+                <Text
+                  {...evaProps}
+                  style={[evaProps.style, styles.centeredText]}
+                >
+                  {t('components.reports.form.submitReport')}
+                </Text>
+              )}
             </Button>
           </View>
           {__DEV__ ? (
@@ -214,5 +221,8 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  centeredText: {
+    textAlign: 'center',
   },
 });
