@@ -81,6 +81,7 @@ let mockSecureValues;
 let mockProviders;
 let mockFetch;
 let mockOnReady;
+let mockAppStateListeners;
 let AuthContextProvider;
 
 function renderAuthContext() {
@@ -115,6 +116,7 @@ beforeEach(() => {
     constants: {},
   });
   mockOnReady = jest.fn();
+  mockAppStateListeners = [];
 
   jest.doMock('react', () => ({ __esModule: true, default: mockRuntime }));
   jest.doMock('react/jsx-runtime', () => ({
@@ -150,6 +152,13 @@ beforeEach(() => {
   }));
   jest.doMock('react-native', () => ({
     Alert: { alert: jest.fn() },
+    AppState: {
+      addEventListener: jest.fn((event, listener) => {
+        mockAppStateListeners.push(listener);
+
+        return { remove: jest.fn() };
+      }),
+    },
     Platform: { OS: 'ios' },
   }));
   jest.doMock('@tanstack/react-query', () => ({
@@ -444,9 +453,10 @@ describe('AuthContextProvider session recovery', () => {
     const authError = Object.assign(new Error('sign-in required'), {
       code: 'AUTH_REQUIRED',
     });
-    mockProviders.google.getBearerToken.mockRejectedValue(authError);
 
     const auth = await initializeAuthContext();
+    await flushPromises();
+    mockProviders.google.getBearerToken.mockRejectedValue(authError);
     await expect(auth.getBearerToken()).rejects.toBe(authError);
 
     expect(mockProviders.google.logIn).not.toHaveBeenCalled();
@@ -504,5 +514,83 @@ describe('AuthContextProvider session recovery', () => {
       ),
     ).toBe(false);
     expect(mockSecureValues.USER_INFO).toEqual(originalInfo);
+  });
+});
+
+describe('AuthContextProvider session verification', () => {
+  const savedInfo = {
+    oauthUser: { sub: 'google-subject' },
+    providerName: 'google',
+    user: { id: 'saved-user' },
+    registered: true,
+  };
+
+  it('renews the session silently once auth is ready', async () => {
+    mockSecureValues.USER_INFO = savedInfo;
+
+    await initializeAuthContext();
+    await flushPromises();
+
+    expect(mockProviders.google.getBearerToken).toHaveBeenCalledTimes(1);
+    expect(mockProviders.google.logIn).not.toHaveBeenCalled();
+    expect(mockSecureValues.USER_INFO.sessionRecovery).toBeUndefined();
+  });
+
+  it('requires sign-in on launch when the session cannot be renewed', async () => {
+    mockSecureValues.USER_INFO = savedInfo;
+    mockProviders.google.getBearerToken.mockRejectedValue(
+      Object.assign(new Error('Sign in to Google again to continue.'), {
+        code: 'AUTH_REQUIRED',
+      }),
+    );
+
+    await initializeAuthContext();
+    await flushPromises();
+
+    expect(mockSecureValues.USER_INFO.sessionRecovery).toBe('sign-in');
+    expect(mockProviders.google.logIn).not.toHaveBeenCalled();
+    await expect(renderAuthContext().verifySession()).resolves.toBe(false);
+  });
+
+  it('keeps the session when renewal fails because of the network', async () => {
+    mockSecureValues.USER_INFO = savedInfo;
+    mockProviders.google.getBearerToken.mockRejectedValue(
+      new TypeError('Network request failed'),
+    );
+
+    const auth = await initializeAuthContext();
+    await flushPromises();
+
+    await expect(auth.verifySession()).resolves.toBe(true);
+    expect(mockSecureValues.USER_INFO.sessionRecovery).toBeUndefined();
+  });
+
+  it('checks the session again when the app returns to the foreground', async () => {
+    mockSecureValues.USER_INFO = savedInfo;
+
+    await initializeAuthContext();
+    await flushPromises();
+    mockProviders.google.getBearerToken.mockRejectedValue(
+      Object.assign(new Error('Sign in to Google again to continue.'), {
+        code: 'AUTH_REQUIRED',
+      }),
+    );
+
+    mockAppStateListeners.forEach((listener) => listener('background'));
+    await flushPromises();
+    expect(mockProviders.google.getBearerToken).toHaveBeenCalledTimes(1);
+
+    mockAppStateListeners.forEach((listener) => listener('active'));
+    await flushPromises();
+    expect(mockProviders.google.getBearerToken).toHaveBeenCalledTimes(2);
+    expect(mockSecureValues.USER_INFO.sessionRecovery).toBe('sign-in');
+  });
+
+  it('does not touch providers when signed out', async () => {
+    const auth = await initializeAuthContext();
+    await flushPromises();
+
+    await expect(auth.verifySession()).resolves.toBe(true);
+    expect(mockProviders.google.getBearerToken).not.toHaveBeenCalled();
   });
 });

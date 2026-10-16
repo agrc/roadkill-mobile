@@ -69,7 +69,7 @@ export default function MainScreen() {
   const [initialLocation, setInitialLocation] = React.useState(null);
   const [showSpinner, setShowSpinner] = React.useState(false);
   const mapView = React.useRef(null);
-  const { authInfo } = useAuth();
+  const { authInfo, verifySession } = useAuth();
   // eslint-disable-next-line no-unused-vars
   const { cachedSubmissionIds } = useOfflineCache();
   const theme = useTheme();
@@ -225,7 +225,11 @@ export default function MainScreen() {
     setCarcassCoordinates(pick(camera.center, 'latitude', 'longitude'));
   };
 
-  const showAddReport = () => {
+  const showAddReport = async () => {
+    // if the session can't be renewed, the navigator sends the user to sign in
+    // before they spend time filling out a report that can't be submitted
+    if (!(await verifySession())) return;
+
     const displayReport = async (newReportType) => {
       await followUser(true);
 
