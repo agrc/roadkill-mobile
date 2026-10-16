@@ -10,9 +10,10 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { Marker, Polyline } from 'react-native-maps';
+import { Polyline } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Map from '../components/Map';
+import PinMarker from '../components/PinMarker';
 import ReportListItem from '../components/ReportListItem';
 import Spinner from '../components/Spinner';
 import ValueContainer from '../components/ValueContainer';
@@ -110,7 +111,7 @@ export function RouteInfo({ data }) {
         mapPadding={edgePadding}
       >
         {data.pickups.map((pickup, index) => (
-          <Marker
+          <PinMarker
             coordinate={coordsToLocation(pickup.animal_location)}
             key={pickup.report_id || index}
           />

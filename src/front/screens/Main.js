@@ -13,6 +13,7 @@ import useAuth from '../auth/context';
 import FocusAwareStatusBar from '../components/FocusAwareStatusBar';
 import Map from '../components/Map';
 import MapButton from '../components/MapButton';
+import PinMarker from '../components/PinMarker';
 import RootView from '../components/RootView';
 import VehicleTracking, {
   initialVehicleTrackingState,
@@ -371,7 +372,7 @@ export default function MainScreen() {
             ) : null}
             {vehicleTrackingState.pickups?.length > 0
               ? vehicleTrackingState.pickups.map((pickup) => (
-                  <Marker
+                  <PinMarker
                     coordinate={pointStringToCoordinates(
                       pickup.animal_location,
                     )}
@@ -410,7 +411,7 @@ export default function MainScreen() {
               </Marker>
             ) : null}
             {carcassCoordinates ? (
-              <Marker
+              <PinMarker
                 coordinate={carcassCoordinates}
                 zIndex={2}
                 tappable={false}
