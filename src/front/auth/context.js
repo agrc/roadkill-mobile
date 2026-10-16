@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 import propTypes from 'prop-types';
 import React from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, AppState, Platform } from 'react-native';
 import config from '../services/config';
 import { updateConstants } from '../services/constants';
 import myFetch from '../services/fetch';
@@ -655,6 +655,52 @@ export function AuthContextProvider({ children, onReady }) {
     return false;
   };
 
+  // Proactively renew the session so that a dead refresh token sends the user
+  // to sign in before they start a report rather than after they submit it.
+  // Network failures are ignored so that offline users keep their session.
+  const verifySession = async () => {
+    const info = authInfoRef.current;
+    if (
+      !info?.providerName ||
+      !info.registered ||
+      info.sessionRecovery ||
+      authTransition.current
+    ) {
+      return !info?.sessionRecovery;
+    }
+
+    try {
+      await getBearerToken();
+    } catch (error) {
+      if (error?.code === 'AUTH_REQUIRED') return false;
+
+      console.log(`session check failed: ${error?.message}`);
+    }
+
+    return true;
+  };
+  // provider functions close over render state, so effects need the latest
+  const verifySessionRef = React.useRef(verifySession);
+  verifySessionRef.current = verifySession;
+
+  const isReady =
+    authInfo !== undefined &&
+    userType !== undefined &&
+    (authInfo === null ||
+      (Boolean(authInfo?.providerName && authInfo?.oauthUser?.sub) &&
+        currentProvider?.isReady));
+
+  React.useEffect(() => {
+    if (!isReady) return undefined;
+
+    verifySessionRef.current();
+    const subscription = AppState.addEventListener('change', (nextState) => {
+      if (nextState === 'active') verifySessionRef.current();
+    });
+
+    return () => subscription.remove();
+  }, [isReady]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -666,17 +712,13 @@ export function AuthContextProvider({ children, onReady }) {
         setUserType,
         userType,
         registerUser,
-        isReady:
-          authInfo !== undefined &&
-          userType !== undefined &&
-          (authInfo === null ||
-            (Boolean(authInfo?.providerName && authInfo?.oauthUser?.sub) &&
-              currentProvider?.isReady)),
+        isReady,
         getSessionSnapshot,
         getSessionOwner: () => getAuthOwner(authInfoRef.current),
         getLegacyQueueOwner,
         isSessionCurrent: isCurrentSession,
         handleAPIError,
+        verifySession,
       }}
     >
       {children}
