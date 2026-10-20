@@ -17,7 +17,7 @@ const splashBackgroundColors = {
 };
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 665;
+const buildNumber = 666;
 
 module.exports = {
   name,
