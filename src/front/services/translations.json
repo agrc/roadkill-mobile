@@ -188,7 +188,7 @@
         "discardReport": "Discard Report",
         "discardWarning": "All in-progress report data will be lost.",
         "pickupSuccess": "Your report has been submitted successfully.",
-        "publicReportSuccess": "Your report has been submitted and a notification has been sent to remove the animal. In some instances the animal may not be removed. We appreciate your patience while we work to schedule the removal of the animal.",
+        "publicReportSuccess": "Your report has been submitted and will help inform DWR and DOT about potential wildlife-vehicle collision hotspots. If the animal is creating a public safety issue, please report it to dispatch.",
         "routeReportSubmissionSuccess": "Your report has been recorded and is ready to be submitted with your vehicle tracking route.",
         "whenDiscovered": "When was the animal discovered?",
         "whenPickedUp": "When was the animal picked up?"
@@ -437,7 +437,7 @@
         "discardReport": "Descartar informe",
         "discardWarning": "Se perderán todos los datos de informe en progreso.",
         "pickupSuccess": "Tu informe ha sido enviado con éxito.",
-        "publicReportSuccess": "Se envió su informe y se envió una notificación para retirar al animal. En algunos casos, es posible que no se retire el animal. Agradecemos su paciencia mientras trabajamos para programar la retirada del animal.",
+        "publicReportSuccess": "Su informe ha sido enviado y ayudará a informar al DWR y al DOT sobre posibles puntos críticos de colisiones entre vehículos y animales salvajes. Si el animal representa un riesgo para la seguridad pública, por favor, repórtelo al centro de despacho.",
         "routeReportSubmissionSuccess": "Tu informe ha sido registrado y está listo para ser enviado con tu ruta de seguimiento de vehículos.",
         "whenDiscovered": "¿Cuándo se descubrió el animal?",
         "whenPickedUp": "¿Cuándo se recogió el animal?"
