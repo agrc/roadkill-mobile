@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: github-actions
     directories:
       - /
-      - /.github/actions/*
+      - .github/actions/*
     schedule:
       interval: quarterly
     groups:
@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     exclude-paths:
-      - /src/front/**
+      - src/front/**
     schedule:
       interval: quarterly
     groups:
