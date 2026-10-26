@@ -21,7 +21,7 @@ dependencies = ["ugrc-palletjack==6.*", "ugrc-supervisor==3.*"]
 Homepage = "https://github.com/agrc/roadkill-mobile"
 
 [project.optional-dependencies]
-tests = ["pandas==2.*", "pytest-instafail==0.5.*", "pytest>=8,<10", "ruff==0.*"]
+tests = ["pandas==2.*", "pytest-instafail==0.5.*", "pytest>=9.1.1,<10", "ruff==0.*"]
 
 [project.scripts]
 process = "roadkill.main:process"
