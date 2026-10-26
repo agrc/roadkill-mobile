@@ -18,6 +18,7 @@ minimumReleaseAgeStrict: true
 # EXCLUSIONS: Critical to prevent 7-day delays on stable tools
 minimumReleaseAgeExclude:
   - '@ugrc/*'
+  - 'firebase-tools@15.34.1'
   - '@expo/cli@57.0.30'
   - '@expo/fingerprint@0.20.14'
   - '@expo/inline-modules@0.1.8'
