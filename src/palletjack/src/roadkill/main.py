@@ -174,7 +174,7 @@ def process():
     """The main function that does all the work."""
 
     #: Set up secrets, tempdir, supervisor, and logging
-    start = datetime.datetime.now(datetime.timezone.utc).astimezone()
+    start = datetime.datetime.now(datetime.UTC).astimezone()
 
     secrets = SimpleNamespace(**_get_secrets())
 
@@ -267,7 +267,7 @@ def process():
                 f"{table} database records: {len(database_records)}, agol records: {len(agol_records)}, new records: {len(new_records)}, deleted records: {len(deleted_ids)}"
             )
 
-        end = datetime.datetime.now(datetime.timezone.utc).astimezone()
+        end = datetime.datetime.now(datetime.UTC).astimezone()
 
         summary_message = MessageDetails()
         summary_message.subject = f"{config.SKID_NAME} Update Summary"
