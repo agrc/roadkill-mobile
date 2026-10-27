@@ -29,7 +29,7 @@
     "@ugrc/eslint-config": "^1.2.2",
     "concurrently": "^9.1.2",
     "eslint": "^9.27.0",
-    "prettier": "^3.5.3",
+    "prettier": "^3.9.10",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.14",
     "tailwindcss": "^4.1.7"
