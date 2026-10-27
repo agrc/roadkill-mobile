@@ -28,7 +28,7 @@ Press "j" in console after starting expo project. See [Expo Debugging & Profilin
 | git branch | app version | runtime version | deployed                                                                                                                                                                                                                                                                         | release-channel | expo version |
 |------------|-------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
 | dev        | 3.1.1      | 6.0.0           | custom dev clients for simulators are in `src/front/dev-clients`, app has an orange icon (dev clients for for physical devices can be installed directly from the expo build website)                                                                                            | default         | 57           |
-| dev        | 3.1.1      | 6.0.0           | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | staging         | 57           |
+| dev        | 3.1.1      | 6.0.0           | [TestFlight](https://appstoreconnect.apple.com/apps/1613421729/testflight) and [Google Play internal testing](https://play.google.com/console/u/1/developers/6377537875100906890/app/4974417822540767109/tracks/internal-testing) separate apps from production with a blue icon | preview         | 57           |
 | main       | 3.1.0       | 5.0.0           | App Stores                                                                                                                                                                                                                                                                       | production      | 52           |
 
 These three environments are three separate bundle IDs (see `src/front/app.config.js`) and can all be installed on the same device simultaneously.
@@ -138,7 +138,7 @@ If a matching file in the bucket is not found, a blank gray fallback image is re
 
 ## Dependency Updates
 
-The repo is a single [pnpm](https://pnpm.io) workspace (`data`, `data/scripts`, `src/back`, `src/common`, `src/front`, `src/website`) with one root `pnpm-lock.yaml`; all pnpm settings live in the root `pnpm-workspace.yaml`. Run `pnpm install` from the root. Dependency build scripts are denied by default; only approve them in `allowBuilds` when they are required for deployment. `sqlite3` builds are denied, so run `pnpm approve-builds` (locally, without committing) before running `pnpm run get-mile-markers`.
+The repo is a single [pnpm](https://pnpm.io) workspace (`data`, `data/scripts`, `src/back`, `src/common`, `src/front`, `src/website`) with one root `pnpm-lock.yaml`; all pnpm settings live in the root `pnpm-workspace.yaml`. Run `pnpm install` from the root. Dependency build scripts are denied by default; only approve them in `allowBuilds` when they are required for deployment.
 
 The [common](./src/common/package.json) package causes the expo build process to fail if it is switched to ESM at Expo v52.
 
