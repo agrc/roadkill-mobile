@@ -17,7 +17,7 @@ const splashBackgroundColors = {
 };
 
 // perhaps this bump could be automated using a combo of app.config.json and this file?
-const buildNumber = 667;
+const buildNumber = 668;
 
 module.exports = {
   name,
@@ -27,7 +27,7 @@ module.exports = {
   owner: 'ugrc',
   scheme: bundleId,
   githubUrl: 'https://github.com/agrc/roadkill-mobile',
-  version: '3.1.1',
+  version: '3.1.2',
   orientation: 'portrait',
   icon:
     process.env.APP_VARIANT === 'production'
