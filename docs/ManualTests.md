@@ -84,6 +84,8 @@ Setup: log in as contractor or agency
 | active tracking             | tap on "Report" button, fill out and submit | prompt shows that report was saved and will be submitted later with route |
 | active tracking, open modal | tap on "Cancel Route"                       | are you sure prompt is displayed and acts appropriately |
 | active tracking, open modal | tap on "Finish and Submit Route"            | spinner is displayed and route/pickups are submitted and tracking state is stopped and reset |
+| active tracking on an existing installation | background the app, travel, and repeatedly reopen the app | saved route points are restored and recording continues without database-lock errors |
+| active tracking receiving location updates | pause/resume, then finish or cancel the route | route state changes in order, saved points are retained until submission or cancellation, and discarded points do not reappear |
 
 ### Agency/Admin Role
 
