@@ -17,9 +17,9 @@
   },
   "dependencies": {
     "@google-cloud/cloud-sql-connector": "^1.8.0",
-    "@google-cloud/firestore": "^7.11.1",
-    "@google-cloud/logging-winston": "^6.0.1",
-    "@google-cloud/storage": "^7.19.0",
+    "@google-cloud/firestore": "^9.0.0",
+    "@google-cloud/logging-winston": "^7.0.1",
+    "@google-cloud/storage": "^8.0.1",
     "@sendgrid/mail": "^8.1.5",
     "apple-signin-auth": "^2.0.0",
     "common": "workspace:*",
@@ -32,7 +32,7 @@
     "humanize-duration": "^3.32.2",
     "jwt-decode": "^4.0.0",
     "knex": "^3.1.0",
-    "ky": "^1.8.1",
+    "ky": "^2.1.0",
     "mime": "^4.0.7",
     "multer": "^2.0.2",
     "pg": "^8.16.0",
@@ -44,17 +44,17 @@
   },
   "devDependencies": {
     "@ugrc/eslint-config": "^1.2.2",
-    "env-cmd": "^10.1.0",
-    "eslint": "^9.27.0",
+    "env-cmd": "^11.0.0",
+    "eslint": "^10.9.1",
     "firebase-tools": "^15.34.1",
     "form-urlencoded": "^6.1.5",
     "msw": "^2.8.4",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
-    "prettier-plugin-packagejson": "^2.5.14",
+    "prettier-plugin-packagejson": "^3.0.2",
     "supertest": "^7.1.1",
-    "typescript": "^5.8.3",
-    "vitest": "^3.1.4"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }

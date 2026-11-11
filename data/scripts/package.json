@@ -9,10 +9,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/storage": "^7.13.0",
+    "@google-cloud/storage": "^8.0.1",
     "knex": "^3.1.0",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
-    "prettier-plugin-packagejson": "^2.5.2"
+    "prettier-plugin-packagejson": "^3.0.2"
   }
 }
