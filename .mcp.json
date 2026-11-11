@@ -3,6 +3,10 @@
 		"expo": {
 			"url": "https://mcp.expo.dev/mcp",
 			"type": "http"
+		},
+		"sentry": {
+			"url": "https://mcp.sentry.dev/mcp",
+			"type": "http"
 		}
 	}
 }
