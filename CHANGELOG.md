@@ -1,3 +1,10 @@
+## [v3.1.2-668](https://github.com/agrc/roadkill-mobile/compare/v3.1.1-667...v3.1.2-668) (2026-11-11)
+
+
+### Bug Fixes
+
+* **front:** prevent sqlite locking during vehicle tracking while app is in the background ([22d03aa](https://github.com/agrc/roadkill-mobile/commit/22d03aa43e6df21245d667693e63d7a1772a45f4))
+
 ## [v3.1.1-667](https://github.com/agrc/roadkill-mobile/compare/v3.1.0-652.staging...v3.1.1-667) (2026-10-27)
 
 
